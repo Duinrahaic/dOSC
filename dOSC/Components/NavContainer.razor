@@ -1,0 +1,6 @@
+﻿@using Microsoft.AspNetCore.Components.Web.Virtualization
+<ul class="guilds-container">
+    <Virtualize Items="Apps">
+        <NavContainerItem Item="@context" IsActive="(SelectedItem == context)" OnClick="OnNavItemSelected" />
+    </Virtualize>
+</ul>

@@ -1,0 +1,21 @@
+﻿@inherits LayoutComponentBase
+@using dOSC.Components;
+
+<div class="titlebar">
+	<div class="titlebar-title"> dOSC </div>
+	<div> Version Alpha</div>
+	<div class="titlebar-button-group">
+		<button class="titlebar-button" @onclick="Minimize">-</button>
+		<button class="titlebar-button" @onclick="Maximize">□</button>
+		<button class="titlebar-button" @onclick="Close">x</button>
+	</div>
+</div>
+<div class="d-flex flex-column flex-grow-1 gap-0">
+	
+	<div class="appbody d-flex flex-row flex-grow-1 gap-0">
+		<AppNav/>
+		<AppBody>
+			@Body
+		</AppBody>
+	</div>
+</div>

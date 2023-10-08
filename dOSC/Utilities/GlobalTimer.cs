@@ -1,0 +1,23 @@
+﻿using System.Timers;
+
+namespace dOSC.Utilities
+{
+    public static class GlobalTimer
+    {
+        public static event Action? OnTimerElapsed;
+        private static System.Timers.Timer timer = new();
+        public static bool IsRunning { get { return timer.Enabled; } }
+        public static void Start() => timer.Start();
+        public static void Stop() => timer.Stop();
+
+        public static void StartGlobalTimer()
+        {
+            timer.Elapsed += (sender, e) => OnTimerElapsed?.Invoke();
+            timer.Interval = 10;
+            timer.AutoReset = true;
+            timer.Start();
+        }
+
+
+    }
+}
