@@ -1,0 +1,9 @@
+﻿@page "/apps/editor/"
+@page "/apps/editor/{AppId:guid}"
+@using dOSC.Components
+
+@if (Wiresheet != null)
+{
+    <Editor Wiresheet=Wiresheet />
+}
+

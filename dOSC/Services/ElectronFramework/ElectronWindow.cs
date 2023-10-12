@@ -27,6 +27,8 @@ namespace dOSC.Services.ElectronFramework
                     EnableRemoteModule = true,
 
                 },
+                MinHeight = 480,
+                MinWidth = 800,
                 
             };
 
@@ -70,25 +72,25 @@ namespace dOSC.Services.ElectronFramework
                 };
 
                 // Window Crash
-                window.WebContents.OnCrashed += async (killed) =>
-                {
-                    var options = new MessageBoxOptions("This process has crashed.")
-                    {
-                        Type = MessageBoxType.info,
-                        Title = "Renderer Process Crashed",
-                        Buttons = new string[] { "Reload", "Close" }
-                    };
-                    var result = await Electron.Dialog.ShowMessageBoxAsync(options);
+                //window.WebContents.OnCrashed += async (killed) =>
+                //{
+                //    var options = new MessageBoxOptions("This process has crashed.")
+                //    {
+                //        Type = MessageBoxType.info,
+                //        Title = "Renderer Process Crashed",
+                //        Buttons = new string[] { "Reload", "Close" }
+                //    };
+                //    var result = await Electron.Dialog.ShowMessageBoxAsync(options);
 
-                    if (result.Response == 0)
-                    {
-                        window.Reload();
-                    }
-                    else
-                    {
-                        window.Close();
-                    }
-                };
+                //    if (result.Response == 0)
+                //    {
+                //        window.Reload();
+                //    }
+                //    else
+                //    {
+                //        window.Close();
+                //    }
+                //};
             });
             return builder;
         }

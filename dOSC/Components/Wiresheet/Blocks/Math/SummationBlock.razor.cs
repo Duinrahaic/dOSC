@@ -1,5 +1,5 @@
 ﻿using Blazor.Diagrams.Core.Models;
-using dOSC.Engine.Nodes.Math;
+using dOSC.Engine.Nodes.Utility;
 using Microsoft.AspNetCore.Components;
 
 namespace dOSC.Components.Wiresheet.Blocks.Math

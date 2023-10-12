@@ -14,7 +14,7 @@ namespace dOSC.Components
 		public EventCallback<NavItem> OnClick { get; set; }
 		private bool Visible => Item != null;
 		private string AppCSS => GetNavItemCSS();
-
+		private string AppIcon => $"app-icon {Item?.Icon ?? string.Empty}"; 
 		[Inject]
 		private IJSRuntime js { get; set; }
 
@@ -38,9 +38,16 @@ namespace dOSC.Components
 					case NavItemType.App:
 						Classes.Add("purple-app");
 						break;
-					case NavItemType.System:
+					case NavItemType.Home:
 						Classes.Add("green-app");
 						break;
+					case NavItemType.Repo:
+						Classes.Add("pink-app");
+                        break;
+					case NavItemType.Settings:
+						Classes.Add("purple-app");
+                        break;
+
 				}
 				if (IsActive)
 				{

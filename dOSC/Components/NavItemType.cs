@@ -2,7 +2,9 @@
 {
     public enum NavItemType
     {
-        System,
-        App
+        Home,
+        App,
+        Repo,
+        Settings
     }
 }

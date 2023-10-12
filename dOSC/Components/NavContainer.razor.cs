@@ -14,9 +14,16 @@ namespace dOSC.Components
         [Inject]
         public dOSCEngine? Engine { get; set; }
         [Parameter]
-		public EventCallback<NavItem> SelectedItemChanged { get; set; }
+        public EventCallback<NavItem> SelectedItemChanged { get; set; } 
 
-        protected override bool ShouldRender() => false;
+        protected override void OnAfterRender(bool firstRender)
+        {
+            if(firstRender)
+            {
+                SelectedItem = Apps.FirstOrDefault();
+            }
+        }
+
         private async Task OnNavItemSelected(NavItem item)
 		{
 			SelectedItem = item;
@@ -25,15 +32,22 @@ namespace dOSC.Components
 				
                 await SelectedItemChanged.InvokeAsync(item);
 			}
-            if(Engine != null)
-            {
-                if (item.Wiresheet != null)
-                {
-                    // Page has to clear before being able to render another another page. Supply Empty GUID to clear
-                    NM!.NavigateTo($"app/{Guid.Empty}", forceLoad: false); 
-                    NM!.NavigateTo($"app/{item.Wiresheet.AppGuid}", forceLoad: false);
-                }
-            }
+            NM!.NavigateTo($"{item.Navigation}");
+
+            //if (Engine != null)
+            //{
+            //    if (item.Wiresheet != null)
+            //    {
+            //        // Page has to clear before being able to render another another page. Supply Empty GUID to clear
+            //        NM!.NavigateTo($"app/{Guid.Empty}", forceLoad: false); 
+            //        NM!.NavigateTo($"app/{item.Wiresheet.AppGuid}", forceLoad: false);
+            //    }
+            //    else
+            //    {
+            //    }
+            //}
+
+            
         }
     }
 }

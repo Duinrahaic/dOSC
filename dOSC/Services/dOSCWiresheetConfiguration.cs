@@ -10,6 +10,7 @@ using dOSC.Engine.Nodes.Connector.OSC;
 using dOSC.Engine.Nodes.Constant;
 using dOSC.Engine.Nodes.Logic;
 using dOSC.Engine.Nodes.Math;
+using dOSC.Engine.Nodes.Utility;
 
 namespace dOSC.Services
 {

@@ -7,20 +7,5 @@ namespace dOSC.Components.Wiresheet.Blocks.Math
     public partial class DivisionBlock
     {
         [Parameter] public DivisionNode Node { get; set; } = null;
-        public string LinkValue(PortModel? port)
-        {
-            if (port.Links.Count > 0)
-            {
-                var l = port.Links[0];
-                var v = Node.InputValue(port, l);
-                return v.ToString();
-            }
-            return "0";
-        }
-        public void ShowLinksLabel()
-        {
-            Node?.ShowLinksLabel();
-            StateHasChanged();
-        }
     }
 }

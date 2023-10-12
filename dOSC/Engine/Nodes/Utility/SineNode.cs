@@ -3,7 +3,7 @@ using dOSC.Engine.Ports;
 using dOSC.Utilities;
 using System.Diagnostics;
 
-namespace dOSC.Engine.Nodes.Math
+namespace dOSC.Engine.Nodes.Utility
 {
     public class SineNode : BaseNode, IDisposable
     {
@@ -31,7 +31,7 @@ namespace dOSC.Engine.Nodes.Math
             {
                 var l1 = i1.Links[0];
                 var v1 = GetInputValue(i1, l1);
-                if(v1 == null)
+                if (v1 == null)
                 {
                     _amplitude = 1;
                 }

@@ -2,7 +2,7 @@
 using Blazor.Diagrams.Core.Models;
 using dOSC.Engine.Ports;
 
-namespace dOSC.Engine.Nodes.Math
+namespace dOSC.Engine.Nodes.Utility
 {
     public class SummationNode : BaseNode
     {
@@ -20,10 +20,10 @@ namespace dOSC.Engine.Nodes.Math
 
             var sum = 0.0;
 
-            foreach ( var link in inputs.Links )
+            foreach (var link in inputs.Links)
             {
                 var val = GetInputValue(inputs, link);
-                if( val != null)
+                if (val != null)
                 {
                     sum += val;
                 }
