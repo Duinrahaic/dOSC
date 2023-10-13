@@ -17,9 +17,10 @@ using dOSC.Components;
 
 namespace dOSC.Services
 {
-    public class dOSCWiresheet : IDisposable
+    public partial class dOSCWiresheet : IDisposable
     {
-        public Guid AppGuid { get; set; } = Guid.NewGuid();
+        
+
         public BlazorDiagram BlazorDiagram { get; set; } = new(dOSCWiresheetConfiguration.Options);
         private HashSet<(string Id, NodeModel Node)> _Nodes = new HashSet<(string, NodeModel)>();
         private HashSet<(string Id, PortModel Source,PortModel Target)> _Links = new HashSet<(string, PortModel, PortModel)>();
@@ -34,6 +35,9 @@ namespace dOSC.Services
                 BlazorDiagram.SuspendRefresh = value;
             }
         }
+        public bool HasError { get; set; } = false;
+
+
         public dOSCWiresheet()
         {
             BlazorDiagram.RegisterBlocks();

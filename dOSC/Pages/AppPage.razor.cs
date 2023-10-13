@@ -1,30 +1,33 @@
-﻿using dOSC.Services;
+﻿using dOSC.Components.Modals;
+using dOSC.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace dOSC.Pages
 {
     public partial class AppPage
     {
-        [Parameter]
-        public Guid? AppId { get; set; }
-        [Parameter]
-        public dOSCWiresheet? Wiresheet { get; set; }
+
+        private dOSCWiresheet? Wiresheet;
         [Inject]
         public dOSCEngine? Engine { get; set; }
 
-        protected override void OnParametersSet()
+        private List<dOSCWiresheet> Wiresheets = new();
+
+        protected override void OnInitialized()
         {
-            if (Engine == null) return;
-            if (AppId.HasValue)
-            {
-                Wiresheet = Engine.GetWiresheet(AppId.Value);
-                this.StateHasChanged();
-            }
+            Wiresheets = Engine?.GetWireSheets() ?? new();
         }
 
-        
+        private void OnSelected(dOSCWiresheet wiresheet)
+        {
+            Wiresheet = wiresheet;
+        }
 
 
+
+
+        // Modals 
+        private ModalBase NewAppModal { get; set; }
 
 
     }

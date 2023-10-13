@@ -67,7 +67,7 @@ namespace dOSC.Services
             AddWiresheet(wsB);
         }
 
-        public IReadOnlyList<dOSCWiresheet> GetWireSheets()
+        public List<dOSCWiresheet> GetWireSheets()
         {
             return _WiresheetMemory;
         }

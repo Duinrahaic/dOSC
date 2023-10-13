@@ -1,8 +1,10 @@
 {
+  "descripton": "A Dynamic Application Platform",
   "executable": "dOSC",
   "splashscreen": {
     "imageFile": ""
   },
+  "homepage": "https://github.com/Duinrahaic/dOSC",
   "name": "dOSC",
   "author": "Duinrahaic",
   "singleInstance": false,
@@ -15,6 +17,19 @@
     "compression": "maximum",
     "directories": {
       "output": "../../../bin/Desktop"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "runAfterFinish": true,
+      "artifactName": "${productName} Setup.${ext}"
     },
     "extraResources": [
       {
