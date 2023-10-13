@@ -1,0 +1,104 @@
+﻿
+@import "_variables.scss";
+
+.home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.home-panel {
+    display: flex;
+    width: 700px;
+    height: 300px;
+    background-color: $color-theme-1;
+    border-radius: 10px;
+    user-select: none;
+    padding: 30px 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-panel .mascot {
+    flex: 300px;
+    height: 95%;
+    border-right: 1px solid $color-lighter-dark;
+    user-select: none;
+}
+
+.home-panel .mascot img {
+    object-fit: contain;
+    width: 300px;
+    padding: 24px;
+    transform: translateY(-36px);
+}
+
+.home-panel .details {
+    flex: 400px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.home-panel .details h1 {
+    font-weight: 900;
+}
+
+.home-panel .details h5 {
+    font-weight: 100;
+}
+
+.home-panel .details .socials {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 20px;
+    padding: 10px;
+}
+
+.home-panel .details .socials img {
+    height: 48px;
+    cursor: pointer
+}
+
+.home-panel .details .socials img:hover {
+    transform: scale(150%);
+    animation: ease;
+    animation-duration: 16s;
+}
+
+.home-container .home-panel-options {
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+}
+
+.home-container .home-panel-options .options {
+    display: flex;
+    justify-content: space-evenly;
+    flex-grow: 1;
+}
+
+.home-container .home-panel-options .options .option {
+    background-color: $color-theme-1;
+    width: 200px;
+    padding: 4px;
+    border-radius: 10px;
+    display: flex;
+    margin: 5px;
+    font-weight: 600;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    text-decoration: none;
+    color: $color-blue;
+}
+
+.home-container .home-panel-options .options .option:hover {
+    background-color: $color-theme-2;
+    color: $color-blue-lighter;
+}

@@ -1,0 +1,308 @@
+﻿@import "variables.scss";
+
+
+.app-page {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.app-page .app-nav {
+    background: $color-theme-2;
+    width: 230px;
+    border-right: 1px solid $color-theme-5;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: calc(100vh - 34px);
+}
+
+.app-page .app-nav .app-nav-header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: $color-theme-3;
+    padding: 4px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid $color-theme-1;
+}
+
+.app-page .app-nav .app-nav-header .app-nav-header-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+}
+
+.app-page .app-nav .app-nav-header .app-nav-header-title h3 {
+    font-weight: 500;
+    font-stretch: wider;
+    align-items: center;
+    display: flex;
+    margin: 0;
+    padding: 4px;
+    height: 42px;
+}
+
+.app-page .app-nav .app-nav-header .app-nav-header-title .icon {
+    color: $color-blurple;
+    font-weight: 800;
+    align-items: center;
+    margin: 0;
+    padding: 4px;
+    height: 42px;
+    flex-shrink: 1;
+}
+
+.app-page .app-nav .app-nav-header .search-input {
+    width: 100%;
+}
+
+.app-page .app-nav .app-nav-container {
+    flex-direction: column;
+    display: flex;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    background: $color-theme-3;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 0 40px 0;
+}
+
+.app-page .app-nav .app-nav-container .item {
+    background: $color-theme-3;
+    width: 96%;
+    padding: 4px 4px 4px 4px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-items: center;
+}
+
+.app-page .app-nav .app-nav-container .item:hover {
+    background: $color-theme-5;
+}
+
+.app-page .app-nav .app-nav-container .item.active {
+    background: $color-theme-5;
+}
+
+.app-page .app-nav .app-nav-container .item .item-name {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+
+.app-page .app-nav .app-nav-container .item .icon-status {
+    background: $color-titlebar-textcolor;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 16px;
+    margin: 0 8px 0 2px;
+}
+
+.app-page .app-nav .app-nav-container .item .icon-status.running {
+    background: $color-green;
+}
+
+.app-page .app-nav .app-nav-container .item .icon-status.paused {
+    background: $color-orange;
+}
+
+.app-page .app-nav .app-nav-container .item .icon-status.error {
+    background: $color-error;
+}
+
+
+.app-page .app-nav .app-nav-footer {
+    width: 100%;
+    background: $color-theme-2;
+    border-top: 1px solid $color-theme-1;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-self: center;
+    justify-items: center;
+}
+
+.app-page .app-nav .app-nav-footer .option {
+    display: flex;
+    width: 100%;
+    padding: 4px 6px 4px 6px;
+    margin: 4px;
+    align-content: center;
+    align-items: center;
+}
+
+.app-page .app-nav .app-nav-footer .option .icon {
+    color: white;
+    width: 100%;
+    flex-grow: 2;
+    height: 100%;
+    display: flex;
+    background: $color-green;
+    border-radius: 4px;
+    padding: 4px;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+}
+
+.app-page .app-nav .app-nav-footer .option .icon:hover {
+    background: $color-green-darker;
+    color: $color-grey-white;
+}
+
+.app-page .app-details {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+    height: calc(100vh - 34px);
+}
+
+.app-page .app-details .app-details-header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: $color-theme-3;
+    padding: 4px;
+    padding-bottom: 8px;
+    height: 55px;
+    border-bottom: 1px solid $color-theme-1;
+}
+
+.app-page .app-details .app-details-header .app-details-header-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+}
+
+.app-page .app-details .app-details-header .app-details-header-title h3 {
+    font-weight: 500;
+    font-stretch: wider;
+    align-items: center;
+    display: flex;
+    margin: 0;
+    padding: 4px;
+    height: 42px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.app-page .app-details .app-details-body {
+    flex-direction: column;
+    display: flex;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    gap: 16px;
+    padding: 4px 0 40px 0;
+}
+
+.app-page .app-details .app-details-body .detail {
+    border-radius: 8px;
+    border: $color-theme-5 1px solid;
+    background: $color-theme-3;
+    box-shadow: $color-shadow-07 0px 0px 8px 2px;
+    padding: 24px;
+    width: 90%;
+    position: relative;
+    margin-top: 10px
+}
+
+.app-page .app-details .app-details-body .detail .section {
+    position: absolute;
+    top: -12px;
+    left: 14px;
+    font-weight: 800;
+    text-transform: uppercase;
+    user-select: none;
+    background: $color-theme-3;
+    padding: 0 2px;
+    border-radius: 16px;
+}
+
+.app-page .app-details .app-details-footer {
+    width: 100%;
+    background: $color-theme-2;
+    border-top: 1px solid $color-theme-1;
+    display: flex;
+    justify-content: end;
+}
+
+.app-page .app-details .app-details-footer .option {
+    display: flex;
+    padding: 4px 6px 4px 6px;
+    margin: 4px;
+    align-content: center;
+    align-items: center;
+}
+
+.app-page .app-details .app-details-footer .option .icon {
+    color: white;
+    width: 120px;
+    height: 100%;
+    display: flex;
+    background: $color-grey-white;
+    border-radius: 4px;
+    padding: 4px;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+}
+
+.app-page .app-details .app-details-footer .option .icon.green {
+    background: $color-green;
+    color: $color-full-white;
+}
+
+.app-page .app-details .app-details-footer .option .icon.green:hover {
+    background: $color-green-darker;
+    color: $color-full-white;
+}
+
+.app-page .app-details .app-details-footer .option .icon.blue {
+    background: $color-blue;
+    color: $color-full-white;
+}
+
+.app-page .app-details .app-details-footer .option .icon.blue:hover {
+    background: $color-blue-darker;
+    color: $color-full-white;
+}
+
+.app-page .app-details .app-details-footer .option .icon.red {
+    background: $color-error;
+    color: $color-full-white;
+}
+
+.app-page .app-details .app-details-footer .option .icon.red:hover {
+    background: $color-error-darker;
+    color: $color-full-white;
+}
+
+.app-page .app-details .app-details-footer .option.icon.disabled {
+    background: $color-grey;
+    color: $color-full-white;
+}
+
+.app-page .app-details .app-details-footer .option .icon.disabled:hover {
+    background: $color-grey-darker;
+    color: $color-grey-white;
+}

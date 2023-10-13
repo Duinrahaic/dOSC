@@ -1,0 +1,14 @@
+﻿@import "_variables.scss";
+
+
+.modal .modal-content.modal-global {
+    background: $color-theme-2;
+}
+
+.modal .modal-content.modal-global .modal-header {
+    border-color: $color-theme-5;
+}
+
+.modal .modal-content.modal-global .modal-footer {
+    border-color: $color-theme-5;
+}

@@ -1,0 +1,44 @@
+﻿@import "_variables.scss";
+
+.navbar {
+    --bs-navbar-brand-color: $color-full-white;
+}
+
+.navbar-nav {
+    gap: 0.5rem;
+}
+
+.nav-link {
+    --bs-nav-link-color: $color-full-white;
+    border-radius: 3px;
+}
+
+.nav-link:hover {
+    color: var(--bs-nav-link-color);
+    background-color: $color-bg-hover-white;
+}
+
+.nav-link:focus, .nav-link:hover {
+    color: var(--bs-nav-link-color);
+}
+
+.navbar-nav .nav-link.active, .navbar-nav .nav-link.show {
+    --bs-nav-link-color: $color-full-white;
+    --bs-navbar-active-color: var(--bs-nav-link-color);
+    background-color: $color-bg-hover-white;
+}
+
+.navbar-nav .nav-link.disabled, .navbar-nav .nav-link:disabled {
+    --bs-nav-link-disabled-color: $color-actually-black;
+}
+
+.dropdown-menu {
+    --bs-dropdown-bg: $color-theme-1;
+    --bs-dropdown-link-color: $color-full-white;
+    --bs-dropdown-link-hover-color: $color-full-white;
+    --bs-dropdown-link-hover-bg: $color-bg-hover-white;
+}
+
+.dropdown-divider {
+    --bs-dropdown-divider-bg: rgba(255,255,255,.2);
+}

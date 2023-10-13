@@ -1,0 +1,247 @@
+﻿
+@import "variables.scss";
+
+
+.wiresheet-toolbar {
+}
+
+.wiresheet-toolbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    background: $color-theme-1;
+}
+
+.wiresheet-toolbar li {
+    float: left;
+    color: $color-titlebar-textcolor;
+}
+
+.wiresheet-toolbar li .mud-menu .mud-button-label {
+    color: $color-titlebar-textcolor !important;
+}
+
+.wiresheet-toolbar .dropdown-option-ul {
+    background: $color-theme-1;
+    color: $color-titlebar-textcolor
+}
+
+.wiresheet-bottom-toolbar {
+    position: fixed;
+    transform: translateX(50vw);
+    bottom: 5px;
+    background: $color-theme-1;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+
+
+.diagram-container {
+    width: 100%;
+    height: 100%;
+}
+
+
+.block {
+    border-radius: 10px;
+    padding-left: 4px;
+    overflow: visible;
+}
+
+.block.error {
+    border-radius: 10px;
+    box-shadow: 0 0 0 $color-error-60;
+    animation: error 2s infinite;
+}
+
+@-webkit-keyframes error {
+    0% {
+        -webkit-box-shadow: 0 0 0 0 $color-error-60;
+    }
+
+    70% {
+        -webkit-box-shadow: 0 0 0 10px $color-error-0;
+    }
+
+    100% {
+        -webkit-box-shadow: 0 0 0 0 $color-error-0;
+    }
+}
+
+@keyframes error {
+    0% {
+        -moz-box-shadow: 0 0 0 0 $color-error-60;
+        box-shadow: 0 0 0 0 $color-error-60;
+    }
+
+    70% {
+        -moz-box-shadow: 0 0 0 10px $color-error-0;
+        box-shadow: 0 0 0 10px $color-error-0;
+    }
+
+    100% {
+        -moz-box-shadow: 0 0 0 0 $color-error-0;
+        box-shadow: 0 0 0 0 $color-error-0;
+    }
+}
+
+
+.block.logicblock {
+    background-color: $color-green;
+    color: white;
+    font-weight: bolder;
+    font-size: 1.2rem;
+    border: solid 2px $color-theme-1;
+}
+
+.block.logicblock .block-header .icon {
+    padding: 4px;
+}
+
+.block.logicblock .block-header .title {
+    color: white;
+    background-color: $color-green;
+    padding: 4px;
+    border-radius: 10px;
+}
+
+.block.numericblock {
+    background-color: $color-purple;
+    color: white;
+    font-weight: bolder;
+    font-size: 1.2rem;
+    border: solid 2px $color-theme-1;
+}
+
+.block.numericblock .block-header .icon {
+    padding: 4px;
+}
+
+.block.numericblock .block-header .title {
+    color: white;
+    background-color: $color-purple;
+    padding: 4px;
+    border-radius: 10px;
+}
+
+.block.stringblock {
+    background-color: $color-orange;
+    color: white;
+    font-weight: bolder;
+    font-size: 1.2rem;
+    border: solid 2px $color-theme-1;
+}
+
+.block.stringblock .block-header .icon {
+    padding: 4px;
+}
+
+.block.stringblock .block-header .title {
+    color: white;
+    background-color: $color-orange;
+    padding: 4px;
+    border-radius: 10px;
+}
+
+.block.connectorblock {
+    background-color: $color-pink;
+    color: white;
+    font-weight: bolder;
+    font-size: 1.2rem;
+    border: solid 2px $color-theme-1;
+}
+
+.block.connectorblock .block-header .icon {
+    padding: 4px;
+}
+
+.block.connectorblock .block-header .title {
+    color: white;
+    background-color: $color-pink;
+    padding: 4px;
+    border-radius: 10px;
+}
+
+.block .block-body {
+    overflow: hidden;
+    background-color: $color-theme-1;
+    padding: 10px 4px 0px 4px;
+    color: $color-full-white;
+    border-top-left-radius: 14px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 10px;
+    border: solid 2px $color-theme-1;
+}
+
+.diagram-port {
+    position: absolute;
+    background-color: $color-full-white;
+    width: 16px;
+    height: 16px;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+}
+
+.diagram-port.top {
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+}
+
+.diagram-port.bottom {
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+}
+
+.diagram-port.right {
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    right: -16px;
+    transform: translateY(-4px);
+}
+
+.diagram-port.left {
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+    left: -16px;
+    transform: translateY(-4px);
+}
+
+.logic {
+    background-color: $color-green;
+    border: solid 2px $color-theme-1;
+}
+
+.logic:hover {
+    background-color: $color-green-darker;
+}
+
+.multi {
+    background-color: #ffffff;
+    border: solid 2px $color-theme-1;
+}
+
+.multi:hover {
+    background-color: #b2b2b2;
+}
+
+.numeric {
+    background-color: $color-purple;
+    border: solid 2px $color-theme-1;
+}
+
+.numeric:hover {
+    background-color: $color-purple-darker;
+}
+
+.string {
+    background-color: $color-orange;
+    border: solid 2px $color-theme-1;
+}
+
+.string:hover {
+    background-color: $color-orange-darker;
+}
