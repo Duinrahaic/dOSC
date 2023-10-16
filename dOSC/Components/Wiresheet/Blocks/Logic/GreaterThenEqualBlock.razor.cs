@@ -5,7 +5,7 @@ namespace dOSC.Components.Wiresheet.Blocks.Logic
 {
     public partial class GreaterThenEqualBlock
     {
-        [Parameter] public GreaterThenEqualNode Node { get; set; } = null;
+        [Parameter] public GreaterThanEqualNode Node { get; set; } = null;
 
     }
 }

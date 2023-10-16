@@ -4,6 +4,7 @@ using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.Geometry;
 using dOSC.Engine.Ports;
 using System.Xml.Linq;
+using Newtonsoft.Json;
 
 namespace dOSC.Engine.Nodes
 {
@@ -21,6 +22,16 @@ namespace dOSC.Engine.Nodes
             this.ShowLinksLabel(true);
 
         }
+        protected BaseNode(Guid guid, Point position) : base(position)
+        {
+            Guid = guid;
+            this.ShowLinksLabel(true);
+
+
+        }
+        public Guid Guid { get; set; } = Guid.NewGuid();
+        public virtual string NodeClass => "base";
+        public virtual string Option => string.Empty;
         public string BlockHeaderClass => $"block {BlockTypeClass} {ErrorClass}";
         public virtual string BlockTypeClass => string.Empty;
         public string ErrorMessage { get; set; } = string.Empty;
@@ -113,6 +124,10 @@ namespace dOSC.Engine.Nodes
                 }
             }
 
+        }
+        public BaseNodeDTO GetDTO()
+        {
+            return new BaseNodeDTO(this);
         }
     }
 }

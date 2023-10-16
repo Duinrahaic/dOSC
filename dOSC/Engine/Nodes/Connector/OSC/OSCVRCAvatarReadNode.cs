@@ -1,6 +1,7 @@
 ﻿using Blazor.Diagrams.Core.Geometry;
 using dOSC.Engine.Ports;
 using dOSC.Services.Connectors.OSC;
+using Newtonsoft.Json;
 
 namespace dOSC.Engine.Nodes.Connector.OSC
 {
@@ -9,18 +10,22 @@ namespace dOSC.Engine.Nodes.Connector.OSC
 
 
 		public OSCVRCAvatarReadNode(OSCService? service = null, Point ? position = null) : base(position ?? new Point(0, 0))
-		{
-            foreach(var _ in BoolOptions)
+        {
+            int portNumber = 1;
+            foreach (var _ in BoolOptions)
             {
-                AddPort(new LogicPort(this, false));
+                AddPort(new LogicPort(PortGuids.PortGuidGenerator(portNumber), this, false));
+                portNumber++;
             }
             foreach (var _ in IntOptions)
             {
-                AddPort(new NumericPort(this, false));
+                AddPort(new NumericPort(PortGuids.PortGuidGenerator(portNumber), this, false));
+                portNumber++;
             }
             foreach (var _ in FloatOptions)
             {
-                AddPort(new NumericPort(this, false));
+                AddPort(new NumericPort(PortGuids.PortGuidGenerator(portNumber), this, false));
+                portNumber++;
             }
 
             Options.AddRange(BoolOptions);
@@ -32,6 +37,35 @@ namespace dOSC.Engine.Nodes.Connector.OSC
                 _service.OnOSCMessageRecieved += OnMessageRecieved;
             }
         }
+        public OSCVRCAvatarReadNode(Guid guid, OSCService? service = null, Point? position = null) : base(guid, position ?? new Point(0, 0))
+        {
+            int portNumber = 1;
+            foreach (var _ in BoolOptions)
+            {
+                AddPort(new LogicPort(PortGuids.PortGuidGenerator(portNumber), this, false));
+                portNumber++;
+            }
+            foreach (var _ in IntOptions)
+            {
+                AddPort(new NumericPort(PortGuids.PortGuidGenerator(portNumber), this, false));
+                portNumber++;
+            }
+            foreach (var _ in FloatOptions)
+            {
+                AddPort(new NumericPort(PortGuids.PortGuidGenerator(portNumber), this, false));
+                portNumber++;
+            }
+            Options.AddRange(BoolOptions);
+            Options.AddRange(IntOptions);
+            Options.AddRange(FloatOptions);
+            _service = service;
+            if (_service != null)
+            {
+                _service.OnOSCMessageRecieved += OnMessageRecieved;
+            }
+        }
+        [JsonProperty]
+        public override string NodeClass => this.GetType().Name.ToString();
         public override string BlockTypeClass => "connectorblock";
 
         private readonly OSCService? _service = null;

@@ -3,6 +3,7 @@ using Blazor.Diagrams.Core.Geometry;
 using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.Models.Base;
 using dOSC.Engine.Ports;
+using Newtonsoft.Json;
 
 namespace dOSC.Engine.Nodes.Math
 {
@@ -11,11 +12,18 @@ namespace dOSC.Engine.Nodes.Math
     {
         public AddNode(Point? position = null) : base(position ?? new Point(0, 0))
         {
-            AddPort(new NumericPort(this, true));
-            AddPort(new NumericPort(this, true));
-            AddPort(new NumericPort(this, false));
+            AddPort(new NumericPort(PortGuids.Port_1, this, true));
+            AddPort(new NumericPort(PortGuids.Port_2, this, true));
+            AddPort(new NumericPort(PortGuids.Port_3, this, false));
         }
-
+        public AddNode(Guid guid, Point? position = null) : base(guid, position ?? new Point(0, 0))
+        {
+            AddPort(new NumericPort(PortGuids.Port_1, this, true));
+            AddPort(new NumericPort(PortGuids.Port_2, this, true));
+            AddPort(new NumericPort(PortGuids.Port_3, this, false));
+        }
+        [JsonProperty]
+        public override string NodeClass => this.GetType().Name.ToString();
         public override string BlockTypeClass => "numericblock";
 
 

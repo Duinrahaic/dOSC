@@ -1,11 +1,16 @@
 ﻿using Blazor.Diagrams.Core.Models.Base;
 using Blazor.Diagrams.Core.Models;
+using dOSC.Engine.Nodes;
 
 namespace dOSC.Engine.Ports
 {
     public class NumericPort : BasePort
     {
-        public NumericPort(NodeModel parent, bool input, bool limitLink = true) : base(parent, input, limitLink)
+        public NumericPort(BaseNode parent, bool input, bool limitLink = true) : base(parent, input, limitLink)
+        {
+
+        }
+        public NumericPort(Guid guid, BaseNode parent, bool input, bool limitLink = true) : base(guid, parent, input, limitLink)
         {
 
         }

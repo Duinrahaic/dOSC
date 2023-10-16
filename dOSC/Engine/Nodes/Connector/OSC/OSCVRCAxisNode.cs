@@ -1,6 +1,7 @@
 ﻿using Blazor.Diagrams.Core.Geometry;
 using dOSC.Engine.Ports;
 using dOSC.Services.Connectors.OSC;
+using Newtonsoft.Json;
 
 namespace dOSC.Engine.Nodes.Connector.OSC
 {
@@ -8,14 +9,32 @@ namespace dOSC.Engine.Nodes.Connector.OSC
     {
         public OSCVRCAxisNode(string SelectedOption = OSCService.Vertical, OSCService ? service = null, Point? position = null) : base(position ?? new Point(0, 0))
         {
+            int portNumber = 1;
             foreach(var _ in Options)
             {
-                AddPort(new NumericPort(this, true));
+                AddPort(new NumericPort(PortGuids.PortGuidGenerator(portNumber), this, true));
+                portNumber++;
             }
             _service = service;
             this.SelectedOption = SelectedOption;
         }
+        public OSCVRCAxisNode(Guid guid, string SelectedOption = OSCService.Vertical, OSCService ? service = null, Point? position = null) : base(guid, position ?? new Point(0, 0))
+        {
+            int portNumber = 1;
+            foreach (var _ in Options)
+            {
+                AddPort(new NumericPort(PortGuids.PortGuidGenerator(portNumber), this, true));
+                portNumber++;
+            }
+            _service = service;
+            this.SelectedOption = SelectedOption;
+        }
+
+        [JsonProperty]
+        public override string NodeClass => this.GetType().Name.ToString();
         private readonly OSCService? _service = null;
+        [JsonProperty]
+        public override string Option => SelectedOption;
         public string SelectedOption = OSCService.Vertical;
         public string SelectedOptionText => Options.FirstOrDefault(x => x.Key == SelectedOption).Value;
         public override string BlockTypeClass => "connectorblock";

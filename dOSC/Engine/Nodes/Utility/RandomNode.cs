@@ -1,5 +1,6 @@
 ﻿using Blazor.Diagrams.Core.Geometry;
 using dOSC.Engine.Ports;
+using Newtonsoft.Json;
 
 namespace dOSC.Engine.Nodes.Utility
 {
@@ -7,8 +8,14 @@ namespace dOSC.Engine.Nodes.Utility
     {
         public RandomNode(Point? position = null) : base(position ?? new Point(0, 0))
         {
-            AddPort(new NumericPort(this, false));
+            AddPort(new NumericPort(PortGuids.Port_1, this, false));
         }
+        public RandomNode(Guid guid, Point? position = null) : base(guid, position ?? new Point(0, 0))
+        {
+            AddPort(new NumericPort(PortGuids.Port_1, this, false));
+        }
+        [JsonProperty]
+        public override string NodeClass => this.GetType().Name.ToString();
         public override string BlockTypeClass => "numericblock";
         private Random Random = new Random();
         public override void Refresh()

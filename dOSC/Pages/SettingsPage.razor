@@ -1,0 +1,64 @@
+﻿@page "/settings"
+
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using dOSC.Components.UI
+@using dOSC.Components.Modals
+@using Microsoft.AspNetCore.Components.Forms;
+@using dOSC.Components.Form.SettingsPages;
+@using dOSC.Services.User;
+
+
+<div class="app-page">
+    <div class="app-nav">
+        <div class="app-nav-header">
+            <div class="app-nav-header-title">
+                <h3 class="icon oi oi-cog"></h3>
+                <h3>Setting</h3>
+            </div>
+            @*             <form class="search-form" role="search">
+            <i class="oi oi-magnifying-glass"></i>
+            <input class="search-input form-control" type="search" placeholder="Search" aria-label="Search">
+            </form> *@
+        </div>
+        <div class="app-nav-container">
+            <Virtualize Items="@UserSettings">
+                <SettingNavItem SettingBase="@context" SelectedEvent="@OnSelected" Selected="@Setting" />
+            </Virtualize>
+        </div>
+        <div class="app-nav-footer">
+            <div class="option">
+            </div>
+        </div>
+    </div>
+    <div class="app-details">
+        <div class="app-details-header">
+            <div class="app-details-header-title">
+                <h3> 
+                    @Setting?.Name
+                </h3>
+            </div>
+        </div>
+        <div class="app-details-body">
+            @if(Setting != null)
+            {
+                @if (Setting.SettingType == Services.User.SettingType.dOSC)
+                {
+                    <DOSCSettings Setting="(Setting as dOSCSetting)" />
+                   
+                    
+                }
+                else if (Setting.SettingType == Services.User.SettingType.OSC)
+                {
+                    <OSCSettings Setting="(Setting as OSCSetting)" />
+                }
+            }
+        </div>
+        <div class="app-details-footer">
+            <div class="option">
+            </div>
+            <div class="option">
+            </div>
+        </div>
+    </div>
+</div>
+

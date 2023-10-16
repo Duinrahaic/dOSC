@@ -1,6 +1,7 @@
 ﻿using Blazor.Diagrams.Core.Geometry;
 using dOSC.Engine.Ports;
 using dOSC.Utilities;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace dOSC.Engine.Nodes.Utility
@@ -9,11 +10,20 @@ namespace dOSC.Engine.Nodes.Utility
     {
         public SineNode(Point? position = null) : base(position ?? new Point(0, 0))
         {
-            AddPort(new NumericPort(this, true));
-            AddPort(new NumericPort(this, true));
-            AddPort(new NumericPort(this, false));
+            AddPort(new NumericPort(PortGuids.Port_1,this, true));
+            AddPort(new NumericPort(PortGuids.Port_2,this, true));
+            AddPort(new NumericPort(PortGuids.Port_3,this, false));
             GlobalTimer.OnTimerElapsed += GetSineWave;
         }
+        public SineNode(Guid guid, Point? position = null) : base(guid, position ?? new Point(0, 0))
+        {
+            AddPort(new NumericPort(PortGuids.Port_1, this, true));
+            AddPort(new NumericPort(PortGuids.Port_2, this, true));
+            AddPort(new NumericPort(PortGuids.Port_3, this, false));
+            GlobalTimer.OnTimerElapsed += GetSineWave;
+        }
+        [JsonProperty]
+        public override string NodeClass => this.GetType().Name.ToString();
         public override string BlockTypeClass => "numericblock";
 
         private static double _amplitude = 1;

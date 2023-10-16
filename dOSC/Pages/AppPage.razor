@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using dOSC.Components.UI
 @using dOSC.Components.Modals
-
+@using Microsoft.AspNetCore.Components.Forms;
 <div class="app-page">
     <div class="app-nav">
         <div class="app-nav-header">
@@ -34,30 +34,72 @@
             </div>
         </div>
         <div class="app-details-body">
-            <AppDetailItem Title="Section">
-                <ChildContent>
-                    <form>
-                        <div class="mb-3">
+            @if(Wiresheet != null)
+            {
+                <EditForm Model="@Wiresheet">
+                    <AppDetailItem Title="Information">
+                        <ChildContent>
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                                <div class="mb-3 form-override">
+                                    <label for="inputAppName" class="form-label">Application Name</label>
+                                    <input type="text" class="form-control" @bind-value=@Wiresheet.AppName id="inputAppName">
+                                </div>
                             </div>
-
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1">
-                        </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </ChildContent>
-            </AppDetailItem>
-
+                            <div class="mb-3">
+                                <div class="mb-3 form-override">
+                                    <label for="inputAppDetailsTextarea" class="form-label">Descripton</label>
+                                    <div class="grow-wrap">
+                                        <textarea class="form-control" id="inputAppDetailsTextarea" rows="3" onInput="this.parentNode.dataset.replicatedValue = this.value">
+                                            @Wiresheet.AppDescription
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </ChildContent>
+                    </AppDetailItem>
+                    <AppDetailItem Title="Details">
+                        <ChildContent>
+                            <div class="row w-100">
+                                <div class="col-lg-3 col-xs-12 col-md-6">
+                                    <div class="col-auto form-override">
+                                        <label for="inputAuthor" class="form-label">Author</label>
+                                        <input type="text" class="form-control" id="inputAuthor" @bind-value="@Wiresheet.AppAuthor" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-xs-12 col-md-6">
+                                    <div class="col-auto form-override">
+                                        <label for="inputVersion" class="form-label">Version</label>
+                                        <input type="number" class="form-control" id="inputVersion" @bind-value="@Wiresheet.AppVersion" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-xs-12 col-md-6">
+                                    <div class="col-auto form-override">
+                                        <label for="inputCreated" class="form-label">Created</label>
+                                        <input type="datetime" class="form-control" id="inputCreated" @bind-value="@Wiresheet.Created" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-xs-12 col-md-6">
+                                    <div class="col-auto form-override">
+                                        <label for="inputModified" class="form-label">Modified</label>
+                                        <input type="datetime" class="form-control" id="inputModified" @bind-value="@Wiresheet.Modified" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </ChildContent>
+                    </AppDetailItem>
+                    <AppDetailItem Title="Connectors Used">
+                        <ChildContent>
+                            TBA
+                        </ChildContent>
+                    </AppDetailItem>
+                </EditForm>
+            }
+            else
+            {
+                <div>
+                    <h3>No App Selected</h3>
+                </div>
+            }
         </div>
         <div class="app-details-footer">
             <div class="option">

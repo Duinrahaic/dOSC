@@ -1,5 +1,6 @@
 ﻿using Blazor.Diagrams.Core.Geometry;
 using dOSC.Engine.Ports;
+using Newtonsoft.Json;
 
 namespace dOSC.Engine.Nodes.Utility
 {
@@ -7,12 +8,23 @@ namespace dOSC.Engine.Nodes.Utility
     {
         public CounterNode(Point? position = null) : base(position ?? new Point(0, 0))
         {
-            AddPort(new NumericPort(this, true)); // Input
-            AddPort(new LogicPort(this, true)); // Count Up
-            AddPort(new LogicPort(this, true)); // Count Down
-            AddPort(new LogicPort(this, true)); // Reset
-            AddPort(new NumericPort(this, false));
+            AddPort(new NumericPort(PortGuids.Port_1, this, true)); // Input
+            AddPort(new LogicPort(PortGuids.Port_2, this, true)); // Count Up
+            AddPort(new LogicPort(PortGuids.Port_3, this, true)); // Count Down
+            AddPort(new LogicPort(PortGuids.Port_4, this, true)); // Reset
+            AddPort(new NumericPort(PortGuids.Port_5, this, false));
         }
+
+        public CounterNode(Guid guid, Point? position = null) : base(guid, position ?? new Point(0, 0))
+        {
+            AddPort(new NumericPort(PortGuids.Port_1, this, true)); // Input
+            AddPort(new LogicPort(PortGuids.Port_2, this, true)); // Count Up
+            AddPort(new LogicPort(PortGuids.Port_3, this, true)); // Count Down
+            AddPort(new LogicPort(PortGuids.Port_4, this, true)); // Reset
+            AddPort(new NumericPort(PortGuids.Port_5, this, false));
+        }
+        [JsonProperty]
+        public override string NodeClass => this.GetType().Name.ToString();
         public override string BlockTypeClass => "numericblock";
         private uint _Count = 0;
         public uint Count { get => _Count; set => _Count = value; }

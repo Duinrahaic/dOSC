@@ -1,11 +1,16 @@
 ﻿using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.Models.Base;
+using dOSC.Engine.Nodes;
 
 namespace dOSC.Engine.Ports
 {
     public class LogicPort : BasePort
     {
-        public LogicPort(NodeModel parent, bool input, bool limitLink = true) : base(parent,input,limitLink)
+        public LogicPort(BaseNode parent, bool input, bool limitLink = true) : base(parent,input,limitLink)
+        {
+
+        }
+        public LogicPort(Guid guid, BaseNode parent, bool input, bool limitLink = true) : base(guid, parent, input, limitLink)
         {
 
         }

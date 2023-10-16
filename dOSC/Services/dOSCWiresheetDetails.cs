@@ -16,7 +16,6 @@ namespace dOSC.Services
         [MaxLength(255)]
         public string AppAuthor { get; set; } = string.Empty;
         public DateTime Created { get; set; } = DateTime.Now;
-        public string ModifiedBy { get; set; } = string.Empty;
         public DateTime Modified { get; set; } = DateTime.Now;
         public List<string> ConnectorsUsed { get; set; } = new();
     }

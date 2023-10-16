@@ -3,6 +3,7 @@ using Blazor.Diagrams.Core.Geometry;
 using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.Models.Base;
 using dOSC.Engine.Ports;
+using Newtonsoft.Json;
 using System.Net.NetworkInformation;
 
 namespace dOSC.Engine.Nodes.Logic
@@ -11,10 +12,18 @@ namespace dOSC.Engine.Nodes.Logic
     {
         public OrNode(Point? position = null) : base(position ?? new Point(0, 0))
         {
-            AddPort(new LogicPort(this, false));
-            AddPort(new LogicPort(this, false));
-            AddPort(new LogicPort(this, true));
+            AddPort(new LogicPort(PortGuids.Port_1, this, false));
+            AddPort(new LogicPort(PortGuids.Port_2, this, false));
+            AddPort(new LogicPort(PortGuids.Port_3, this, true));
         }
+        public OrNode(Guid guid, Point? position = null) : base(guid, position ?? new Point(0, 0))
+        {
+            AddPort(new LogicPort(PortGuids.Port_1, this, false));
+            AddPort(new LogicPort(PortGuids.Port_2, this, false));
+            AddPort(new LogicPort(PortGuids.Port_3, this, true));
+        }
+        [JsonProperty]
+        public override string NodeClass => this.GetType().Name.ToString();
         public override string BlockTypeClass => "logicblock";
 
         public override void Refresh()

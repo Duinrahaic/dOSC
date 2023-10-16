@@ -1,12 +1,19 @@
 ﻿using Blazor.Diagrams.Core.Models.Base;
 using Blazor.Diagrams.Core.Models;
 using dOSC.Engine.Ports;
+using dOSC.Engine.Nodes;
 
 namespace dOSC.Engine.Ports
 {
     public class MultiPort : BasePort
     {
-        public MultiPort(NodeModel parent, bool input, bool limitLink = true, bool allowLogic = true, bool allowNumeric = true, bool allowString = true) : base(parent,input,limitLink)
+        public MultiPort(BaseNode parent, bool input, bool limitLink = true, bool allowLogic = true, bool allowNumeric = true, bool allowString = true) : base(parent,input,limitLink)
+        {
+            AllowLogic = allowLogic;
+            AllowNumeric = allowNumeric;
+            AllowString = allowString;
+        }
+        public MultiPort(Guid guid, BaseNode parent, bool input, bool limitLink = true, bool allowLogic = true, bool allowNumeric = true, bool allowString = true) : base(guid,parent,input,limitLink)
         {
             AllowLogic = allowLogic;
             AllowNumeric = allowNumeric;

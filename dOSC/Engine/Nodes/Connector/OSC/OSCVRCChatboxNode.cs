@@ -1,6 +1,7 @@
 ﻿using Blazor.Diagrams.Core.Geometry;
 using dOSC.Engine.Ports;
 using dOSC.Services.Connectors.OSC;
+using Newtonsoft.Json;
 
 namespace dOSC.Engine.Nodes.Connector.OSC
 {
@@ -9,15 +10,26 @@ namespace dOSC.Engine.Nodes.Connector.OSC
         public OSCVRCChatboxNode(OSCService ? service = null, Point? position = null) : base(position ?? new Point(0, 0))
         {
 
-            AddPort(new LogicPort(this, true)); // Send
-            AddPort(new StringPort(this, true)); // Message 
-            AddPort(new LogicPort(this, true)); // Immediately?
-            AddPort(new LogicPort(this, true)); // SFX?
-            AddPort(new LogicPort(this, true)); // typing?
+            AddPort(new LogicPort(PortGuids.Port_1, this, true)); // Send
+            AddPort(new StringPort(PortGuids.Port_2, this, true)); // Message 
+            AddPort(new LogicPort(PortGuids.Port_3, this, true)); // Immediately?
+            AddPort(new LogicPort(PortGuids.Port_4, this, true)); // SFX?
+            AddPort(new LogicPort(PortGuids.Port_5, this, true)); // typing?
 
             _service = service;
         }
+        public OSCVRCChatboxNode(Guid guid, OSCService ? service = null, Point? position = null) : base(guid, position ?? new Point(0, 0))
+        {
+            AddPort(new LogicPort(PortGuids.Port_1, this, true)); // Send
+            AddPort(new StringPort(PortGuids.Port_2, this, true)); // Message 
+            AddPort(new LogicPort(PortGuids.Port_3, this, true)); // Immediately?
+            AddPort(new LogicPort(PortGuids.Port_4, this, true)); // SFX?
+            AddPort(new LogicPort(PortGuids.Port_5, this, true)); // typing?
+            _service = service;
+        }
         private readonly OSCService? _service = null;
+        [JsonProperty]
+        public override string NodeClass => this.GetType().Name.ToString();
         public override string BlockTypeClass => "connectorblock";
 
         private bool MessageSent = false;

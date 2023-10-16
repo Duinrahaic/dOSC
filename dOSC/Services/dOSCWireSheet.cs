@@ -14,16 +14,19 @@ using dOSC.Engine.Nodes.Connector.OSC;
 using dOSC.Engine.Nodes.Logic;
 using dOSC.Engine.Nodes.Math;
 using dOSC.Components;
+using Newtonsoft.Json;
+using dOSC.Engine.Links;
+using dOSC.Engine.Ports;
 
 namespace dOSC.Services
 {
     public partial class dOSCWiresheet : IDisposable
     {
-        
-
+        [JsonIgnore]        
         public BlazorDiagram BlazorDiagram { get; set; } = new(dOSCWiresheetConfiguration.Options);
-        private HashSet<(string Id, NodeModel Node)> _Nodes = new HashSet<(string, NodeModel)>();
-        private HashSet<(string Id, PortModel Source,PortModel Target)> _Links = new HashSet<(string, PortModel, PortModel)>();
+
+        public List<BaseNode> _Nodes = new List<BaseNode>();
+        public List<BaseLink> _Links = new List<BaseLink>();
         private bool _Built = false;
         public bool IsPlaying {
             get 
@@ -55,22 +58,23 @@ namespace dOSC.Services
 
             if (!_Built)
             {
+                
                 BlazorDiagram.Nodes.Added += OnNodeAdded;
                 BlazorDiagram.Nodes.Removed += OnNodeRemoved;
                 BlazorDiagram.Links.Added += OnLinkAdded;
                 BlazorDiagram.Links.Removed += OnLinkRemoved;
                 foreach (var node in _Nodes)
                 {
-                    BlazorDiagram.Nodes.Add(node.Node);
+                    BlazorDiagram.Nodes.Add(node);
                 }
 
                 foreach (var r in _Links)
                 {
                     ///The connection point will be the intersection of
                     // a line going from the target to the center of the source
-                    var sourceAnchor = new SinglePortAnchor(r.Source);
+                    var sourceAnchor = new SinglePortAnchor(r.SourcePort);
                     // The connection point will be the port's position
-                    var targetAnchor = new SinglePortAnchor(r.Target);
+                    var targetAnchor = new SinglePortAnchor(r.TargetPort);
                     var link = BlazorDiagram.Links.Add(new LinkModel(sourceAnchor, targetAnchor));
                 }
 
@@ -106,21 +110,21 @@ namespace dOSC.Services
             
         }
 
-        public void AddNode(NodeModel node)
+        public void AddNode(BaseNode node)
         {
-            _Nodes.Add((node.Id, node));
+            _Nodes.Add(node);
         }
 
-        public void AddRelationship(PortModel source, PortModel target)
+        public void AddRelationship(BasePort source, BasePort target)
         {
-            _Links.Add(($"{source.Id}_{target.Id}", source, target));
+            _Links.Add(new(source, target));
         }
 
-        public HashSet<(string Id, NodeModel Node)> GetAllNodes()
+        public List<BaseNode> GetAllNodes()
         {
             return _Nodes;
         }
-        public HashSet<(string Id, PortModel Source, PortModel Target)> GetAllLinks()
+        public List<BaseLink> GetAllLinks()
         {
             return _Links;
         }
@@ -179,6 +183,7 @@ namespace dOSC.Services
                 (newTarget.Model as PortModel)!.Parent.Refresh();
             }
         }
+
 
         public void Dispose()
         {

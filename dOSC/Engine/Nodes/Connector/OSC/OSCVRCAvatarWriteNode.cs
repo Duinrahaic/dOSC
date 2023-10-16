@@ -1,6 +1,7 @@
 ﻿using Blazor.Diagrams.Core.Geometry;
 using dOSC.Engine.Ports;
 using dOSC.Services.Connectors.OSC;
+using Newtonsoft.Json;
 
 namespace dOSC.Engine.Nodes.Connector.OSC
 {
@@ -8,9 +9,16 @@ namespace dOSC.Engine.Nodes.Connector.OSC
     {
         public OSCVRCWriteNode(OSCService? service = null, Point? position = null) : base(position ?? new Point(0, 0))
         {
-            AddPort(new NumericPort(this,true)); // Viseme
+            AddPort(new NumericPort(PortGuids.Port_1, this, true)); // Viseme
             _service = service;
         }
+        public OSCVRCWriteNode(Guid guid, OSCService? service = null, Point? position = null) : base(guid, position ?? new Point(0, 0))
+        {
+            AddPort(new NumericPort(PortGuids.Port_1, this, true)); // Viseme
+            _service = service;
+        }
+        [JsonProperty]
+        public override string NodeClass => this.GetType().Name.ToString();
         public override string BlockTypeClass => "connectorblock";
 
         private readonly OSCService? _service = null;

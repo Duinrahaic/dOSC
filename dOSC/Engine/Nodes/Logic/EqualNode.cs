@@ -2,6 +2,7 @@
 using dOSC.Engine.Ports;
 using dOSC.Services.Connectors.OSC;
 using Microsoft.AspNetCore.Components;
+using Newtonsoft.Json;
 using static dOSC.Services.Connectors.OSC.OSCService;
 
 namespace dOSC.Engine.Nodes.Logic
@@ -10,13 +11,22 @@ namespace dOSC.Engine.Nodes.Logic
     {
         public EqualNode(Point? position = null) : base(position ?? new Point(0, 0))
         {
-            _PortA = new MultiPort(this, true);
-            _PortB = new MultiPort(this, true);
+            _PortA = new MultiPort(PortGuids.Port_1, this, true);
+            _PortB = new MultiPort(PortGuids.Port_2, this, true);
             AddPort(_PortA);
             AddPort(_PortB);
-            AddPort(new LogicPort(this, false));
+            AddPort(new LogicPort(PortGuids.Port_3, this, false));
         }
-
+        public EqualNode(Guid guid, Point? position = null) : base(guid, position ?? new Point(0, 0))
+        {
+            _PortA = new MultiPort(PortGuids.Port_1, this, true);
+            _PortB = new MultiPort(PortGuids.Port_2, this, true);
+            AddPort(_PortA);
+            AddPort(_PortB);
+            AddPort(new LogicPort(PortGuids.Port_3, this, false));
+        }
+        [JsonProperty]
+        public override string NodeClass => this.GetType().Name.ToString();
         private MultiPort _PortA;
         private MultiPort _PortB;
         private string _PortAType = "multi";

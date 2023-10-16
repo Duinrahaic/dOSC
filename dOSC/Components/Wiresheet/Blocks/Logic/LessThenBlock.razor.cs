@@ -5,7 +5,7 @@ namespace dOSC.Components.Wiresheet.Blocks.Logic
 {
     public partial class LessThenBlock
     {
-        [Parameter] public LessThenNode Node { get; set; } = null;
+        [Parameter] public LessThanNode Node { get; set; } = null;
 
     }
 }

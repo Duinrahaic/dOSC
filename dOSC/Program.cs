@@ -3,6 +3,8 @@ using dOSC.Services.Connectors.OSC;
 using Serilog;
 using dOSC.Utilities;
 using dOSC.Services;
+using Serilog.Sanitizer.Extensions;
+
 namespace dOSC
 {
     public class Program
@@ -11,8 +13,16 @@ namespace dOSC
         {
             var Serilog = new LoggerConfiguration()
                 .WriteTo.Async(writeTo => writeTo.Console(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff}[{Level}] {Message}{NewLine}{Exception}"))
+                .WriteTo.Async(writeTo => writeTo.File(
+                    Path.Combine(FileSystem.LogFolder,"dOSC"), 
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff}[{Level}] {Message}{NewLine}{Exception}",
+                    rollingInterval: RollingInterval.Day,
+                    retainedFileCountLimit: 7,
+                    rollOnFileSizeLimit: true,
+                    fileSizeLimitBytes: 200000000,
+                    buffered: true
+                ))
                 .Enrich.FromLogContext()
-                .MinimumLevel.Information()
                 .CreateLogger();
 
             var builder = WebApplication.CreateBuilder(args);
@@ -22,12 +32,6 @@ namespace dOSC
             builder.Services.AddSingleton<dOSCEngine>();
             builder.Services.AddHostedService(sp => sp.GetRequiredService<OSCService>());
             builder.Services.AddHostedService(sp => sp.GetRequiredService<dOSCEngine>());
-
-
-
-
-
-
             builder.Services.AddLogging(logging =>
             {
                 logging.AddSerilog(logger: Serilog, dispose: true);
@@ -47,7 +51,7 @@ namespace dOSC
 
             app.MapBlazorHub();
             app.MapFallbackToPage("/_Host");
-
+            
             GlobalStopwatch.Start();
             GlobalTimer.StartGlobalTimer();
             app.Run();
