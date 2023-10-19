@@ -23,7 +23,7 @@ namespace dOSC.Services
     public partial class dOSCWiresheet : IDisposable
     {
         [JsonIgnore]        
-        public BlazorDiagram BlazorDiagram { get; set; } = new(dOSCWiresheetConfiguration.Options);
+        public BlazorDiagram BlazorDiagram { get; set; }
 
         public List<BaseNode> _Nodes = new List<BaseNode>();
         public List<BaseLink> _Links = new List<BaseLink>();

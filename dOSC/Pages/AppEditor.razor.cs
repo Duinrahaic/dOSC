@@ -13,6 +13,8 @@ using dOSC.Engine.Nodes.Utility;
 using dOSC.Services;
 using dOSC.Services.Connectors.OSC;
 using Microsoft.AspNetCore.Components;
+using dOSC.Engine.Ports;
+using dOSC.Engine.Links;
 
 namespace dOSC.Pages
 {
@@ -25,17 +27,29 @@ namespace dOSC.Pages
         [Inject]
         public OSCService? _OSC { get; set; }
 
-        public BlazorDiagram diagram;
+        private BlazorDiagram diagram { get; set; }
 
         [Inject]
         public dOSCEngine? _Engine { get; set; }
         [Inject]
         public NavigationManager? NM { get; set; }
 
+        private List<BaseNode> Nodes = new();
+        private List<BaseLink> Links = new();
 
 
         protected override void OnParametersSet()
         {
+            
+            //Wiresheet.Build();
+
+        }
+
+
+        protected override void OnInitialized()
+        {
+            //
+            //
             if (_Engine == null) return;
             if (AppId.HasValue)
             {
@@ -51,32 +65,34 @@ namespace dOSC.Pages
             {
                 Wiresheet = new(Guid.NewGuid());
             }
-            //Wiresheet.Build();
-
-        }
-
-
-        protected override void OnInitialized()
-        {
-            //if (Wiresheet == null) return;
-            //Wiresheet.Build();
+            if (Wiresheet == null) return;
+            Wiresheet.Desconstruct();
 
             diagram = new BlazorDiagram(dOSCWiresheetConfiguration.Options);
             diagram.RegisterBlocks();
+
+
             diagram.Nodes.Added += OnNodeAdded;
             diagram.Nodes.Removed += OnNodeRemoved;
             diagram.Links.Added += OnLinkAdded;
             diagram.Links.Removed += OnLinkRemoved;
 
+            Wiresheet.GetAllNodes().ForEach(n => { diagram.Nodes.Add(n); });
+            Wiresheet.GetAllLinks().ForEach(n => { diagram.Links.Add(n); });
         }
 
         private void OnNodeAdded(NodeModel node)
         {
-            (node as BaseNode)!.ValueChanged += OnValueChanged;
+            var n = node as BaseNode;
+            n!.ValueChanged += OnValueChanged;
+            Nodes.Add(n);
         }
         private void OnNodeRemoved(NodeModel node)
         {
-            (node as BaseNode)!.ValueChanged -= OnValueChanged;
+            var n = node as BaseNode;
+            n!.ValueChanged -= OnValueChanged;
+            Nodes.Remove(n);
+
         }
 
         public void OnValueChanged(BaseNode op)
@@ -100,20 +116,29 @@ namespace dOSC.Pages
 
         private void OnLinkAdded(BaseLinkModel link)
         {
+            var s = (link.Source.Model as BasePort);
+            var t = (link.Target.Model as BasePort);
+
             link.TargetChanged += OnLinkTargetChanged;
+            
+            if(s != null && t != null)
+                Links.Add(new(s, t));
         }
         private void OnLinkRemoved(BaseLinkModel link)
         {
             (link.Source.Model as PortModel)!.Parent.Refresh();
-
+            var s = (link.Source.Model as BasePort);
+            var t = (link.Target.Model as BasePort);
             if (link.Target.Model != null)
             {
-                var Port = (link.Target.Model as PortModel)!;
+                var Port = (link.Target.Model as BasePort)!;
                 var Node = (Port.Parent as BaseNode)!;
                 Node.ResetValue();
                 Node.Refresh();
             }
             link.TargetChanged -= OnLinkTargetChanged;
+            if (s != null && t != null)
+                Links.RemoveAll(x=> x.SourcePort.ParentGuid == s.ParentGuid && x.TargetPort.ParentGuid == t.ParentGuid);
         }
 
 
@@ -121,7 +146,7 @@ namespace dOSC.Pages
         {
             if (oldTarget.Model == null && newTarget.Model != null) // First attach
             {
-                (newTarget.Model as PortModel)!.Parent.Refresh();
+                (newTarget.Model as BasePort)!.Parent.Refresh();
             }
         }
 
@@ -141,6 +166,10 @@ namespace dOSC.Pages
         {
             if (Wiresheet == null) return;
             if (_Engine == null) return;
+
+            Wiresheet._Links.Clear();
+            Wiresheet._Nodes.Clear();
+            Wiresheet._Nodes.AddRange(Nodes);
             _Engine.SaveWiresheet(Wiresheet);
         }
 
@@ -161,12 +190,6 @@ namespace dOSC.Pages
         }
         #endregion
 
-        #region Edit
-
-        #endregion
-
-        #region WiresheetControls
-        #endregion
         private Point CenterOfScreen()
         {
             if (diagram == null) return Point.Zero;
@@ -179,7 +202,6 @@ namespace dOSC.Pages
         private void OSCButton() => diagram.Nodes.Add(new OSCVRCButtonNode(service:_OSC, position: CenterOfScreen()));
 
         #endregion
-
 
         #region Constants
         private void Logic() => diagram.Nodes.Add(new LogicNode(position: CenterOfScreen()));
@@ -198,7 +220,6 @@ namespace dOSC.Pages
         private void Or() => diagram.Nodes.Add(new OrNode(position: CenterOfScreen()));
         private void XOr() => diagram.Nodes.Add(new XOrNode(position: CenterOfScreen()));
         #endregion
-
 
         #region Math
         private void Add() => diagram.Nodes.Add(new AddNode(position: CenterOfScreen()));

@@ -19,8 +19,8 @@ namespace dOSC.Services
 
         public dOSCWiresheet(Guid AppGuid)
         {
-            BlazorDiagram.RegisterBlocks();
             BlazorDiagram = new(dOSCWiresheetConfiguration.Options);
+            BlazorDiagram.RegisterBlocks();
             BlazorDiagram.SuspendRefresh = true;
             this.AppGuid = AppGuid;
             Build();
