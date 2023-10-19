@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Components;
 
 namespace dOSC.Components.Wiresheet.Blocks.Logic
 {
-    public partial class LessThenEqualBlock
+    public partial class GreaterThanBlock
     {
-        [Parameter] public LessThanEqualNode Node { get; set; } = null;
+        [Parameter] public GreaterThanNode Node { get; set; } = null;
 
     }
 }

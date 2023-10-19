@@ -2,41 +2,86 @@
 @import "variables.scss";
 
 
-.wiresheet-toolbar {
-}
-
-.wiresheet-toolbar ul {
-    list-style-type: none;
+.navbar.wiresheet-toolbar {
+    background-color: $color-theme-2 !important;
+    border-top-left-radius: 0.35rem;
+    border-left: $color-wiresheet-toolbar 1px solid;
+    border-top: $color-wiresheet-toolbar 1px solid;
+    border-bottom: $color-wiresheet-toolbar 1px solid;
     padding: 0;
-    margin: 0;
-    overflow: hidden;
-    background: $color-theme-1;
 }
 
-.wiresheet-toolbar li {
-    float: left;
+.navbar.wiresheet-toolbar .icon {
+    color: $color-blurple;
+    font-size: 36px;
+    align-self: center;
+}
+.navbar.wiresheet-toolbar .navbar-nav {
+    gap:0;
+}
+
+.navbar.wiresheet-toolbar .navbar-nav .nav-item a {
+    border-radius: 0;
+    color:$color-titlebar-textcolor;
+    font-weight: 400;
+}
+
+.navbar.wiresheet-toolbar .navbar-nav .nav-item a:hover {
+    background-color: $color-theme-3;
     color: $color-titlebar-textcolor;
 }
 
-.wiresheet-toolbar li .mud-menu .mud-button-label {
-    color: $color-titlebar-textcolor !important;
-}
-
-.wiresheet-toolbar .dropdown-option-ul {
-    background: $color-theme-1;
-    color: $color-titlebar-textcolor
-}
-
-.wiresheet-bottom-toolbar {
-    position: fixed;
-    transform: translateX(50vw);
-    bottom: 5px;
-    background: $color-theme-1;
-    padding: 10px;
-    border-radius: 10px;
+.navbar.wiresheet-toolbar .navbar-nav .nav-item.dropdown .dropdown-menu {
+    background-color: $color-theme-2;
+    color: $color-titlebar-textcolor;
+    border: $color-wiresheet-toolbar 1px solid;
 }
 
 
+.navbar.wiresheet-toolbar .navbar-nav .nav-item.dropdown:hover> .dropdown-menu {
+    display:none !important;
+}
+
+.navbar.wiresheet-toolbar .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item.active, .dropdown-item:hover, .dropdown-item:focus {
+    background-color: $color-theme-3;
+}
+.navbar.wiresheet-toolbar .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item.active, .dropdown-item.show {
+    background-color: $color-theme-3;
+}
+
+
+.navbar.wiresheet-toolbar .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-divider {
+    border-top: $color-wiresheet-toolbar 1px solid;
+}
+
+
+
+.navbar.wiresheet-toolbar .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item .pointer {
+    color: $color-titlebar-textcolor;
+    font-size: small;
+    font-stretch:condensed;
+    align-self: center;
+}
+
+
+.navbar.wiresheet-toolbar .navbar-nav .nav-item.dropdown:hover > .dropdown-menu {
+    display: block !important;
+
+}
+
+.navbar.wiresheet-toolbar .navbar-nav .nav-item.dropdown-submenu:hover > .dropdown-menu {
+    display: block !important;
+    left: 100%;
+    margin-top: -37px;
+
+}
+.navbar.wiresheet-toolbar .navbar-nav .nav-item .dropdown-submenu:hover > .dropdown-menu {
+    display: block !important;
+    left: 100%;
+    margin-top: -37px;
+}
+
+/* Wiresheet */
 
 .diagram-container {
     width: 100%;

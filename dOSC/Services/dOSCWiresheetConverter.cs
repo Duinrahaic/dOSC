@@ -8,11 +8,24 @@ namespace dOSC.Services
 {
     public partial class dOSCWiresheet
     {
-
-        public dOSCWiresheetDTO GetDTO()
+        public dOSCWiresheet()
         {
-            return new dOSCWiresheetDTO(this);
+            AppGuid = Guid.NewGuid();
+            BlazorDiagram = new(dOSCWiresheetConfiguration.Options);
+            BlazorDiagram.RegisterBlocks();
+            BlazorDiagram.SuspendRefresh = true;
+            Build();
         }
+
+        public dOSCWiresheet(Guid AppGuid)
+        {
+            BlazorDiagram.RegisterBlocks();
+            BlazorDiagram = new(dOSCWiresheetConfiguration.Options);
+            BlazorDiagram.SuspendRefresh = true;
+            this.AppGuid = AppGuid;
+            Build();
+        }
+
 
         public dOSCWiresheet(dOSCWiresheetDTO dto)
         {
@@ -24,11 +37,15 @@ namespace dOSC.Services
             AppDescription = dto.AppDescription;
             Created = dto.Created;
             Modified = dto.Modified;
-            IsPlaying = dto.Running;  
+            IsPlaying = dto.Running;
+            Build();
         }
 
-       
+        public dOSCWiresheetDTO GetDTO()
+        {
+            return new dOSCWiresheetDTO(this);
+        }
 
-
+        
     }
 }

@@ -1,4 +1,5 @@
 ﻿@page "/apps"
+@page "/apps/{AppId:guid}"
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using dOSC.Components.UI
 @using dOSC.Components.Modals
@@ -10,10 +11,7 @@
                 <h3 class="icon oi oi-code"></h3>
                 <h3>APPS</h3>
             </div>
-@*             <form class="search-form" role="search">
-                <i class="oi oi-magnifying-glass"></i>
-                <input class="search-input form-control" type="search" placeholder="Search" aria-label="Search">
-            </form> *@
+
         </div>
         <div class="app-nav-container">
             <Virtualize Items="@Wiresheets">
@@ -127,8 +125,8 @@
             Do you want to upload a new application or create a new one?
         </p>
         <div class="d-flex flex-row w-100 align-items-center justify-content-evenly">
-            <button class="btn btn-primary"> New Application </button>
-            <button class="btn btn-primary"> Upload Application </button>
+            <button class="btn btn-primary" onclick=@(()=> NewApp())> New Application </button>
+            <button class="btn btn-secondary"> Upload Application </button>
         </div>
     </Body>
     <Footer>

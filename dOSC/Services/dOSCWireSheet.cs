@@ -41,17 +41,7 @@ namespace dOSC.Services
         public bool HasError { get; set; } = false;
 
 
-        public dOSCWiresheet()
-        {
-            BlazorDiagram.RegisterBlocks();
-            BlazorDiagram.SuspendRefresh = true;
-        }
-
-        public dOSCWiresheet(Guid AppGuid) : base()
-        {
-            this.AppGuid = AppGuid;
-        }
-
+        
 
         public void Build()
         {
@@ -81,22 +71,9 @@ namespace dOSC.Services
                 _Built = true;
             }
         }
-
-        
-
-   
-        public void Start()
-        {
-            BlazorDiagram.SuspendRefresh = false;
-        }
-        public void Stop()
-        {
-            BlazorDiagram.SuspendRefresh = true;
-        }
-
         public void Desconstruct()
         {
-            if(_Built)
+            if (_Built)
             {
                 BlazorDiagram.Nodes.Added -= OnNodeAdded;
                 BlazorDiagram.Nodes.Removed -= OnNodeRemoved;
@@ -107,17 +84,29 @@ namespace dOSC.Services
                 BlazorDiagram.RegisterBlocks();
                 _Built = false;
             }
-            
+
         }
+        public void Start()
+        {
+            BlazorDiagram.SuspendRefresh = false;
+        }
+        public void Stop()
+        {
+            BlazorDiagram.SuspendRefresh = true;
+        }
+
 
         public void AddNode(BaseNode node)
         {
             _Nodes.Add(node);
+            BlazorDiagram.Nodes.Add(node);
         }
 
         public void AddRelationship(BasePort source, BasePort target)
         {
-            _Links.Add(new(source, target));
+            BaseLink link = new(source, target);
+            _Links.Add(link);
+            BlazorDiagram.Links.Add(link);
         }
 
         public List<BaseNode> GetAllNodes()

@@ -18,13 +18,12 @@ namespace dOSC.Services
     {
         public static BlazorDiagramOptions Options = new BlazorDiagramOptions
         {
-            AllowMultiSelection = true,
             GridSnapToCenter = true,
-            
             Zoom =
             {
                 Enabled = true,
                 Inverse = true,
+                Maximum = 3.0
             },
             AllowPanning = true,
             Links =
@@ -34,26 +33,46 @@ namespace dOSC.Services
             },
             Groups =
             {
-                Enabled =  true,
+                Enabled =  false,
             },
+            Constraints =
+            {
+                
+            }
             
             
         };
 
         public static void RegisterBlocks(this BlazorDiagram BD)
         {
+            // Connectors
+            BD.RegisterComponent<OSCVRCButtonNode, OSCVRCButtonBlock>();
+
+            // Constants
+            BD.RegisterComponent<LogicNode, LogicBlock>();
+            BD.RegisterComponent<NumericNode, NumericBlock>();
+
+            // Logic
             BD.RegisterComponent<AndNode, AndBlock>();
+            BD.RegisterComponent<EqualNode, EqualBlock>();
+            BD.RegisterComponent<GreaterThanNode, GreaterThanBlock>();
+            BD.RegisterComponent<GreaterThanEqualNode, GreaterThanEqualBlock>();
+            BD.RegisterComponent<LessThanNode, LessThanBlock>();
+            BD.RegisterComponent<LessThanEqualNode, LessThanEqualBlock>();
+            BD.RegisterComponent<NotNode, NotBlock>();
+            BD.RegisterComponent<NotEqualNode, NotEqualBlock>();
             BD.RegisterComponent<OrNode, OrBlock>();
-            BD.RegisterComponent<BooleanNode, BooleanBlock>();
+            BD.RegisterComponent<XOrNode, XOrBlock>();
+
+            // Math
             BD.RegisterComponent<AddNode, AddBlock>();
             BD.RegisterComponent<SubtractNode, SubstractBlock>();
-            BD.RegisterComponent<NumericNode, NumericBlock>();
             BD.RegisterComponent<SummationNode, SummationBlock>();
             BD.RegisterComponent<MultiplicationNode, MultiplicationBlock>();
             BD.RegisterComponent<DivisionNode, DivisionBlock>();
+
+            // Utility
             BD.RegisterComponent<SineNode, SineBlock>();
-            BD.RegisterComponent<OSCVRCButtonNode, OSCVRCButtonBlock>();
-            BD.RegisterComponent<EqualNode, EqualBlock>();
         }
     }
 }

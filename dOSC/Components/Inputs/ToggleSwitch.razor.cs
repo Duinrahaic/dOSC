@@ -10,7 +10,7 @@ namespace dOSC.Components.Inputs
     public partial class ToggleSwitch
     {
         [Parameter]
-        public BooleanNode Node { get; set; }
+        public LogicNode Node { get; set; }
         [Parameter]
         public string Text { get; set; } = string.Empty;
         [Parameter]

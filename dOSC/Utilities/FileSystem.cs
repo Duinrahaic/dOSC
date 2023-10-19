@@ -54,7 +54,19 @@ namespace dOSC.Utilities
             string json = File.ReadAllText(Path.Combine(SettingsFolder, "settings.json"));
             return JsonConvert.DeserializeObject<UserSettings>(json);
         }
-
+        public static void RemoveWiresheet(Guid AppGuid)
+        {
+            if(File.Exists(Path.Combine(WiresheetFolder, $"wiresheet-{AppGuid}.json"))){
+                File.Delete(Path.Combine(WiresheetFolder, $"wiresheet-{AppGuid}.json"));
+            }
+        }
+        public static void RemoveWiresheet(dOSCWiresheet wiresheet)
+        {
+            if (File.Exists(Path.Combine(WiresheetFolder, $"wiresheet-{wiresheet.AppGuid}.json")))
+            {
+                File.Delete(Path.Combine(WiresheetFolder, $"wiresheet-{wiresheet.AppGuid}.json"));
+            }
+        }
         public static void SaveWiresheet(dOSCWiresheet wiresheet)
         {
             var options = new JsonSerializerOptions
@@ -62,13 +74,13 @@ namespace dOSC.Utilities
                 IncludeFields = true,
             };
             string json = JsonConvert.SerializeObject(wiresheet.GetDTO(), Formatting.Indented);
-            File.WriteAllText(Path.Combine(WiresheetFolder, $"{wiresheet}-{wiresheet.AppGuid}.json"), json);
+            File.WriteAllText(Path.Combine(WiresheetFolder, $"wiresheet-{wiresheet.AppGuid}.json"), json);
         }
         public static dOSCWiresheetDTO? LoadWiresheet(Guid AppGuid)
         {
             var options = new JsonSerializerSettings
             {
-                
+
             };
             string json = File.ReadAllText(Path.Combine(WiresheetFolder, $"wiresheet-{AppGuid}.json"));
             return JsonConvert.DeserializeObject<dOSCWiresheetDTO>(json, options);

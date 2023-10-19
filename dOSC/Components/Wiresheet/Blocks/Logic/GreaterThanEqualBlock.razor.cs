@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace dOSC.Components.Wiresheet.Blocks.Logic
 {
-    public partial class GreaterThenEqualBlock
+    public partial class GreaterThanEqualBlock
     {
         [Parameter] public GreaterThanEqualNode Node { get; set; } = null;
 

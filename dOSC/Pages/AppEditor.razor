@@ -1,9 +1,75 @@
 ﻿@page "/apps/editor/"
 @page "/apps/editor/{AppId:guid}"
+@using Blazor.Diagrams.Components
 @using dOSC.Components
+@using Blazor.Diagrams.Components.Widgets
+@using dOSC.Components.Wiresheet
+@using dOSC.Components.Wiresheet.UI
 
 @if (Wiresheet != null)
 {
-    <Editor Wiresheet=Wiresheet />
+    <WiresheetToolbar>
+        <ChildContent>
+            <WiresheetToolbarDropdown Title="File" >
+                <WiresheetToolbarDropdownItem Title="Save" OnClick="Save"/>
+                <WiresheetToolbarDropdownItem Title="Revert" OnClick="Revert"/>
+                <WiresheetToolbarDropdownDivider />
+                <WiresheetToolbarDropdownItem Title="Exit" OnClick="Exit" />
+            </WiresheetToolbarDropdown>
+            <WiresheetToolbarDropdown Title="Edit" >
+                <WiresheetToolbarDropdownItem Title="Undo" />
+                <WiresheetToolbarDropdownItem Title="Redo" />
+                <WiresheetToolbarDropdownItem Title="Group" />
+                <WiresheetToolbarDropdownItem Title="Ungroup" />
+            </WiresheetToolbarDropdown>
+            <WiresheetToolbarDropdown Title="Wiresheet Controls" >
+                <WiresheetToolbarDropdownItem Title="Play/Pause" />
+            </WiresheetToolbarDropdown>
+            <WiresheetToolbarDropdown Title="Blocks">
+                <WiresheetToolbarDropdownSubmenuItem Title="Connectors">
+                    <WiresheetToolbarDropdownItem Title="OSC Button" OnClick="OSCButton" />
+                </WiresheetToolbarDropdownSubmenuItem>
+                <WiresheetToolbarDropdownSubmenuItem Title="Constants">
+                    <WiresheetToolbarDropdownItem Title="Logic" OnClick="Logic" />
+                    <WiresheetToolbarDropdownItem Title="Numeric" OnClick="Numeric" />
+                </WiresheetToolbarDropdownSubmenuItem>
+                <WiresheetToolbarDropdownSubmenuItem Title="Logic">
+                    <WiresheetToolbarDropdownItem Title="And" OnClick="AndBlock" />
+                    <WiresheetToolbarDropdownItem Title="Equal" OnClick="EqualBlock" />
+                    <WiresheetToolbarDropdownItem Title="Greater Than" OnClick="GreaterThan" />
+                    <WiresheetToolbarDropdownItem Title="Greater Than Equal" OnClick="GreaterThanEqual" />
+                    <WiresheetToolbarDropdownItem Title="Less Than" OnClick="LessThan" />
+                    <WiresheetToolbarDropdownItem Title="Less Than Equal" OnClick="LessThanEqual" />
+                    <WiresheetToolbarDropdownItem Title="Not" OnClick="Not" />
+                    <WiresheetToolbarDropdownItem Title="Not Equal" OnClick="NotEqual" />
+                    <WiresheetToolbarDropdownItem Title="Or" OnClick="Or" />
+                    <WiresheetToolbarDropdownItem Title="XOr" OnClick="XOr" />
+                </WiresheetToolbarDropdownSubmenuItem>
+                <WiresheetToolbarDropdownSubmenuItem Title="Math">
+                    <WiresheetToolbarDropdownItem Title="Add" OnClick="Add" />
+                    <WiresheetToolbarDropdownItem Title="Division" OnClick="Divide" />
+                    <WiresheetToolbarDropdownItem Title="Multiplication" OnClick="Multiply" />
+                    <WiresheetToolbarDropdownItem Title="Subtract" OnClick="Subtract" />
+                </WiresheetToolbarDropdownSubmenuItem>
+                <WiresheetToolbarDropdownSubmenuItem Title="Utility">
+                    <WiresheetToolbarDropdownItem Title="Sine" OnClick="Sine" />
+                </WiresheetToolbarDropdownSubmenuItem>
+            </WiresheetToolbarDropdown>
+        </ChildContent>
+    </WiresheetToolbar>
+    <div class="diagram-container" oncontextmenu="return false;">
+    @if (Wiresheet != null)
+    {
+            <CascadingValue Value="diagram" IsFixed="false">
+            <DiagramCanvas>
+                <Widgets>
+                    <SelectionBoxWidget />
+                    <GridWidget Size="30" Mode="GridMode.Point" BackgroundColor="#2c2f33"  />
+                </Widgets>
+             </DiagramCanvas>
+         </CascadingValue>
+
+    }
+    </div>
 }
 
