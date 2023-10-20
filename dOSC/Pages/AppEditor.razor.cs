@@ -15,6 +15,7 @@ using dOSC.Services.Connectors.OSC;
 using Microsoft.AspNetCore.Components;
 using dOSC.Engine.Ports;
 using dOSC.Engine.Links;
+using dOSC.Components.Modals;
 
 namespace dOSC.Pages
 {
@@ -34,16 +35,7 @@ namespace dOSC.Pages
         [Inject]
         public NavigationManager? NM { get; set; }
 
-        private List<BaseNode> Nodes = new();
-        private List<BaseLink> Links = new();
-
-
-        protected override void OnParametersSet()
-        {
-            
-            //Wiresheet.Build();
-
-        }
+        private ModalBase SaveModal { get; set; }
 
 
         protected override void OnInitialized()
@@ -85,14 +77,11 @@ namespace dOSC.Pages
         {
             var n = node as BaseNode;
             n!.ValueChanged += OnValueChanged;
-            Nodes.Add(n);
         }
         private void OnNodeRemoved(NodeModel node)
         {
             var n = node as BaseNode;
             n!.ValueChanged -= OnValueChanged;
-            Nodes.Remove(n);
-
         }
 
         public void OnValueChanged(BaseNode op)
@@ -121,8 +110,6 @@ namespace dOSC.Pages
 
             link.TargetChanged += OnLinkTargetChanged;
             
-            if(s != null && t != null)
-                Links.Add(new(s, t));
         }
         private void OnLinkRemoved(BaseLinkModel link)
         {
@@ -137,8 +124,6 @@ namespace dOSC.Pages
                 Node.Refresh();
             }
             link.TargetChanged -= OnLinkTargetChanged;
-            if (s != null && t != null)
-                Links.RemoveAll(x=> x.SourcePort.ParentGuid == s.ParentGuid && x.TargetPort.ParentGuid == t.ParentGuid);
         }
 
 
@@ -159,17 +144,41 @@ namespace dOSC.Pages
             diagram.Links.Removed -= OnLinkRemoved;
         }
 
-
-
         #region File
+        
         private void Save()
         {
+            if (Wiresheet == null) return;
+            SaveModal.Open();
+
+        }
+
+        private void HandleOnChange(ChangeEventArgs args)
+        {
+            
+            Wiresheet!.AppDescription = args.Value?.ToString() ?? "";
+        }
+
+        private void SaveApp()
+        {
+            SaveModal.Close();
             if (Wiresheet == null) return;
             if (_Engine == null) return;
 
             Wiresheet._Links.Clear();
             Wiresheet._Nodes.Clear();
-            Wiresheet._Nodes.AddRange(Nodes);
+            diagram.Nodes.ToList().ForEach(node =>
+            {
+                var n = node as BaseNode;
+                Wiresheet._Nodes.Add(n);
+            });
+            diagram.Links.ToList().ForEach(link =>
+            {
+                var s = link.Source.Model as BasePort;
+                var t = link.Target.Model as BasePort;
+
+                Wiresheet._Links.Add(new(s, t));
+            });
             _Engine.SaveWiresheet(Wiresheet);
         }
 
@@ -179,13 +188,14 @@ namespace dOSC.Pages
             if (Wiresheet == null) return;
             NM!.NavigateTo($"/apps/");
             NM!.NavigateTo($"/apps/editor/{Wiresheet.AppGuid}");
-
         }
 
         private void Exit()
         {
             if (Wiresheet == null) return;
             if (_Engine == null) return;
+            diagram.SuspendRefresh = true;
+            Wiresheet.Build();
             NM!.NavigateTo($"/apps/{Wiresheet.AppGuid}");
         }
         #endregion

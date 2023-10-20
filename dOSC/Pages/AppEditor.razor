@@ -5,7 +5,8 @@
 @using Blazor.Diagrams.Components.Widgets
 @using dOSC.Components.Wiresheet
 @using dOSC.Components.Wiresheet.UI
-
+@using dOSC.Components.Modals
+@using Microsoft.AspNetCore.Components.Forms
 @if (Wiresheet != null)
 {
     <WiresheetToolbar>
@@ -73,3 +74,37 @@
     </div>
 }
 
+<ModalBase @ref=SaveModal>
+    <Title>Save Application</Title>
+    <Body>
+ 
+        <EditForm id="SubmitForm" Model="Wiresheet"  OnValidSubmit="@SaveApp" class="d-flex flex-column align-items-center justify-content-center">
+            <DataAnnotationsValidator />
+            <div class="mb-3 w-100">
+                <div class="mb-3 form-override">
+                    <label for="inputAppName" class="form-label">Application Name</label>
+                    <ValidationMessage For="@(() => Wiresheet.AppName)" />
+                    <input type="text" class="form-control w-100" @bind-value=@Wiresheet.AppName id="inputAppName">
+                </div>
+            </div>
+            <div class="mb-3 w-100" style="min-width:400px;">
+                <div class="mb-3 form-override pb-1" style="max-height: 200px;">
+                    <label for="inputAppDetailsTextarea" class="form-label">Descripton</label>
+                    <ValidationMessage For="@(() => Wiresheet.AppDescription)" />
+                    <textarea class="form-control" style="overflow-y: auto; height:200px;" id="inputAppDetailsTextarea" rows="3" @oninput="HandleOnChange">
+                        @Wiresheet.AppDescription
+                        </textarea>
+                </div>
+            </div>
+        </EditForm>
+            
+      
+    </Body>
+    <Footer>
+        <div class="d-flex flex-row justify-content-between w-100">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => SaveModal.Close()">Cancel</button>
+            <button type="submit" form="SubmitForm" class="btn btn-primary" data-dismiss="modal">Save</button>
+        </div>
+        
+    </Footer>
+</ModalBase>

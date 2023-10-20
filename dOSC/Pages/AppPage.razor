@@ -28,7 +28,7 @@
     <div class="app-details">
         <div class="app-details-header">
             <div class="app-details-header-title">
-                <h3>@Wiresheet?.AppGuid.ToString()</h3>
+                <h3>@Wiresheet?.AppName</h3>
             </div>
         </div>
         <div class="app-details-body">
@@ -47,7 +47,7 @@
                                 <div class="mb-3 form-override">
                                     <label for="inputAppDetailsTextarea" class="form-label">Descripton</label>
                                     <div class="grow-wrap">
-                                        <textarea class="form-control" id="inputAppDetailsTextarea" rows="3" onInput="this.parentNode.dataset.replicatedValue = this.value">
+                                        <textarea class="form-control"  id="inputAppDetailsTextarea" rows="3" onInput="this.parentNode.dataset.replicatedValue = this.value">
                                             @Wiresheet.AppDescription
                                         </textarea>
                                     </div>
@@ -104,7 +104,7 @@
                 <span class="icon icon-file-edit blue" @onclick="()=> NewAppModal.Open()"></span>
             </div>
             <div class="option">
-                <span class="icon icon-trash-2 red" @onclick="()=> NewAppModal.Open()"></span>
+                <span class="icon icon-trash-2 red" @onclick="()=> DeleteApp()"></span>
             </div>
         </div>
     </div>

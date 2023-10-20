@@ -12,7 +12,6 @@ namespace dOSC.Components.Modals
 
         [Parameter]
         public RenderFragment Footer { get; set; }
-
         private string modalDisplay = "none;";
         private string modalClass = "";
         private bool showBackdrop = false;

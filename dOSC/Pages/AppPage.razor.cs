@@ -47,6 +47,16 @@ namespace dOSC.Pages
             
         }
 
+        private void DeleteApp()
+        {
+            if(Wiresheet == null) return;
+            Wiresheet.Desconstruct();
+            Wiresheet.Dispose();
+            var s = Wiresheet;
+            Wiresheet = null;
+            Engine.RemoveWiresheet(s);
+            Wiresheets = Engine.GetWireSheets();
+        }
 
         // Modals 
         private ModalBase NewAppModal { get; set; }
