@@ -1,6 +1,8 @@
 ﻿using dOSC.Services;
 using dOSC.Services.User;
+using Microsoft.JSInterop;
 using Newtonsoft.Json;
+using System.Text;
 using System.Text.Json;
 
 namespace dOSC.Utilities
@@ -104,6 +106,21 @@ namespace dOSC.Utilities
                 }
             }
             return s;
+        }
+
+        public async static Task DownloadWiresheet(IJSRuntime js, dOSCWiresheet wiresheet )
+        {
+            var options = new JsonSerializerOptions
+            {
+                IncludeFields = true,
+            };
+            string json = JsonConvert.SerializeObject(wiresheet.GetDTO(), Formatting.Indented);
+            string filename = $"wiresheet-{wiresheet.AppGuid}.json";
+            byte[] data = Encoding.UTF8.GetBytes(json);
+            await js.InvokeAsync<object>(
+                "saveAsFile",
+                filename,
+                Convert.ToBase64String(data));
         }
     }
 }

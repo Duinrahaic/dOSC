@@ -21,7 +21,7 @@
         </div>
         <div class="app-nav-footer">
             <div class="option">
-                <span class="icon oi oi-plus" @onclick="()=> NewAppModal.Open()"> </span>
+                <button class="btn btn-success icon icon-plus" @onclick="()=> NewAppModal.Open()"></button>
             </div>
         </div>
     </div>
@@ -35,6 +35,7 @@
             @if(Wiresheet != null)
             {
                 <EditForm Model="@Wiresheet">
+                 <fieldset disabled="@true">
                     <AppDetailItem Title="Information">
                         <ChildContent>
                             <div class="mb-3">
@@ -90,6 +91,7 @@
                             TBA
                         </ChildContent>
                     </AppDetailItem>
+                    </fieldset>
                 </EditForm>
             }
             else
@@ -101,10 +103,13 @@
         </div>
         <div class="app-details-footer">
             <div class="option">
-                <span class="icon icon-file-edit blue" @onclick="()=> NewAppModal.Open()"></span>
+                <button disabled="@(Wiresheet==null)" class="btn btn-primary icon icon-download" @onclick="()=> DownloadApp()"></button>
             </div>
             <div class="option">
-                <span class="icon icon-trash-2 red" @onclick="()=> DeleteApp()"></span>
+                <button disabled="@(Wiresheet==null)" class="btn btn-primary icon icon-file-edit" @onclick="()=> EditApp()"></button>
+            </div>
+            <div class="option">
+                <button disabled="@(Wiresheet==null)" class="btn btn-danger icon icon-trash-2" @onclick="()=> DeleteAppModal.Open()"></button>
             </div>
         </div>
     </div>
@@ -124,12 +129,40 @@
         <p>
             Do you want to upload a new application or create a new one?
         </p>
-        <div class="d-flex flex-row w-100 align-items-center justify-content-evenly">
-            <button class="btn btn-primary" onclick=@(()=> NewApp())> New Application </button>
-            <button class="btn btn-secondary"> Upload Application </button>
-        </div>
     </Body>
     <Footer>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => NewAppModal.Close()">Close</button>
+        <div class="d-flex flex-row w-100 align-items-center justify-content-between">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => NewAppModal.Close()">Close</button>
+            <button type="button" class="btn btn-primary" onclick=@(()=> EditApp())> New </button>
+            <button type="button" class="btn btn-primary" onclick=@(()=> {NewAppModal.Close(); UploadAppModal.Open();})> Upload </button>
+        </div>
+    </Footer>
+</ModalBase>
+
+<ModalBase @ref=UploadAppModal>
+    <Title>Upload Application</Title>
+    <Body>
+        <UploadWiresheetFile DataCallback="UploadedFileCallback" />
+    </Body>
+    <Footer>
+        <div class="d-flex flex-row justify-content-between w-100">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => UploadAppModal.Close()">Cancel</button>
+            <button type="button" disabled="@(UploadedFile == null)" class="btn btn-primary" data-dismiss="modal" @onclick="()=>UploadApp()">Upload</button>
+        </div>
+    </Footer>
+</ModalBase>
+
+<ModalBase @ref=DeleteAppModal>
+    <Title>Delete Application</Title>
+    <Body>
+        <p>
+            Are you sure you want to delete this application?
+        </p>
+    </Body>
+    <Footer>
+        <div class="d-flex flex-row justify-content-between w-100">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => DeleteAppModal.Close()">Cancel</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" @onclick="() => DeleteApp()">Delete</button>
+        </div>
     </Footer>
 </ModalBase>

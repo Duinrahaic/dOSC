@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Components.Forms;
+@using Newtonsoft.Json;
+@using dOSC.Services;
+<div class="file-input-border">
+    <div>
+        @if(UploadedDTO != null)
+        {
+            <p>
+                @UploadedDTO?.AppName
+            </p>
+        }else{
+            <p>
+                Drop your application here and click upload.
+            </p>
+        }
+    </div>
+    <InputFile class="file-input" accept=".json" OnChange="@OnChange" />
+    <div class="file-input-error">
+        @ErrorMessage
+    </div>
+</div>
+
+@code {
+
+    private string ErrorMessage = string.Empty;
+
+    [Parameter]
+    public EventCallback<dOSCWiresheetDTO?> DataCallback { get; set; }
+
+    private dOSCWiresheetDTO? UploadedDTO;  
+    private async Task OnChange(InputFileChangeEventArgs e)
+    {
+        ErrorMessage = string.Empty;
+        if (e.FileCount > 1)
+        {
+            ErrorMessage = $"Only {1} file can be uploaded";
+            return;
+        }
+        foreach (var file in e.GetMultipleFiles(1))
+        {
+            try
+            {
+                using (var ms = new MemoryStream())
+                {
+                    await file.OpenReadStream().CopyToAsync(ms);
+                    string jsonString = System.Text.Encoding.ASCII.GetString(ms.ToArray());
+                    UploadedDTO = JsonConvert.DeserializeObject<dOSCWiresheetDTO>(jsonString);
+                    await DataCallback.InvokeAsync(UploadedDTO);
+                }
+            }
+            catch
+            {
+                ErrorMessage = "Unable to process uploaded file";
+                await DataCallback.InvokeAsync(null);
+            }
+            
+        }
+    }
+}

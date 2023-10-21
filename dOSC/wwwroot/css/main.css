@@ -569,7 +569,6 @@
   width: 120px;
   height: 100%;
   display: flex;
-  background: #B9BBBE;
   border-radius: 4px;
   padding: 4px;
   flex-direction: row;
@@ -605,16 +604,6 @@
 .app-page .app-details .app-details-footer .option .icon.red:hover {
   background: #a02d25;
   color: #ffffff;
-}
-
-.app-page .app-details .app-details-footer .option.icon.disabled {
-  background: #B9BBBE;
-  color: #ffffff;
-}
-
-.app-page .app-details .app-details-footer .option .icon.disabled:hover {
-  background: #B9BBBE;
-  color: #B9BBBE;
 }
 
 .form-override .form-label {

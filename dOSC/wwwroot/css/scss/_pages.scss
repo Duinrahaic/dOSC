@@ -269,7 +269,6 @@
     width: 120px;
     height: 100%;
     display: flex;
-    background: $color-grey-white;
     border-radius: 4px;
     padding: 4px;
     flex-direction: row;
@@ -307,12 +306,3 @@
     color: $color-full-white;
 }
 
-.app-page .app-details .app-details-footer .option.icon.disabled {
-    background: $color-grey;
-    color: $color-full-white;
-}
-
-.app-page .app-details .app-details-footer .option .icon.disabled:hover {
-    background: $color-grey-darker;
-    color: $color-grey-white;
-}

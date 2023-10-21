@@ -20,7 +20,22 @@ namespace dOSC.Components
         {
             if(firstRender)
             {
-                SelectedItem = Apps.FirstOrDefault();
+                string route = NM.Uri.Replace(NM.BaseUri, "");
+                if(route.ToLower().StartsWith("apps"))
+                {
+                    SelectedItem = Apps.FirstOrDefault(x => x.Name.ToLower() == "apps");
+
+                }
+                else if (route.ToLower().StartsWith("settings"))
+                {
+                    SelectedItem = Apps.FirstOrDefault(x => x.Name.ToLower() == "settings");
+                }
+                else
+                {
+                    SelectedItem = Apps.FirstOrDefault();
+
+                }
+
             }
         }
 
@@ -32,22 +47,7 @@ namespace dOSC.Components
 				
                 await SelectedItemChanged.InvokeAsync(item);
 			}
-            NM!.NavigateTo($"{item.Navigation}");
-
-            //if (Engine != null)
-            //{
-            //    if (item.Wiresheet != null)
-            //    {
-            //        // Page has to clear before being able to render another another page. Supply Empty GUID to clear
-            //        NM!.NavigateTo($"app/{Guid.Empty}", forceLoad: false); 
-            //        NM!.NavigateTo($"app/{item.Wiresheet.AppGuid}", forceLoad: false);
-            //    }
-            //    else
-            //    {
-            //    }
-            //}
-
-            
+            NM!.NavigateTo($"{item.Navigation}");           
         }
     }
 }

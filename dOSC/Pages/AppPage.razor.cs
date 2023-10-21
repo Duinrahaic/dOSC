@@ -1,6 +1,10 @@
 ﻿using dOSC.Components.Modals;
 using dOSC.Services;
+using dOSC.Utilities;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System.IO;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace dOSC.Pages
 {
@@ -9,6 +13,8 @@ namespace dOSC.Pages
 
         [Inject]
         public dOSCEngine? Engine { get; set; }
+        [Inject]
+        public IJSRuntime? JS { get; set; }
         [Inject]
         public NavigationManager? NM { get; set; }
 
@@ -37,18 +43,39 @@ namespace dOSC.Pages
             Wiresheet = wiresheet;
         }
 
-        private void NewApp()
+        private void UploadApp()
         {
-            NewAppModal.Close();
-            if(NM != null)
+            if(UploadedFile != null)
             {
-                NM.NavigateTo($"apps/editor/");
+                UploadAppModal.Close();
+                dOSCWiresheet? wiresheet = new dOSCWiresheet(UploadedFile);
+                Engine.SaveWiresheet(wiresheet);
+                try
+                {
+                    Engine.AddWiresheet(wiresheet);
+                }
+                catch
+                {
+                
+                }
+                Wiresheets = Engine.GetWireSheets();
+                OnSelected(wiresheet);
             }
             
         }
 
+        private dOSCWiresheetDTO? UploadedFile;
+        private void UploadedFileCallback(dOSCWiresheetDTO? Upload)
+        {
+            if(Upload == null) return;
+            UploadedFile = Upload;
+
+        }
+
+
         private void DeleteApp()
         {
+            DeleteAppModal.Close(); 
             if(Wiresheet == null) return;
             Wiresheet.Desconstruct();
             Wiresheet.Dispose();
@@ -58,9 +85,37 @@ namespace dOSC.Pages
             Wiresheets = Engine.GetWireSheets();
         }
 
+        private void EditApp()
+        {
+            
+            if (NM != null)
+            {
+                if(Wiresheet != null)
+                {
+                    NM.NavigateTo($"apps/editor/{Wiresheet.AppGuid}");
+                }
+                else
+                {
+                    NM.NavigateTo($"apps/editor/");
+                }
+            }
+        }
+
+        private async Task DownloadApp()
+        {
+            if (Wiresheet != null)
+            {
+
+                await FileSystem.DownloadWiresheet(JS, Wiresheet);
+            }
+
+        }
+
+        
+
         // Modals 
         private ModalBase NewAppModal { get; set; }
-
-
+        private ModalBase UploadAppModal { get; set; }
+        private ModalBase DeleteAppModal { get; set; }
     }
 }
