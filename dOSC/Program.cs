@@ -4,6 +4,7 @@ using Serilog;
 using dOSC.Utilities;
 using dOSC.Services;
 using Serilog.Sanitizer.Extensions;
+using dOSC.Services.Connectors.Activity.Pulsoid;
 
 namespace dOSC
 {
@@ -30,7 +31,9 @@ namespace dOSC
             builder.Services.AddServerSideBlazor();
             builder.Services.AddSingleton<OSCService>();
             builder.Services.AddSingleton<dOSCEngine>();
+            builder.Services.AddSingleton<PulsoidService>();
             builder.Services.AddHostedService(sp => sp.GetRequiredService<OSCService>());
+            builder.Services.AddHostedService(sp => sp.GetRequiredService<PulsoidService>());
             builder.Services.AddHostedService(sp => sp.GetRequiredService<dOSCEngine>());
             builder.Services.AddLogging(logging =>
             {

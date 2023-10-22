@@ -47,6 +47,18 @@ namespace dOSC.Utilities
             File.WriteAllText(Path.Combine(SettingsFolder, "settings.json"), json);
         }
 
+        public static void SaveSetting(SettingBase setting)
+        {
+            var settings = LoadSettings() ?? new UserSettings();
+            switch (setting.SettingType)
+            {
+                case SettingType.Pulsoid:
+                    settings.Pulsoid = (PulsoidSetting)setting;
+                    break;
+            }
+            SaveSettings(settings);
+        } 
+
         public static UserSettings? LoadSettings()
         {
             // if file does not exist make one

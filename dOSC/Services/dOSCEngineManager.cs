@@ -5,6 +5,8 @@ using dOSC.Engine.Nodes.Math;
 using dOSC.Engine.Nodes.Utility;
 using dOSC.Engine.Nodes;
 using dOSC.Utilities;
+using dOSC.Engine.Nodes.Connector.Activity;
+using dOSC.Engine.Nodes.Connector.OSC.VRChat;
 
 namespace dOSC.Services
 {
@@ -112,6 +114,12 @@ namespace dOSC.Services
                     return new DivisionNode(dto.Guid, dto.Position);
                 case "AddNode":
                     return new AddNode(dto.Guid, dto.Position);
+                case "AbsoluteNode":
+                    return new AbsoluteNode(dto.Guid, dto.Position);
+                case "ClampNode":
+                    return new ClampNode(dto.Guid, dto.Position);
+                case "SquareRootNode":
+                    return new SquareRootNode(dto.Guid, dto.Position);
                 case "AndNode":
                     return new AndNode(dto.Guid, dto.Position);
                 case "OrNode":
@@ -132,6 +140,14 @@ namespace dOSC.Services
                     return new NumericNode(dto.Guid, dto.Value, dto.Position);
                 case "BooleanNode":
                     return new LogicNode(dto.Guid, dto.Value, dto.Position);
+                case "PulsoidNode":
+                    return new PulsoidNode(dto.Guid, _Pulsoid, dto.Position);
+                case "OSCBooleanNode":
+                    return new OSCBooleanNode(dto.Guid,dto.Option, _OSC, dto.Position);
+                case "OSCIntNode":
+                    return new OSCIntNode(dto.Guid, dto.Option, _OSC, dto.Position);
+                case "OSCFloatNode":
+                    return new OSCFloatNode(dto.Guid, dto.Option, _OSC, dto.Position);
                 case "OSCVRCAvatarReadNode":
                     return new OSCVRCAvatarReadNode(dto.Guid, _OSC, dto.Position);
                 case "OSCVRCAvatarWriteNode":

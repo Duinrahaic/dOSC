@@ -27,6 +27,7 @@
         </div>
         <div class="app-nav-footer">
             <div class="option">
+                <button class="btn btn-primary" Disabled> Settings Docs. </button>
             </div>
         </div>
     </div>
@@ -51,12 +52,21 @@
                 {
                     <OSCSettings Setting="(Setting as OSCSetting)" />
                 }
+                else if (Setting.SettingType == Services.User.SettingType.Pulsoid)
+                {
+                    <PulsoidSettings Setting="(Setting as PulsoidSetting)" OnValidSubmit="SettingChanged" />
+                }
             }
         </div>
         <div class="app-details-footer">
             <div class="option">
+                <button type="submit" form="settings-form" class="btn btn-primary" disabled="@(Setting == null)"> Update Setting </button>
             </div>
             <div class="option">
+                <button class="btn btn-danger" disabled="@(Setting != null? !Setting.IsEnabled : true)" @onclick="StopService"> Stop Service </button>
+            </div>
+            <div class="option">
+                <button class="btn btn-success" disabled="@(Setting != null? Setting.IsEnabled : true)" @onclick="StartService"> Start Service </button>
             </div>
         </div>
     </div>

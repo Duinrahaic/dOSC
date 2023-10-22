@@ -2,10 +2,6 @@
 
 namespace dOSC.Services.Connectors.OSC
 {
-
-
-
-
     public partial class OSCService : IHostedService
     {
         public delegate void OSCSubscriptionEventHandler(OSCSubscriptionEvent e);

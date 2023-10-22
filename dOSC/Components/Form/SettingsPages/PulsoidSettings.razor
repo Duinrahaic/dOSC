@@ -1,0 +1,18 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using dOSC.Components.UI
+<EditForm id="settings-form" Model="@Setting" OnValidSubmit="Submit">
+    <AppDetailItem Title="Authentication">
+        <ChildContent>
+              <div class="row w-100">
+                <div class="col-12">
+                    <div class="col-auto form-override">
+                        <label for="inputAccessToken" class="form-label">Pulsoid Access Token</label>
+                        <ValidationMessage For="@(() => Setting.AccessToken)" />
+                        <input type="password" class="form-control" id="inputAccessToken" @bind-value="@Setting.AccessToken"  >
+                        <small id="inputAccessTokenHelp" class="form-text">To get your access token go <a href="#" @onclick:preventDefault @onclick="OpenHelp" >here</a></small>
+                    </div>
+                </div>
+            </div> 
+        </ChildContent>
+    </AppDetailItem>
+</EditForm>

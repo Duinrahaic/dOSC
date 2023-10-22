@@ -7,6 +7,7 @@ using dOSC.Engine.Nodes.Logic;
 using dOSC.Engine.Nodes.Math;
 using dOSC.Engine.Nodes.Utility;
 using dOSC.Engine.Ports;
+using dOSC.Services.Connectors.Activity.Pulsoid;
 using dOSC.Services.Connectors.OSC;
 using dOSC.Utilities;
 
@@ -17,6 +18,7 @@ namespace dOSC.Services
         public readonly string Version = "1";
         private readonly ILogger<OSCService> _logger;
         private readonly OSCService? _OSC;
+        private readonly PulsoidService? _Pulsoid;
         private List<dOSCWiresheet> _WiresheetMemory = new();
         public dOSCWiresheet? ActiveWiresheet { get; set; }
         public BlazorDiagram _diagram { get; set; } = null!;
@@ -29,6 +31,7 @@ namespace dOSC.Services
             _logger = services.GetService<ILogger<OSCService>>()!;
             _logger.LogInformation("Initialized OSCService");
             _OSC = services.GetService<OSCService>();
+            _Pulsoid = services.GetService<PulsoidService>();
             LoadWiresheets();
             _WiresheetMemory.ForEach(w => w.Start());
         }

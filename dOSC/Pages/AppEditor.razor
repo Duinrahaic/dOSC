@@ -28,7 +28,17 @@
             </WiresheetToolbarDropdown>
             <WiresheetToolbarDropdown Title="Blocks">
                 <WiresheetToolbarDropdownSubmenuItem Title="Connectors">
-                    <WiresheetToolbarDropdownItem Title="OSC Button" OnClick="OSCButton" />
+                    <WiresheetToolbarDropdownSubmenuItem Title="Activity">
+                        <WiresheetToolbarDropdownItem Title="Pulsoid" OnClick="Pulsoid" />
+                    </WiresheetToolbarDropdownSubmenuItem>
+                    <WiresheetToolbarDropdownSubmenuItem Title="OSC">
+                        <WiresheetToolbarDropdownItem Title="OSC Boolean" OnClick="OSCBoolean" />
+                        <WiresheetToolbarDropdownItem Title="OSC Float" OnClick="OSCFloat" />
+                        <WiresheetToolbarDropdownItem Title="OSC Int" OnClick="OSCInt" />
+                        <WiresheetToolbarDropdownSubmenuItem Title="VRChat">
+                            <WiresheetToolbarDropdownItem Title="OSC VRC Button" OnClick="OSCButton" />
+                        </WiresheetToolbarDropdownSubmenuItem>
+                    </WiresheetToolbarDropdownSubmenuItem>
                 </WiresheetToolbarDropdownSubmenuItem>
                 <WiresheetToolbarDropdownSubmenuItem Title="Constants">
                     <WiresheetToolbarDropdownItem Title="Logic" OnClick="Logic" />
@@ -47,13 +57,23 @@
                     <WiresheetToolbarDropdownItem Title="XOr" OnClick="XOr" />
                 </WiresheetToolbarDropdownSubmenuItem>
                 <WiresheetToolbarDropdownSubmenuItem Title="Math">
+                    <WiresheetToolbarDropdownItem Title="Absolute" OnClick="Absolute" />
                     <WiresheetToolbarDropdownItem Title="Add" OnClick="Add" />
+                    <WiresheetToolbarDropdownItem Title="Average" OnClick="Average" />
+                    <WiresheetToolbarDropdownItem Title="Clamp" OnClick="Clamp" />
                     <WiresheetToolbarDropdownItem Title="Division" OnClick="Divide" />
+                    <WiresheetToolbarDropdownItem Title="Max" OnClick="Max" />
+                    <WiresheetToolbarDropdownItem Title="Min" OnClick="Min" />
                     <WiresheetToolbarDropdownItem Title="Multiplication" OnClick="Multiply" />
+                    <WiresheetToolbarDropdownItem Title="Negative" OnClick="Negative" />
+                    <WiresheetToolbarDropdownItem Title="Power" OnClick="Power" />
+                    <WiresheetToolbarDropdownItem Title="Sine" OnClick="Sine" />
+                    <WiresheetToolbarDropdownItem Title="Square Root" OnClick="SquareRoot" />
                     <WiresheetToolbarDropdownItem Title="Subtract" OnClick="Subtract" />
+                    <WiresheetToolbarDropdownItem Title="Summation" OnClick="Summation" />
+
                 </WiresheetToolbarDropdownSubmenuItem>
                 <WiresheetToolbarDropdownSubmenuItem Title="Utility">
-                    <WiresheetToolbarDropdownItem Title="Sine" OnClick="Sine" />
                 </WiresheetToolbarDropdownSubmenuItem>
             </WiresheetToolbarDropdown>
         </ChildContent>

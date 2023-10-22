@@ -16,6 +16,9 @@ using Microsoft.AspNetCore.Components;
 using dOSC.Engine.Ports;
 using dOSC.Engine.Links;
 using dOSC.Components.Modals;
+using dOSC.Services.Connectors.Activity.Pulsoid;
+using dOSC.Engine.Nodes.Connector.Activity;
+using dOSC.Engine.Nodes.Connector.OSC.VRChat;
 
 namespace dOSC.Pages
 {
@@ -27,6 +30,8 @@ namespace dOSC.Pages
         public dOSCWiresheet? Wiresheet { get; set; }
         [Inject]
         public OSCService? _OSC { get; set; }
+        [Inject]
+        public PulsoidService _Pulsoid { get; set; }
 
         private BlazorDiagram diagram { get; set; }
 
@@ -209,8 +214,16 @@ namespace dOSC.Pages
         }
 
         #region Connectors
-        private void OSCButton() => diagram.Nodes.Add(new OSCVRCButtonNode(service:_OSC, position: CenterOfScreen()));
+        // Activity
+        private void Pulsoid() => diagram.Nodes.Add(new PulsoidNode(service: _Pulsoid, position: CenterOfScreen()));
 
+        // OSC
+        private void OSCBoolean() => diagram.Nodes.Add(new OSCBooleanNode(service: _OSC, position: CenterOfScreen()));
+        private void OSCFloat() => diagram.Nodes.Add(new OSCFloatNode(service: _OSC, position: CenterOfScreen()));
+        private void OSCInt() => diagram.Nodes.Add(new OSCIntNode(service: _OSC, position: CenterOfScreen()));
+
+        // OSC - VRChat
+        private void OSCButton() => diagram.Nodes.Add(new OSCVRCButtonNode(service:_OSC, position: CenterOfScreen()));
         #endregion
 
         #region Constants
@@ -232,14 +245,24 @@ namespace dOSC.Pages
         #endregion
 
         #region Math
+        private void Absolute() => diagram.Nodes.Add(new AbsoluteNode(position: CenterOfScreen()));
         private void Add() => diagram.Nodes.Add(new AddNode(position: CenterOfScreen()));
-        private void Subtract() => diagram.Nodes.Add(new SubtractNode(position: CenterOfScreen()));
-        private void Multiply() => diagram.Nodes.Add(new MultiplicationNode(position: CenterOfScreen()));
+        private void Average() => diagram.Nodes.Add(new AverageNode(position: CenterOfScreen()));
+        private void Clamp() => diagram.Nodes.Add(new ClampNode(position: CenterOfScreen()));
         private void Divide() => diagram.Nodes.Add(new DivisionNode(position: CenterOfScreen()));
+        private void Max() => diagram.Nodes.Add(new MaxNode(position: CenterOfScreen()));
+        private void Min() => diagram.Nodes.Add(new MinNode(position: CenterOfScreen()));
+        private void Multiply() => diagram.Nodes.Add(new MultiplicationNode(position: CenterOfScreen()));
+        private void Negative() => diagram.Nodes.Add(new NegativeNode(position: CenterOfScreen()));
+        private void Power() => diagram.Nodes.Add(new PowerNode(position: CenterOfScreen()));
+        private void Sine() => diagram.Nodes.Add(new SineNode(position: CenterOfScreen()));
+        private void Subtract() => diagram.Nodes.Add(new SubtractNode(position: CenterOfScreen()));
+        private void SquareRoot() => diagram.Nodes.Add(new SquareRootNode(position: CenterOfScreen()));
+        private void Summation() => diagram.Nodes.Add(new SummationNode(position: CenterOfScreen()));
+
         #endregion
 
         #region Utility
-        private void Sine() => diagram.Nodes.Add(new SineNode(position: CenterOfScreen()));
 
         #endregion
 

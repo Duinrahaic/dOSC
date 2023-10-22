@@ -1,0 +1,16 @@
+﻿@using Blazor.Diagrams.Components.Renderers
+<div class="@this.Node.BlockHeaderClass" style="width:180px;">
+    <div class="block-header d-flex d-inline w-100">
+        <div class="icon">
+        </div>
+        <div class="title">Pulsoid</div>
+
+    </div>
+    <div class="block-body">
+        <div class="d-flex d-inline p-1 align-items-center justify-center">
+            <PortRenderer Class="numeric" Port="this.Node.Ports.First()" />
+            <h5> Heart Rate </h5>
+        </div>
+
+    </div>
+</div>

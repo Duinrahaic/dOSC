@@ -8,10 +8,10 @@ namespace dOSC.Services.User
     {
         public dOSCSetting dOSC { get; set; } = new();
         public OSCSetting OSC { get; set; } = new();
-
+        public PulsoidSetting Pulsoid { get; set; } = new();
         public List<SettingBase> GetSettings()
         {
-            return new() { dOSC, OSC };
+            return new() { dOSC, OSC, Pulsoid };
         }
     }
 }

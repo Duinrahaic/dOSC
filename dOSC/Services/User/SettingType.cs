@@ -5,6 +5,6 @@
         Unknown,
         dOSC,
         OSC,
-        
+        Pulsoid,
     }
 }
