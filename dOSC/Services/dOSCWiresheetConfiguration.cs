@@ -8,12 +8,15 @@ using dOSC.Components.Wiresheet.Blocks.Connectors.OSC.VRChat;
 using dOSC.Components.Wiresheet.Blocks.Constant;
 using dOSC.Components.Wiresheet.Blocks.Logic;
 using dOSC.Components.Wiresheet.Blocks.Math;
+using dOSC.Components.Wiresheet.Blocks.Utility;
 using dOSC.Engine.Nodes.Connector.Activity;
 using dOSC.Engine.Nodes.Connector.OSC;
 using dOSC.Engine.Nodes.Connector.OSC.VRChat;
 using dOSC.Engine.Nodes.Constant;
 using dOSC.Engine.Nodes.Logic;
 using dOSC.Engine.Nodes.Math;
+using dOSC.Engine.Nodes.Utility;
+using System.Diagnostics;
 
 namespace dOSC.Services
 {
@@ -54,11 +57,17 @@ namespace dOSC.Services
 
             // OSC
             BD.RegisterComponent<OSCBooleanNode, OSCBooleanBlock>();
+            BD.RegisterComponent<OSCBooleanReadNode, OSCBooleanReadBlock>();
             BD.RegisterComponent<OSCIntNode, OSCIntBlock>();
+            BD.RegisterComponent<OSCIntReadNode, OSCIntReadBlock>();
             BD.RegisterComponent<OSCFloatNode, OSCFloatBlock>();
+            BD.RegisterComponent<OSCFloatReadNode, OSCFloatReadBlock>();
 
             // OSC - VRChat
             BD.RegisterComponent<OSCVRCButtonNode, OSCVRCButtonBlock>();
+            BD.RegisterComponent<OSCVRCAvatarReadNode, OSCVRCAvatarReadBlock>();
+            BD.RegisterComponent<OSCVRCChatboxNode, OSCVRCChatboxBlock>();
+            BD.RegisterComponent<OSCVRCAxisNode, OSCVRCAxisBlock>();
 
             // Constants
             BD.RegisterComponent<LogicNode, LogicBlock>();
@@ -93,6 +102,8 @@ namespace dOSC.Services
             BD.RegisterComponent<SummationNode, SummationBlock>();
 
             // Utility
+            BD.RegisterComponent<LogicSwitchNode, LogicSwitchBlock>();
+            BD.RegisterComponent<NumericSwitchNode, NumericSwitchBlock>();
         }
     }
 }

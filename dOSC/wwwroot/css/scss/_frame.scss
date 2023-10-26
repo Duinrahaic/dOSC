@@ -10,8 +10,8 @@
     background-color: $color-theme-1;
     color: $color-lighter-dark;
     font-family: 'Lucida Console';
-    min-height: 34px;
-    max-height: 34px;
+    min-height: $title-bar-size;
+    max-height: $title-bar-size;
     top: 0;
     width: 100%;
     position: absolute;

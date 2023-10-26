@@ -5,14 +5,14 @@ using Newtonsoft.Json;
 
 namespace dOSC.Engine.Nodes.Connector.OSC.VRChat
 {
-    public class OSCVRCWriteNode : BaseNode
+    public class OSCVRCAvatarWriteNode : BaseNode
     {
-        public OSCVRCWriteNode(OSCService? service = null, Point? position = null) : base(position ?? new Point(0, 0))
+        public OSCVRCAvatarWriteNode(OSCService? service = null, Point? position = null) : base(position ?? new Point(0, 0))
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, true)); // Viseme
             _service = service;
         }
-        public OSCVRCWriteNode(Guid guid, OSCService? service = null, Point? position = null) : base(guid, position ?? new Point(0, 0))
+        public OSCVRCAvatarWriteNode(Guid guid, OSCService? service = null, Point? position = null) : base(guid, position ?? new Point(0, 0))
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, true)); // Viseme
             _service = service;

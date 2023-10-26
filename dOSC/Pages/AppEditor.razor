@@ -33,10 +33,16 @@
                     </WiresheetToolbarDropdownSubmenuItem>
                     <WiresheetToolbarDropdownSubmenuItem Title="OSC">
                         <WiresheetToolbarDropdownItem Title="OSC Boolean" OnClick="OSCBoolean" />
+                        <WiresheetToolbarDropdownItem Title="OSC Boolean Read" OnClick="OSCReadBoolean" />
                         <WiresheetToolbarDropdownItem Title="OSC Float" OnClick="OSCFloat" />
+                        <WiresheetToolbarDropdownItem Title="OSC Float Read" OnClick="OSCReadFloat" />
                         <WiresheetToolbarDropdownItem Title="OSC Int" OnClick="OSCInt" />
+                        <WiresheetToolbarDropdownItem Title="OSC Int Read" OnClick="OSCReadInt" />
                         <WiresheetToolbarDropdownSubmenuItem Title="VRChat">
-                            <WiresheetToolbarDropdownItem Title="OSC VRC Button" OnClick="OSCButton" />
+                            <WiresheetToolbarDropdownItem Title="OSC VRC Avatar Read" OnClick="OSCVRCAvatarRead" />
+                            <WiresheetToolbarDropdownItem Title="OSC VRC Axis" OnClick="OSCVRCAxis" />
+                            <WiresheetToolbarDropdownItem Title="OSC VRC Button" OnClick="OSCVRCButton" />
+                            <WiresheetToolbarDropdownItem Title="OSC VRC ChatBox" OnClick="OSCVRCChat" />
                         </WiresheetToolbarDropdownSubmenuItem>
                     </WiresheetToolbarDropdownSubmenuItem>
                 </WiresheetToolbarDropdownSubmenuItem>
@@ -71,9 +77,10 @@
                     <WiresheetToolbarDropdownItem Title="Square Root" OnClick="SquareRoot" />
                     <WiresheetToolbarDropdownItem Title="Subtract" OnClick="Subtract" />
                     <WiresheetToolbarDropdownItem Title="Summation" OnClick="Summation" />
-
                 </WiresheetToolbarDropdownSubmenuItem>
                 <WiresheetToolbarDropdownSubmenuItem Title="Utility">
+                    <WiresheetToolbarDropdownItem Title="Logic Switch" OnClick="LogicSwitch" />
+                    <WiresheetToolbarDropdownItem Title="Numeric Switch" OnClick="NumericSwitch" />
                 </WiresheetToolbarDropdownSubmenuItem>
             </WiresheetToolbarDropdown>
         </ChildContent>

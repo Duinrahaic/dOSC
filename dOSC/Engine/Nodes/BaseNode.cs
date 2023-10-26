@@ -11,7 +11,7 @@ namespace dOSC.Engine.Nodes
     public abstract class BaseNode : NodeModel
     {
         private dynamic _value;
-        private bool _showLinksLabel = false;
+        private bool _showLinksLabel = true;
         public event Action<BaseNode>? ValueChanged;
 
 
@@ -29,6 +29,11 @@ namespace dOSC.Engine.Nodes
 
 
         }
+        public IReadOnlyList<BasePort> GetPorts()
+        {
+            return (IReadOnlyList<BasePort>)Ports;
+        }
+
         public Guid Guid { get; set; } = Guid.NewGuid();
         public virtual string NodeClass => "base";
         public virtual string Option => string.Empty;
@@ -95,7 +100,7 @@ namespace dOSC.Engine.Nodes
                     {
                         double v = 0;
                         double distance = 0.5;
-                        var cpm = port as NumericPort;
+                        var cpm = port as BasePort;
                         if (cpm == null)
                         { //unknown
                             distance = 0.5;

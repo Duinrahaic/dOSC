@@ -19,6 +19,7 @@ using dOSC.Components.Modals;
 using dOSC.Services.Connectors.Activity.Pulsoid;
 using dOSC.Engine.Nodes.Connector.Activity;
 using dOSC.Engine.Nodes.Connector.OSC.VRChat;
+using System.Xml.Linq;
 
 namespace dOSC.Pages
 {
@@ -74,8 +75,34 @@ namespace dOSC.Pages
             diagram.Links.Added += OnLinkAdded;
             diagram.Links.Removed += OnLinkRemoved;
 
-            Wiresheet.GetAllNodes().ForEach(n => { diagram.Nodes.Add(n); });
-            Wiresheet.GetAllLinks().ForEach(n => { diagram.Links.Add(n); });
+
+            List<BaseNode> NodesLocal = new();
+            Wiresheet.GetAllNodes().ForEach(n => { NodesLocal.Add(diagram.Nodes.Add(n)); });
+            foreach(BaseLink l in Wiresheet.GetAllLinks())
+            {
+                var BlockSource = diagram.Nodes.FirstOrDefault(x => (x as BaseNode)?.Guid == l.SourcePort.ParentGuid);
+                var BlockTarget = diagram.Nodes.FirstOrDefault(x => (x as BaseNode)?.Guid == l.TargetPort.ParentGuid);
+
+                if (BlockSource != null && BlockTarget != null)
+                {
+                    var SourcePort = BlockSource.Ports.FirstOrDefault(x => (x as BasePort)?.Guid == l.SourcePort.Guid);
+                    var TargetPort = BlockTarget.Ports.FirstOrDefault(x => (x as BasePort)?.Guid == l.TargetPort.Guid);
+                    if (SourcePort != null && TargetPort != null)
+                    {
+                        var Link = new LinkModel(SourcePort, TargetPort);
+                        diagram.Links.Add(Link);
+                    }
+                }
+            }
+
+        }
+
+        protected override void OnAfterRender(bool firstRender)
+        {
+            if(firstRender)
+            {
+                
+            }
         }
 
         private void OnNodeAdded(NodeModel node)
@@ -110,9 +137,6 @@ namespace dOSC.Pages
 
         private void OnLinkAdded(BaseLinkModel link)
         {
-            var s = (link.Source.Model as BasePort);
-            var t = (link.Target.Model as BasePort);
-
             link.TargetChanged += OnLinkTargetChanged;
             
         }
@@ -182,7 +206,17 @@ namespace dOSC.Pages
                 var s = link.Source.Model as BasePort;
                 var t = link.Target.Model as BasePort;
 
-                Wiresheet._Links.Add(new(s, t));
+                if(diagram.Nodes.Any(x=> (x as BaseNode)?.Guid == s!.ParentGuid) == false 
+                    || Wiresheet._Nodes.Any(x=> x.Guid == t!.ParentGuid) == false)
+                {
+
+                }
+                else
+                {
+                    Wiresheet._Links.Add(new(s, t));
+                }
+
+
             });
             _Engine.SaveWiresheet(Wiresheet);
         }
@@ -219,11 +253,18 @@ namespace dOSC.Pages
 
         // OSC
         private void OSCBoolean() => diagram.Nodes.Add(new OSCBooleanNode(service: _OSC, position: CenterOfScreen()));
+        private void OSCReadBoolean() => diagram.Nodes.Add(new OSCBooleanReadNode(service: _OSC, position: CenterOfScreen()));
         private void OSCFloat() => diagram.Nodes.Add(new OSCFloatNode(service: _OSC, position: CenterOfScreen()));
+        private void OSCReadFloat() => diagram.Nodes.Add(new OSCFloatReadNode(service: _OSC, position: CenterOfScreen()));
         private void OSCInt() => diagram.Nodes.Add(new OSCIntNode(service: _OSC, position: CenterOfScreen()));
+        private void OSCReadInt() => diagram.Nodes.Add(new OSCIntReadNode(service: _OSC, position: CenterOfScreen()));
 
         // OSC - VRChat
-        private void OSCButton() => diagram.Nodes.Add(new OSCVRCButtonNode(service:_OSC, position: CenterOfScreen()));
+        private void OSCVRCAvatarRead() => diagram.Nodes.Add(new OSCVRCAvatarReadNode(service:_OSC, position: CenterOfScreen()));
+        private void OSCVRCAvatarWrite() => diagram.Nodes.Add(new OSCVRCAvatarWriteNode(service:_OSC, position: CenterOfScreen()));
+        private void OSCVRCAxis() => diagram.Nodes.Add(new OSCVRCAxisNode(service:_OSC, position: CenterOfScreen()));
+        private void OSCVRCChat() => diagram.Nodes.Add(new OSCVRCChatboxNode(service:_OSC, position: CenterOfScreen()));
+        private void OSCVRCButton() => diagram.Nodes.Add(new OSCVRCButtonNode(service:_OSC, position: CenterOfScreen()));
         #endregion
 
         #region Constants
@@ -263,6 +304,9 @@ namespace dOSC.Pages
         #endregion
 
         #region Utility
+
+        private void LogicSwitch() => diagram.Nodes.Add(new LogicSwitchNode(position: CenterOfScreen()));
+        private void NumericSwitch() => diagram.Nodes.Add(new NumericSwitchNode(position: CenterOfScreen()));
 
         #endregion
 

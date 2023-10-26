@@ -6,7 +6,7 @@
     background: $color-theme-1;
     font-family: "Open Sans", sans-serif;
     color: $color-full-white;
-    min-height: calc(100vh - 34px);
+    min-height: calc(100vh - $title-bar-size);
 }
 
 .appbody .nav {

@@ -20,8 +20,12 @@ namespace dOSC.Engine.Nodes.Connector.Activity
          }
         public PulsoidNode(Guid guid, PulsoidService? service = null, Point? position = null) : base(guid, position ?? new Point(0, 0))
         {
-            AddPort(new NumericPort(PortGuids.Port_1, this, true));
+            AddPort(new NumericPort(PortGuids.Port_1, this, false));
             _service = service;
+            if (_service != null)
+            {
+                _service.OnPulsoidMessageRecieved += _service_OnPulsoidMessageRecieved;
+            }
         }
         [JsonProperty]
         public override string NodeClass => this.GetType().Name.ToString();

@@ -17,7 +17,7 @@ namespace dOSC.Services.Connectors.Activity.Pulsoid
         private const int ReceiveBufferSize = 256;
         private const string _url = @"wss://dev.pulsoid.net/api/v1/data/real_time";
         private const string _scope = "data:heart_rate:read";
-         private Uri _URI => new Uri($"{_url}?access_token={Setting.AccessToken}");
+        private Uri _URI => new Uri($"{_url}?access_token={Setting.AccessToken}");
         CancellationTokenSource _CTS = new CancellationTokenSource();
         private ILogger<PulsoidService> _logger;
         private PulsoidSetting? Setting;
@@ -107,17 +107,25 @@ namespace dOSC.Services.Connectors.Activity.Pulsoid
             }
             while (_client.State == WebSocketState.Open)
             {
+                try
+                {
+                    var result = await _client.ReceiveAsync(new ArraySegment<byte>(buffer), _CTS.Token);
+                    if (result.MessageType == WebSocketMessageType.Close)
+                    {
+                        _logger.LogDebug($"Pulsoid closed websocket ... disconnecting");
+                        await _client.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, _CTS.Token);
+                        Disconnect();
+                    }
+                    else
+                    {
+                        HandleMessage(buffer, result.Count);
+                    }
+                }
+                catch(Exception ex) 
+                {
+                    _logger.LogError("Pulsoid encountered an error while listening for data");
+                }
                 
-                var result = await _client.ReceiveAsync(new ArraySegment<byte>(buffer), _CTS.Token);
-                if (result.MessageType == WebSocketMessageType.Close)
-                {
-                    await _client.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, _CTS.Token);
-                    Disconnect();
-                }
-                else
-                {
-                    HandleMessage(buffer, result.Count);
-                }
             }
             
         }
@@ -138,8 +146,16 @@ namespace dOSC.Services.Connectors.Activity.Pulsoid
             try
             {
                 result = JsonConvert.DeserializeObject<PulsoidReading>(jobject.ToString());
-                if(result != null) 
+                if (result != null)
+                {
                     OnPulsoidMessageRecieved?.Invoke(result);
+                    _logger.LogDebug($"Pulsoid Sent: {result.Data.HeartRate} bpm");
+                }
+                else
+                {
+
+                }
+                
             }
             catch
             {

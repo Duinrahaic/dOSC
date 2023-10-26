@@ -11,34 +11,31 @@ namespace dOSC.Services
         public dOSCWiresheet()
         {
             AppGuid = Guid.NewGuid();
-            BlazorDiagram = new(dOSCWiresheetConfiguration.Options);
-            BlazorDiagram.RegisterBlocks();
-            BlazorDiagram.SuspendRefresh = true;
-            Build();
+            Diagram = new(dOSCWiresheetConfiguration.Options);
+            Diagram.RegisterBlocks();
+            // Diagram.SuspendRefresh = true;
         }
 
         public dOSCWiresheet(Guid AppGuid)
         {
-            BlazorDiagram = new(dOSCWiresheetConfiguration.Options);
-            BlazorDiagram.RegisterBlocks();
-            BlazorDiagram.SuspendRefresh = true;
+            Diagram = new(dOSCWiresheetConfiguration.Options);
+            Diagram.RegisterBlocks();
+            // Diagram.SuspendRefresh = true;
             this.AppGuid = AppGuid;
-            Build();
         }
 
 
         public dOSCWiresheet(dOSCWiresheetDTO dto)
         {
-            BlazorDiagram = new(dOSCWiresheetConfiguration.Options);
-            BlazorDiagram.RegisterBlocks();
+            Diagram = new(dOSCWiresheetConfiguration.Options);
+            Diagram.RegisterBlocks();
             AppGuid = dto.AppGuid;
             AppName = dto.AppName;
             AppVersion = dto.AppVersion;
             AppDescription = dto.AppDescription;
             Created = dto.Created;
             Modified = dto.Modified;
-            IsPlaying = dto.Running;
-            Build();
+            //this.Diagram.SuspendRefresh = false;
         }
 
         public dOSCWiresheetDTO GetDTO()

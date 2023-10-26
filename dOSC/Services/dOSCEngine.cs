@@ -33,7 +33,8 @@ namespace dOSC.Services
             _OSC = services.GetService<OSCService>();
             _Pulsoid = services.GetService<PulsoidService>();
             LoadWiresheets();
-            _WiresheetMemory.ForEach(w => w.Start());
+
+            //_WiresheetMemory.ForEach(w => w.Start());
         }
 
         public List<dOSCWiresheet> GetWireSheets()
@@ -48,15 +49,7 @@ namespace dOSC.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            try
-            {
-                FileSystem.CreateFolders();
-                _ = FileSystem.LoadSettings();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogCritical($"Unable to create file system folders: {ex}");
-            }
+            
             return Task.CompletedTask;
 
         }

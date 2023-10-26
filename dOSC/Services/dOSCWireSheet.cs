@@ -1,9 +1,12 @@
 ﻿using Blazor.Diagrams;
+using Blazor.Diagrams.Core;
 using Blazor.Diagrams.Core.Anchors;
 using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.Models.Base;
 using dOSC.Engine.Links;
 using dOSC.Engine.Nodes;
+using dOSC.Engine.Nodes.Constant;
+using dOSC.Engine.Nodes.Logic;
 using dOSC.Engine.Ports;
 using Newtonsoft.Json;
 
@@ -12,7 +15,7 @@ namespace dOSC.Services
     public partial class dOSCWiresheet : IDisposable
     {
         [JsonIgnore]        
-        public BlazorDiagram BlazorDiagram { get; set; }
+        public BlazorDiagram Diagram { get; set; }
 
         public List<BaseNode> _Nodes = new List<BaseNode>();
         public List<BaseLink> _Links = new List<BaseLink>();
@@ -20,11 +23,11 @@ namespace dOSC.Services
         public bool IsPlaying {
             get 
             { 
-                return !BlazorDiagram.SuspendRefresh;
+                return !Diagram.SuspendRefresh;
             }
             set 
             {
-                BlazorDiagram.SuspendRefresh = value;
+                Diagram.SuspendRefresh = value;
             }
         }
         public bool HasError { get; set; } = false;
@@ -38,24 +41,32 @@ namespace dOSC.Services
             if (!_Built)
             {
                 
-                BlazorDiagram.Nodes.Added += OnNodeAdded;
-                BlazorDiagram.Nodes.Removed += OnNodeRemoved;
-                BlazorDiagram.Links.Added += OnLinkAdded;
-                BlazorDiagram.Links.Removed += OnLinkRemoved;
+                Diagram.Nodes.Added += OnNodeAdded;
+                Diagram.Nodes.Removed += OnNodeRemoved;
+                Diagram.Links.Added += OnLinkAdded;
+                Diagram.Links.Removed += OnLinkRemoved;
                 foreach (var node in _Nodes)
                 {
-                    BlazorDiagram.Nodes.Add(node);
+                    Diagram.Nodes.Add(node);
                 }
 
-                foreach (var r in _Links)
+                foreach (BaseLink l in _Links)
                 {
-                    ///The connection point will be the intersection of
-                    // a line going from the target to the center of the source
-                    var sourceAnchor = new SinglePortAnchor(r.SourcePort);
-                    // The connection point will be the port's position
-                    var targetAnchor = new SinglePortAnchor(r.TargetPort);
-                    var link = BlazorDiagram.Links.Add(new LinkModel(sourceAnchor, targetAnchor));
+                    var BlockSource = Diagram.Nodes.FirstOrDefault(x => (x as BaseNode)?.Guid == l.SourcePort.ParentGuid);
+                    var BlockTarget = Diagram.Nodes.FirstOrDefault(x => (x as BaseNode)?.Guid == l.TargetPort.ParentGuid);
+
+                    if (BlockSource != null && BlockTarget != null)
+                    {
+                        var SourcePort = BlockSource.Ports.FirstOrDefault(x => (x as BasePort)?.Guid == l.SourcePort.Guid);
+                        var TargetPort = BlockTarget.Ports.FirstOrDefault(x => (x as BasePort)?.Guid == l.TargetPort.Guid);
+                        if (SourcePort != null && TargetPort != null)
+                        {
+                            var Link = new LinkModel(SourcePort, TargetPort);
+                            Diagram.Links.Add(Link);
+                        }
+                    }
                 }
+
 
                 _Built = true;
             }
@@ -64,38 +75,38 @@ namespace dOSC.Services
         {
             if (_Built)
             {
-                BlazorDiagram.Nodes.Added -= OnNodeAdded;
-                BlazorDiagram.Nodes.Removed -= OnNodeRemoved;
-                BlazorDiagram.Links.Added -= OnLinkAdded;
-                BlazorDiagram.Links.Removed -= OnLinkRemoved;
-                BlazorDiagram.SuspendRefresh = true;
-                BlazorDiagram = new(dOSCWiresheetConfiguration.Options);
-                BlazorDiagram.RegisterBlocks();
+                Diagram.Nodes.Added -= OnNodeAdded;
+                Diagram.Nodes.Removed -= OnNodeRemoved;
+                Diagram.Links.Added -= OnLinkAdded;
+                Diagram.Links.Removed -= OnLinkRemoved;
+                //Diagram.SuspendRefresh = true;
+                Diagram = new(dOSCWiresheetConfiguration.Options);
+                Diagram.RegisterBlocks();
                 _Built = false;
             }
 
         }
         public void Start()
         {
-            BlazorDiagram.SuspendRefresh = false;
+            Diagram.SuspendRefresh = false;
         }
         public void Stop()
         {
-            BlazorDiagram.SuspendRefresh = true;
+            Diagram.SuspendRefresh = true;
         }
 
 
         public void AddNode(BaseNode node)
         {
             _Nodes.Add(node);
-            BlazorDiagram.Nodes.Add(node);
+            Diagram.Nodes.Add(node);
         }
 
         public void AddRelationship(BasePort source, BasePort target)
         {
             BaseLink link = new(source, target);
             _Links.Add(link);
-            BlazorDiagram.Links.Add(link);
+            Diagram.Links.Add(link as LinkModel);
         }
 
         public List<BaseNode> GetAllNodes()
@@ -118,9 +129,9 @@ namespace dOSC.Services
 
         public void OnValueChanged(BaseNode op)
         {
-            if(BlazorDiagram != null)
+            if(Diagram != null)
             {
-                foreach (var link in BlazorDiagram.Links)
+                foreach (var link in Diagram.Links)
                 {
                     var sp = (link.Source as SinglePortAnchor)!;
                     var tp = (link.Target as SinglePortAnchor)!;
@@ -165,10 +176,10 @@ namespace dOSC.Services
 
         public void Dispose()
         {
-            BlazorDiagram.Nodes.Added -= OnNodeAdded;
-            BlazorDiagram.Nodes.Removed -= OnNodeRemoved;
-            BlazorDiagram.Links.Added -= OnLinkAdded;
-            BlazorDiagram.Links.Removed -= OnLinkRemoved;
+            Diagram.Nodes.Added -= OnNodeAdded;
+            Diagram.Nodes.Removed -= OnNodeRemoved;
+            Diagram.Links.Added -= OnLinkAdded;
+            Diagram.Links.Removed -= OnLinkRemoved;
         }
     }
 }

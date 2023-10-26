@@ -11,12 +11,12 @@
 .app-page .app-nav {
     background: $color-theme-2;
     width: 230px;
-    min-width:230px;
+    min-width: 230px;
     border-right: 1px solid $color-theme-5;
     display: flex;
     flex-direction: column;
     position: relative;
-    height: calc(100vh - 34px);
+    height: calc(100vh - $title-bar-size);
 }
 
 .app-page .app-nav .app-nav-header {
@@ -179,7 +179,7 @@
     flex-direction: column;
     width: 100%;
     position: relative;
-    height: calc(100vh - 34px);
+    height: calc(100vh - $title-bar-size);
 }
 
 .app-page .app-details .app-details-header {

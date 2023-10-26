@@ -19,6 +19,7 @@ namespace dOSC.Services.Connectors.OSC
         {
             _logger = services.GetService<ILogger<OSCService>>()!;
             _logger.LogInformation("Initialized OSCService");
+            StartService();
         }
 
         private HashSet<string> DiscoveredParameters = new();
@@ -82,7 +83,7 @@ namespace dOSC.Services.Connectors.OSC
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            StartService();
+            
             return Task.CompletedTask;
         }
 

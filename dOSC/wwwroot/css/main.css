@@ -318,7 +318,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  height: calc(100vh - 34px);
+  height: calc(100vh - 0px);
 }
 
 .app-page .app-nav .app-nav-header {
@@ -479,7 +479,7 @@
   flex-direction: column;
   width: 100%;
   position: relative;
-  height: calc(100vh - 34px);
+  height: calc(100vh - 0px);
 }
 
 .app-page .app-details .app-details-header {
@@ -872,7 +872,7 @@ label {
   background: #1d1e23;
   font-family: "Open Sans", sans-serif;
   color: #ffffff;
-  min-height: calc(100vh - 34px);
+  min-height: calc(100vh - 0px);
 }
 
 .appbody .nav {
@@ -1072,8 +1072,8 @@ label {
   background-color: #1d1e23;
   color: #45494e;
   font-family: "Lucida Console";
-  min-height: 34px;
-  max-height: 34px;
+  min-height: 0px;
+  max-height: 0px;
   top: 0;
   width: 100%;
   position: absolute;

@@ -5,17 +5,31 @@ using dOSC.Utilities;
 using dOSC.Services;
 using Serilog.Sanitizer.Extensions;
 using dOSC.Services.Connectors.Activity.Pulsoid;
+using Photino.Blazor;
+using Photino;
+using System.Reflection.PortableExecutable;
 
 namespace dOSC
 {
+
     public class Program
     {
+        [STAThread]
         public static void Main(string[] args)
         {
+            // Photino
+
+            var builder = PhotinoBlazorAppBuilder.CreateDefault(args);
+            builder.RootComponents.Add<App>("app");
+
+
+            FileSystem.CreateFolders();
+            _ = FileSystem.LoadSettings();
+
             var Serilog = new LoggerConfiguration()
                 .WriteTo.Async(writeTo => writeTo.Console(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff}[{Level}] {Message}{NewLine}{Exception}"))
                 .WriteTo.Async(writeTo => writeTo.File(
-                    Path.Combine(FileSystem.LogFolder,"dOSC"), 
+                    Path.Combine(FileSystem.LogFolder, "dOSC"),
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff}[{Level}] {Message}{NewLine}{Exception}",
                     rollingInterval: RollingInterval.Day,
                     retainedFileCountLimit: 7,
@@ -26,9 +40,10 @@ namespace dOSC
                 .Enrich.FromLogContext()
                 .CreateLogger();
 
-            var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddRazorPages();
-            builder.Services.AddServerSideBlazor();
+            //var builder = WebApplication.CreateBuilder(args);
+            //builder.Services.AddRazorPages();
+            //builder.Services.AddServerSideBlazor();
+
             builder.Services.AddSingleton<OSCService>();
             builder.Services.AddSingleton<dOSCEngine>();
             builder.Services.AddSingleton<PulsoidService>();
@@ -39,22 +54,41 @@ namespace dOSC
             {
                 logging.AddSerilog(logger: Serilog, dispose: true);
             });
-            //builder.Logging.AddSerilog(logger: Serilog, dispose: true) ;
-            string ENV = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "";
-            if (ENV != "Development")
-            {
-                builder.LaunchElectronWindow(args);
-            }
+
+            //string ENV = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "";
+            //if (ENV != "Development")
+            //{
+            //    builder.LaunchElectronWindow(args);
+            //}
 
             var app = builder.Build();
 
-            app.UseStaticFiles();
+            app.MainWindow.Centered = true;
+            app.MainWindow.SetChromeless(false);
+            app.MainWindow
+                .SetTitle("dOSC"); //                   .SetIconFile("favicon.ico")
 
-            app.UseRouting();
+            #if (DEBUG)
+                app.MainWindow.DevToolsEnabled = true;
+                app.MainWindow.ContextMenuEnabled = true;
+            #else
+                app.MainWindow.DevToolsEnabled = false;
+                app.MainWindow.ContextMenuEnabled = false;
+            #endif
 
-            app.MapBlazorHub();
-            app.MapFallbackToPage("/_Host");
-            
+
+            AppDomain.CurrentDomain.UnhandledException += (sender, error) =>
+            {
+                app.MainWindow.ShowMessage("Fatal exception", error.ExceptionObject.ToString());
+            };
+
+            //app.UseStaticFiles();
+
+            //app.UseRouting();
+
+            //app.MapBlazorHub();
+            //app.MapFallbackToPage("/_Host");
+
             GlobalStopwatch.Start();
             GlobalTimer.StartGlobalTimer();
             app.Run();
@@ -64,10 +98,3 @@ namespace dOSC
 
     }
 }
-
-
-
-
-
-
-
