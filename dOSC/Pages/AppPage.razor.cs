@@ -1,5 +1,5 @@
 ﻿using dOSC.Components.Modals;
-using dOSC.Services;
+using dOSCEngine.Services;
 using dOSC.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -12,7 +12,7 @@ namespace dOSC.Pages
     {
 
         [Inject]
-        public dOSCEngine? Engine { get; set; }
+        public dOSCService? Engine { get; set; }
         [Inject]
         public IJSRuntime? JS { get; set; }
         [Inject]

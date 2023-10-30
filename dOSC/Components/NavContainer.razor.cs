@@ -1,4 +1,4 @@
-﻿using dOSC.Services;
+﻿using dOSCEngine.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace dOSC.Components
@@ -12,7 +12,7 @@ namespace dOSC.Components
         [Inject]
         public NavigationManager? NM { get; set; }
         [Inject]
-        public dOSCEngine? Engine { get; set; }
+        public dOSCService? Engine { get; set; }
         [Parameter]
         public EventCallback<NavItem> SelectedItemChanged { get; set; } 
 

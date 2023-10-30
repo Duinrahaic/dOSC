@@ -1,25 +1,23 @@
 ﻿using Blazor.Diagrams;
-using Blazor.Diagrams.Core;
 using Blazor.Diagrams.Core.Anchors;
 using Blazor.Diagrams.Core.Geometry;
-using Blazor.Diagrams.Core.Models.Base;
 using Blazor.Diagrams.Core.Models;
-using dOSC.Engine.Nodes;
-using dOSC.Engine.Nodes.Connector.OSC;
-using dOSC.Engine.Nodes.Constant;
-using dOSC.Engine.Nodes.Logic;
-using dOSC.Engine.Nodes.Math;
-using dOSC.Engine.Nodes.Utility;
-using dOSC.Services;
-using dOSC.Services.Connectors.OSC;
+using Blazor.Diagrams.Core.Models.Base;
+using dOSCEngine.Components.Modals;
+using dOSCEngine.Engine.Links;
+using dOSCEngine.Engine.Nodes;
+using dOSCEngine.Engine.Nodes.Connector.Activity;
+using dOSCEngine.Engine.Nodes.Connector.OSC;
+using dOSCEngine.Engine.Nodes.Connector.OSC.VRChat;
+using dOSCEngine.Engine.Nodes.Constant;
+using dOSCEngine.Engine.Nodes.Logic;
+using dOSCEngine.Engine.Nodes.Math;
+using dOSCEngine.Engine.Nodes.Utility;
+using dOSCEngine.Engine.Ports;
+using dOSCEngine.Services;
+using dOSCEngine.Services.Connectors.Activity.Pulsoid;
+using dOSCEngine.Services.Connectors.OSC;
 using Microsoft.AspNetCore.Components;
-using dOSC.Engine.Ports;
-using dOSC.Engine.Links;
-using dOSC.Components.Modals;
-using dOSC.Services.Connectors.Activity.Pulsoid;
-using dOSC.Engine.Nodes.Connector.Activity;
-using dOSC.Engine.Nodes.Connector.OSC.VRChat;
-using System.Xml.Linq;
 
 namespace dOSC.Pages
 {
@@ -37,7 +35,7 @@ namespace dOSC.Pages
         private BlazorDiagram diagram { get; set; }
 
         [Inject]
-        public dOSCEngine? _Engine { get; set; }
+        public dOSCService? _Engine { get; set; }
         [Inject]
         public NavigationManager? NM { get; set; }
 

@@ -1,6 +1,6 @@
-﻿using dOSC.Services;
-using dOSC.Services.Connectors.Activity.Pulsoid;
-using dOSC.Services.User;
+﻿using dOSCEngine.Services;
+using dOSCEngine.Services.Connectors.Activity.Pulsoid;
+using dOSCEngine.Services.User;
 using dOSC.Utilities;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -32,7 +32,7 @@ namespace dOSC.Pages
             var settings = FileSystem.LoadSettings() ?? new();
             switch (setting.SettingType)
             {
-                case Services.User.SettingType.Pulsoid:
+                case dOSCEngine.Services.User.SettingType.Pulsoid:
                     settings.Pulsoid = (PulsoidSetting)setting;
                     Setting = (PulsoidSetting)setting;
                     if (_Pulsoid == null) return;
@@ -49,7 +49,7 @@ namespace dOSC.Pages
                 return;
             switch (Setting.SettingType)
             {
-                case Services.User.SettingType.Pulsoid:
+                case dOSCEngine.Services.User.SettingType.Pulsoid:
                     if (_Pulsoid == null) return;
                     _Pulsoid.Start();
                     break;
@@ -63,7 +63,7 @@ namespace dOSC.Pages
                 return;
             switch (Setting.SettingType)
             {
-                case Services.User.SettingType.Pulsoid:
+                case dOSCEngine.Services.User.SettingType.Pulsoid:
                     if (_Pulsoid == null) return;
                     _Pulsoid.Stop();
                     break;

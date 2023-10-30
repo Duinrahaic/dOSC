@@ -1,5 +1,5 @@
-﻿using dOSC.Services;
-using dOSC.Services.User;
+﻿using dOSCEngine.Services;
+using dOSCEngine.Services.User;
 using Microsoft.AspNetCore.Components;
 
 namespace dOSC.Components.UI

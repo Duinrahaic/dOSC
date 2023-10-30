@@ -1,0 +1,18 @@
+﻿@using Blazor.Diagrams.Components.Renderers
+@using Microsoft.AspNetCore.Components.Forms
+@using dOSCEngine.Engine.Helper
+<div class="@this.Node.BlockHeaderClass" style="width:300px;">
+    <div class="block-header d-flex d-inline w-100" >
+        <div class="icon"></div>
+        <div class="title">OSC Boolean Block</div>
+    </div>
+    <div class="block-body  overflow-visible">
+        <div class="d-flex flex-column">
+            <div class="d-flex d-inline align-items-center justify-center-end py-2 w-100">
+                <input class="" @bind-value=this.Node.SelectedOption />
+                <PortValueLabel LabelPosition=PortValueLabel.Position.Left DisplayValue="this.Node.Value" />
+                <PortRenderer Class="logic" Port="this.Node.Ports[0]" />
+            </div>
+        </div>
+    </div>
+</div>

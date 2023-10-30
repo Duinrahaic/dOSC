@@ -1,5 +1,5 @@
-﻿using dOSC.Services;
-using dOSC.Services.User;
+﻿using dOSCEngine.Services;
+using dOSCEngine.Services.User;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using System.Text;

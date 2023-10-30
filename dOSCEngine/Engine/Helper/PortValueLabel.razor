@@ -1,0 +1,29 @@
+﻿@if (DisplayValue != null)
+{
+    <span class="diagram-label @LabelPositionClass.ToString()"> @DisplayValue?.ToString() </span>
+}
+
+@code{
+    [Parameter]
+    public dynamic? DisplayValue { get; set; }
+
+    [Parameter]
+    public Position LabelPosition { get; set; } = Position.Right;
+
+    protected override void OnParametersSet()
+    {
+        this.StateHasChanged();
+    }
+
+    private string LabelPositionClass => LabelPosition switch
+    {
+        Position.Left => "left",
+        Position.Right => "right",
+        _ => "right"
+    };
+    public enum Position
+    {
+        Left,
+        Right
+    }
+}

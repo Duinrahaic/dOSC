@@ -1,14 +1,7 @@
-using dOSC.Services.ElectronFramework;
-using dOSC.Services.Connectors.OSC;
-using Serilog;
 using dOSC.Utilities;
-using dOSC.Services;
-using Serilog.Sanitizer.Extensions;
-using dOSC.Services.Connectors.Activity.Pulsoid;
+using dOSCEngine;
 using Photino.Blazor;
-using Photino;
-using System.Reflection.PortableExecutable;
-
+using Serilog;
 namespace dOSC
 {
 
@@ -44,12 +37,7 @@ namespace dOSC
             //builder.Services.AddRazorPages();
             //builder.Services.AddServerSideBlazor();
 
-            builder.Services.AddSingleton<OSCService>();
-            builder.Services.AddSingleton<dOSCEngine>();
-            builder.Services.AddSingleton<PulsoidService>();
-            builder.Services.AddHostedService(sp => sp.GetRequiredService<OSCService>());
-            builder.Services.AddHostedService(sp => sp.GetRequiredService<PulsoidService>());
-            builder.Services.AddHostedService(sp => sp.GetRequiredService<dOSCEngine>());
+            builder.AddDataServices();
             builder.Services.AddLogging(logging =>
             {
                 logging.AddSerilog(logger: Serilog, dispose: true);

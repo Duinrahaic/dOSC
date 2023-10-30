@@ -5,7 +5,7 @@
 @using dOSC.Components.Modals
 @using Microsoft.AspNetCore.Components.Forms;
 @using dOSC.Components.Form.SettingsPages;
-@using dOSC.Services.User;
+@using dOSCEngine.Services.User;
 
 
 <div class="app-page">
@@ -42,17 +42,17 @@
         <div class="app-details-body">
             @if(Setting != null)
             {
-                @if (Setting.SettingType == Services.User.SettingType.dOSC)
+                @if (Setting.SettingType == dOSCEngine.Services.User.SettingType.dOSC)
                 {
                     <DOSCSettings Setting="(Setting as dOSCSetting)" />
                    
                     
                 }
-                else if (Setting.SettingType == Services.User.SettingType.OSC)
+                else if (Setting.SettingType == dOSCEngine.Services.User.SettingType.OSC)
                 {
                     <OSCSettings Setting="(Setting as OSCSetting)" />
                 }
-                else if (Setting.SettingType == Services.User.SettingType.Pulsoid)
+                else if (Setting.SettingType == dOSCEngine.Services.User.SettingType.Pulsoid)
                 {
                     <PulsoidSettings Setting="(Setting as PulsoidSetting)" OnValidSubmit="SettingChanged" />
                 }

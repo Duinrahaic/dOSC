@@ -1,0 +1,14 @@
+﻿@using Blazor.Diagrams.Components.Renderers
+@using dOSCEngine.Components.Inputs;
+@using dOSCEngine.Engine.Helper
+@using dOSCEngine.Engine.Ports;
+<div class="@this.Node.BlockHeaderClass">
+    <div class="block-header d-flex d-inline">
+        <div class="icon">#</div>
+        <div class="title">Numeric</div>
+    </div>
+    <div class="block-body">
+        <PortValueLabel LabelPosition=PortValueLabel.Position.Right DisplayValue="this.Node.Value" />
+        <NumericInput Node="Node" Text="Output" />
+    </div>
+</div>

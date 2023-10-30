@@ -1,0 +1,11 @@
+﻿using dOSCEngine.Engine.Nodes.Connector.OSC;
+using Microsoft.AspNetCore.Components;
+
+namespace dOSCEngine.Engine.Blocks.Connectors.OSC
+{
+    public partial class OSCBooleanBlock
+    {
+        [Parameter]
+        public OSCBooleanNode Node { get; set; } = null;
+    }
+}

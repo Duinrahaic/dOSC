@@ -1,4 +1,4 @@
-﻿using dOSC.Services;
+﻿using dOSCEngine.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace dOSC.Components
@@ -8,7 +8,7 @@ namespace dOSC.Components
 
 
         [Inject]
-        public dOSCEngine? Engine { get; set; }
+        public dOSCService? Engine { get; set; }
         public List<NavItem> Apps { get; set; } = new List<NavItem>();
 
         protected override void OnInitialized()
