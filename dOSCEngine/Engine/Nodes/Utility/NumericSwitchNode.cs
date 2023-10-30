@@ -45,7 +45,7 @@ namespace dOSCEngine.Engine.Nodes.Utility
                 }
                 catch
                 {
-                    ValA = null!;
+                    
                 }
             }
             if (inInputB.Links.Any())
@@ -57,7 +57,7 @@ namespace dOSCEngine.Engine.Nodes.Utility
                 }
                 catch
                 {
-                    ValB = null!;
+                    
                 }
             }
 
@@ -65,15 +65,27 @@ namespace dOSCEngine.Engine.Nodes.Utility
             if (inSwitch.Links.Any())
             {
                 var lSwitch = inSwitch.Links.First();
-                bool SwitchVal = GetInputValue(inSwitch, lSwitch);
-                if (SwitchVal)
+                try
                 {
-                    Value = ValA;
+                    var SwitchVal = GetInputValue(inSwitch, lSwitch);
+                    if(SwitchVal != null)
+                    {
+                        if (SwitchVal)
+                        {
+                            Value = ValA;
+                        }
+                        else
+                        {
+                            Value = ValB;
+                        }
+                    }
+                    
                 }
-                else
+                catch
                 {
-                    Value = ValB;
+                    
                 }
+                
             }
             else
             {

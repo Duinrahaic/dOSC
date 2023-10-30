@@ -72,29 +72,12 @@ namespace dOSCEngine.Engine.Nodes
         }
 
   
-
-        public void ShowLinksLabel(bool show = false)
-        {
-            if(show)
-            {
-                foreach(BasePort port in  Ports)
-                {
-                    if (!port.Input)
-                    {
-                        if (port.Links.Any())
-                        {
-                            var l = port.Links.First();
-                            string displayText = $"{Value}";
-                            l.Labels.Clear();
-                        }
-                        
-                    }
-                }
-            }
-        }
         public BaseNodeDTO GetDTO()
         {
             return new BaseNodeDTO(this);
         }
+
+
+        
     }
 }

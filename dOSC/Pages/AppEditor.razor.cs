@@ -18,6 +18,7 @@ using dOSCEngine.Services;
 using dOSCEngine.Services.Connectors.Activity.Pulsoid;
 using dOSCEngine.Services.Connectors.OSC;
 using Microsoft.AspNetCore.Components;
+using System.Xml.Linq;
 
 namespace dOSC.Pages
 {
@@ -73,10 +74,18 @@ namespace dOSC.Pages
             diagram.Links.Added += OnLinkAdded;
             diagram.Links.Removed += OnLinkRemoved;
 
-
             List<BaseNode> NodesLocal = new();
-            Wiresheet.GetAllNodes().ForEach(n => { NodesLocal.Add(diagram.Nodes.Add(n)); });
-            foreach(BaseLink l in Wiresheet.GetAllLinks())
+            Wiresheet.GetAllNodes().ForEach(n => {
+
+                var NodeCopy = _Engine.ConvertNode(n.GetDTO());
+                if(NodeCopy != null)
+                {
+                    NodeCopy.Guid = n.Guid;
+                    NodesLocal.Add(diagram.Nodes.Add(NodeCopy));
+                }
+
+            });
+            foreach (BaseLink l in Wiresheet.GetAllLinks().DistinctBy(x => x.Guid))
             {
                 var BlockSource = diagram.Nodes.FirstOrDefault(x => (x as BaseNode)?.Guid == l.SourcePort.ParentGuid);
                 var BlockTarget = diagram.Nodes.FirstOrDefault(x => (x as BaseNode)?.Guid == l.TargetPort.ParentGuid);
@@ -90,16 +99,22 @@ namespace dOSC.Pages
                         var Link = new LinkModel(SourcePort, TargetPort);
                         diagram.Links.Add(Link);
                     }
+
                 }
             }
-
+            var g = diagram.Groups.Add(new GroupModel(NodesLocal));
+            diagram.SelectModel(g, false);
+            g.SetPosition(0, 0);
+            
+            g.Ungroup();
+            diagram.Groups.Remove(g);
         }
 
         protected override void OnAfterRender(bool firstRender)
         {
             if(firstRender)
             {
-                
+
             }
         }
 

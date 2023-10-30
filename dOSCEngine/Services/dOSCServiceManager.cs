@@ -81,7 +81,7 @@ namespace dOSCEngine.Services
             FileSystem.RemoveWiresheet(WS.AppGuid);
         }
 
-        private dOSCWiresheet DeserializeDTO(dOSCWiresheetDTO dto)
+        public dOSCWiresheet DeserializeDTO(dOSCWiresheetDTO dto)
         {
             dOSCWiresheet dOSCWiresheet = new dOSCWiresheet(dto);
             var cNodes = dto.Nodes.Select(x => ConvertNode(x)).Where(x => x != null);
@@ -110,7 +110,7 @@ namespace dOSCEngine.Services
             return dOSCWiresheet;
         }
 
-        private BaseNode? ConvertNode(BaseNodeDTO dto)
+        public BaseNode? ConvertNode(BaseNodeDTO dto)
         {
             switch (dto.NodeClass)
             {

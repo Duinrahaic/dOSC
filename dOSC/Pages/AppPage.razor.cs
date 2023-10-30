@@ -48,8 +48,9 @@ namespace dOSC.Pages
             if(UploadedFile != null)
             {
                 UploadAppModal.Close();
-                dOSCWiresheet? wiresheet = new dOSCWiresheet(UploadedFile);
+                dOSCWiresheet? wiresheet = Engine.DeserializeDTO(UploadedFile);
                 Engine.SaveWiresheet(wiresheet);
+
                 try
                 {
                     Engine.AddWiresheet(wiresheet);

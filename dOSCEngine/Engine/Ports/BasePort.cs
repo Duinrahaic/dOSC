@@ -42,16 +42,22 @@ namespace dOSCEngine.Engine.Ports
                 return false;
             if (Input == targetPort.Input) // can't connect input to input or output to output
                 return false;
-            if(targetPort.Input)
+            if (targetPort.Input) // if target port is input
             {
                 if (targetPort.Links.Any() && targetPort.LimitLink)
                     return false;
             }
-            else
+            else if(this.Input) // if this port is input
             {
-                if (targetPort.Links.Any() && targetPort.LimitLink && this.LimitLink && this.Links.Any())
+                if(targetPort.Links.Any() && targetPort.LimitLink)
                     return false;
             }
+            else
+            {
+                return false;
+            }
+
+
             return true;
         }
     }

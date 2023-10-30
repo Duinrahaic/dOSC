@@ -33,20 +33,19 @@ namespace dOSCEngine.Engine.Nodes.Logic
             {
                 var l1 = inA.Links.First();
                 var l2 = inB.Links.First();
-                Value = GetInputValue(inA, l1) && GetInputValue(inB, l2);
+                var ValA = GetInputValue(inA, l1);
+                var ValB = GetInputValue(inB, l2);
+
+                if(ValA != null && ValB != null)
+                {
+                    Value = (bool)ValA && (bool)ValB;
+                }
             }
             else
             {
                 Value = false;
             }
             base.Refresh();
-        }
-        private static bool GetInputValue(PortModel port, BaseLinkModel link)
-        {
-            var sp = (link.Source as SinglePortAnchor)!;
-            var tp = (link.Source as SinglePortAnchor)!;
-            var p = sp.Port == port ? tp : sp;
-            return (p.Port.Parent as BaseNode)!.Value;
         }
     }
 }
