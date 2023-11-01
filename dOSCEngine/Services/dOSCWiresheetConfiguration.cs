@@ -95,6 +95,7 @@ namespace dOSCEngine.Services
             BD.RegisterComponent<MultiplicationNode, MultiplicationBlock>();
             BD.RegisterComponent<NegativeNode, NegativeBlock>();
             BD.RegisterComponent<PowerNode, PowerBlock>();
+            BD.RegisterComponent<RollingAverageNode, RollingAverageBlock>();
             BD.RegisterComponent<SineNode, SineBlock>();
             BD.RegisterComponent<SquareRootNode, SquareRootBlock>();
             BD.RegisterComponent<SubtractNode, SubstractBlock>();

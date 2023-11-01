@@ -31,7 +31,7 @@ namespace dOSCEngine.Engine.Nodes.Utility
 
         private uint _StartPoint = 0;
 
-        public override void Refresh()
+        public override void CalculateValue()
         {
             var Input = Ports[0];
 
@@ -42,20 +42,9 @@ namespace dOSCEngine.Engine.Nodes.Utility
                     _StartPoint = GetInputValue(Input, Links.First());
                 }
             }
-
-
-
-
             var CountUP = Ports[1];
             var CountDown = Ports[2];
             var Reset = Ports[3];
-
-
-
-
-
-
-            base.Refresh();
         }
 
         public void CountUp()

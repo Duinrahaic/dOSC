@@ -1,11 +1,22 @@
 ﻿@if (DisplayValue != null)
 {
-    <span class="diagram-label @LabelPositionClass.ToString()"> @DisplayValue?.ToString() </span>
+    <span class="diagram-label @LabelPositionClass.ToString()">  
+        @if (IsNumeric)
+        {
+            @DisplayValue?.ToString("G5")
+        }
+        else
+        {
+            @DisplayValue?.ToString()
+        }
+    </span>
 }
 
 @code{
     [Parameter]
     public dynamic? DisplayValue { get; set; }
+
+    private bool IsNumeric => DisplayValue is int || DisplayValue is float || DisplayValue is double || DisplayValue is decimal;
 
     [Parameter]
     public Position LabelPosition { get; set; } = Position.Right;

@@ -9,6 +9,7 @@ namespace dOSCEngine.Engine.Nodes
         public dynamic Value { get; set; }
         public string Option { get; set; } = string.Empty;
         public Point Position { get; set; } = new Point(0, 0);
+        public string DisplayName { get; set; } = string.Empty;
         public BaseNodeDTO(BaseNode node)
         {
 
@@ -17,6 +18,7 @@ namespace dOSCEngine.Engine.Nodes
             Value = node.Value;
             Position = node.Position;
             Option = node.Option;
+            DisplayName = node.DisplayName;
         }
 
         public BaseNodeDTO(Guid guid, string nodeClass, dynamic value, Point position)

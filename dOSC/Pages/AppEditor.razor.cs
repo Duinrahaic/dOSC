@@ -133,16 +133,28 @@ namespace dOSC.Pages
         {
             if (diagram != null)
             {
-                foreach (var link in diagram.Links)
+                foreach (var link in op.Ports.Where(x=> !(x as BasePort).Input).SelectMany(x=>x.Links))
                 {
+
                     var sp = (link.Source as SinglePortAnchor)!;
                     var tp = (link.Target as SinglePortAnchor)!;
                     if (sp != null && tp != null)
                     {
-                        var otherNode = sp.Port.Parent == op ? tp.Port.Parent : sp.Port.Parent;
-                        otherNode.Refresh();
+                        var InputPort = (sp.Port as BasePort)!.Input ? sp : tp;
+                        if (InputPort != null)
+                        {
+                            (InputPort.Port.Parent as BaseNode)!.CalculateValue();
+
+                        }
+                        
+                        //var otherNode = sp.Port.Parent == op ? tp.Port.Parent : sp.Port.Parent;
+                        //otherNode.Refresh();
 
                     }
+                }
+                foreach(var node in diagram.Nodes)
+                {
+                    node.Refresh();
                 }
             }
 
@@ -309,6 +321,7 @@ namespace dOSC.Pages
         private void Multiply() => diagram.Nodes.Add(new MultiplicationNode(position: CenterOfScreen()));
         private void Negative() => diagram.Nodes.Add(new NegativeNode(position: CenterOfScreen()));
         private void Power() => diagram.Nodes.Add(new PowerNode(position: CenterOfScreen()));
+        private void RollingAverage() => diagram.Nodes.Add(new RollingAverageNode(position: CenterOfScreen()));
         private void Sine() => diagram.Nodes.Add(new SineNode(position: CenterOfScreen()));
         private void Subtract() => diagram.Nodes.Add(new SubtractNode(position: CenterOfScreen()));
         private void SquareRoot() => diagram.Nodes.Add(new SquareRootNode(position: CenterOfScreen()));

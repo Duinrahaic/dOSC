@@ -29,7 +29,7 @@ namespace dOSCEngine.Engine.Ports
         public Guid ParentGuid { get; set; } = Guid.NewGuid();
         public bool Input { get; }
         public bool LimitLink { get; }
-
+        public bool AtMaxInputs => Links.Any() && LimitLink && Input;
         
         public override bool CanAttachTo(ILinkable other)
         {
@@ -42,21 +42,10 @@ namespace dOSCEngine.Engine.Ports
                 return false;
             if (Input == targetPort.Input) // can't connect input to input or output to output
                 return false;
-            if (targetPort.Input) // if target port is input
-            {
-                if (targetPort.Links.Any() && targetPort.LimitLink)
-                    return false;
-            }
-            else if(this.Input) // if this port is input
-            {
-                if(targetPort.Links.Any() && targetPort.LimitLink)
-                    return false;
-            }
-            else
-            {
+            // if output targeting input, check if input is already connected
+            if (targetPort.AtMaxInputs)
                 return false;
-            }
-
+            // Check if already connected to this port
 
             return true;
         }

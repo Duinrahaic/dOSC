@@ -25,7 +25,7 @@ namespace dOSCEngine.Engine.Nodes.Math
         public override string BlockTypeClass => "numericblock";
 
 
-        public override void Refresh()
+        public override void CalculateValue()
         {
             var input = Ports[0];
             var min = Ports[1];
@@ -37,19 +37,31 @@ namespace dOSCEngine.Engine.Nodes.Math
             }
             else
             {
+                if(!input.Links.Any() || !min.Links.Any() || !max.Links.Any())
+                {
+                    return;
+                }
                 var input_val = GetInputValue(input, input.Links.First());
                 var min_val = GetInputValue(min, min.Links.First());
                 var max_val = GetInputValue(max, max.Links.First());
-                if (double.IsNaN(input_val) || double.IsNaN(min_val) || double.IsNaN(max_val))
+                if (input_val == null || min_val == null || max_val == null)
                 {
                     Value = null;
                 }
                 else
                 {
+                    if(min_val > max_val)
+                    {
+                        var temp = min_val;
+                        min_val = max_val;
+                        max_val = temp;
+                    }
+
                     Value = System.Math.Clamp(input_val, min_val, max_val);
+
+
                 }
             }
-            base.Refresh();
         }
     }
 }

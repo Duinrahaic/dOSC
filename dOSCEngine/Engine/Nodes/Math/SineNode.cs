@@ -28,10 +28,6 @@ namespace dOSCEngine.Engine.Nodes.Math
 
         private static double _amplitude = 1;
         private static double _frequency = 1;
-        public override void Refresh()
-        {
-            base.Refresh();
-        }
 
         private void GetSineWave()
         {

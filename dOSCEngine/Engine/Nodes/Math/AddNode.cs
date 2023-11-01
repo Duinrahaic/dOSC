@@ -28,7 +28,7 @@ namespace dOSCEngine.Engine.Nodes.Math
         public override string BlockTypeClass => "numericblock";
 
 
-        public override void Refresh()
+        public override void CalculateValue()
         {
             var i1 = Ports[0];
             var i2 = Ports[1];
@@ -63,15 +63,7 @@ namespace dOSCEngine.Engine.Nodes.Math
             {
                 Value = 0;
             }
-
-
-
-            base.Refresh();
         }
-
-
-
-
     }
 
 }

@@ -140,6 +140,8 @@ namespace dOSCEngine.Services
                     return new AbsoluteNode(dto.Guid, dto.Position);
                 case "ClampNode":
                     return new ClampNode(dto.Guid, dto.Position);
+                case "RollingAverageNode":
+                    return new RollingAverageNode(dto.Guid, dto.Position);
                 case "SquareRootNode":
                     return new SquareRootNode(dto.Guid, dto.Position);
                 case "AndNode":

@@ -27,7 +27,7 @@ namespace dOSCEngine.Engine.Nodes.Logic
         public override string NodeClass => GetType().Name.ToString();
         public override string BlockTypeClass => "logicblock";
 
-        public override void Refresh()
+        public override void CalculateValue()
         {
             var inA = Ports[0];
             var inB = Ports[1];
@@ -41,14 +41,6 @@ namespace dOSCEngine.Engine.Nodes.Logic
             {
                 Value = false;
             }
-            base.Refresh();
-        }
-        private static bool GetInputValue(PortModel port, BaseLinkModel link)
-        {
-            var sp = (link.Source as SinglePortAnchor)!;
-            var tp = (link.Source as SinglePortAnchor)!;
-            var p = sp.Port == port ? tp : sp;
-            return (p.Port.Parent as BaseNode)!.Value;
         }
     }
 }

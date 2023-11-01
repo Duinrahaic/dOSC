@@ -19,7 +19,7 @@ namespace dOSCEngine.Engine.Nodes.Utility
         public override string NodeClass => GetType().Name.ToString();
         public override string BlockTypeClass => "numericblock";
         private Random Random = new Random();
-        public override void Refresh()
+        public override void CalculateValue()
         {
             var port = Ports[0];
             if (port != null)
@@ -29,7 +29,6 @@ namespace dOSCEngine.Engine.Nodes.Utility
                     Value = Random.NextDouble();
                 }
             }
-            base.Refresh();
         }
 
     }

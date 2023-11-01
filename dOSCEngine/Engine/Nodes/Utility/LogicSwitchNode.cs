@@ -28,7 +28,7 @@ namespace dOSCEngine.Engine.Nodes.Utility
         public override string BlockTypeClass => "logicblock";
 
 
-        public override void Refresh()
+        public override void CalculateValue()
         {
             var inSwitch = Ports[0];
             var inInputA = Ports[1];
@@ -81,8 +81,6 @@ namespace dOSCEngine.Engine.Nodes.Utility
             {
                 Value = null!;
             }
-
-            base.Refresh();
         }
 
 
