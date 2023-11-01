@@ -130,21 +130,33 @@ namespace dOSCEngine.Services
 
         public void OnValueChanged(BaseNode op)
         {
-            if(Diagram != null)
+            if (Diagram != null)
             {
-                foreach (var link in Diagram.Links)
+                foreach (var link in op.Ports.Where(x => !(x as BasePort).Input).SelectMany(x => x.Links))
                 {
+
                     var sp = (link.Source as SinglePortAnchor)!;
                     var tp = (link.Target as SinglePortAnchor)!;
                     if (sp != null && tp != null)
                     {
-                        var otherNode = sp.Port.Parent == op ? tp.Port.Parent : sp.Port.Parent;
-                        otherNode.Refresh();
+                        var InputPort = (sp.Port as BasePort)!.Input ? sp : tp;
+                        if (InputPort != null)
+                        {
+                            (InputPort.Port.Parent as BaseNode)!.CalculateValue();
+
+                        }
+
+                        //var otherNode = sp.Port.Parent == op ? tp.Port.Parent : sp.Port.Parent;
+                        //otherNode.Refresh();
 
                     }
                 }
+                foreach (var node in Diagram.Nodes)
+                {
+                    node.Refresh();
+                }
             }
-            
+
         }
 
         private void OnLinkAdded(BaseLinkModel link)
