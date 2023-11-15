@@ -89,10 +89,15 @@
 }
 
 
+
 .block {
     border-radius: 10px;
     padding-left: 4px;
     overflow: visible;
+
+}
+.block.selected {
+    box-shadow: 0 0 8px 1px $color-selected;
 }
 
 .block.error {
@@ -132,7 +137,6 @@
     }
 }
 
-
 .block.logicblock {
     background-color: $color-green;
     color: white;
@@ -150,6 +154,7 @@
     background-color: $color-green;
     padding: 4px;
     border-radius: 10px;
+    flex-grow: 1;
 }
 
 .block.numericblock {
@@ -169,6 +174,7 @@
     background-color: $color-purple;
     padding: 4px;
     border-radius: 10px;
+    flex-grow: 1;
 }
 
 .block.stringblock {
@@ -188,7 +194,10 @@
     background-color: $color-orange;
     padding: 4px;
     border-radius: 10px;
+    flex-grow: 1;
 }
+
+
 
 .block.connectorblock {
     background-color: $color-pink;
@@ -200,6 +209,13 @@
 
 .block.connectorblock .block-header .icon {
     padding: 4px;
+    &.hidden{
+        display: none;
+    }
+    &.show {
+        display: block;
+    }
+
 }
 
 .block.connectorblock .block-header .title {
@@ -207,7 +223,11 @@
     background-color: $color-pink;
     padding: 4px;
     border-radius: 10px;
+    flex-grow: 1;
 }
+
+
+
 
 .block .block-body {
     overflow: hidden;
@@ -311,4 +331,38 @@
 
 .string:hover {
     background-color: $color-orange-darker;
+}
+
+
+
+// Block context menu
+
+
+.block-context-menu {
+    position: absolute;
+    background-color: $color-theme-1;
+    border: solid 2px $color-theme-1;
+    border-radius: 10px;
+    padding: 4px;
+    z-index: 1000;
+    display: none;
+
+    .visible{
+        display: block;
+    }
+
+    .item{
+        padding: 8px 10px;
+        font-size: 15px;
+        color: $color-titlebar-textcolor;
+        cursor: pointer;
+        border-radius: inherit;
+        
+        :hover{
+            background: $color-theme-2;
+        }
+    }
+
+
+
 }

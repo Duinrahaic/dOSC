@@ -17,6 +17,7 @@ namespace dOSCEngine
             builder.Services.AddHostedService(sp => sp.GetRequiredService<OSCService>());
             builder.Services.AddHostedService(sp => sp.GetRequiredService<PulsoidService>());
             builder.Services.AddHostedService(sp => sp.GetRequiredService<dOSCService>());
+            builder.Services.AddSignalR();
 
 
             return builder;
@@ -29,6 +30,7 @@ namespace dOSCEngine
             builder.Services.AddHostedService(sp => sp.GetRequiredService<OSCService>());
             builder.Services.AddHostedService(sp => sp.GetRequiredService<PulsoidService>());
             builder.Services.AddHostedService(sp => sp.GetRequiredService<dOSCService>());
+            builder.Services.AddSignalR();
 
 
             return builder;

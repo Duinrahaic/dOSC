@@ -4,11 +4,14 @@ using dOSCEngine.Services.Connectors.Activity.Pulsoid;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Concurrent;
 
 namespace dOSCEngine.Services
 {
     public partial class dOSCService : IHostedService
     {
+        private ConcurrentDictionary<DateTime, string> _Log = new ConcurrentDictionary<DateTime, string>(2, capacity:200);
+        public ConcurrentDictionary<DateTime,string> Log => _Log;
         public readonly string Version = "1";
         private readonly ILogger<OSCService> _logger;
         private readonly OSCService? _OSC;
@@ -40,6 +43,12 @@ namespace dOSCEngine.Services
         {
             return _WiresheetMemory.FirstOrDefault(x => x.AppGuid.Equals(AppId));
         }
+
+        private void AddLog(DateTime time, string message)
+        {
+            _Log.TryAdd(time, message);
+        }
+
 
         public Task StartAsync(CancellationToken cancellationToken)
         {

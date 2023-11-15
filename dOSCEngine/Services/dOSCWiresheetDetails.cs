@@ -11,6 +11,7 @@ namespace dOSCEngine.Services
         [Required]
         public string AppDescription { get; set; } = string.Empty;
         public string AppAuthor { get; set; } = string.Empty;
+        public string PrefabLocation { get; set; } = string.Empty;  
         public DateTime Created { get; set; } = DateTime.Now;
         public DateTime Modified { get; set; } = DateTime.Now;
         public List<string> ConnectorsUsed { get; set; } = new();

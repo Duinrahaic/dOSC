@@ -26,12 +26,51 @@
         </div>
     </div>
     <div class="app-details">
-        <div class="app-details-header">
-            <div class="app-details-header-title">
-                <h3>@Wiresheet?.AppName</h3>
-            </div>
-        </div>
         <div class="app-details-body">
+            @if (Wiresheet != null)
+            {
+                <div class="item header">
+                    <div class="title">
+                        <b>@Wiresheet.AppName</b>
+                    </div>
+                    <div class="description">
+                        <i>@Wiresheet.AppDescription</i>
+                    </div>
+                    <div class="break" />
+                </div>
+
+
+                <div class="item">
+                    <div class="option">
+                    </div>
+                    <div class="option">
+                    </div>
+
+                </div>
+
+                <div class="item">
+                    <div class="title">
+                        <div class="icon">
+                            <i class="oi oi-person"></i>
+                        </div>
+                        <div class="text">
+                            <b>Details</b>
+                        </div>
+                    </div>
+                    <div class="description">
+                    </div>
+
+                    <div class="break"/>
+                    <i>@Wiresheet.AppVersion</i>
+
+
+                </div>
+            }
+        </div>
+
+
+        
+@*         <div class="app-details-body">
             @if(Wiresheet != null)
             {
                 <EditForm Model="@Wiresheet">
@@ -99,8 +138,7 @@
                 <div>
                     <h3>No App Selected</h3>
                 </div>
-            }
-        </div>
+            } *@
         <div class="app-details-footer">
             <div class="option">
                 <button disabled="@(Wiresheet==null)" class="btn btn-primary icon icon-download" @onclick="()=> DownloadApp()"></button>

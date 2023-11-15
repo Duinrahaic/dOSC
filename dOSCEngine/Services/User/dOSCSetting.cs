@@ -13,5 +13,7 @@ namespace dOSCEngine.Services.User
         [JsonIgnore]
         public override SettingType SettingType { get; set; } = SettingType.dOSC;
 
+        public string AuthorName { get; set; } = string.Empty;
+
     }
 }

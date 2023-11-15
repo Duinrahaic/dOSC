@@ -1,7 +1,11 @@
 using dOSC.Utilities;
 using dOSCEngine;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Photino.Blazor;
 using Serilog;
+using BlazorContextMenu;
 namespace dOSC
 {
 
@@ -14,7 +18,7 @@ namespace dOSC
 
             var builder = PhotinoBlazorAppBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
-
+            
 
             FileSystem.CreateFolders();
             _ = FileSystem.LoadSettings();
@@ -32,7 +36,7 @@ namespace dOSC
                 ))
                 .Enrich.FromLogContext()
                 .CreateLogger();
-
+        
             //var builder = WebApplication.CreateBuilder(args);
             //builder.Services.AddRazorPages();
             //builder.Services.AddServerSideBlazor();
@@ -42,20 +46,26 @@ namespace dOSC
             {
                 logging.AddSerilog(logger: Serilog, dispose: true);
             });
+            builder.Services.AddBlazorContextMenu();
 
             //string ENV = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "";
             //if (ENV != "Development")
             //{
             //    builder.LaunchElectronWindow(args);
             //}
-
+            
             var app = builder.Build();
+
+           
+
+
+
+
 
             app.MainWindow.Centered = true;
             app.MainWindow.SetChromeless(false);
             app.MainWindow
                 .SetTitle("dOSC"); //                   .SetIconFile("favicon.ico")
-
             #if (DEBUG)
                 app.MainWindow.DevToolsEnabled = true;
                 app.MainWindow.ContextMenuEnabled = true;
@@ -79,6 +89,7 @@ namespace dOSC
 
             GlobalStopwatch.Start();
             GlobalTimer.StartGlobalTimer();
+            
             app.Run();
 
         }

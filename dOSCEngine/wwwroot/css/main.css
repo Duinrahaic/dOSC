@@ -114,6 +114,10 @@
   overflow: visible;
 }
 
+.block.selected {
+  box-shadow: 0 0 8px 1px #7289da;
+}
+
 .block.error {
   border-radius: 10px;
   box-shadow: 0 0 0 rgba(237, 67, 55, 0.6);
@@ -162,6 +166,7 @@
   background-color: #00ae7a;
   padding: 4px;
   border-radius: 10px;
+  flex-grow: 1;
 }
 
 .block.numericblock {
@@ -181,6 +186,7 @@
   background-color: #aa8cff;
   padding: 4px;
   border-radius: 10px;
+  flex-grow: 1;
 }
 
 .block.stringblock {
@@ -200,6 +206,7 @@
   background-color: #ef5d33;
   padding: 4px;
   border-radius: 10px;
+  flex-grow: 1;
 }
 
 .block.connectorblock {
@@ -213,12 +220,19 @@
 .block.connectorblock .block-header .icon {
   padding: 4px;
 }
+.block.connectorblock .block-header .icon.hidden {
+  display: none;
+}
+.block.connectorblock .block-header .icon.show {
+  display: block;
+}
 
 .block.connectorblock .block-header .title {
   color: white;
   background-color: #eb459f;
   padding: 4px;
   border-radius: 10px;
+  flex-grow: 1;
 }
 
 .block .block-body {
@@ -323,13 +337,35 @@
   background-color: #a23f22;
 }
 
+.block-context-menu {
+  position: absolute;
+  background-color: #1d1e23;
+  border: solid 2px #1d1e23;
+  border-radius: 10px;
+  padding: 4px;
+  z-index: 1000;
+  display: none;
+}
+.block-context-menu .visible {
+  display: block;
+}
+.block-context-menu .item {
+  padding: 8px 10px;
+  font-size: 15px;
+  color: #949ba4;
+  cursor: pointer;
+  border-radius: inherit;
+}
+.block-context-menu .item :hover {
+  background: #232428;
+}
+
 .app-page {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: row;
 }
-
 .app-page .app-nav {
   background: #232428;
   width: 230px;
@@ -340,7 +376,6 @@
   position: relative;
   height: calc(100vh - 0px);
 }
-
 .app-page .app-nav .app-nav-header {
   width: 100%;
   display: flex;
@@ -351,7 +386,9 @@
   padding-bottom: 8px;
   border-bottom: 1px solid #1d1e23;
 }
-
+.app-page .app-nav .app-nav-header .search-input {
+  width: 100%;
+}
 .app-page .app-nav .app-nav-header .app-nav-header-title {
   display: flex;
   align-items: center;
@@ -360,7 +397,6 @@
   height: 100%;
   user-select: none;
 }
-
 .app-page .app-nav .app-nav-header .app-nav-header-title h3 {
   font-weight: 500;
   font-stretch: wider;
@@ -370,7 +406,6 @@
   padding: 4px;
   height: 42px;
 }
-
 .app-page .app-nav .app-nav-header .app-nav-header-title .icon {
   color: #7289da;
   font-weight: 800;
@@ -380,11 +415,6 @@
   height: 42px;
   flex-shrink: 1;
 }
-
-.app-page .app-nav .app-nav-header .search-input {
-  width: 100%;
-}
-
 .app-page .app-nav .app-nav-container {
   flex-direction: column;
   display: flex;
@@ -396,7 +426,6 @@
   gap: 2px;
   padding: 4px 0 40px 0;
 }
-
 .app-page .app-nav .app-nav-container .item {
   background: #2e3035;
   width: 96%;
@@ -407,20 +436,16 @@
   align-items: center;
   justify-items: center;
 }
-
 .app-page .app-nav .app-nav-container .item:hover {
   background: #36373d;
 }
-
 .app-page .app-nav .app-nav-container .item.active {
   background: #36373d;
 }
-
 .app-page .app-nav .app-nav-container .item .item-name {
   white-space: nowrap;
   overflow: hidden;
 }
-
 .app-page .app-nav .app-nav-container .item .icon-status {
   background: #949ba4;
   min-width: 16px;
@@ -428,19 +453,15 @@
   border-radius: 16px;
   margin: 0 8px 0 2px;
 }
-
 .app-page .app-nav .app-nav-container .item .icon-status.running {
   background: #00ae7a;
 }
-
 .app-page .app-nav .app-nav-container .item .icon-status.paused {
   background: #ef5d33;
 }
-
 .app-page .app-nav .app-nav-container .item .icon-status.error {
   background: rgb(237, 67, 55);
 }
-
 .app-page .app-nav .app-nav-footer {
   width: 100%;
   background: #232428;
@@ -456,7 +477,6 @@
   max-height: 44px;
   min-height: 44px;
 }
-
 .app-page .app-nav .app-nav-footer .option {
   display: flex;
   width: 100%;
@@ -466,7 +486,6 @@
   align-items: center;
   position: relative;
 }
-
 .app-page .app-nav .app-nav-footer .option .btn {
   font-size: small;
   width: 100%;
@@ -474,8 +493,7 @@
   padding: 1px;
   height: 100%;
 }
-
-.app-page .app-nav .app-nav-footer .option .icon {
+.app-page .app-nav .app-nav-footer .option .btn .icon {
   color: white;
   width: 100%;
   flex-grow: 2;
@@ -488,20 +506,18 @@
   align-content: center;
   justify-content: center;
 }
-
-.app-page .app-nav .app-nav-footer .option .icon:hover {
+.app-page .app-nav .app-nav-footer .option .btn .icon:hover {
   background: #007b56;
   color: #B9BBBE;
 }
-
 .app-page .app-details {
   display: flex;
   flex-direction: column;
   width: 100%;
   position: relative;
   height: calc(100vh - 0px);
+  background-color: #313338;
 }
-
 .app-page .app-details .app-details-header {
   width: 100%;
   display: flex;
@@ -514,7 +530,6 @@
   height: 55px;
   border-bottom: 1px solid #1d1e23;
 }
-
 .app-page .app-details .app-details-header .app-details-header-title {
   display: flex;
   align-items: center;
@@ -523,7 +538,6 @@
   height: 100%;
   user-select: none;
 }
-
 .app-page .app-details .app-details-header .app-details-header-title h3 {
   font-weight: 500;
   font-stretch: wider;
@@ -535,7 +549,6 @@
   overflow: hidden;
   white-space: nowrap;
 }
-
 .app-page .app-details .app-details-body {
   flex-direction: column;
   display: flex;
@@ -544,9 +557,47 @@
   height: 100%;
   align-items: center;
   gap: 16px;
-  padding: 40px 0 40px 0;
+  padding: 20px 20px;
+  overflow-x: hidden;
 }
-
+.app-page .app-details .app-details-body .item {
+  display: flex;
+  justify-content: start;
+  align-content: center;
+  width: 100%;
+  padding: 0px 4px;
+  flex-direction: column;
+}
+.app-page .app-details .app-details-body .item.header .title {
+  text-align: start;
+  font-size: 40px;
+  justify-content: start;
+  font-family: "Arial" !important;
+}
+.app-page .app-details .app-details-body .item.header .description {
+  font-size: 16px;
+}
+.app-page .app-details .app-details-body .item.header .break {
+  padding-top: 8px;
+  border-bottom: 2px solid #36373d;
+}
+.app-page .app-details .app-details-body .item .title {
+  display: flex;
+  flex-direction: row;
+  gap: 16px 16px;
+  align-content: center;
+  justify-items: start;
+}
+.app-page .app-details .app-details-body .item .title .icon {
+  flex-shrink: 1;
+  color: #7289da;
+}
+.app-page .app-details .app-details-body .item .title .text {
+  flex-shrink: 1;
+}
+.app-page .app-details .app-details-body .item .break {
+  border-bottom: 2px solid #36373d;
+}
 .app-page .app-details .app-details-body form {
   flex-direction: column;
   display: flex;
@@ -556,18 +607,19 @@
   align-items: center;
   gap: 16px;
 }
-
+.app-page .app-details .app-details-body form fieldset {
+  width: 98%;
+}
 .app-page .app-details .app-details-body .detail {
   border-radius: 8px;
   border: #36373d 1px solid;
   background: #2e3035;
   box-shadow: rgba(0, 0, 0, 0.07) 0px 0px 8px 2px;
   padding: 24px;
-  width: 90%;
+  width: 100%;
   position: relative;
   margin-top: 10px;
 }
-
 .app-page .app-details .app-details-body .detail .section {
   position: absolute;
   top: -24px;
@@ -579,7 +631,6 @@
   border-radius: 16px;
   font-size: 32px;
 }
-
 .app-page .app-details .app-details-footer {
   width: 100%;
   background: #232428;
@@ -589,7 +640,6 @@
   max-height: 44px;
   min-height: 44px;
 }
-
 .app-page .app-details .app-details-footer .option {
   display: flex;
   padding: 4px 6px 4px 6px;
@@ -598,7 +648,6 @@
   align-items: center;
   position: relative;
 }
-
 .app-page .app-details .app-details-footer .option .btn {
   font-size: small;
   width: 100%;
@@ -606,7 +655,6 @@
   padding: 2px 10px;
   height: 100%;
 }
-
 .app-page .app-details .app-details-footer .option .icon {
   color: white;
   width: 120px;
@@ -619,32 +667,26 @@
   justify-content: center;
   align-items: center;
 }
-
 .app-page .app-details .app-details-footer .option .icon.green {
   background: #00ae7a;
   color: #ffffff;
 }
-
 .app-page .app-details .app-details-footer .option .icon.green:hover {
   background: #007b56;
   color: #ffffff;
 }
-
 .app-page .app-details .app-details-footer .option .icon.blue {
   background: #3947fd;
   color: #ffffff;
 }
-
 .app-page .app-details .app-details-footer .option .icon.blue:hover {
   background: #2731b0;
   color: #ffffff;
 }
-
 .app-page .app-details .app-details-footer .option .icon.red {
   background: rgb(237, 67, 55);
   color: #ffffff;
 }
-
 .app-page .app-details .app-details-footer .option .icon.red:hover {
   background: #a02d25;
   color: #ffffff;
@@ -723,15 +765,13 @@ label {
   color: #949ba4;
 }
 
-.modal .modal-content.modal-global {
+.modal .modal-dialog .modal-content.modal-global {
   background: #232428;
 }
-
-.modal .modal-content.modal-global .modal-header {
+.modal .modal-dialog .modal-content.modal-global .modal-header {
   border-color: #36373d;
 }
-
-.modal .modal-content.modal-global .modal-footer {
+.modal .modal-dialog .modal-content.modal-global .modal-footer {
   border-color: #36373d;
 }
 

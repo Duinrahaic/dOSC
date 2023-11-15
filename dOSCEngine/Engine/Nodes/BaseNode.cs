@@ -2,18 +2,16 @@
 using Blazor.Diagrams.Core.Models.Base;
 using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.Geometry;
-using System.Xml.Linq;
-using Newtonsoft.Json;
 using dOSCEngine.Engine.Ports;
-using System.Reflection.Emit;
-using dOSCEngine.Engine.Links;
-
+ 
 namespace dOSCEngine.Engine.Nodes
 {
     public abstract class BaseNode : NodeModel
     {
         private dynamic _value;
         public event Action<BaseNode>? ValueChanged;
+        public delegate void SettingsMenuCalled(BaseNode Node);
+        public event SettingsMenuCalled? OnSettingsMenuCalled;
 
         protected BaseNode(Point position) : base(position)
         {
@@ -33,7 +31,8 @@ namespace dOSCEngine.Engine.Nodes
         public Guid Guid { get; set; } = Guid.NewGuid();
         public virtual string NodeClass => "base";
         public virtual string Option => string.Empty;
-        public string BlockHeaderClass => $"block {BlockTypeClass} {ErrorClass}";
+        public string BlockHeaderClass => $"block {BlockTypeClass} {ErrorClass} {SelectedClass}";
+        private string SelectedClass => Selected ? "selected" : string.Empty;
         public virtual string BlockTypeClass => string.Empty;
         public string ErrorMessage { get; set; } = string.Empty;
         public bool Error { get; set; } = false;
@@ -42,6 +41,32 @@ namespace dOSCEngine.Engine.Nodes
         public DateTime LastUpdate => _LastUpdate;
         public virtual string OriginalName { get;set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
+        private bool _Hovered { get; set; } = false;
+        public bool Hovered => _Hovered;
+        public void OnHoverOver()
+        {
+            _Hovered = true; 
+        }
+        public void OnHoverOut()
+        {
+            _Hovered = false;
+        }
+        public void OpenSettingsMenu()
+        {
+            OnSettingsMenuCalled?.Invoke(this);
+        }
+         
+
+        public void LockNode()
+        {
+            this.Locked = true;
+        }
+
+        public void UnlockNode()
+        {
+            this.Locked = false;
+        }
+
         public string GetDisplayName()
         {
             if (string.IsNullOrEmpty(DisplayName))

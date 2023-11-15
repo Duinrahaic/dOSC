@@ -27,6 +27,7 @@ namespace dOSC.Pages
         protected override void OnInitialized()
         {
             Wiresheets = Engine?.GetWireSheets() ?? new();
+            Wiresheet = Wiresheets.FirstOrDefault();
         }
 
         protected override void OnParametersSet()
@@ -112,11 +113,10 @@ namespace dOSC.Pages
 
         }
 
-        
 
         // Modals 
         private ModalBase NewAppModal { get; set; }
         private ModalBase UploadAppModal { get; set; }
         private ModalBase DeleteAppModal { get; set; }
-    }
+     }
 }

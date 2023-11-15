@@ -9,7 +9,10 @@
     <div class="block-body  overflow-visible">
         <div class="d-flex flex-column">
             <div class="d-flex d-inline align-items-center justify-center-end py-2 w-100">
-                <input class="" @bind-value=this.Node.SelectedOption />
+                <input class="" @bind-value=this.Node.SelectedOption
+                @onpointerdown:stopPropagation
+                @onpointerup:stopPropagation
+                @onpointermove:stopPropagation />
                 <PortValueLabel LabelPosition=PortValueLabel.Position.Right DisplayValue="this.Node.Value" />
 
                 <PortRenderer Class="numeric" Port="this.Node.Ports[0]" />

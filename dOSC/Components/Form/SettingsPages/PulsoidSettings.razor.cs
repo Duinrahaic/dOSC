@@ -1,4 +1,5 @@
-﻿using dOSCEngine.Services.User;
+﻿using dOSCEngine.Services.Connectors.Activity.Pulsoid;
+using dOSCEngine.Services.User;
 using Microsoft.AspNetCore.Components;
 
 namespace dOSC.Components.Form.SettingsPages
@@ -9,7 +10,8 @@ namespace dOSC.Components.Form.SettingsPages
         public PulsoidSetting? Setting { get; set; }
         [Parameter]
         public EventCallback<PulsoidSetting> OnValidSubmit { get; set; }
-
+        [Inject]
+        private PulsoidService? Service { get; set; }
         private void Submit()
         {
             if (Setting == null)

@@ -41,6 +41,7 @@ namespace dOSC.Pages
         public NavigationManager? NM { get; set; }
 
         private ModalBase SaveModal { get; set; }
+        private ModalBase NodeSettingsModal { get; set; }
 
 
         protected override void OnInitialized()
@@ -122,12 +123,15 @@ namespace dOSC.Pages
         {
             var n = node as BaseNode;
             n!.ValueChanged += OnValueChanged;
-        }
+         }
+
+      
         private void OnNodeRemoved(NodeModel node)
         {
             var n = node as BaseNode;
             n!.ValueChanged -= OnValueChanged;
         }
+ 
 
         public void OnValueChanged(BaseNode op)
         {
@@ -163,10 +167,17 @@ namespace dOSC.Pages
         private void OnLinkAdded(BaseLinkModel link)
         {
             link.TargetChanged += OnLinkTargetChanged;
-            
+            var sp = (link.Source as SinglePortAnchor)!;
+            var tp = (link.Target as SinglePortAnchor)!;
+            foreach (var node in diagram.Nodes)
+            {
+                node.Refresh();
+            }
         }
         private void OnLinkRemoved(BaseLinkModel link)
         {
+            
+            link.TargetChanged -= OnLinkTargetChanged;
             (link.Source.Model as PortModel)!.Parent.Refresh();
             var s = (link.Source.Model as BasePort);
             var t = (link.Target.Model as BasePort);
@@ -175,9 +186,11 @@ namespace dOSC.Pages
                 var Port = (link.Target.Model as BasePort)!;
                 var Node = (Port.Parent as BaseNode)!;
                 Node.ResetValue();
-                Node.Refresh();
             }
-            link.TargetChanged -= OnLinkTargetChanged;
+            foreach (var node in diagram.Nodes)
+            {
+                node.Refresh();
+            }
         }
 
 

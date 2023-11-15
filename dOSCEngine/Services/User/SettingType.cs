@@ -6,5 +6,6 @@
         dOSC,
         OSC,
         Pulsoid,
+        XSOverlay
     }
 }
