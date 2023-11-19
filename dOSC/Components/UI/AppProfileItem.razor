@@ -1,0 +1,18 @@
+﻿<div class="item-app">
+    <div class="item-app-image @(dOSCWiresheet.IsPlaying ? "app-running": "app-paused" )" @onclick=TogglePlayPause>
+        <i class="icon oi @(dOSCWiresheet.IsPlaying ? "oi-media-play": "oi-media-pause" )"/>
+    </div>
+    <div class="item-app-content">
+        <div class="item-app-content-title">
+            @dOSCWiresheet.AppName
+        </div>
+        <div class="controls">
+            <button class="btn btn-primary" @onclick=EditApp>
+                Edit
+            </button>
+            <button class="btn btn-secondary" @onclick=ShowSettings>
+                Details
+            </button>
+        </div>
+    </div>
+</div>

@@ -2,28 +2,33 @@
 using dOSCEngine.Services.Connectors.Activity.Pulsoid;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Photino.Blazor;
 using dOSCEngine.Services;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace dOSCEngine
 {
     public static class App
     {
-        public static PhotinoBlazorAppBuilder AddDataServices(this PhotinoBlazorAppBuilder builder)
-        {
-            builder.Services.AddSingleton<OSCService>();
-            builder.Services.AddSingleton<dOSCService>();
-            builder.Services.AddSingleton<PulsoidService>();
-            builder.Services.AddHostedService(sp => sp.GetRequiredService<OSCService>());
-            builder.Services.AddHostedService(sp => sp.GetRequiredService<PulsoidService>());
-            builder.Services.AddHostedService(sp => sp.GetRequiredService<dOSCService>());
-            builder.Services.AddSignalR();
+        //public static PhotinoBlazorAppBuilder AddDataServices(this PhotinoBlazorAppBuilder builder)
+        //{
+        //    builder.Services.AddSingleton<OSCService>();
+        //    builder.Services.AddSingleton<dOSCService>();
+        //    builder.Services.AddSingleton<PulsoidService>();
+        //    builder.Services.AddHostedService(sp => sp.GetRequiredService<OSCService>());
+        //    builder.Services.AddHostedService(sp => sp.GetRequiredService<PulsoidService>());
+        //    builder.Services.AddHostedService(sp => sp.GetRequiredService<dOSCService>());
+        //    builder.Services.AddSignalR();
 
 
-            return builder;
-        }
+        //    return builder;
+        //}
         public static WebApplicationBuilder AddDataServices(this WebApplicationBuilder builder)
         {
+
+            builder.Services.AddRazorPages();
+            builder.Services.AddServerSideBlazor();
+
             builder.Services.AddSingleton<OSCService>();
             builder.Services.AddSingleton<dOSCService>();
             builder.Services.AddSingleton<PulsoidService>();
@@ -31,8 +36,7 @@ namespace dOSCEngine
             builder.Services.AddHostedService(sp => sp.GetRequiredService<PulsoidService>());
             builder.Services.AddHostedService(sp => sp.GetRequiredService<dOSCService>());
             builder.Services.AddSignalR();
-
-
+            
             return builder;
         }
     }

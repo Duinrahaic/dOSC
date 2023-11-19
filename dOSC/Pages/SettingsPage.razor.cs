@@ -1,7 +1,7 @@
 ﻿using dOSCEngine.Services;
 using dOSCEngine.Services.Connectors.Activity.Pulsoid;
 using dOSCEngine.Services.User;
-using dOSC.Utilities;
+using dOSCEngine.Utilities;
 using Microsoft.AspNetCore.Components;
 using System;
 

@@ -1,0 +1,28 @@
+﻿@if (Show)
+{
+    <div class="app-sidepanel-container @(CloseAnimation?"close":"")">
+        <div class="sidepanel">
+            <div class="content">
+                <span class="close icon icon-x" @onclick="Close" />
+                <span class="download icon icon-download" @onclick="DownloadApp" />
+
+                <div class="app-image-container">
+                    <div class="app-image app-automated-on"/>
+                    <div class="imageUpload icon-image-plus" @onclick="DownloadApp" />
+
+                </div>
+
+                <div class="content-body">
+                    <div class="scroll-content">
+                    </div>
+                </div>
+                <div class="options">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="backdrop" @onclick="Close" />
+    </div>
+}

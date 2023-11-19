@@ -49,10 +49,28 @@ namespace dOSCEngine.Services
                         AddWiresheet(w);
                     }
                 }
-                foreach(var x in _WiresheetMemory)
+                foreach(var wsm in _WiresheetMemory)
                 {
-                    x.Build();
-                    x.Diagram.SuspendRefresh = false;
+                    if(ws != null)
+                    {
+                        var s = ws.FirstOrDefault(x => x.AppGuid.Equals(wsm.AppGuid));
+                        if(s != null)
+                        {
+                            if(s.Running)
+                            {
+                                wsm.Build();
+                            }
+                            else
+                            {
+                                wsm.Desconstruct();
+                            }
+                        }
+                        else
+                        {
+                            wsm.Build();
+                        }
+                    }
+                    
                 }
 
             }

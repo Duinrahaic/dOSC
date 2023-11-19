@@ -6,69 +6,71 @@
     background: $color-theme-1;
     font-family: "Open Sans", sans-serif;
     color: $color-full-white;
-    min-height: calc(100vh - $title-bar-size);
-}
+    height: calc(100vh - $title-bar-size);
+    overflow:hidden;
 
-.appbody .nav {
-    background: $color-theme-1;
-    display: flex;
-    flex-direction: column;
-    bottom: 0;
-    overflow-y: auto;
-    z-index: 100;
-    min-width:80px;
-}
 
-.appbody .nav ::-webkit-scrollbar {
-    display: none;
-    width: 80px;
-}
+    .nav {
+        background: $color-theme-1;
+        display: flex;
+        flex-direction: column;
+        bottom: 0;
+        overflow-y: auto;
+        z-index: 100;
+        min-width: 80px;
 
-.appbody .body {
-    background: $color-dark;
-    border-radius: 0.35rem 0 0 0;
-    overflow: hidden;
-    flex-grow: 1;
-    box-shadow: 0 0 16px 4px hsl(230deg 9% 8% / 43%);
-    z-index: 999;
-}
+        &::-webkit-scrollbar {
+            display: none;
+            width: 80px;
+        }
+    }
 
-.appbody .body .navbar {
-    background-color: $color-wiresheet-toolbar;
-    color: $color-grey-white;
-}
+    .body {
+        background: $color-dark;
+        border-radius: 0.35rem 0 0 0;
+        overflow: hidden;
+        flex-grow: 1;
+        box-shadow: 0 0 16px 4px hsl(230deg 9% 8% / 43%);
+        z-index: 999;
 
-.appbody .body .search-form {
-    display: flex;
-    justify-items: center;
-    align-items: center;
-    padding-left: 1rem;
-    gap: 0.5rem;
-    background-color: $color-theme-1;
-    border-color: transparent;
-    border-radius: 75px;
-}
+        .navbar {
+            background-color: $color-wiresheet-toolbar;
+            color: $color-grey-white;
+        }
 
-.appbody .search-input {
-    padding-left: 0;
-    color: $color-full-white;
-    background-color: transparent;
-    border-color: transparent;
-}
+        .search-form {
+            display: flex;
+            justify-items: center;
+            align-items: center;
+            padding-left: 1rem;
+            gap: 0.5rem;
+            background-color: $color-theme-1;
+            border-color: transparent;
+            border-radius: 75px;
+        }
 
-.appbody .search-input:focus {
-    box-shadow: none;
-}
+        .search-input {
+            padding-left: 0;
+            color: $color-full-white;
+            background-color: transparent;
+            border-color: transparent;
 
-.appbody .search-input::placeholder {
-    color: $color-grey-white;
-}
+            &:focus {
+                box-shadow: none;
+            }
 
-.appbody .body .content {
-    width: 100%;
-    height: calc(100vh);
-    border-top-left-radius: 16px;
-    color: $color-titlebar-textcolor;
+            &::placeholder {
+                color: $color-grey-white;
+            }
+        }
+
+        .content {
+            width: 100%;
+            height: calc(100vh);
+            border-top-left-radius: 16px;
+            color: $color-titlebar-textcolor;
+        }
+    }
 }
 
 .guilds-container {
@@ -139,58 +141,53 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
 
+    &:hover {
+        border-radius: 36%;
+    }
 
-.squircle-active:hover {
-    border-radius: 36%;
-}
+    &:hover::before {
+        transform: translate(-100%, -50%) scale(.5);
+    }
 
-.squircle-active:hover::before {
-    transform: translate(-100%, -50%) scale(.5);
-}
-
-
-/* pill */
-.squircle-active::before {
-    content: '';
-    width: 100%;
-    height: 100%;
-    background: $color-full-white;
-    position: absolute;
-    border-radius: 5px;
-    top: 50%;
-    transform: translate(-100%, -50%) scale(.5);
+    &::before {
+        content: '';
+        width: 100%;
+        height: 100%;
+        background: $color-full-white;
+        position: absolute;
+        border-radius: 5px;
+        top: 50%;
+        transform: translate(-100%, -50%) scale(.5);
+    }
 }
 
 
 .purple-app {
     background: $color-blurple;
-}
 
-.purple-app:hover {
-    background: $color-blurple;
-    color: $color-full-white;
+    &:hover {
+        background: $color-blurple;
+        color: $color-full-white;
+    }
 }
 
 .green-app {
     background: $color-green;
-}
 
-.green-app:hover {
-    background: $color-green;
-    color: $color-full-white;
+    &:hover {
+        background: $color-green;
+        color: $color-full-white;
+    }
 }
-
 .pink-app {
     background: $color-pink;
-}
 
-.pink-app:hover {
-    background: $color-pink;
-    color: $color-full-white;
+    &:hover {
+        background: $color-pink;
+        color: $color-full-white;
+    }
 }
-
 .divider {
     width: 100%;
     background: $color-full-white;

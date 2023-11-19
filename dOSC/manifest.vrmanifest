@@ -1,0 +1,18 @@
+{
+	"source": "builtin",
+	"applications": [
+		{
+			"app_key": "com.jangxx.vrc-picture-clipboard",
+			"launch_type": "binary",
+			"binary_path_windows": "VRCPictureToClipboard.exe",
+			"is_dashboard_overlay": true,
+
+			"strings": {
+				"en_us": {
+					"name": "VRC Picture To Clipboard",
+					"description": "Automatically copies new pictures taken in VRChat into the clipboard"
+				}
+			}
+		}
+	]
+}

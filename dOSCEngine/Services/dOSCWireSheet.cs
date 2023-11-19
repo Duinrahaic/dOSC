@@ -21,16 +21,7 @@ namespace dOSCEngine.Services
         public List<BaseNode> _Nodes = new List<BaseNode>();
         public List<BaseLink> _Links = new List<BaseLink>();
         private bool _Built = false;
-        public bool IsPlaying {
-            get 
-            { 
-                return !Diagram.SuspendRefresh;
-            }
-            set 
-            {
-                Diagram.SuspendRefresh = value;
-            }
-        }
+        public bool IsPlaying => _Built;
         public bool HasError { get; set; } = false;
 
 

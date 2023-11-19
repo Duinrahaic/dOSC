@@ -1,6 +1,6 @@
 ﻿using dOSC.Components.Modals;
 using dOSCEngine.Services;
-using dOSC.Utilities;
+using dOSCEngine.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.IO;
@@ -103,6 +103,14 @@ namespace dOSC.Pages
             }
         }
 
+        private void NewApp()
+        {
+            if (NM != null)
+            {
+                NM.NavigateTo($"apps/editor/");
+            }
+        }
+    
         private async Task DownloadApp()
         {
             if (Wiresheet != null)
@@ -113,10 +121,32 @@ namespace dOSC.Pages
 
         }
 
+        private async Task ShowSettings(dOSCWiresheet wiresheet)
+        {
+            if (wiresheet != null)
+            {
+                Wiresheet = wiresheet;
+                AppSettingsPanel.Open();
+            }
+
+        }
+
+        private void Save(dOSCWiresheet wiresheet)
+        {
+            if (wiresheet != null && Engine != null)
+            {
+                Engine.SaveWiresheet(wiresheet);
+            }
+        }
+
+        
 
         // Modals 
         private ModalBase NewAppModal { get; set; }
         private ModalBase UploadAppModal { get; set; }
         private ModalBase DeleteAppModal { get; set; }
-     }
+        private ModalBase AppSettingsModal { get; set; }
+     
+        private SidePanelBase AppSettingsPanel { get; set; }
+    }
 }

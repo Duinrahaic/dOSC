@@ -4,156 +4,61 @@
 @using dOSC.Components.UI
 @using dOSC.Components.Modals
 @using Microsoft.AspNetCore.Components.Forms;
-<div class="app-page">
-    <div class="app-nav">
-        <div class="app-nav-header">
-            <div class="app-nav-header-title">
-                <h3 class="icon oi oi-code"></h3>
-                <h3>APPS</h3>
-            </div>
 
+<div class="app-container">
+    <div class="header">
+        <div class="text-group">
+            <div class="title">
+                Application List
+            </div>
+            <div class="subtitle">
+                List of all your current applications
+            </div>
         </div>
-        <div class="app-nav-container">
-            <Virtualize Items="@Wiresheets">
-                <AppNavItem Wiresheet="@context" SelectedEvent="@OnSelected" Selected="@Wiresheet" />
-            </Virtualize>
-            
-        </div>
-        <div class="app-nav-footer">
-            <div class="option">
-                <button class="btn btn-success icon icon-plus" @onclick="()=> NewAppModal.Open()"></button>
+        <div class="search-bar-container">
+            <div class="search-bar">
+                <i class="search-icon oi oi-magnifying-glass" />
+
+                <input type="search" class="search-box" />
             </div>
         </div>
     </div>
-    <div class="app-details">
-        <div class="app-details-body">
-            @if (Wiresheet != null)
-            {
-                <div class="item header">
-                    <div class="title">
-                        <b>@Wiresheet.AppName</b>
-                    </div>
-                    <div class="description">
-                        <i>@Wiresheet.AppDescription</i>
-                    </div>
-                    <div class="break" />
-                </div>
+    <div class="navigation-bar">
 
+    </div>
+   
+    <div class="app-list">
+        <div class="app-list-container">
+            @{
+                foreach(var app in Wiresheets)
+                {
+                    <AppProfileItem dOSCWiresheet="app" OnPlayPause="Save" OnShowSettings="ShowSettings" />
 
-                <div class="item">
-                    <div class="option">
-                    </div>
-                    <div class="option">
-                    </div>
-
-                </div>
-
-                <div class="item">
-                    <div class="title">
-                        <div class="icon">
-                            <i class="oi oi-person"></i>
-                        </div>
-                        <div class="text">
-                            <b>Details</b>
-                        </div>
-                    </div>
-                    <div class="description">
-                    </div>
-
-                    <div class="break"/>
-                    <i>@Wiresheet.AppVersion</i>
-
-
-                </div>
+                }
             }
-        </div>
-
-
-        
-@*         <div class="app-details-body">
-            @if(Wiresheet != null)
-            {
-                <EditForm Model="@Wiresheet">
-                 <fieldset disabled="@true">
-                    <AppDetailItem Title="Information">
-                        <ChildContent>
-                            <div class="mb-3">
-                                <div class="mb-3 form-override">
-                                    <label for="inputAppName" class="form-label">Application Name</label>
-                                    <input type="text" class="form-control" @bind-value=@Wiresheet.AppName id="inputAppName">
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="mb-3 form-override">
-                                    <label for="inputAppDetailsTextarea" class="form-label">Descripton</label>
-                                    <div class="grow-wrap">
-                                        <textarea class="form-control"  id="inputAppDetailsTextarea" rows="3" onInput="this.parentNode.dataset.replicatedValue = this.value">
-                                            @Wiresheet.AppDescription
-                                        </textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </ChildContent>
-                    </AppDetailItem>
-                    <AppDetailItem Title="Details">
-                        <ChildContent>
-                            <div class="row w-100">
-                                <div class="col-lg-3 col-xs-12 col-md-6">
-                                    <div class="col-auto form-override">
-                                        <label for="inputAuthor" class="form-label">Author</label>
-                                        <input type="text" class="form-control" id="inputAuthor" @bind-value="@Wiresheet.AppAuthor" disabled>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-xs-12 col-md-6">
-                                    <div class="col-auto form-override">
-                                        <label for="inputVersion" class="form-label">Version</label>
-                                        <input type="number" class="form-control" id="inputVersion" @bind-value="@Wiresheet.AppVersion" disabled>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-xs-12 col-md-6">
-                                    <div class="col-auto form-override">
-                                        <label for="inputCreated" class="form-label">Created</label>
-                                        <input type="datetime" class="form-control" id="inputCreated" @bind-value="@Wiresheet.Created" disabled>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-xs-12 col-md-6">
-                                    <div class="col-auto form-override">
-                                        <label for="inputModified" class="form-label">Modified</label>
-                                        <input type="datetime" class="form-control" id="inputModified" @bind-value="@Wiresheet.Modified" disabled>
-                                    </div>
-                                </div>
-                            </div>
-                        </ChildContent>
-                    </AppDetailItem>
-                    <AppDetailItem Title="Connectors Used">
-                        <ChildContent>
-                            TBA
-                        </ChildContent>
-                    </AppDetailItem>
-                    </fieldset>
-                </EditForm>
-            }
-            else
-            {
-                <div>
-                    <h3>No App Selected</h3>
+            <div class="new-item-app" >
+                <div class="content" @onclick="NewApp">
+                    <div class="title">
+                        New App
+                    </div>
+                    <i class="icon icon-plus-circle" />
                 </div>
-            } *@
-        <div class="app-details-footer">
-            <div class="option">
-                <button disabled="@(Wiresheet==null)" class="btn btn-primary icon icon-download" @onclick="()=> DownloadApp()"></button>
-            </div>
-            <div class="option">
-                <button disabled="@(Wiresheet==null)" class="btn btn-primary icon icon-file-edit" @onclick="()=> EditApp()"></button>
-            </div>
-            <div class="option">
-                <button disabled="@(Wiresheet==null)" class="btn btn-danger icon icon-trash-2" @onclick="()=> DeleteAppModal.Open()"></button>
+                <hr />
+                <div class="content" @onclick="(()=>UploadAppModal.Open())">
+                    <div class="title">
+                        Upload App
+                    </div>
+                    <i class="icon icon-upload" />
+                </div>
+
+
+                
             </div>
         </div>
     </div>
 </div>
 
-
+<SidePanelBase @ref=AppSettingsPanel dOSCWiresheet="Wiresheet"/>
 
 
 
@@ -204,3 +109,4 @@
         </div>
     </Footer>
 </ModalBase>
+

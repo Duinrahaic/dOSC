@@ -15,12 +15,14 @@ namespace dOSCEngine.Engine.Nodes
 
         protected BaseNode(Point position) : base(position)
         {
-
+            this.Size = new Size(200, 200);
         }
 
         protected BaseNode(Guid guid, Point position) : base(position)
         {
             Guid = guid;
+            this.Size = new Size(200, 200);
+
 
         }
         public IReadOnlyList<BasePort> GetPorts()
