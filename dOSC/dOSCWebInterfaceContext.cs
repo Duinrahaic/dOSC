@@ -1,4 +1,4 @@
-﻿using dOSC;
+﻿using dOSCEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace dOSCApp
+namespace dOSC
 {
     internal class dOSCWebInterfaceContext: ApplicationContext
     {
@@ -81,13 +81,13 @@ namespace dOSCApp
 
         private void RegisterSteamVR(object? sender, EventArgs e)
         {
-            ovr.InstallManifest();
+            //ovr.InstallManifest();
             setupTrayMenu();
         }
 
         private void UnregisterSteamVR(object? sender, EventArgs e)
         {
-            ovr.UninstallManifest();
+            //ovr.UninstallManifest();
             setupTrayMenu();
         }
 

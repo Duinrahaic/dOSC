@@ -27,7 +27,7 @@ namespace dOSC
         }
 
 
-        public static void Start()
+        public static void Start(string[] args)
         {
             var builder = WebApplication.CreateBuilder();
 
@@ -80,13 +80,22 @@ namespace dOSC
             app.MapBlazorHub();
             app.MapFallbackToPage("/_Host");
             _isRunning = true;
-            app.Run();
+
+
+            if (!args.Any(x => x.ToLower().Equals("--headless")))
+            {
+                app.RunAsync();
+            }
+            else
+            {
+                app.Run();
+            }
         }
 
         public static void Stop()
         {
             _isRunning = false;
-            Task.Run(async () => await app.StopAsync());
+            app.StopAsync();
         }
     }
 }

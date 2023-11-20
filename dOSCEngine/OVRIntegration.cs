@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace dOSCEngine
 {
-    internal class OVRIntegration
+    public class OVRIntegration
     {
         public static string APPLICATION_KEY = "com.duinrahaic.dOSC";
 
@@ -114,50 +114,50 @@ namespace dOSCEngine
             return OpenVR.Applications.IsApplicationInstalled(APPLICATION_KEY);
         }
 
-        public void InstallManifest()
-        {
-            if (cVR == null || !initialized)
-            {
-                return;
-            }
+        //public void InstallManifest()
+        //{
+        //    if (cVR == null || !initialized)
+        //    {
+        //        return;
+        //    }
 
-            var executablePath = Application.ExecutablePath;
-            var executableDir = Path.GetDirectoryName(executablePath);
+        //    var executablePath = Application.ExecutablePath;
+        //    var executableDir = Path.GetDirectoryName(executablePath);
 
-            EVRApplicationError error = OpenVR.Applications.AddApplicationManifest(Path.Join(executableDir, "manifest.vrmanifest"), false);
+        //    EVRApplicationError error = OpenVR.Applications.AddApplicationManifest(Path.Join(executableDir, "manifest.vrmanifest"), false);
 
-            if (error != EVRApplicationError.None)
-            {
-                MessageBox.Show("Error while registering with SteamVR: " + error.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            } else
-            {
-                MessageBox.Show("Successfully registered with SteamVR", "Success");
-            }
-        }
+        //    if (error != EVRApplicationError.None)
+        //    {
+        //        MessageBox.Show("Error while registering with SteamVR: " + error.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    } else
+        //    {
+        //        MessageBox.Show("Successfully registered with SteamVR", "Success");
+        //    }
+        //}
 
-        public void UninstallManifest()
-        {
-            if (cVR == null || !initialized)
-            {
-                return;
-            }
+        //public void UninstallManifest()
+        //{
+        //    if (cVR == null || !initialized)
+        //    {
+        //        return;
+        //    }
 
-            StringBuilder sb = new StringBuilder("", 512);
-            EVRApplicationError error = EVRApplicationError.None;
+        //    StringBuilder sb = new StringBuilder("", 512);
+        //    EVRApplicationError error = EVRApplicationError.None;
 
-            OpenVR.Applications.GetApplicationPropertyString(APPLICATION_KEY, EVRApplicationProperty.WorkingDirectory_String, sb, 512, ref error);
+        //    OpenVR.Applications.GetApplicationPropertyString(APPLICATION_KEY, EVRApplicationProperty.WorkingDirectory_String, sb, 512, ref error);
 
-            var manifestPath = Path.Join(sb.ToString(), "manifest.vrmanifest");
-            error = OpenVR.Applications.RemoveApplicationManifest(manifestPath);
+        //    var manifestPath = Path.Join(sb.ToString(), "manifest.vrmanifest");
+        //    error = OpenVR.Applications.RemoveApplicationManifest(manifestPath);
 
-            if (error != EVRApplicationError.None)
-            {
-                MessageBox.Show("Error while unregistering from SteamVR: " + error.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
-                MessageBox.Show("Successfully unregistered from SteamVR", "Success");
-            }
-        }
+        //    if (error != EVRApplicationError.None)
+        //    {
+        //        MessageBox.Show("Error while unregistering from SteamVR: " + error.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Successfully unregistered from SteamVR", "Success");
+        //    }
+        //}
     }
 }

@@ -24,6 +24,10 @@ namespace dOSC.Pages
         private List<dOSCWiresheet> Wiresheets = new();
         private dOSCWiresheet? Wiresheet;
 
+        private List<string> NavTabs = new() { "All", "Activity", "Fun", "Tech" };
+        private string ActiveTab = "All";
+
+
         protected override void OnInitialized()
         {
             Wiresheets = Engine?.GetWireSheets() ?? new();

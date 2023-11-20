@@ -1363,9 +1363,66 @@ label {
     width: 100%;
   }
 }
-.app-container .navigation-bar {
+.app-container .navigation-container {
   width: 100%;
-  border: solid 1px #36373d;
+  position: relative;
+}
+.app-container .navigation-container .navigation-bottom-bar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin: 0 8px;
+  border-bottom: solid 4px #36373d;
+  border-radius: 12px;
+}
+.app-container .navigation-container ul.navigation-bar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  width: 100%;
+}
+.app-container .navigation-container ul.navigation-bar li {
+  float: left;
+}
+.app-container .navigation-container ul.navigation-bar li a {
+  display: block;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-weight: 600;
+  color: #ffffff;
+  position: relative;
+}
+.app-container .navigation-container ul.navigation-bar li a .bottom-border {
+  border-bottom: 4px solid #7289da;
+  border-radius: 12px;
+  width: 0%;
+  height: 4px;
+  position: absolute;
+  bottom: 0;
+  left: 4px;
+  z-index: 100;
+  transition: 250ms ease-in-out;
+}
+.app-container .navigation-container ul.navigation-bar li a:hover:not(:active) {
+  color: #7289da;
+  transition: 250ms ease-in-out;
+}
+.app-container .navigation-container ul.navigation-bar li a:hover:not(:active) .bottom-border {
+  width: 60%;
+}
+.app-container .navigation-container ul.navigation-bar li a:hover:active {
+  color: #7289da;
+}
+.app-container .navigation-container ul.navigation-bar li a:hover:active .bottom-border {
+  width: 60%;
+}
+.app-container .navigation-container ul.navigation-bar li a.active {
+  color: #7289da;
+}
+.app-container .navigation-container ul.navigation-bar li a.active .bottom-border {
+  width: 60%;
 }
 .app-container .app-list {
   height: 100%;

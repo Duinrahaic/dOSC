@@ -1,3 +1,4 @@
+using dOSCEngine.Utilities;
 using System.Diagnostics;
 
 namespace dOSC
@@ -17,8 +18,12 @@ namespace dOSC
                 globalMutex.Close();
                 return;
             }
+            FileSystem.CreateFolders();
+            Webserver.Start(args);
 
-            Webserver.Start();
+            if (!args.Any(x => x.ToLower().Equals("--headless"))){
+                Application.Run(new MainWindow());
+            }
 
             globalMutex.Close();
 

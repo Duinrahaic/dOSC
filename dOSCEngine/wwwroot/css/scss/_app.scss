@@ -2,7 +2,7 @@
 @import "_animations.scss";
 
 .app-container {
-    overflow-x:hidden;
+    overflow-x: hidden;
     padding: 16px;
     display: flex;
     gap: 12px 12px;
@@ -87,10 +87,84 @@
         }
     }
 
-    .navigation-bar {
+    .navigation-container {
         width: 100%;
-        border: solid 1px $color-theme-5
+        position: relative;
+
+        .navigation-bottom-bar {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            margin: 0 8px;
+            border-bottom: solid 4px $color-theme-5;
+            border-radius: 12px;
+        }
+
+        ul.navigation-bar {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            width: 100%;
+
+            li {
+                float: left;
+
+                a {
+                    display: block;
+                    text-align: center;
+                    padding: 14px 16px;
+                    text-decoration: none;
+                    font-weight: 600;
+                    color: $color-full-white;
+                    position: relative;
+
+                    .bottom-border {
+                        border-bottom: 4px solid $color-blurple;
+                        border-radius: 12px;
+                        width: 0%;
+                        height: 4px;
+                        position: absolute;
+                        bottom: 0;
+                        left: 4px;
+                        z-index: 100;
+                        transition: 250ms ease-in-out;
+                    }
+
+
+
+
+                    &:hover:not(:active) {
+                        color: $color-blurple;
+
+                        .bottom-border {
+                            width: 60%;
+                        }
+
+                        transition: 250ms ease-in-out;
+                    }
+
+                    &:hover:active {
+                        color: $color-blurple;
+
+                        .bottom-border {
+                            width: 60%;
+                        }
+                    }
+
+                    &.active {
+                        color: $color-blurple;
+
+                        .bottom-border {
+                            width: 60%;
+                        }
+                    }
+                }
+            }
+        }
     }
+
+
 
     .app-list {
         height: 100%;
@@ -129,13 +203,14 @@
                     box-shadow: 0 0 8px 1px $color-green-darker;
                 }
 
-                .content{
+                .content {
                     justify-content: center;
                     display: flex;
                     flex-direction: column;
                     color: $color-full-white;
                     height: 100%;
                     cursor: pointer;
+
                     .title {
                         font-size: 24px;
                         font-weight: 600;
@@ -152,10 +227,8 @@
                     color: solid 4px $color-full-white;
                 }
 
-                .lower{
-
+                .lower {
                 }
-
             }
 
             .item-app {
