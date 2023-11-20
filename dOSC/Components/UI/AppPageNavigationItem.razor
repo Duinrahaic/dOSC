@@ -1,6 +1,6 @@
 ﻿<li class="">
     <div class="text ">
-        <a class="@(TabName.Equals(ActiveTab)?"active":"")" href="#@(TabName)" @onclick:preventDefault @onclick="(()=> ActiveTab = TabName)">
+        <a class="@(ActiveStateCSS)" href="#@(TabName)" @onclick:preventDefault @onclick="OnClick">
             @TabName
             <div class="bottom-border" />
 
@@ -17,4 +17,12 @@
     public string ActiveTab { get; set; } = string.Empty;
     [Parameter]
     public EventCallback<string> ActiveTabChanged { get; set; }
+
+    private string ActiveStateCSS => TabName.Equals(ActiveTab) ? "active" : "";
+
+    private void OnClick()
+    {
+        ActiveTab = TabName;
+        ActiveTabChanged.InvokeAsync(TabName);
+    }
 }

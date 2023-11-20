@@ -2,7 +2,7 @@
     <ul class="navigation-bar">
         @foreach(var tab in TabNames)
         {
-            <AppPageNavigationItem TabName="@tab" ActiveTab="@ActiveTab" />
+            <AppPageNavigationItem TabName="@tab" ActiveTab="@ActiveTab" ActiveTabChanged="OnActiveTabChanged" />
         }
     </ul>
     <div class="navigation-bottom-bar" />
@@ -21,6 +21,12 @@
     protected override void OnInitialized()
     {
         ActiveTab = TabNames.FirstOrDefault() ?? string.Empty;
+    }
+
+    private void OnActiveTabChanged(string ActiveTabName)
+    {
+        ActiveTab = ActiveTabName;
+        ActiveTabChanged.InvokeAsync(ActiveTab);
     }
 
 
