@@ -1,0 +1,57 @@
+﻿@import "_variables.scss";
+.editform {
+    display: flex;
+    flex-direction: column;
+    gap: 10px 10px;
+    border-radius: 6px;
+    padding: 4px;
+
+    .content-item {
+        position: relative;
+        width: 100%;
+        input {
+            padding: 4px;
+            border-radius: inherit;
+            width: 100%;
+            background-color: $color-theme-4;
+            border: solid 1px $color-actually-black;
+            color: $color-full-white;
+
+            &:focus {
+                outline: solid 1px $color-titlebar-textcolor;
+                box-shadow: 0 0 4px 1px $color-titlebar-textcolor;
+            }
+        }
+
+
+        span.input {
+            padding: 4px;
+            border-radius: inherit;
+            width: 100%;
+            background-color: $color-theme-4;
+            border: solid 1px $color-actually-black;
+            color: $color-full-white;
+            display:
+
+            &:focus {
+                outline: solid 1px $color-titlebar-textcolor;
+                box-shadow: 0 0 4px 1px $color-titlebar-textcolor;
+            }
+        }
+
+
+        textarea {
+            padding: 4px;
+            border-radius: inherit;
+            width: 100%;
+            color: $color-full-white;
+            background-color: $color-theme-4;
+            border: solid 1px $color-actually-black;
+
+            &:focus {
+                outline: solid 1px $color-titlebar-textcolor;
+                box-shadow: 0 0 4px 1px $color-titlebar-textcolor;
+            }
+        }
+    }
+}

@@ -14,7 +14,21 @@
 
                 <div class="content-body">
                     <div class="scroll-content">
-
+                        <EditForm Model="dOSCWiresheet" class="editform">
+                            <div class="content-item">
+                                <label>Title</label>
+                                <InputText @bind-Value=dOSCWiresheet.AppName />
+                            </div>
+                            <div class="content-item">
+                                <label>Description</label>
+                                <span class="input"
+                                      role="textbox"
+                                      contenteditable>
+                                    @dOSCWiresheet.AppDescription
+                                </span>
+                            </div>
+                            
+                        </EditForm>
                     </div>
                 </div>
                 <div class="options">

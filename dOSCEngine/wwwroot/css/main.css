@@ -1708,3 +1708,51 @@ label {
   animation: 250ms ease-in-out 0s 1 appear;
   overflow: hidden;
 }
+
+.editform {
+  display: flex;
+  flex-direction: column;
+  gap: 10px 10px;
+  border-radius: 6px;
+  padding: 4px;
+}
+.editform .content-item {
+  position: relative;
+  width: 100%;
+}
+.editform .content-item input {
+  padding: 4px;
+  border-radius: inherit;
+  width: 100%;
+  background-color: #2b2d31;
+  border: solid 1px #000000;
+  color: #ffffff;
+}
+.editform .content-item input:focus {
+  outline: solid 1px #949ba4;
+  box-shadow: 0 0 4px 1px #949ba4;
+}
+.editform .content-item span.input {
+  padding: 4px;
+  border-radius: inherit;
+  width: 100%;
+  background-color: #2b2d31;
+  border: solid 1px #000000;
+  color: #ffffff;
+}
+.editform .content-item span.input:focus {
+  outline: solid 1px #949ba4;
+  box-shadow: 0 0 4px 1px #949ba4;
+}
+.editform .content-item textarea {
+  padding: 4px;
+  border-radius: inherit;
+  width: 100%;
+  color: #ffffff;
+  background-color: #2b2d31;
+  border: solid 1px #000000;
+}
+.editform .content-item textarea:focus {
+  outline: solid 1px #949ba4;
+  box-shadow: 0 0 4px 1px #949ba4;
+}
