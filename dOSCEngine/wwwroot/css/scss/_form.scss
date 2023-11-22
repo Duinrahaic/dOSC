@@ -3,54 +3,65 @@
     display: flex;
     flex-direction: column;
     gap: 10px 10px;
-    border-radius: 6px;
     padding: 4px;
+    user-select: none;
 
     .content-item {
         position: relative;
         width: 100%;
+        border-radius: 6px;
+        font-size: 16px;
+
+        label {
+            font-weight: 600;
+            padding-bottom: 4px;
+        }
+
+
         input {
-            padding: 4px;
+            font-size: 14px;
+            padding: 8px;
             border-radius: inherit;
             width: 100%;
             background-color: $color-theme-4;
-            border: solid 1px $color-actually-black;
+            border: solid 1px $color-theme-1;
             color: $color-full-white;
 
             &:focus {
-                outline: solid 1px $color-titlebar-textcolor;
-                box-shadow: 0 0 4px 1px $color-titlebar-textcolor;
+                outline: solid 1px $color-blurple;
+                box-shadow: 0 0 4px 1px $color-blurple;
             }
         }
 
 
         span.input {
-            padding: 4px;
+            padding: 8px;
             border-radius: inherit;
             width: 100%;
             background-color: $color-theme-4;
-            border: solid 1px $color-actually-black;
+            border: solid 1px $color-theme-1;
             color: $color-full-white;
-            display:
+            display: block;
 
             &:focus {
-                outline: solid 1px $color-titlebar-textcolor;
-                box-shadow: 0 0 4px 1px $color-titlebar-textcolor;
+                outline: solid 1px $color-blurple;
+                box-shadow: 0 0 4px 1px $color-blurple;
             }
         }
 
 
         textarea {
-            padding: 4px;
+            font-size: 14px;
+            padding: 8px;
             border-radius: inherit;
             width: 100%;
             color: $color-full-white;
             background-color: $color-theme-4;
-            border: solid 1px $color-actually-black;
+            border: solid 1px $color-theme-1;
 
             &:focus {
-                outline: solid 1px $color-titlebar-textcolor;
-                box-shadow: 0 0 4px 1px $color-titlebar-textcolor;
+                outline: solid 1px $color-blurple;
+                box-shadow: 0 0 4px 1px $color-blurple;
             }
         }
     }

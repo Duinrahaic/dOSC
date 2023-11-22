@@ -1,5 +1,9 @@
 ﻿@import "_variables.scss";
 
+.hidden{
+    display: none!important;
+}
+
 /* GLOBALS */
 ::-webkit-scrollbar {
     width: 4px;

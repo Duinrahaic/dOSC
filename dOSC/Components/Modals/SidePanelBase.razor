@@ -5,13 +5,15 @@
         <div class="sidepanel">
             <div class="content">
                 <span class="close icon icon-x" @onclick="Close" />
-                <span class="download icon icon-download" @onclick="DownloadApp" />
+                <span class="download icon icon-download" @onclick="DownloadApp"/>
 
                 <div class="app-image-container">
-                    <div class="app-image app-automated-on"/>
-                    <div class="imageUpload icon-image-plus" @onclick="DownloadApp" />
+                    <div class="app-image app-automated-on" style="background: url(@(CurrentAppImage)) no-repeat center; background-size: contain;"/>
+                    <div class="imageUpload icon-image-plus">
+                        <InputFile class="inputFile" OnChange="LoadFiles"  accept=".png,.jpg" />
+                    </div>
                 </div>
-
+                
                 <div class="content-body">
                     <div class="scroll-content">
                         <EditForm Model="dOSCWiresheet" class="editform">
@@ -21,13 +23,12 @@
                             </div>
                             <div class="content-item">
                                 <label>Description</label>
-                                <span class="input"
-                                      role="textbox"
-                                      contenteditable>
-                                    @dOSCWiresheet.AppDescription
-                                </span>
+                                <InputTextArea rows="12" @bind-Value=dOSCWiresheet.AppDescription  />
                             </div>
-                            
+                            <div class="content-item">
+                                <label>Avatar Tigger Ids</label>
+                                <InputTextArea rows="12" @bind-Value=dOSCWiresheet.AppDescription />
+                            </div>
                         </EditForm>
                     </div>
                 </div>

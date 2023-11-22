@@ -19,12 +19,12 @@
             <div class="search-bar">
                 <i class="search-icon oi oi-magnifying-glass" />
 
-                <input type="search" class="search-box" />
+                <input type="search" class="search-box" placeholder="Search Loaded Applications" />
             </div>
         </div>
     </div>
-    <AppPageNavigationComponent @bind-TabNames="NavTabs" @bind-ActiveTab="ActiveTab" />
-    <div class="app-list">
+@*     <AppPageNavigationComponent @bind-TabNames="NavTabs" @bind-ActiveTab="ActiveTab" />
+ *@    <div class="app-list">
         <div class="app-list-container">
             @{
                 foreach(var app in Wiresheets)

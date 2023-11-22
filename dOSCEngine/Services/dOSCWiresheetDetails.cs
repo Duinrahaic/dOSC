@@ -15,5 +15,9 @@ namespace dOSCEngine.Services
         public DateTime Created { get; set; } = DateTime.Now;
         public DateTime Modified { get; set; } = DateTime.Now;
         public List<string> ConnectorsUsed { get; set; } = new();
+        public string AppIcon { get; set; } = string.Empty; 
+
+
+
     }
 }

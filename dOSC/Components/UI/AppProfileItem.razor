@@ -1,5 +1,5 @@
 ﻿<div class="item-app">
-    <div class="item-app-image @(dOSCWiresheet.IsPlaying ? "app-running": "app-paused" )" @onclick=TogglePlayPause>
+    <div class="item-app-image @(dOSCWiresheet.IsPlaying ? "app-running": "app-waiting" )" @onclick=TogglePlayPause>
         <i class="icon oi @(dOSCWiresheet.IsPlaying ? "oi-media-play": "oi-media-pause" )"/>
     </div>
     <div class="item-app-content">

@@ -925,6 +925,10 @@ label {
   color: #4337ff;
 }
 
+.hidden {
+  display: none !important;
+}
+
 /* GLOBALS */
 ::-webkit-scrollbar {
   width: 4px;
@@ -1355,8 +1359,8 @@ label {
   color: inherit;
 }
 .app-container .header .search-bar-container .search-bar input[type=search].search-box:focus {
-  outline: solid 1px #949ba4;
-  box-shadow: 0 0 4px 1px #949ba4;
+  outline: solid 1px #7289da;
+  box-shadow: 0 0 4px 1px #7289da;
 }
 @media (max-width: 768px) {
   .app-container .header .search-bar-container .search-bar input[type=search].search-box {
@@ -1526,12 +1530,17 @@ label {
   border-color: #00ae7a;
   box-shadow: 0 0 4px 2px #00ae7a;
 }
+.app-container .app-list .app-list-container .item-app .item-app-image.app-automated-on {
+  border-color: #3947fd;
+  box-shadow: 0 0 4px 2px #3947fd;
+}
 .app-container .app-list .app-list-container .item-app .item-app-image.app-stopped {
   border-color: rgb(237, 67, 55);
   box-shadow: 0 0 4px 2px rgb(237, 67, 55);
 }
 .app-container .app-list .app-list-container .item-app .item-app-image.app-disabled {
-  border-color: #B9BBBE;
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
 }
 .app-container .app-list .app-list-container .item-app .item-app-content {
   background-color: #232428;
@@ -1588,7 +1597,7 @@ label {
   top: 0;
   right: 0;
   height: 100vh;
-  width: 300px;
+  width: 600px;
   background-color: #232428;
   display: flex;
   flex-direction: column;
@@ -1597,6 +1606,12 @@ label {
   border-bottom-left-radius: 12px;
   overflow-y: hidden;
   animation: 250ms ease-in-out 0s 1 slideInFromRight;
+}
+@media screen and (max-width: 600px) {
+  .app-sidepanel-container .sidepanel {
+    width: 100%;
+    border-radius: 0px;
+  }
 }
 .app-sidepanel-container .sidepanel .icon {
   font-size: 24px;
@@ -1619,7 +1634,7 @@ label {
   background-color: #2e3035;
 }
 .app-sidepanel-container .sidepanel .content {
-  padding: 16px 16px;
+  padding: 16px;
   height: 100vh;
   width: 100%;
   display: flex;
@@ -1638,6 +1653,16 @@ label {
   border: solid 1px #ffffff;
   border-radius: 26px;
   padding: 2px 8px;
+}
+.app-sidepanel-container .sidepanel .content .app-image-container .imageUpload .inputFile {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
 }
 .app-sidepanel-container .sidepanel .content .app-image-container .imageUpload:hover {
   transform: scale(1.1);
@@ -1676,19 +1701,23 @@ label {
   border-color: rgb(237, 67, 55);
   box-shadow: 0 0 4px 2px rgb(237, 67, 55);
 }
-.app-sidepanel-container .sidepanel .content .app-image-container .app-image.app-disabled {
+.app-sidepanel-container .sidepanel .content .app-image-container .app-image.app-waiting {
   border-color: #B9BBBE;
+}
+.app-sidepanel-container .sidepanel .content .app-image-container .app-image.app-disabled {
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
 }
 .app-sidepanel-container .sidepanel .content .content-body {
   flex-grow: 1;
   width: 100%;
   height: 60px;
-  padding: 16px 0;
   position: relative;
 }
 .app-sidepanel-container .sidepanel .content .content-body .scroll-content {
   overflow-y: auto;
   height: 100%;
+  padding-bottom: 12px;
 }
 .app-sidepanel-container .sidepanel .content .options {
   display: flex;
@@ -1713,46 +1742,55 @@ label {
   display: flex;
   flex-direction: column;
   gap: 10px 10px;
-  border-radius: 6px;
   padding: 4px;
+  user-select: none;
 }
 .editform .content-item {
   position: relative;
   width: 100%;
+  border-radius: 6px;
+  font-size: 16px;
+}
+.editform .content-item label {
+  font-weight: 600;
+  padding-bottom: 4px;
 }
 .editform .content-item input {
-  padding: 4px;
+  font-size: 14px;
+  padding: 8px;
   border-radius: inherit;
   width: 100%;
   background-color: #2b2d31;
-  border: solid 1px #000000;
+  border: solid 1px #1d1e23;
   color: #ffffff;
 }
 .editform .content-item input:focus {
-  outline: solid 1px #949ba4;
-  box-shadow: 0 0 4px 1px #949ba4;
+  outline: solid 1px #7289da;
+  box-shadow: 0 0 4px 1px #7289da;
 }
 .editform .content-item span.input {
-  padding: 4px;
+  padding: 8px;
   border-radius: inherit;
   width: 100%;
   background-color: #2b2d31;
-  border: solid 1px #000000;
+  border: solid 1px #1d1e23;
   color: #ffffff;
+  display: block;
 }
 .editform .content-item span.input:focus {
-  outline: solid 1px #949ba4;
-  box-shadow: 0 0 4px 1px #949ba4;
+  outline: solid 1px #7289da;
+  box-shadow: 0 0 4px 1px #7289da;
 }
 .editform .content-item textarea {
-  padding: 4px;
+  font-size: 14px;
+  padding: 8px;
   border-radius: inherit;
   width: 100%;
   color: #ffffff;
   background-color: #2b2d31;
-  border: solid 1px #000000;
+  border: solid 1px #1d1e23;
 }
 .editform .content-item textarea:focus {
-  outline: solid 1px #949ba4;
-  box-shadow: 0 0 4px 1px #949ba4;
+  outline: solid 1px #7289da;
+  box-shadow: 0 0 4px 1px #7289da;
 }

@@ -36,6 +36,7 @@ namespace dOSCEngine.Services
             AppDescription = dto.AppDescription;
             Created = dto.Created;
             Modified = dto.Modified;
+            AppIcon = dto.AppIcon;
             //this.Diagram.SuspendRefresh = false;
         }
 
