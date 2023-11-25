@@ -55,5 +55,20 @@ $font-family: 'Varela Round', sans-serif;
 
 @font-face {
     font-family: 'Varela Round';
-    src: URL("../fonts/VarelaRound-Regular.ttf") format('truetype');
+    src: URL("./fonts/VarelaRound-Regular.ttf") format('truetype');
+}
+
+
+
+.example {
+    .details {
+
+    }
+
+    .example-content {
+        .details {
+
+        }
+    }
+
 }

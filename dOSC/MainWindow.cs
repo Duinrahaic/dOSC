@@ -18,7 +18,9 @@ namespace dOSC
         public MainWindow()
         {
             InitializeComponent();
-            chromiumWebBrowser1.LoadUrl($@"http://localhost:5231/");
+            var URL = Webserver.GetUrls().First();
+
+            chromiumWebBrowser1.LoadUrl(URL);
             chromiumWebBrowser1.MenuHandler = new CustomMenuHandler();
             this.Name = "dOSC";
 

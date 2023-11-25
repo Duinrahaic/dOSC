@@ -77,7 +77,7 @@
 }
 @font-face {
   font-family: "Varela Round";
-  src: url("../fonts/VarelaRound-Regular.ttf") format("truetype");
+  src: url("fonts/VarelaRound-Regular.ttf") format("truetype");
 }
 .navbar.wiresheet-toolbar {
   background-color: #232428 !important;
@@ -415,7 +415,7 @@
 
 @font-face {
   font-family: "Varela Round";
-  src: url("../fonts/VarelaRound-Regular.ttf") format("truetype");
+  src: url("fonts/VarelaRound-Regular.ttf") format("truetype");
 }
 .app-page {
   width: 100%;
@@ -751,7 +751,7 @@
 
 @font-face {
   font-family: "Varela Round";
-  src: url("../fonts/VarelaRound-Regular.ttf") format("truetype");
+  src: url("fonts/VarelaRound-Regular.ttf") format("truetype");
 }
 .form-override .form-label {
   text-transform: uppercase;
@@ -828,7 +828,7 @@ label {
 
 @font-face {
   font-family: "Varela Round";
-  src: url("../fonts/VarelaRound-Regular.ttf") format("truetype");
+  src: url("fonts/VarelaRound-Regular.ttf") format("truetype");
 }
 .modal .modal-dialog .modal-content.modal-global {
   background: #232428;
@@ -842,7 +842,7 @@ label {
 
 @font-face {
   font-family: "Varela Round";
-  src: url("../fonts/VarelaRound-Regular.ttf") format("truetype");
+  src: url("fonts/VarelaRound-Regular.ttf") format("truetype");
 }
 @keyframes slideInFromLeft {
   0% {
@@ -1005,7 +1005,7 @@ label {
 
 @font-face {
   font-family: "Varela Round";
-  src: url("../fonts/VarelaRound-Regular.ttf") format("truetype");
+  src: url("fonts/VarelaRound-Regular.ttf") format("truetype");
 }
 * {
   font-family: "Varela Round", sans-serif;
@@ -1092,7 +1092,7 @@ label {
 
 @font-face {
   font-family: "Varela Round";
-  src: url("../fonts/VarelaRound-Regular.ttf") format("truetype");
+  src: url("fonts/VarelaRound-Regular.ttf") format("truetype");
 }
 .appbody {
   position: relative;
@@ -1245,7 +1245,7 @@ label {
 
 @font-face {
   font-family: "Varela Round";
-  src: url("../fonts/VarelaRound-Regular.ttf") format("truetype");
+  src: url("fonts/VarelaRound-Regular.ttf") format("truetype");
 }
 .titlebar {
   display: flex;
@@ -1305,7 +1305,7 @@ label {
 
 @font-face {
   font-family: "Varela Round";
-  src: url("../fonts/VarelaRound-Regular.ttf") format("truetype");
+  src: url("fonts/VarelaRound-Regular.ttf") format("truetype");
 }
 @keyframes slideInFromLeft {
   0% {
@@ -2056,7 +2056,7 @@ label {
 
 @font-face {
   font-family: "Varela Round";
-  src: url("../fonts/VarelaRound-Regular.ttf") format("truetype");
+  src: url("fonts/VarelaRound-Regular.ttf") format("truetype");
 }
 .editform {
   display: flex;
@@ -2117,7 +2117,7 @@ label {
 
 @font-face {
   font-family: "Varela Round";
-  src: url("../fonts/VarelaRound-Regular.ttf") format("truetype");
+  src: url("fonts/VarelaRound-Regular.ttf") format("truetype");
 }
 table {
   border-collapse: collapse;
@@ -2183,7 +2183,7 @@ table.third-party-table tbody tr:hover .options {
 }
 @font-face {
   font-family: "Varela Round";
-  src: url("../fonts/VarelaRound-Regular.ttf") format("truetype");
+  src: url("fonts/VarelaRound-Regular.ttf") format("truetype");
 }
 .integration.pulsoid {
   color: #ffffff;
