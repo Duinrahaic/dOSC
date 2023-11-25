@@ -1,0 +1,44 @@
+﻿@using dOSC.Components.UI.Setting
+
+@if(Service != null)
+{
+    <tr style="user-select: none;">
+        <td>
+            <div class="third-party-connector">
+                <img src="_content/dOSCEngine/images/VRChat-Logo-500x281.png" alt="VRChat" />
+            </div>
+        </td>
+        <td>Events driven for a VR social-platform</td>
+        <td>
+            <StatusPill Status="configured" />
+        </td>
+        <td class="options">
+            <div class="option oi oi-cog" />
+
+        </td>
+    </tr>
+
+}
+
+
+@code{
+    [Parameter]
+    public IHostedService Service { get; set; }
+    [Parameter]
+    public EventCallback<IHostedService> ServiceChanged { get; set; }
+
+    private bool IsRunning {
+        get{
+            if(Service != null)
+            {
+                return Service.;
+            }
+            return false;
+         
+        }
+
+        
+    }
+
+
+}

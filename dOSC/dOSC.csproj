@@ -13,7 +13,14 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Content Remove="compilerconfig.json" />
+    <Compile Remove="DawnCache\**" />
+    <Compile Remove="GPUCache\**" />
+    <Content Remove="DawnCache\**" />
+    <Content Remove="GPUCache\**" />
+    <EmbeddedResource Remove="DawnCache\**" />
+    <EmbeddedResource Remove="GPUCache\**" />
+    <None Remove="DawnCache\**" />
+    <None Remove="GPUCache\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Blazor-ApexCharts" Version="2.1.0" />
@@ -35,9 +42,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="compilerconfig.json" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Update="wwwroot\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -49,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\Inputs\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dOSCEngine\dOSCEngine.csproj" />

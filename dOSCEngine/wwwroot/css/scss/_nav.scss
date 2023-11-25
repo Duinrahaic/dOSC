@@ -7,8 +7,12 @@
     font-family: "Open Sans", sans-serif;
     color: $color-full-white;
     height: calc(100vh - $title-bar-size);
-    overflow:hidden;
+    overflow: hidden;
 
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    gap: 0;
 
     .nav {
         background: $color-theme-1;
@@ -18,6 +22,111 @@
         overflow-y: auto;
         z-index: 100;
         min-width: 80px;
+        padding: 16px 0 16px 0;
+        height: 100%;
+
+        ul {
+            background: $color-theme-1;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            z-index: 2;
+            list-style: none;
+            padding-left: 0;
+            height: 100%;
+
+           
+
+            li {
+                height: 80px;
+                width: 100%;
+                text-align: center;
+                position: relative;
+                padding-left: 4px;
+                cursor: pointer;
+
+                &:nth-last-child(-n+2)  {
+                    margin-top: auto;
+                }
+
+                .content {
+                    height: 100%;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-bottom-left-radius: 16px;
+                    border-top-left-radius: 16px;
+
+                    .app-icon-container {
+                        height: 50px;
+                        width: 50px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 8px;
+                        z-index: 102;
+
+                        .app-icon {
+                            font-size: 1.5rem;
+                            text-align: center;
+                            width: 100%;
+                            font-weight: 600;
+                            align-self: center;
+                            color: $color-full-white;
+                        }
+                    }
+                }
+
+
+
+                &.active {
+                    .content {
+                        background: $color-theme-3;
+
+                        .app-icon-container {
+                            background: $color-blurple;
+                        }
+                    }
+
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        background-color: transparent;
+                        top: -50px;
+                        right: 0;
+                        height: 50px;
+                        width: 25px;
+                        border-bottom-right-radius: 16px;
+                        box-shadow: 0 25px 0 0 $color-theme-3;
+                        z-index: 101;
+                        pointer-events: none;
+                    }
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        background-color: transparent;
+                        bottom: -50px;
+                        right: 0;
+                        height: 50px;
+                        width: 25px;
+                        border-top-right-radius: 16px;
+                        box-shadow: 0 -25px 0 0 $color-theme-3;
+                        z-index: 101;
+                        pointer-events: none;
+                    }
+                }
+
+                &:hover:not(.active) {
+                    .content {
+                        background: $color-theme-2;
+                        transition: ease-in-out .1s;
+                    }
+                }
+            }
+        }
+
 
         &::-webkit-scrollbar {
             display: none;
@@ -26,12 +135,9 @@
     }
 
     .body {
-        background: $color-dark;
-        border-radius: 0.35rem 0 0 0;
+        background: $color-theme-3;
         overflow: hidden;
         flex-grow: 1;
-        box-shadow: 0 0 16px 4px hsl(230deg 9% 8% / 43%);
-        z-index: 999;
 
         .navbar {
             background-color: $color-wiresheet-toolbar;
@@ -71,128 +177,4 @@
             color: $color-titlebar-textcolor;
         }
     }
-}
-
-.guilds-container {
-    background: $color-theme-1;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    box-sizing: border-box;
-    z-index: 2;
-}
-
-
-.squircle {
-    background: $color-lighter-dark;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    cursor: pointer;
-    position: relative;
-    transition: border-radius 128ms, background 128ms, color 128ms;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    text-justify: inter-character;
-}
-
-.app-icon {
-    font-size: 1.5rem;
-    text-align: center;
-    width: 100%;
-    transform: translateY();
-    font-weight: 600;
-    align-self: center;
-    color: $color-full-white;
-}
-
-.squircle:hover {
-    border-radius: 36%;
-}
-
-.squircle:hover::before {
-    transform: translate(-100%, -50%) scale(.5);
-}
-
-
-/* pill */
-.squircle::before {
-    content: '';
-    width: 100%;
-    height: 100%;
-    background: $color-full-white;
-    position: absolute;
-    border-radius: 5px;
-    top: 50%;
-    transform: translate(-100%, -50%) scale(0);
-    transition: transform 180ms;
-}
-
-.squircle-active {
-    width: 48px;
-    height: 48px;
-    border-radius: 36%;
-    cursor: pointer;
-    position: relative;
-    transition: border-radius 128ms, background 128ms, color 128ms;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &:hover {
-        border-radius: 36%;
-    }
-
-    &:hover::before {
-        transform: translate(-100%, -50%) scale(.5);
-    }
-
-    &::before {
-        content: '';
-        width: 100%;
-        height: 100%;
-        background: $color-full-white;
-        position: absolute;
-        border-radius: 5px;
-        top: 50%;
-        transform: translate(-100%, -50%) scale(.5);
-    }
-}
-
-
-.purple-app {
-    background: $color-blurple;
-
-    &:hover {
-        background: $color-blurple;
-        color: $color-full-white;
-    }
-}
-
-.green-app {
-    background: $color-green;
-
-    &:hover {
-        background: $color-green;
-        color: $color-full-white;
-    }
-}
-.pink-app {
-    background: $color-pink;
-
-    &:hover {
-        background: $color-pink;
-        color: $color-full-white;
-    }
-}
-.divider {
-    width: 100%;
-    background: $color-full-white;
-    height: 2px;
-    border-radius: 1px;
-    opacity: .06;
-    transform: scale(.75);
 }

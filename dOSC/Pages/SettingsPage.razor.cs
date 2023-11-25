@@ -1,4 +1,5 @@
-﻿using dOSCEngine.Services;
+﻿using dOSC.Components.UI.Table;
+using dOSCEngine.Services;
 using dOSCEngine.Services.Connectors.Activity.Pulsoid;
 using dOSCEngine.Services.User;
 using dOSCEngine.Utilities;
@@ -9,66 +10,27 @@ namespace dOSC.Pages
 {
     public partial class SettingsPage
     {
-        private List<SettingBase> UserSettings = new();
-        private SettingBase? Setting = null;
-        private SettingType? SettingType = null;
+        private string SelectedCategory = "General";
 
-        [Inject]
-        public PulsoidService? _Pulsoid { get;set; } 
-        
-        protected override void OnInitialized()
+        public void OnSelectedItemChanged(string Category)
         {
-            UserSettings = FileSystem.LoadSettings().GetSettings();
-        }
-        private void OnSelected(SettingBase setting)
-        {
-            Setting = setting;
+            SelectedCategory = Category;
         }
 
-        private async Task SettingChanged(SettingBase setting)
+        private void OnConnectorSetting((string, ServiceCommand) e)
         {
-            if (Setting == null)
-                return;
-            var settings = FileSystem.LoadSettings() ?? new();
-            switch (setting.SettingType)
+            switch (e.Item2)
             {
-                case dOSCEngine.Services.User.SettingType.Pulsoid:
-                    settings.Pulsoid = (PulsoidSetting)setting;
-                    Setting = (PulsoidSetting)setting;
-                    if (_Pulsoid == null) return;
-                    _Pulsoid.UpdateSetting((PulsoidSetting)Setting);
+                case ServiceCommand.Start:
+                    //StartService();
                     break;
-            }
-            FileSystem.SaveSettings(settings);
-
-
-        }
-        private void StartService()
-        {
-            if (Setting == null)
-                return;
-            switch (Setting.SettingType)
-            {
-                case dOSCEngine.Services.User.SettingType.Pulsoid:
-                    if (_Pulsoid == null) return;
-                    _Pulsoid.Start();
+                case ServiceCommand.Stop:
+                    //StopService();
                     break;
-            }
-
-            
-        }
-        private void StopService()
-        {
-            if (Setting == null)
-                return;
-            switch (Setting.SettingType)
-            {
-                case dOSCEngine.Services.User.SettingType.Pulsoid:
-                    if (_Pulsoid == null) return;
-                    _Pulsoid.Stop();
+                case ServiceCommand.Edit:
+                    //OnSelected(UserSettings.Find(x => x.Name == e.Item1));
                     break;
             }
         }
-
     }
 }

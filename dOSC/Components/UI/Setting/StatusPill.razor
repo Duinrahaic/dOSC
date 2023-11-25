@@ -1,0 +1,8 @@
+﻿<div class="dOSC-Pill @(Status.ToLower())">
+    @Status
+</div>
+
+@code{
+    
+    [Parameter] public string Status { get; set; } = "Disabled";
+}

@@ -1,0 +1,17 @@
+﻿<li class="@(Selected == Title ? "active" : "")" @onclick="OnClick">
+    <div class="setting ">
+        <div class="icon @(Icon)" />
+        <div class="content">
+            <div class="title">
+                @Title
+            </div>
+            <div class="subtitle">
+                @Description
+            </div>
+        </div>
+    </div>
+    <div class="accent-selector-container">
+        <div class="accent-selector" />
+    </div>
+
+</li>

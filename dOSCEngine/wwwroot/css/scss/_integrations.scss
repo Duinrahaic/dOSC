@@ -1,0 +1,26 @@
+﻿@import "_variables.scss";
+
+
+.integration {
+
+    &.pulsoid {
+        color: $color-full-white;
+        background-color: #04bbaf;
+    }
+
+    &.vrchat {
+        color: $color-actually-black;
+        background-color: $color-full-white;
+    }
+
+    &.twitch {
+        color: $color-full-white;
+        background-color: #6441a5;
+    }
+}
+
+
+
+
+
+

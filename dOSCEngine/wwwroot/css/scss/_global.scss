@@ -1,5 +1,11 @@
 ﻿@import "_variables.scss";
 
+
+
+* {
+    font-family: $font-family;
+}
+
 .hidden{
     display: none!important;
 }
@@ -9,8 +15,6 @@
     width: 4px;
     padding-right: 2px;
 }
-
- 
 
 /* Track */
 ::-webkit-scrollbar-track {
@@ -28,6 +32,38 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+
+// Pill
+.dOSC-Pill {
+    border: none;
+    color: black;
+    padding: 4px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 2px 2px;
+    border-radius: 12px;
+    font-size: 14px;
+    user-select: none;
+    text-transform: capitalize;
+    &.configured {
+        background-color: $color-green-darker;
+        color: $color-full-white;
+     }
+
+    &.error {
+        background-color: $color-error-darker;
+        color: $color-full-white;
+     }
+
+    &.unconfigured {
+        background-color: $color-grey;
+        color: $color-grey-dark;
+    }
+}
+
+
 
 
 #blazor-error-ui {
