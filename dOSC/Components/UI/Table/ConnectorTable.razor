@@ -1,4 +1,12 @@
-﻿@using dOSC.Components.UI.Setting
+﻿@using dOSC.Components.Form.SettingsPages
+@using dOSC.Components.UI.Setting
+@using dOSCEngine.Services.Connectors;
+@using dOSCEngine.Services.Connectors.Activity.Pulsoid;
+@using dOSCEngine.Services.Connectors.OSC;
+@using dOSC.Components.Modals;
+@using Microsoft.AspNetCore.Components.Forms;
+@using dOSCEngine.Services.User;
+
 <table class="third-party-table">
     <thead>
         <tr>
@@ -9,38 +17,93 @@
         </tr>
     </thead>
     <tbody>
-        <tr style="user-select: none;">
-            <td>
-                <div class="third-party-connector">
-                    <div class="text">
-                        Open Sound Control (OSC)
-                    </div>
-                </div>
-            </td>
-            <td>A protocol for networking computers and devices</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        </tr>
-        <tr style="user-select: none;">
-            <td>
-                <div class="third-party-connector">
-                    <img src="_content/dOSCEngine/images/Pulsoid-Logo-500x281.png" alt="Pulsoid" />
-                </div>
-            </td>
-            <td>A real time heart rate for streaming</td>
-            <td>Cell</td>
-            <td>Cell</td>
-        </tr>
-        <tr style="user-select: none;">
-            <td>
-                <div class="third-party-connector">
-                    <img src="_content/dOSCEngine/images/SteamVR-Logo-500x281.png" alt="SteamVR" />
-                </div>
-            </td>
-            <td>Launch dOSC with SteamVR</td>
-            <td>Cell</td>
-            <td>To Be Added Later</td>
-        </tr>
+        <SettingsTableRow Service="_OSC" OnEdit="OnEditCallback" />
+        <SettingsTableRow Service="_Pulsoid" OnEdit="OnEditCallback" />
 
     </tbody>
 </table>
+
+<ModalV2 @ref=EditModal Title=@EditModalTitle OnClose="OnEditModalClose">
+    <Body>
+        @{
+            if(SelectedConnector != null)
+            {
+                switch (SelectedConnector.ServiceName.ToLower())
+                {
+                    case "osc":
+                        <OSCSettings Setting="@((OSCSetting)Setting)" OnValidSubmit="OnValidSubmit" />
+                        break;
+                    case "pulsoid":
+                        <PulsoidSettings Setting="@((PulsoidSetting)Setting)" OnValidSubmit="OnValidSubmit" />
+                        break;
+                }
+            }
+            
+        }
+    </Body>
+    <Footer>
+        <button form="setting-form" inputmode="button" class="dosc-button primary"> Save </button>
+    </Footer>
+
+</ModalV2>
+
+
+
+
+@code {
+    [Inject]
+    private OSCService _OSC {get; set; }
+    [Inject]
+    private PulsoidService _Pulsoid {get; set; }
+
+    [Parameter]
+    public EventCallback<ConnectorBase> OnEdit { get; set; }
+
+    private ModalV2? EditModal;
+    private ConnectorBase? SelectedConnector;
+    private string EditModalTitle = string.Empty;
+    private SettingBase? Setting;
+    private int _PulsoidPort = 0;
+
+    private void OnEditCallback(ConnectorBase connector )
+    {
+        Setting = connector.GetSetting();
+        SelectedConnector = connector;
+        EditModalTitle = $"{SelectedConnector?.ServiceName ?? string.Empty} Configuration";
+        EditModal?.Open();
+
+    }
+
+    private void OnEditModalClose()
+    {
+
+        Setting = null;
+        EditModalTitle = string.Empty;
+        SelectedConnector = null;
+
+    }
+
+    private void OnValidSubmit(OSCSetting setting)
+    {
+        _OSC.UpdateSetting(setting);
+        _OSC.LoadSetting();
+        _OSC.RestartService();
+        OnEditModalClose();
+        EditModal.Close();
+        Setting = null;
+        EditModalTitle = string.Empty;
+        SelectedConnector = null;
+    }
+
+    private void OnValidSubmit(PulsoidSetting setting)
+    {
+        _Pulsoid.UpdateSetting(setting);
+        _Pulsoid.LoadSetting();
+        _Pulsoid.RestartService();
+        OnEditModalClose();
+        EditModal.Close();
+        Setting = null;
+        EditModalTitle = string.Empty;
+        SelectedConnector = null;
+    }
+}

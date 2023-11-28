@@ -1,8 +1,16 @@
-﻿<div class="dOSC-Pill @(Status.ToLower())">
-    @Status
+﻿@using dOSCEngine.Services.Connectors;
+<div class="dOSC-Pill @(Status ? "configured": "unconfigured")">
+    @if (Status)
+    {
+        <span>Running</span>
+    }
+    else
+    {
+        <span>Not Running</span>
+    }
 </div>
 
 @code{
     
-    [Parameter] public string Status { get; set; } = "Disabled";
+    [Parameter] public bool Status { get; set; } = false;
 }

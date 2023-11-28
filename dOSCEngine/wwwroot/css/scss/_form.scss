@@ -1,68 +1,129 @@
 ﻿@import "_variables.scss";
-.editform {
+
+.dosc-form {
     display: flex;
     flex-direction: column;
     gap: 10px 10px;
     padding: 4px;
     user-select: none;
+    width: 100%;
 
-    .content-item {
+    .validation-message{
+        font-size: 14px;
+        color: $color-danger-darker;
+        padding: 2px 0;
+    } 
+    .dosc-form-item {
+        display: flex;
+        flex-direction: column;
         position: relative;
         width: 100%;
         border-radius: 6px;
         font-size: 16px;
 
         label {
-            font-weight: 600;
+            font-weight: 400;
             padding-bottom: 4px;
+
+            &.subtitle {
+                color: $color-titlebar-textcolor;
+                font-weight: 200;
+                font-size: 12px;
+            }
         }
 
-
-        input {
+        input, textarea {
             font-size: 14px;
             padding: 8px;
             border-radius: inherit;
             width: 100%;
-            background-color: $color-theme-4;
+            background-color: $color-theme-2;
             border: solid 1px $color-theme-1;
             color: $color-full-white;
 
             &:focus {
-                outline: solid 1px $color-blurple;
-                box-shadow: 0 0 4px 1px $color-blurple;
+                outline: solid 1px $color-selected;
+                box-shadow: 0 0 4px 1px $color-selected;
             }
-        }
 
-
-        span.input {
-            padding: 8px;
-            border-radius: inherit;
-            width: 100%;
-            background-color: $color-theme-4;
-            border: solid 1px $color-theme-1;
-            color: $color-full-white;
-            display: block;
-
-            &:focus {
-                outline: solid 1px $color-blurple;
-                box-shadow: 0 0 4px 1px $color-blurple;
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
             }
-        }
-
-
-        textarea {
-            font-size: 14px;
-            padding: 8px;
-            border-radius: inherit;
-            width: 100%;
-            color: $color-full-white;
-            background-color: $color-theme-4;
-            border: solid 1px $color-theme-1;
-
-            &:focus {
-                outline: solid 1px $color-blurple;
-                box-shadow: 0 0 4px 1px $color-blurple;
+            /* Firefox */
+            &[type=number] {
+                -moz-appearance: textfield;
             }
         }
     }
 }
+
+
+    .editform {
+        display: flex;
+        flex-direction: column;
+        gap: 10px 10px;
+        padding: 4px;
+        user-select: none;
+
+        .content-item {
+            position: relative;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 16px;
+
+            label {
+                font-weight: 600;
+                padding-bottom: 4px;
+            }
+
+
+            input {
+                font-size: 14px;
+                padding: 8px;
+                border-radius: inherit;
+                width: 100%;
+                background-color: $color-theme-4;
+                border: solid 1px $color-theme-1;
+                color: $color-full-white;
+
+                &:focus {
+                    outline: solid 1px $color-blurple;
+                    box-shadow: 0 0 4px 1px $color-blurple;
+                }
+            }
+
+
+            span.input {
+                padding: 8px;
+                border-radius: inherit;
+                width: 100%;
+                background-color: $color-theme-4;
+                border: solid 1px $color-theme-1;
+                color: $color-full-white;
+                display: block;
+
+                &:focus {
+                    outline: solid 1px $color-blurple;
+                    box-shadow: 0 0 4px 1px $color-blurple;
+                }
+            }
+
+
+            textarea {
+                font-size: 14px;
+                padding: 8px;
+                border-radius: inherit;
+                width: 100%;
+                color: $color-full-white;
+                background-color: $color-theme-4;
+                border: solid 1px $color-theme-1;
+
+                &:focus {
+                    outline: solid 1px $color-blurple;
+                    box-shadow: 0 0 4px 1px $color-blurple;
+                }
+            }
+        }
+    }

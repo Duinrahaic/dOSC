@@ -184,7 +184,7 @@
             gap: 24px 24px;
 
             .new-item-app {
-                height: 360px;
+                height: 380px;
                 width: 240px;
                 border: $color-green-darker 4px dashed;
                 border-radius: 18px;
@@ -233,7 +233,7 @@
             }
 
             .item-app {
-                height: 360px;
+                height: 380px;
                 width: 240px;
                 display: flex;
                 flex-direction: column;
@@ -270,6 +270,8 @@
                         }
                     }
 
+
+
                     .icon {
                         opacity: 0;
                         text-align: center;
@@ -298,8 +300,48 @@
                     }
 
                     &.app-disabled {
-                        -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+                        -webkit-filter: grayscale(100%);
                         filter: grayscale(100%);
+                    }
+                }
+
+                .item-app-content-status-container {
+                    position: absolute;
+                    top: 205px;
+                    width: 100%;
+                    display: flex;
+                    align-items: end;
+                    justify-content: center;
+                    font-size: 14px;
+                    transform: translateY(-10px);
+                    user-select: none;
+                    pointer-events: none;
+
+                    .item-app-content-status {
+                        color: $color-full-white;
+                        background: $color-grey;
+                        padding: 4px 8px;
+                        border-radius: 20px;
+
+                        &.app-running {
+                            background: $color-green;
+                            box-shadow: 0 0 4px 2px $color-green;
+                        }
+
+                        &.app-automated-on {
+                            background: $color-blue;
+                            box-shadow: 0 0 4px 2px $color-blue;
+                        }
+
+                        &.app-stopped {
+                            background: $color-error;
+                            box-shadow: 0 0 4px 2px $color-error;
+                        }
+
+                        &.app-disabled {
+                            -webkit-filter: grayscale(100%);
+                            filter: grayscale(100%);
+                        }
                     }
                 }
 
@@ -310,23 +352,34 @@
                     height: 300px;
                     padding: 16px 16px;
                     padding-top: 150px;
+                    display: flex;
+                    flex-direction: column;
+
+
 
                     .item-app-content-title {
                         font-size: 18px;
-                        text-align: center;
                         display: flex;
                         justify-content: center;
-                        align-items: center;
-                        height: 100px;
-                        text-overflow: ellipsis;
+                        text-align: center;
+                        align-items: start;
                         overflow: hidden;
                         font-weight: 500;
+                        max-width: 208px;
+                        word-break: break-word;
+                        white-space: normal;
+                        hyphens: auto;
+                        text-overflow: ellipsis;
+                        flex-grow: 1;
                         color: $color-full-white;
+                        width: 100%;
                     }
 
                     .controls {
+                        width: 100%;
                         opacity: 0;
                         display: flex;
+                        padding-top: 10px;
                         flex-direction: row;
                         gap: 10px 10px;
                         justify-content: center;
@@ -693,34 +746,103 @@
             justify-content: start;
             position: relative;
 
-            .app-image-container {
-                .imageUpload {
-                    color: $color-full-white;
-                    position: relative;
-                    bottom: 32px;
-                    float: right;
-                    font-size: 26px;
-                    background: $color-theme-4;
-                    border: solid 1px $color-full-white;
-                    border-radius: 26px;
-                    padding: 2px 8px;
 
-                    .inputFile {
-                        opacity: 0.0;
+
+
+            .app-image-container {
+                position: relative;
+
+                .app-image-options {
+                    width: 100%;
+
+                    .item-app-content-status-container {
                         position: absolute;
-                        top: 0;
-                        left: 0;
-                        bottom: 0;
-                        right: 0;
+                        top: 205px;
                         width: 100%;
-                        height: 100%;
+                        display: flex;
+                        align-items: end;
+                        justify-content: center;
+                        font-size: 14px;
+                        transform: translateY(-28px);
+                        user-select: none;
+                        pointer-events: none;   
+
+                        .item-app-content-status {
+                            color: $color-full-white;
+                            background: $color-grey;
+                            padding: 4px 8px;
+                            border-radius: 20px;
+
+                            &.app-running {
+                                background: $color-green;
+                                box-shadow: 0 0 4px 2px $color-green;
+                            }
+
+                            &.app-automated-on {
+                                background: $color-blue;
+                                box-shadow: 0 0 4px 2px $color-blue;
+                            }
+
+                            &.app-stopped {
+                                background: $color-error;
+                                box-shadow: 0 0 4px 2px $color-error;
+                            }
+
+                            &.app-disabled {
+                                -webkit-filter: grayscale(100%);
+                                filter: grayscale(100%);
+                            }
+                        }
                     }
 
-                    &:hover {
-                        transform: scale(1.1);
-                        transition: all 250ms ease-in-out;
+                    .imageUpload {
+                        color: $color-full-white;
+                        position: relative;
+                        bottom: 32px;
+                        float: right;
+                        font-size: 26px;
+                        background: $color-theme-4;
+                        border: solid 1px $color-full-white;
+                        border-radius: 26px;
+                        padding: 2px 8px;
+
+                        .inputFile {
+                            opacity: 0.0;
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            bottom: 0;
+                            right: 0;
+                            width: 100%;
+                            height: 100%;
+                        }
+
+                        &:hover {
+                            transform: scale(1.1);
+                            transition: all 250ms ease-in-out;
+                        }
+                    }
+
+                    .imageRemove {
+                        color: $color-full-white;
+                        position: relative;
+                        bottom: 32px;
+                        float: left;
+                        font-size: 26px;
+                        background: $color-theme-4;
+                        border: solid 1px $color-full-white;
+                        border-radius: 26px;
+                        padding: 2px 8px;
+
+
+                        &:hover {
+                            transform: scale(1.1);
+                            transition: all 250ms ease-in-out;
+                        }
                     }
                 }
+
+
 
                 .app-image {
                     width: 200px;
@@ -730,7 +852,6 @@
                     border-radius: 120px;
                     border: solid 6px $color-grey;
                     overflow: hidden;
-                    background: url("../../dOSCEngine/images/dev-icon.png") no-repeat center;
                     -webkit-background-size: contain;
                     -moz-background-size: contain;
                     -o-background-size: contain;
@@ -787,18 +908,19 @@
             }
 
             .options {
+                height: 40px;
                 display: flex;
                 width: 100%;
                 flex-direction: row;
-                padding: 0px 12px;
+                padding: 2px 24px;
+                align-content: center;
                 justify-content: space-evenly;
-                height: 40px;
             }
         }
     }
 
     .backdrop {
-        background-color: rgba(0,0,0,0.5);
+        background-color: $color-backdrop;
         position: absolute;
         top: 0;
         left: 0;
@@ -806,5 +928,6 @@
         height: 100vh;
         animation: 250ms ease-in-out 0s 1 appear;
         overflow: hidden;
+        z-index: $z-index-backdrop;
     }
 }

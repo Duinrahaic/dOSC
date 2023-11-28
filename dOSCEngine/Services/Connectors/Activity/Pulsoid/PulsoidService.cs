@@ -12,19 +12,21 @@ using System.Security.Policy;
 
 namespace dOSCEngine.Services.Connectors.Activity.Pulsoid
 {
-    public class PulsoidService : IHostedService, IDisposable
+    public class PulsoidService : ConnectorBase, IDisposable
     {
         public delegate void PulsoidSubscriptionEventHandler(PulsoidReading e);
         public event PulsoidSubscriptionEventHandler? OnPulsoidMessageRecieved;
 
-        public ConcurrentDictionary<DateTime, string> Log = new ConcurrentDictionary<DateTime, string>(2, capacity: 200);
-        public bool Running => Setting.IsEnabled;
+        public override string ServiceName => "Pulsoid";
+        public override string IconRef => @"_content/dOSCEngine/images/Pulsoid-Logo-500x281.png";
+        public override string Description => "A real time heart rate for streaming";
+
         private ClientWebSocket? _client;
         private const int ReceiveBufferSize = 256;
         private const string _url = @"wss://dev.pulsoid.net/api/v1/data/real_time";
         private const string _scope = "data:heart_rate:read";
         private Uri _URI => new Uri($"{_url}?access_token={Setting.AccessToken}");
-        CancellationTokenSource _CTS = new CancellationTokenSource();
+        private CancellationTokenSource _CTS = new CancellationTokenSource();
         private ILogger<PulsoidService> _logger;
         private PulsoidSetting? Setting;
         
@@ -33,43 +35,24 @@ namespace dOSCEngine.Services.Connectors.Activity.Pulsoid
         {
             _logger = services.GetService<ILogger<PulsoidService>>()!;
             _logger.LogInformation("Initialized Pulsoid Service");
-            AddLog(DateTime.Now, "Initialized Pulsoid Service");
-            UpdateSettings();
+            LoadSetting();
             if (Setting != null)
             {
                 if (Setting.IsEnabled)
                 {
-                    Start();
+                    StartService();
                 }
             }
         }
 
-        public PulsoidSetting? GetSettings()
-        {
-            return Setting;
-        }
-
-        public void UpdateSettings()
+        public override void LoadSetting()
         {
             Setting = (FileSystem.LoadSettings() ?? new()).Pulsoid;
         }
-        public void UpdateSetting(PulsoidSetting setting)
-        {
-            Setting = setting;
-            if (Setting != null)
-            {
-                if (Setting.IsConfigured)
-                {
-                    if (Setting.IsEnabled)
-                    {
-                        Stop();
-                        Start();
-                    }
-                }
-            }
-        }
+        public override SettingBase GetSetting() => Setting ?? new PulsoidSetting();
+ 
 
-        public async Task Start()
+        public override void StartService()
         {
             if (Setting != null)
             {
@@ -77,43 +60,33 @@ namespace dOSCEngine.Services.Connectors.Activity.Pulsoid
                 {
                     Task.Run(() => Connect());
                     Setting.IsEnabled = true;
-                    FileSystem.SaveSetting(Setting);
+                    Running = true;
+                    UpdateSetting(Setting);
                 }
             }
         }
 
-        public void Stop()
+        public override void StopService()
         {
             if (Setting != null)
             {
                 Disconnect();
                 Setting.IsEnabled = false;
-                FileSystem.SaveSetting(Setting);
+                Running = false;
+                UpdateSetting(Setting);
             }
         }
-
-        public async Task StartAsync(CancellationToken cancellationToken)
-        {
-
-            _logger.LogInformation("Pulsoid Service started");
-            AddLog(DateTime.Now, "Pulsoid Service started");
-
-        }
-
-
 
         private async Task Connect()
         {
             if (_client != null)
                 _client.Dispose();
             _client = new();
-            AddLog(DateTime.Now, $"Connecting to Pulsoid service");
-
+ 
             await _client.ConnectAsync(_URI, _CTS.Token);
 
             byte[] buffer = new byte[ReceiveBufferSize];
-            AddLog(DateTime.Now, $"Pulsoid connection state: {_client.State.ToString()}");
-
+ 
             if (_client.State == WebSocketState.Open)
             {
 
@@ -127,8 +100,7 @@ namespace dOSCEngine.Services.Connectors.Activity.Pulsoid
                     if (result.MessageType == WebSocketMessageType.Close)
                     {
                         _logger.LogDebug($"Pulsoid closed websocket ... disconnecting");
-                        AddLog(DateTime.Now, $"Pulsoid closed websocket ... disconnecting");
-                        await _client.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, _CTS.Token);
+                         await _client.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, _CTS.Token);
                         Disconnect();
                     }
                     else
@@ -138,9 +110,8 @@ namespace dOSCEngine.Services.Connectors.Activity.Pulsoid
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError("Pulsoid encountered an error while listening for data");
-                    AddLog(DateTime.Now, $"Pulsoid encountered an error while listening for data {ex}");
-
+                    _logger.LogError($"Pulsoid encountered an error while listening for data: {ex}");
+ 
                 }
 
             }
@@ -149,8 +120,7 @@ namespace dOSCEngine.Services.Connectors.Activity.Pulsoid
 
         private async Task SendMessage()
         {
-            AddLog(DateTime.Now, "Pulsoid Sending initial request");
-            if (_client == null) return;
+             if (_client == null) return;
             byte[] bytes = new byte[_scope.Length * sizeof(char)];
             Buffer.BlockCopy(_scope.ToCharArray(), 0, bytes, 0, bytes.Length);
             await _client.SendAsync(bytes, WebSocketMessageType.Text, true, _CTS.Token);
@@ -168,8 +138,7 @@ namespace dOSCEngine.Services.Connectors.Activity.Pulsoid
                 {
                     OnPulsoidMessageRecieved?.Invoke(result);
                     _logger.LogDebug($"Pulsoid Sent: {result.Data.HeartRate} bpm");
-                    AddLog(DateTime.Now, $"Pulsoid Sent: {result.Data.HeartRate} bpm");
-
+ 
                 }
                 else
                 {
@@ -193,25 +162,7 @@ namespace dOSCEngine.Services.Connectors.Activity.Pulsoid
                 Setting.IsEnabled = false;
                 UpdateSetting(Setting);
             }
-        }
-
-
-
-        public async Task StopAsync(CancellationToken cancellationToken)
-        {
-            Disconnect();
-            _logger.LogInformation("Pulsoid Service stopped");
-            AddLog(DateTime.Now, "Pulsoid Service stopped");
-            await Task.CompletedTask;
-        }
-
-
-
-        private void AddLog(DateTime time, string message)
-        {
-            Log.TryAdd(time, message);
-        }
-
+        } 
         public void Dispose() => Disconnect();
     }
 }

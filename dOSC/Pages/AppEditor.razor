@@ -3,6 +3,7 @@
 @using Blazor.Diagrams.Components
 @using dOSC.Components
 @using Blazor.Diagrams.Components.Widgets
+@using dOSC.Components.Modals
 @using dOSCEngine.Components.Wiresheet
 @using dOSCEngine.Components.Wiresheet.UI
 @using dOSCEngine.Components.Modals
@@ -102,50 +103,37 @@
     </div>
 }
 
-<ModalBase @ref=SaveModal>
-    <Title>Save Application</Title>
-    <Body>
  
-        <EditForm id="SubmitForm" Model="Wiresheet"  OnValidSubmit="@SaveApp" class="d-flex flex-column align-items-center justify-content-center">
+
+<ModalV2 @ref=SaveModal Title="Save Application">
+    <Body>
+        <EditForm id="SubmitForm" Model="Wiresheet" OnValidSubmit="@SaveApp" class="dosc-form">
             <DataAnnotationsValidator />
-            <div class="mb-3 w-100">
-                <div class="mb-3 form-override">
-                    <label for="inputAppName" class="form-label">Application Name</label>
-                    <ValidationMessage For="@(() => Wiresheet.AppName)" />
-                    <input type="text" class="form-control w-100" @bind-value=@Wiresheet.AppName id="inputAppName">
-                </div>
+            <div class="dosc-form-item">
+                <label for="inputAppName" class=" ">Name*</label>
+                <ValidationMessage For="@(() => Wiresheet.AppName)" />
+                <InputText @bind-Value=@Wiresheet.AppName id="inputAppName" autocomplete="off" />
             </div>
-            <div class="mb-3 w-100" style="min-width:400px;">
-                <div class="mb-3 form-override pb-1" style="max-height: 200px;">
-                    <label for="inputAppDetailsTextarea" class="form-label">Descripton</label>
-                    <ValidationMessage For="@(() => Wiresheet.AppDescription)" />
-                    <textarea class="form-control" style="overflow-y: auto; height:200px;" id="inputAppDetailsTextarea" rows="3" @oninput="HandleOnChange">
-                        @Wiresheet.AppDescription
-                        </textarea>
-                </div>
+            <div class="dosc-form-item">
+                <label for="inputAppDescription" class=" ">Description</label>
+                <ValidationMessage For="@(() => Wiresheet.AppDescription)" />
+                <InputTextArea @bind-Value=@Wiresheet.AppDescription id="inputAppDescription" rows="12" autocomplete="off" />
             </div>
-        </EditForm>
             
-      
+        </EditForm>
     </Body>
     <Footer>
-        <div class="d-flex flex-row justify-content-between w-100">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => SaveModal.Close()">Cancel</button>
-            <button type="submit" form="SubmitForm" class="btn btn-primary" data-dismiss="modal">Save</button>
-        </div>
-        
+        <button type="submit" form="SubmitForm" class="dosc-button dosc-button-primary">Save</button>
+        <button type="button" class="dosc-button dosc-button-secondary" @onclick="()=> SaveModal.Close()">Cancel</button>
     </Footer>
-</ModalBase>
+</ModalV2>
 
-<ModalBase @ref=NodeSettingsModal>
-    <Title>Node Settings</Title>
+<ModalV2 @ref=NodeSettingsModal Title="Node Settings">
     <Body>
         <h3> Test </h3>
     </Body>
     <Footer>
-        <div class="d-flex flex-row justify-content-between w-100">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => NodeSettingsModal.Close()">Cancel</button>
-        </div>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => NodeSettingsModal.Close()">Cancel</button>
 
     </Footer>
-</ModalBase>
+</ModalV2>

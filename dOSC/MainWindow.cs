@@ -36,8 +36,8 @@ namespace dOSC
         {
             if (this.WindowState == FormWindowState.Minimized)
             {
-                Hide();
-                notifyIcon.Visible = true;
+                //Hide();
+                //notifyIcon.Visible = true;
             }
         }
 
@@ -51,11 +51,11 @@ namespace dOSC
 
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if(this.WindowState == FormWindowState.Minimized)
+            if (this.WindowState == FormWindowState.Minimized)
             {
-                Show();
-                this.WindowState = FormWindowState.Normal;
-                notifyIcon.Visible = false;
+                //Show();
+                //this.WindowState = FormWindowState.Normal;
+                //notifyIcon.Visible = false;
             }
         }
     }

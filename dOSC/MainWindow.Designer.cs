@@ -53,12 +53,15 @@
             // MainWindow
             // 
             AutoScaleMode = AutoScaleMode.None;
+            BackColor = SystemColors.Control;
             ClientSize = new Size(1116, 861);
             Controls.Add(chromiumWebBrowser1);
             Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            IsMdiContainer = true;
             Name = "MainWindow";
             Text = "dOSC";
+            TransparencyKey = Color.White;
             Load += MainWindow_Load;
             ResumeLayout(false);
         }

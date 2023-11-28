@@ -1,16 +1,23 @@
 ﻿<div class="item-app">
-    <div class="item-app-image @(dOSCWiresheet.IsPlaying ? "app-running": "app-waiting" )" @onclick=TogglePlayPause>
-        <i class="icon oi @(dOSCWiresheet.IsPlaying ? "oi-media-play": "oi-media-pause" )"/>
+    <div class="item-app-image @(dOSCWiresheet.IsPlaying ? "app-running": "app-disabled" )" @onclick=TogglePlayPause style="background-image: url(@(CurrentAppImage));">
+        <i class="icon oi @(dOSCWiresheet.IsPlaying ? "oi-media-play": "oi-media-stop" )"/>
+
+    </div>
+    <div class="item-app-content-status-container">
+        <div class="item-app-content-status @(dOSCWiresheet.IsPlaying ? "app-running": "app-disabled" )" >
+            @(@dOSCWiresheet.IsPlaying ? "Running" : "Paused")
+        </div>
     </div>
     <div class="item-app-content">
+        
         <div class="item-app-content-title">
             @dOSCWiresheet.AppName
         </div>
         <div class="controls">
-            <button class="btn btn-primary" @onclick=EditApp>
+            <button class="dosc-button dosc-button-primary" @onclick=EditApp>
                 Edit
             </button>
-            <button class="btn btn-secondary" @onclick=ShowSettings>
+            <button class="dosc-button dosc-button-secondary" @onclick=ShowSettings>
                 Details
             </button>
         </div>

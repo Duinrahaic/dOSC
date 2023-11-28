@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.IO;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace dOSC.Pages
 {
@@ -26,6 +27,7 @@ namespace dOSC.Pages
 
         private List<string> NavTabs = new() { "All", "Activity", "Fun", "Tech" };
         private string ActiveTab = "All";
+        private bool HasFile = false;
 
 
         protected override void OnInitialized()
@@ -48,6 +50,8 @@ namespace dOSC.Pages
             Wiresheet = wiresheet;
         }
 
+
+
         private void UploadApp()
         {
             if(UploadedFile != null)
@@ -67,28 +71,21 @@ namespace dOSC.Pages
                 Wiresheets = Engine.GetWireSheets();
                 OnSelected(wiresheet);
             }
-            
+            HasFile = false;
         }
 
         private dOSCWiresheetDTO? UploadedFile;
         private void UploadedFileCallback(dOSCWiresheetDTO? Upload)
         {
-            if(Upload == null) return;
-            UploadedFile = Upload;
-
-        }
-
-
-        private void DeleteApp()
-        {
-            DeleteAppModal.Close(); 
-            if(Wiresheet == null) return;
-            Wiresheet.Desconstruct();
-            Wiresheet.Dispose();
-            var s = Wiresheet;
-            Wiresheet = null;
-            Engine.RemoveWiresheet(s);
-            Wiresheets = Engine.GetWireSheets();
+            if (Upload == null)
+            {
+                HasFile = false;
+            }
+            else
+            {
+                HasFile = true;
+                UploadedFile = Upload;
+            }
         }
 
         private void EditApp()
@@ -115,17 +112,7 @@ namespace dOSC.Pages
             }
         }
     
-        private async Task DownloadApp()
-        {
-            if (Wiresheet != null)
-            {
-
-                await FileSystem.DownloadWiresheet(JS, Wiresheet);
-            }
-
-        }
-
-        private async Task ShowSettings(dOSCWiresheet wiresheet)
+        private void ShowSettings(dOSCWiresheet wiresheet)
         {
             if (wiresheet != null)
             {
@@ -143,14 +130,15 @@ namespace dOSC.Pages
             }
         }
 
+        private void OnUpdated(dOSCWiresheet wiresheet)
+        {
+            this.StateHasChanged();
+        }
         
 
         // Modals 
         private ModalBase NewAppModal { get; set; }
-        private ModalBase UploadAppModal { get; set; }
-        private ModalBase DeleteAppModal { get; set; }
-        private ModalBase AppSettingsModal { get; set; }
-     
+        private ModalV2 UploadAppModal { get; set; }
         private SidePanelBase AppSettingsPanel { get; set; }
     }
 }

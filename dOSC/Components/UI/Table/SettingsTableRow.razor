@@ -1,20 +1,31 @@
 ﻿@using dOSC.Components.UI.Setting
-
+@using dOSCEngine.Services.Connectors;
+ 
 @if(Service != null)
 {
     <tr style="user-select: none;">
         <td>
             <div class="third-party-connector">
-                <img src="_content/dOSCEngine/images/VRChat-Logo-500x281.png" alt="VRChat" />
+                @if (string.IsNullOrEmpty(Service.IconRef))
+                {
+                    <div class="text">
+                        @Service.ServiceName
+                    </div>
+
+                }
+                else
+                {
+                    <img src="@Service.IconRef" alt="VRChat" />
+                }
+
             </div>
         </td>
-        <td>Events driven for a VR social-platform</td>
+        <td>@Service.Description</td>
         <td>
-            <StatusPill Status="configured" />
+            <StatusPill Status="@Service.isRunning()" />
         </td>
         <td class="options">
-            <div class="option oi oi-cog" />
-
+            <div class="option oi oi-cog" @onclick=OnEditClick />
         </td>
     </tr>
 
@@ -23,21 +34,16 @@
 
 @code{
     [Parameter]
-    public IHostedService Service { get; set; }
+    public ConnectorBase Service { get; set; }
     [Parameter]
-    public EventCallback<IHostedService> ServiceChanged { get; set; }
+    public EventCallback<ConnectorBase> ServiceChanged { get; set; }
 
-    private bool IsRunning {
-        get{
-            if(Service != null)
-            {
-                return false;
-            }
-            return false;
-         
-        }
+    [Parameter]
+    public EventCallback<ConnectorBase> OnEdit { get; set; }
 
-        
+    private void OnEditClick()
+    {
+        OnEdit.InvokeAsync(Service);
     }
 
 

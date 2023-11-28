@@ -62,7 +62,7 @@ namespace dOSCEngine.Services
                             }
                             else
                             {
-                                wsm.Desconstruct();
+                                wsm.Deconstruct();
                             }
                         }
                         else

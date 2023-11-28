@@ -1,24 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Components.Forms
 @using global::dOSC.Components.UI
 @using Microsoft.AspNetCore.Components.Web.Virtualization
-<EditForm id="settings-form" Model="@Setting" OnValidSubmit="Submit">
-    <AppDetailItem Title="Authentication">
-        <ChildContent>
-              <div class="row w-100">
-                <div class="col-12">
-                    <div class="col-auto form-override">
-                        <label for="inputAccessToken" class="form-label">Pulsoid Access Token</label>
-                        <ValidationMessage For="@(() => Setting.AccessToken)" />
-                        <input type="password" class="form-control" id="inputAccessToken" @bind-value="@Setting.AccessToken"  >
-                        <small id="inputAccessTokenHelp" class="form-text">To get your access token go <a href="#" @onclick:preventDefault @onclick="OpenHelp" >here</a></small>
-                    </div>
-                </div>
-            </div>
+@using dOSC.Components.UI
+<EditForm id="setting-form" Model="@Setting" class="dosc-form" OnValidSubmit="FormSubmitted">
+    <div class="dosc-form-item">
+        <label>Access Token:</label>
+        <label class="subtitle">To get your access token go <a href="" @onclick:preventDefault @onclick="OpenHelp">here</a></label>
+        <InputText type="password" placeholder="Password" @bind-Value=@Setting.AccessToken />
+    </div>
 
-        </ChildContent>
-    </AppDetailItem>
 </EditForm>
-@if(Service != null)
-{
-    <ServiceLogComponent @bind-Log="Service.Log" />
-}
+

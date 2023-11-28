@@ -17,16 +17,11 @@ namespace dOSCEngine.Services
     {
         [JsonIgnore]        
         public BlazorDiagram Diagram { get; set; }
-
         public List<BaseNode> _Nodes = new List<BaseNode>();
         public List<BaseLink> _Links = new List<BaseLink>();
         private bool _Built = false;
         public bool IsPlaying => _Built;
         public bool HasError { get; set; } = false;
-
-
-        
-
         public void Build()
         {
 
@@ -63,7 +58,7 @@ namespace dOSCEngine.Services
                 _Built = true;
             }
         }
-        public void Desconstruct()
+        public void Deconstruct()
         {
             if (_Built)
             {
@@ -78,16 +73,6 @@ namespace dOSCEngine.Services
             }
 
         }
-        public void Start()
-        {
-            Diagram.SuspendRefresh = false;
-        }
-        public void Stop()
-        {
-            Diagram.SuspendRefresh = true;
-        }
-
-
         public void AddNode(BaseNode node)
         {
             _Nodes.Add(node);

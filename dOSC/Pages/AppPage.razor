@@ -16,13 +16,13 @@
                 List of all your current applications
             </div>
         </div>
-        <div class="search-bar-container">
+@*         <div class="search-bar-container">
             <div class="search-bar">
                 <i class="search-icon oi oi-magnifying-glass" />
 
                 <input type="search" class="search-box" placeholder="Search Loaded Applications" />
             </div>
-        </div>
+        </div> *@
     </div>
 @*     <AppPageNavigationComponent @bind-TabNames="NavTabs" @bind-ActiveTab="ActiveTab" />
  *@    <div class="app-list">
@@ -31,7 +31,6 @@
                 foreach(var app in Wiresheets)
                 {
                     <AppProfileItem dOSCWiresheet="app" OnPlayPause="Save" OnShowSettings="ShowSettings" />
-
                 }
             }
             <div class="new-item-app" >
@@ -53,7 +52,6 @@
     </div>
 </div>
 
-<SidePanelBase @ref=AppSettingsPanel dOSCWiresheet="Wiresheet"/>
 
 
 
@@ -61,47 +59,15 @@
  Modals
 *@
 
-<ModalBase @ref=NewAppModal>
-    <Title>New Application</Title>
-    <Body>
-        <p>
-            Do you want to upload a new application or create a new one?
-        </p>
-    </Body>
-    <Footer>
-        <div class="d-flex flex-row w-100 align-items-center justify-content-between">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => NewAppModal.Close()">Close</button>
-            <button type="button" class="btn btn-primary" onclick=@(()=> EditApp())> New </button>
-            <button type="button" class="btn btn-primary" onclick=@(()=> {NewAppModal.Close(); UploadAppModal.Open();})> Upload </button>
-        </div>
-    </Footer>
-</ModalBase>
+<SidePanelBase @ref=AppSettingsPanel dOSCWiresheet="Wiresheet" OnUpdate="OnUpdated" />
 
-<ModalBase @ref=UploadAppModal>
-    <Title>Upload Application</Title>
+<ModalV2 @ref=UploadAppModal Title="Upload Application">
     <Body>
-        <UploadWiresheetFile DataCallback="UploadedFileCallback" />
+        <UploadWiresheetFile DataCallback="UploadedFileCallback"   />
     </Body>
     <Footer>
-        <div class="d-flex flex-row justify-content-between w-100">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => UploadAppModal.Close()">Cancel</button>
-            <button type="button" disabled="@(UploadedFile == null)" class="btn btn-primary" data-dismiss="modal" @onclick="()=>UploadApp()">Upload</button>
-        </div>
+        <button type="button" disabled="@(UploadedFile == null)" class="dosc-button dosc-button-primary" @onclick="()=>UploadApp()">Upload</button>
+        <button type="button" class="dosc-button dosc-button-secondary" @onclick="() => UploadAppModal.Close()">Cancel</button>
     </Footer>
-</ModalBase>
-
-<ModalBase @ref=DeleteAppModal>
-    <Title>Delete Application</Title>
-    <Body>
-        <p>
-            Are you sure you want to delete this application?
-        </p>
-    </Body>
-    <Footer>
-        <div class="d-flex flex-row justify-content-between w-100">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => DeleteAppModal.Close()">Cancel</button>
-            <button type="button" class="btn btn-danger" data-dismiss="modal" @onclick="() => DeleteApp()">Delete</button>
-        </div>
-    </Footer>
-</ModalBase>
+</ModalV2>
 
