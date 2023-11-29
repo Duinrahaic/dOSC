@@ -1,0 +1,89 @@
+﻿@import "_variables.scss";
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    display: table;
+    color: $color-full-white;
+
+    td, th {
+        border-bottom: 1px solid $color-wiresheet-toolbar;
+    }
+
+    tbody {
+        tr {
+            height: 30px;
+            width: 1px;
+            white-space: nowrap;
+
+            td {
+                border: none;
+                padding: 0;
+                height: 60px;
+                padding: 8px 0;
+            }
+
+            &:hover {
+                background-color: $color-theme-2;
+                transition: ease-in-out 100ms;
+            }
+        }
+    }
+
+
+
+    &.third-party-table {
+        tbody {
+            tr {
+                .third-party-connector {
+                    padding: 0 0 0 8px;
+
+                    img {
+                        object-fit: contain;
+                        height: 40px;
+                    }
+
+                    .text {
+                    }
+                }
+
+                height: 30px;
+                width: 1px;
+                white-space: nowrap;
+
+                td {
+                    border: none;
+                    padding: 0;
+                    height: 60px;
+                    padding: 8px 0;
+                }
+
+
+
+                .options {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 10px 10px;
+
+                    .option {
+                        border-radius: 16px;
+                        padding: 8px;
+
+                        &:hover {
+                            background-color: $color-theme-3;
+                        }
+                    }
+                }
+
+                &:hover {
+                    background-color: $color-theme-2;
+                    transition: ease-in-out 250ms;
+                }
+            }
+        }
+    }
+}
+
+

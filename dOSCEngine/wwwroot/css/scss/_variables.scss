@@ -35,7 +35,7 @@ $color-blue: #3947fd;
 $color-blue-darker: #2731b0;
 $color-blue-lighter: #4337ff;
 $color-grey: #B9BBBE;
-$color-grey-darker: #B9BBBE;
+$color-grey-darker: #87888b;
 $color-wiresheet-toolbar: #3b3b40;
 $color-bg-hover-white: rgba(255,255,255,.1);
 $color-error: rgba(237,67,55,1);
@@ -47,6 +47,49 @@ $color-shadow-07: rgba(00, 00, 00,0.07);
 $color-shadow-02: rgba(00, 00, 00,0.02);
 $color-shadow-01: rgba(00, 00, 00,0.01);
 
+
+/*Input Colors*/
+
+$color-selected-darker: #49588d;
 $color-selected: #7289da;
 
-$font-family: 'Roboto', sans-serif;
+$color-primary: $color-blue;
+$color-primary-darker: $color-blue-darker;
+
+$color-secondary: $color-grey;
+$color-secondary-darker: $color-grey-darker;
+
+$color-success: $color-green;
+$color-success-darker: $color-green-darker;
+
+$color-danger: $color-error;
+$color-danger-darker: $color-error-darker;
+
+$color-warning: $color-orange;
+$color-warning-darker: $color-orange-darker;
+
+$color-disabled: $color-grey-darker;
+
+
+/*Font Family*/
+
+$font-family: 'Varela Round', sans-serif;
+
+/*Modal*/
+
+$color-backdrop: rgba(0,0,0,0.5);
+
+/* Layers */
+$z-index-normal: 0;
+$z-index-backdrop: 900;
+$z-index-top: 1000;
+
+
+
+
+
+
+@font-face {
+    font-family: 'Varela Round';
+    src: URL("./fonts/VarelaRound-Regular.ttf") format('truetype');
+}

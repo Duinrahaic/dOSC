@@ -1,104 +1,101 @@
 ﻿
 @import "_variables.scss";
+@import "_animations.scss";
+
 
 .home-container {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-}
-
-.home-panel {
-    display: flex;
-    width: 700px;
-    height: 300px;
-    background-color: $color-theme-1;
-    border-radius: 10px;
-    user-select: none;
-    padding: 30px 20px;
-    justify-content: center;
-    align-items: center;
-}
-
-.home-panel .mascot {
-    flex: 300px;
-    height: 95%;
-    border-right: 1px solid $color-lighter-dark;
-    user-select: none;
-}
-
-.home-panel .mascot img {
-    object-fit: contain;
-    width: 300px;
-    padding: 24px;
-    transform: translateY(-36px);
-}
-
-.home-panel .details {
-    flex: 400px;
-    width: 400px;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-}
-
-.home-panel .details h1 {
-    font-weight: 900;
-}
-
-.home-panel .details h5 {
-    font-weight: 100;
-}
-
-.home-panel .details .socials {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+    height: 100%;
     width: 100%;
-    gap: 20px;
-    padding: 10px;
-}
 
-.home-panel .details .socials img {
-    height: 48px;
-    cursor: pointer
-}
+    .home-panel {
+        height: 400px;
+        width: 800px;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 4;
+        border-radius: 20px;
+        user-select: none;
+        justify-content: center;
+        align-items: center;
+        background-color: $color-theme-1;
 
-.home-panel .details .socials img:hover {
-    transform: scale(150%);
-    animation: ease;
-    animation-duration: 16s;
-}
 
-.home-container .home-panel-options {
-    width: 80%;
-    display: flex;
-    flex-direction: row;
-}
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
 
-.home-container .home-panel-options .options {
-    display: flex;
-    justify-content: space-evenly;
-    flex-grow: 1;
-}
+        .subtitle {
+            position: relative;
+            bottom: 50px;
+            color: $color-full-white;
+            font-size: 34px;
+        }
+    }
 
-.home-container .home-panel-options .options .option {
-    background-color: $color-theme-1;
-    width: 200px;
-    padding: 4px;
-    border-radius: 10px;
-    display: flex;
-    margin: 5px;
-    font-weight: 600;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    text-decoration: none;
-    color: $color-blue;
-}
+    .home-panel-options {
+        ul {
+            list-style: none;
+            padding-left: 0;
+            display: flex;
+            flex-direction: row;
 
-.home-container .home-panel-options .options .option:hover {
-    background-color: $color-theme-2;
-    color: $color-blue-lighter;
+            li {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                cursor: pointer;
+                border-radius: 10px;
+                transition: all 0.2s ease-in-out;
+                margin: 10px;
+                width: 100%;
+                height: 100%;
+                color: $color-full-white;
+
+
+                &:hover {
+                    transform: scale(1.1);
+                    transition: ease-in-out 100ms;
+
+                    .option {
+                        box-shadow: 0 0 4px 1px $color-blurple;
+                    }
+                }
+
+                .option {
+                    background-color: $color-theme-1;
+                    height: 60px;
+                    width: 60px;
+                    border-radius: 30px;
+                    padding: 8px;
+                    position: relative;
+                    object-fit: contain;
+
+
+                    .icon {
+                        font-size: 36px;
+                        height: 100%;
+                        width: 100%;
+                        text-align: center;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: contain;
+                    }
+                }
+            }
+        }
+    }
 }

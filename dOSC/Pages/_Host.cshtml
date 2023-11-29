@@ -4,17 +4,21 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <!DOCTYPE html>
-<html lang="en" class="overflow-hidden" >
+<html lang="en">
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="~/" />
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
-    <link href="css/icons.css" rel="stylesheet" />
-    <link href="css/fonts/lucide.css" rel="stylesheet" />
     <link href="dOSC.styles.css" rel="stylesheet" />
+    <link href="_content/dOSCEngine/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="_content/dOSCEngine/css/icons.css" rel="stylesheet" />
+    <link href="_content/dOSCEngine/css/fonts/lucide.css" rel="stylesheet" />
+    <link href="_content/dOSCEngine/dOSCEngine.styles.css" rel="stylesheet" />
     <link href="_content/Z.Blazor.Diagrams/style.min.css" rel="stylesheet" />
     <link href="_content/Z.Blazor.Diagrams/default.styles.min.css" rel="stylesheet" />
-    <link href="css/main.min.css" rel="stylesheet" />
+    <link href="_content/dOSCEngine/style.min.css" rel="stylesheet" />
+    <link href="_content/dOSCEngine/css/main.min.css" rel="stylesheet" />
+    <link href="BlazorServer.styles.css" rel="stylesheet" />
     <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
 <body>
@@ -31,18 +35,10 @@
         <a class="dismiss">🗙</a>
     </div>
 
-    <script src="_framework/blazor.server.js" autostart="false"></script>
+    <script src="_framework/blazor.server.js"></script>
     <script src="_content/Z.Blazor.Diagrams/script.min.js"></script>
-    <script src="js/jquery-3.7.1.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/dOSC.js"></script>
-    
-    <script>
-        Blazor.start().then(() => {
-            Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
-                document.location.reload();
-            }
-        });
-    </script>
+    <script src="_content/dOSCEngine/js/jquery-3.7.1.min.js"></script>
+    <script src="_content/dOSCEngine/js/bootstrap.bundle.min.js"></script>
+    <script src="_content/dOSCEngine/js/dOSC.js"></script>
 </body>
 </html>

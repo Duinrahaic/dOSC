@@ -1,10 +1,11 @@
 ﻿using dOSC.Components.Modals;
 using dOSCEngine.Services;
-using dOSC.Utilities;
+using dOSCEngine.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.IO;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace dOSC.Pages
 {
@@ -23,6 +24,11 @@ namespace dOSC.Pages
 
         private List<dOSCWiresheet> Wiresheets = new();
         private dOSCWiresheet? Wiresheet;
+
+        private List<string> NavTabs = new() { "All", "Activity", "Fun", "Tech" };
+        private string ActiveTab = "All";
+        private bool HasFile = false;
+
 
         protected override void OnInitialized()
         {
@@ -44,6 +50,8 @@ namespace dOSC.Pages
             Wiresheet = wiresheet;
         }
 
+
+
         private void UploadApp()
         {
             if(UploadedFile != null)
@@ -63,28 +71,21 @@ namespace dOSC.Pages
                 Wiresheets = Engine.GetWireSheets();
                 OnSelected(wiresheet);
             }
-            
+            HasFile = false;
         }
 
         private dOSCWiresheetDTO? UploadedFile;
         private void UploadedFileCallback(dOSCWiresheetDTO? Upload)
         {
-            if(Upload == null) return;
-            UploadedFile = Upload;
-
-        }
-
-
-        private void DeleteApp()
-        {
-            DeleteAppModal.Close(); 
-            if(Wiresheet == null) return;
-            Wiresheet.Desconstruct();
-            Wiresheet.Dispose();
-            var s = Wiresheet;
-            Wiresheet = null;
-            Engine.RemoveWiresheet(s);
-            Wiresheets = Engine.GetWireSheets();
+            if (Upload == null)
+            {
+                HasFile = false;
+            }
+            else
+            {
+                HasFile = true;
+                UploadedFile = Upload;
+            }
         }
 
         private void EditApp()
@@ -103,20 +104,41 @@ namespace dOSC.Pages
             }
         }
 
-        private async Task DownloadApp()
+        private void NewApp()
         {
-            if (Wiresheet != null)
+            if (NM != null)
             {
-
-                await FileSystem.DownloadWiresheet(JS, Wiresheet);
+                NM.NavigateTo($"apps/editor/");
+            }
+        }
+    
+        private void ShowSettings(dOSCWiresheet wiresheet)
+        {
+            if (wiresheet != null)
+            {
+                Wiresheet = wiresheet;
+                AppSettingsPanel.Open();
             }
 
         }
 
+        private void Save(dOSCWiresheet wiresheet)
+        {
+            if (wiresheet != null && Engine != null)
+            {
+                Engine.SaveWiresheet(wiresheet);
+            }
+        }
+
+        private void OnUpdated(dOSCWiresheet wiresheet)
+        {
+            this.StateHasChanged();
+        }
+        
 
         // Modals 
         private ModalBase NewAppModal { get; set; }
-        private ModalBase UploadAppModal { get; set; }
-        private ModalBase DeleteAppModal { get; set; }
-     }
+        private ModalV2 UploadAppModal { get; set; }
+        private SidePanelBase AppSettingsPanel { get; set; }
+    }
 }

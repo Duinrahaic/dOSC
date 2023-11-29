@@ -1,33 +1,44 @@
-﻿@using dOSC.Components
+﻿@using global::dOSC.Components
 @page "/"
-
-<div class="justify-content-center align-items-center d-flex" style="width: 100%; height: 100%;">
-    
+<div class="app-page">
     <div class="home-container">
         <div class="home-panel">
-            <div class="mascot">
-                <img src="_content/dOSCEngine/images/mascot.png" />
-            </div>
-            <div class="details">
-                <h1>dOSC</h1>
-                <h5>A Dynamic Application Platform</h5>
-                <div class="socials">
-                    <img src="_content/dOSCEngine/images/dev-icon.png" @onclick="@OpenTwitter" />
-                    <img src="_content/dOSCEngine/images/discord-mark-blue.png" @onclick="@OpenDiscord" />
-                    <img src="_content/dOSCEngine/images/patreon-mark-white.png" @onclick="@OpenPatreon" />
-                    <img src="_content/dOSCEngine/images/github-mark-white.png" @onclick="@OpenGithub" />
-                </div>
-            </div>
+            <img src="_content/dOSCEngine/images/dOSC-logo.png" />
+            <div class="subtitle"> A Dynamic OSC App Sharing Platform </div>
         </div>
         <div class="home-panel-options">
-            <div class="options">
-                <a class="option" @onclick="@OpenDocumentation">
-                    Documentation
-                </a>
-                <a class="option" @onclick="@OpenUpdates">
-                    Update Notes
-                </a>
-            </div>
+            <ul>
+                <li>
+                    <div class="option" @onclick="@OpenTwitter" style="padding: 12px;">
+                        <img src="_content/dOSCEngine/images/logo-twitter-new-white.png" />
+                    </div>
+                </li>
+                <li>
+                    <div class="option" @onclick="@OpenDiscord">
+                        <img src="_content/dOSCEngine/images/discord-mark.png" />
+                    </div>
+                </li>
+                <li>
+                    <div class="option" @onclick="@OpenKofi">
+                        <img src="_content/dOSCEngine/images/kofi-logo-white.png" />
+                    </div>
+                </li>
+                <li>
+                    <div class="option" @onclick="@OpenPatreon">
+                        <img src="_content/dOSCEngine/images/patreon-mark-white.png"  />
+                    </div>
+                </li>
+                <li>
+                    <div class="option" @onclick="@OpenGithub">
+                        <img src="_content/dOSCEngine/images/github-mark-white.png" />
+                    </div>
+                </li><li>
+                    <div class="option" @onclick="@OpenDocumentation">
+                        <span class="icon icon-book-open"/>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
+

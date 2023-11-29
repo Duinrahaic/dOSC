@@ -1,29 +1,17 @@
 {
   "profiles": {
-    "Electron.NET App": {
-      "commandName": "Executable",
-      "executablePath": "electronize",
-      "commandLineArgs": "start",
-      "workingDirectory": ".",
-      "environmentVariables": {
-        "ElectronEnabled": "TRUE"
-      }
-    },
     "http": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5231"
     },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
     "http (headless)": {
       "commandName": "Project",
+      "commandLineArgs": "--headless",
+      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

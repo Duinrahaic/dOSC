@@ -55,6 +55,12 @@ namespace dOSCEngine.Utilities
                 case SettingType.Pulsoid:
                     settings.Pulsoid = (PulsoidSetting)setting;
                     break;
+                case SettingType.OSC:
+                    settings.OSC = (OSCSetting)setting;
+                    break;
+                case SettingType.dOSC:
+                    settings.dOSC = (dOSCSetting)setting;
+                    break;
             }
             SaveSettings(settings);
         }

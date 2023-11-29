@@ -1,0 +1,33 @@
+﻿<div class="navigation-container">
+    <ul class="navigation-bar">
+        @foreach(var tab in TabNames)
+        {
+            <AppPageNavigationItem TabName="@tab" ActiveTab="@ActiveTab" ActiveTabChanged="OnActiveTabChanged" />
+        }
+    </ul>
+    <div class="navigation-bottom-bar" />
+</div>
+
+@code{
+    [Parameter]
+    public List<string> TabNames { get; set; } = new();
+    [Parameter]
+    public EventCallback<List<string>> TabNamesChanged { get; set; }
+    [Parameter]
+    public string ActiveTab { get; set; } = string.Empty;
+    [Parameter]
+    public EventCallback<string> ActiveTabChanged { get; set; }
+
+    protected override void OnInitialized()
+    {
+        ActiveTab = TabNames.FirstOrDefault() ?? string.Empty;
+    }
+
+    private void OnActiveTabChanged(string ActiveTabName)
+    {
+        ActiveTab = ActiveTabName;
+        ActiveTabChanged.InvokeAsync(ActiveTab);
+    }
+
+
+}

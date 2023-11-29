@@ -1,6 +1,9 @@
 ﻿using dOSCEngine.Services.Connectors.Activity.Pulsoid;
 using dOSCEngine.Services.User;
+using dOSCEngine.Utilities;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using Valve.VR;
 
 namespace dOSC.Components.Form.SettingsPages
 {
@@ -8,21 +11,21 @@ namespace dOSC.Components.Form.SettingsPages
     {
         [Parameter]
         public PulsoidSetting? Setting { get; set; }
+
         [Parameter]
         public EventCallback<PulsoidSetting> OnValidSubmit { get; set; }
-        [Inject]
-        private PulsoidService? Service { get; set; }
-        private void Submit()
-        {
-            if (Setting == null)
-                return;
-            Setting.IsConfigured = true;
-            OnValidSubmit.InvokeAsync(Setting);
-        }
 
+        void FormSubmitted(EditContext editContext)
+        {
+            bool formIsValid = editContext.Validate();
+            if (formIsValid)
+            {
+                OnValidSubmit.InvokeAsync(Setting);
+            }
+        }
         private void OpenHelp()
         {
-            //ElectronFramework.OpenExternal("https://pulsoid.net/ui/keys");
+            WebUtilities.OpenUrl("https://pulsoid.net/ui/keys");
         }
     }
 }

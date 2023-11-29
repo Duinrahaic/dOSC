@@ -1,0 +1,70 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@if (Show)
+{
+    <div class="app-sidepanel-container @(CloseAnimation?"close":"")">
+        <div class="sidepanel">
+            <div class="content">
+                <span class="close icon icon-x" @onclick="Close" />
+                <span class="download icon icon-download" @onclick="DownloadApp"/>
+
+                <div class="app-image-container">
+                    <div class="app-image @(dOSCWiresheet.IsPlaying ? "app-running" : "app-disabled")" style="background: url(@(CurrentAppIcon)) no-repeat center; background-size: contain;" />
+                    <div class="app-image-options">
+                        <div class="imageUpload icon-image-plus">
+                            <InputFile class="inputFile" OnChange="LoadFiles" accept=".png,.jpg" />
+                        </div>
+                        <div class="item-app-content-status-container">
+                            <div class="item-app-content-status @(dOSCWiresheet.IsPlaying ? "app-running": "app-disabled" )">
+                                @(@dOSCWiresheet.IsPlaying ? "Running" : "Paused")
+                            </div>
+                        </div>
+                        <div class="imageRemove icon-image-off" @onclick=ClearAppImage />
+                    </div>
+                </div>
+               
+                
+                <div class="content-body">
+                    <div class="scroll-content">
+                        @if(dOSCWiresheet != null)
+                        {
+                            <EditForm id="detailForm" Model="dOSCWiresheet" class="editform" OnValidSubmit="OnValidSubmit">
+                                <div class="content-item">
+                                    <label>Name</label>
+                                    <ValidationMessage For="@(() => dOSCWiresheet.AppName)" autocomplete="off" />
+                                    <InputText @bind-Value=dOSCWiresheet.AppName />
+                                </div>
+                                <div class="content-item">
+                                    <label>Description</label>
+                                    <InputTextArea rows="12" @bind-Value=dOSCWiresheet.AppDescription autocomplete="off" />
+                                </div>
+                                @*                             
+                                    <div class="content-item">
+                                        <label>Avatar Tigger Ids</label>
+                                        <InputTextArea rows="12" @bind-Value=dOSCWiresheet. />
+                                    </div> 
+                                *@
+                            </EditForm>
+                        }
+                        
+                    </div>
+                </div>
+                <div class="options">
+                    <button type="button" class="dosc-button dosc-button-danger" data-dismiss="modal" @onclick=OnDeleteApp>Delete</button>
+                    <button form="detailForm" type="submit" class="dosc-button dosc-button-primary" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="backdrop" @onclick="Close" />
+    </div>
+}
+
+<ModalV2 @ref=DeleteModal Title="Delete App Confirmation" Size="ModalV2.ModalSize.Small">
+    <Body>
+        <p>Are you sure you want to delete this app?</p>
+    </Body>
+    <Footer>
+        <button type="button" class="dosc-button dosc-button-danger" data-dismiss="modal" @onclick="() => OnDeleteConfirmed()">Delete</button>
+        <button type="button" class="dosc-button dosc-button-primary" data-dismiss="modal" @onclick="() => DeleteModal.Close()">No</button>
+    </Footer>
+</ModalV2>

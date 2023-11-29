@@ -1,8 +1,9 @@
-﻿using Blazor.Diagrams;
+﻿ using Blazor.Diagrams;
 using Blazor.Diagrams.Core.Anchors;
 using Blazor.Diagrams.Core.Geometry;
 using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.Models.Base;
+using dOSC.Components.Modals;
 using dOSCEngine.Components.Modals;
 using dOSCEngine.Engine.Links;
 using dOSCEngine.Engine.Nodes;
@@ -18,7 +19,8 @@ using dOSCEngine.Services;
 using dOSCEngine.Services.Connectors.Activity.Pulsoid;
 using dOSCEngine.Services.Connectors.OSC;
 using Microsoft.AspNetCore.Components;
-using System.Xml.Linq;
+using Microsoft.AspNetCore.Components.Forms;
+using Point = Blazor.Diagrams.Core.Geometry.Point;
 
 namespace dOSC.Pages
 {
@@ -40,10 +42,11 @@ namespace dOSC.Pages
         [Inject]
         public NavigationManager? NM { get; set; }
 
-        private ModalBase SaveModal { get; set; }
-        private ModalBase NodeSettingsModal { get; set; }
+        private ModalV2 SaveModal { get; set; }
+        private ModalV2 NodeSettingsModal { get; set; }
 
-
+        private bool PreviouslyPlaying = false;
+        private bool InitialZoomToFit = false;
         protected override void OnInitialized()
         {
             //
@@ -64,7 +67,10 @@ namespace dOSC.Pages
                 Wiresheet = new(Guid.NewGuid());
             }
             if (Wiresheet == null) return;
-            Wiresheet.Desconstruct();
+
+            PreviouslyPlaying = Wiresheet.IsPlaying;
+
+            Wiresheet.Deconstruct();
 
             diagram = new BlazorDiagram(dOSCWiresheetConfiguration.Options);
             diagram.RegisterBlocks();
@@ -79,7 +85,7 @@ namespace dOSC.Pages
             Wiresheet.GetAllNodes().ForEach(n => {
 
                 var NodeCopy = _Engine.ConvertNode(n.GetDTO());
-                if(NodeCopy != null)
+                if (NodeCopy != null)
                 {
                     NodeCopy.Guid = n.Guid;
                     NodesLocal.Add(diagram.Nodes.Add(NodeCopy));
@@ -103,20 +109,24 @@ namespace dOSC.Pages
 
                 }
             }
-            var g = diagram.Groups.Add(new GroupModel(NodesLocal));
-            diagram.SelectModel(g, false);
-            g.SetPosition(0, 0);
+
+
+            this.diagram.ContainerChanged += Diagram_ContainerChanged;
             
-            g.Ungroup();
-            diagram.Groups.Remove(g);
         }
 
-        protected override void OnAfterRender(bool firstRender)
+        private void Diagram_ContainerChanged()
         {
-            if(firstRender)
+            try
+            {
+                this.diagram.ZoomToFit(200);
+            }
+            catch(Exception ex) 
             {
 
             }
+
+            this.diagram.ContainerChanged -= Diagram_ContainerChanged;
         }
 
         private void OnNodeAdded(NodeModel node)
@@ -226,7 +236,7 @@ namespace dOSC.Pages
             Wiresheet!.AppDescription = args.Value?.ToString() ?? "";
         }
 
-        private void SaveApp()
+        private void SaveApp(EditContext context)
         {
             SaveModal.Close();
             if (Wiresheet == null) return;
@@ -272,7 +282,14 @@ namespace dOSC.Pages
             if (Wiresheet == null) return;
             if (_Engine == null) return;
             diagram.SuspendRefresh = true;
-            Wiresheet.Build();
+            if (PreviouslyPlaying)
+            {
+                Wiresheet.Build();
+            }
+            else
+            {
+                Wiresheet.Deconstruct();
+            }
             NM!.NavigateTo($"/apps/{Wiresheet.AppGuid}");
         }
         #endregion

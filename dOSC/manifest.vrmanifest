@@ -1,0 +1,18 @@
+{
+	"source": "builtin",
+	"applications": [
+		{
+			"app_key": "com.duinrahaic.dosc",
+			"launch_type": "binary",
+			"binary_path_windows": "dOSC.exe",
+			"is_dashboard_overlay": true,
+
+			"strings": {
+				"en_us": {
+					"name": "dOSC",
+					"description": "A Dynamic OSC App Sharing Platform"
+				}
+			}
+		}
+	]
+}

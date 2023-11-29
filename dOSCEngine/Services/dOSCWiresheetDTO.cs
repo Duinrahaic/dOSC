@@ -22,6 +22,7 @@ namespace dOSCEngine.Services
         public string AppAuthor { get; set; } = string.Empty;
         public DateTime Created { get; set; } = DateTime.Now;
         public DateTime Modified { get; set; } = DateTime.Now;
+        public string AppIcon { get; set; } = string.Empty; 
         public bool Running { get; set; } = false;
 
         public dOSCWiresheetDTO(dOSCWiresheet wiresheet)
@@ -34,6 +35,7 @@ namespace dOSCEngine.Services
             Created = wiresheet.Created;
             Modified = wiresheet.Modified;
             Running = wiresheet.IsPlaying;
+            AppIcon = wiresheet.AppIcon;
             Nodes.AddRange(wiresheet._Nodes.Where(x => x != null).Select(x => x.GetDTO()).ToList());
             Links.AddRange(wiresheet._Links.Where(x => x != null).Select(x => x.GetDTO()).ToList());
         }

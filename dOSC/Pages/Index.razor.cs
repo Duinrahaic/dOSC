@@ -1,18 +1,39 @@
-﻿namespace dOSC.Pages
+﻿using dOSCEngine.Utilities;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Security.Policy;
+
+namespace dOSC.Pages
 {
     public partial class Index
     {
-        //private void OpenDiscord() => ElectronFramework.OpenExternal("https://discord.gg/UU6brdUdKj");
-        //private void OpenPatreon() => ElectronFramework.OpenExternal("https://www.patreon.com/Duinrahaic");
-        //private void OpenTwitter() => ElectronFramework.OpenExternal("https://x.com/duinrahaic");
-        //private void OpenGithub() => ElectronFramework.OpenExternal("https://github.com/Duinrahaic/dOSC");
-        //private void OpenUpdates() => ElectronFramework.OpenExternal("https://github.com/Duinrahaic/dOSC/releases");
-        //private void OpenDocumentation() => ElectronFramework.OpenExternal("https://github.com/Duinrahaic/dOSC/wiki");
-        private void OpenDiscord() { }
-        private void OpenPatreon() { }
-        private void OpenTwitter() { }
-        private void OpenGithub() { }
-        private void OpenUpdates() { }
-        private void OpenDocumentation() { }
+        [Inject]
+        private IJSRuntime JS { get; set; }
+        private void OpenDiscord() {
+            WebUtilities.OpenUrl("https://discord.gg/aZQfy6H9fA");
+        }
+        private void OpenPatreon() {
+            WebUtilities.OpenUrl("https://www.patreon.com/Duinrahaic");
+        }
+        private void OpenKofi() {
+            WebUtilities.OpenUrl("https://ko-fi.com/duinrahaic");
+        }
+        private void OpenTwitter() {
+            WebUtilities.OpenUrl("https://twitter.com/duinrahaic");
+        }
+        private void OpenGithub() {
+            WebUtilities.OpenUrl("https://github.com/Duinrahaic/dOSC");
+        }
+        private void OpenUpdates() {
+            WebUtilities.OpenUrl("https://twitter.com/duinrahaic");
+        }
+        private void OpenDocumentation() {
+            WebUtilities.OpenUrl("https://twitter.com/duinrahaic");
+        }
+
+        
+
     }
 }

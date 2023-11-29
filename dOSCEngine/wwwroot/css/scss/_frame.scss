@@ -16,46 +16,45 @@
     width: 100%;
     position: absolute;
     z-index: 1000;
-}
 
-.titlebar .titlebar-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    font-stretch: extra-expanded;
-    align-self: center;
-    margin: 0;
-    padding: 0px 0px 0px 4px;
-    -webkit-app-region: drag;
-    -webkit-user-select: none;
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
-    color: $color-titlebar-textcolor;
-}
+    .titlebar-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        font-stretch: extra-expanded;
+        align-self: center;
+        margin: 0;
+        padding: 0px 0px 0px 4px;
+        -webkit-app-region: drag;
+        -webkit-user-select: none;
+        -ms-user-select: none; /* IE 10 and IE 11 */
+        user-select: none; /* Standard syntax */
+        color: $color-titlebar-textcolor;
+    }
 
-.titlebar .titlebar-button-group {
-    -webkit-app-region: no-drag;
-    display: flex;
-    flex-direction: row;
-    -webkit-user-select: none;
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none;
-}
+    .titlebar-button-group {
+        -webkit-app-region: no-drag;
+        display: flex;
+        flex-direction: row;
+        -webkit-user-select: none;
+        -ms-user-select: none; /* IE 10 and IE 11 */
+        user-select: none;
 
+        .titlebar-button {
+            -webkit-app-region: no-drag;
+            -webkit-user-select: auto;
+            -ms-user-select: auto; /* IE 10 and IE 11 */
+            user-select: none;
+            font-size: 1.2rem;
+            font-weight: normal;
+            padding: 0px 17px;
+            text-decoration: none;
+            color: $color-titlebar-textcolor;
+            background: inherit;
+            border: inherit;
 
-.titlebar .titlebar-button-group .titlebar-button {
-    -webkit-app-region: no-drag;
-    -webkit-user-select: auto;
-    -ms-user-select: auto; /* IE 10 and IE 11 */
-    user-select: none;
-    font-size: 1.2rem;
-    font-weight: normal;
-    padding: 0px 17px;
-    text-decoration: none;
-    color: $color-titlebar-textcolor;
-    background: inherit;
-    border: inherit;
-}
-
-.titlebar .titlebar-button-group .titlebar-button:hover {
-    background-color: $color-lighter-dark-hover;
+            &:hover {
+                background-color: $color-lighter-dark-hover;
+            }
+        }
+    }
 }
