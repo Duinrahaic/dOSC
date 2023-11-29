@@ -1,5 +1,7 @@
 ﻿using dOSCEngine.Services;
+using dOSCEngine.Utilities;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace dOSC.Components.UI.App
 {
@@ -7,6 +9,10 @@ namespace dOSC.Components.UI.App
     {
         [Inject]
         public NavigationManager? NM { get; set; }
+
+        [Inject]
+        public IJSRuntime JS { get; set; }
+
         [Parameter]
         public dOSCWiresheet dOSCWiresheet { get; set; }
         [Parameter]
@@ -72,6 +78,15 @@ namespace dOSC.Components.UI.App
                 OnShowSettings.InvokeAsync(dOSCWiresheet);
             }
         }
+
+        private async Task DownloadApp()
+        {
+            if (dOSCWiresheet != null)
+            {
+                await FileSystem.DownloadWiresheet(JS, dOSCWiresheet);
+            }
+        }
+
         private void EditApp()
         {
             if (NM != null)

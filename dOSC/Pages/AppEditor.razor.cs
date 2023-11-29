@@ -18,8 +18,10 @@ using dOSCEngine.Engine.Ports;
 using dOSCEngine.Services;
 using dOSCEngine.Services.Connectors.Activity.Pulsoid;
 using dOSCEngine.Services.Connectors.OSC;
+using dOSCEngine.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.JSInterop;
 using Point = Blazor.Diagrams.Core.Geometry.Point;
 
 namespace dOSC.Pages
@@ -34,6 +36,8 @@ namespace dOSC.Pages
         public OSCService? _OSC { get; set; }
         [Inject]
         public PulsoidService _Pulsoid { get; set; }
+        [Inject]
+        public IJSRuntime _JS {  get; set; }
 
         private BlazorDiagram diagram { get; set; }
 
@@ -275,6 +279,14 @@ namespace dOSC.Pages
             if (Wiresheet == null) return;
             NM!.NavigateTo($"/apps/");
             NM!.NavigateTo($"/apps/editor/{Wiresheet.AppGuid}");
+        }
+        private async Task DownloadApp()
+        {
+            if (Wiresheet != null)
+            {
+
+                await FileSystem.DownloadWiresheet(_JS, Wiresheet);
+            }
         }
 
         private void Exit()

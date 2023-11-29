@@ -118,7 +118,14 @@ namespace dOSCEngine.Engine.Nodes
             var sp = (link.Source as SinglePortAnchor)!;
             var tp = (link.Target as SinglePortAnchor)!;
             var p = sp.Port == port ? tp : sp;
-            return (p.Port.Parent as BaseNode)!.Value;
+            try
+            {
+                return (p.Port.Parent as BaseNode)!.Value;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public virtual void ResetValue()

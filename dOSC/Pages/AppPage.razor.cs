@@ -88,21 +88,7 @@ namespace dOSC.Pages
             }
         }
 
-        private void EditApp()
-        {
-            
-            if (NM != null)
-            {
-                if(Wiresheet != null)
-                {
-                    NM.NavigateTo($"apps/editor/{Wiresheet.AppGuid}");
-                }
-                else
-                {
-                    NM.NavigateTo($"apps/editor/");
-                }
-            }
-        }
+
 
         private void NewApp()
         {
@@ -137,7 +123,6 @@ namespace dOSC.Pages
         
 
         // Modals 
-        private ModalBase NewAppModal { get; set; }
         private ModalV2 UploadAppModal { get; set; }
         private SidePanelBase AppSettingsPanel { get; set; }
     }

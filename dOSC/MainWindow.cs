@@ -22,8 +22,8 @@ namespace dOSC
 
             chromiumWebBrowser1.LoadUrl(URL);
             chromiumWebBrowser1.MenuHandler = new CustomMenuHandler();
+            chromiumWebBrowser1.DownloadHandler = new Helpers.DownloadHelper();
             this.Name = "dOSC";
-
             this.Resize += MainWindow_Resize;
         }
 

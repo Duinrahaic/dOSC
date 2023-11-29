@@ -364,8 +364,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/dOSC/GPUCache/data_0
-/dOSC/GPUCache/data_1
-/dOSC/GPUCache/data_2
-/dOSC/GPUCache/data_3
-/dOSC/DawnCache/data_1
+/dOSC/GPUCache/
+/dOSC/DawnCache/

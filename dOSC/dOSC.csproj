@@ -11,6 +11,10 @@
     <FileVersion>0.2.0.0</FileVersion>
     <UseWindowsForms>True</UseWindowsForms>
     <PlatformTarget>x64</PlatformTarget>
+    <PackageIcon>default-app-logo.png</PackageIcon>
+    <Copyright>Duinrahaic</Copyright>
+    <RepositoryType>git</RepositoryType>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="DawnCache\**" />
@@ -32,8 +36,8 @@
     </PackageReference>
     <PackageReference Include="Serilog.Sanitizer" Version="1.3.3" />
     <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.0" />
-    <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00968" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="Z.Blazor.Diagrams" Version="3.0.1" />
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +58,12 @@
   <ItemGroup>
     <Folder Include="Components\Inputs\" />
     <Folder Include="wwwroot\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\dOSCEngine\wwwroot\images\default-app-logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dOSCEngine\dOSCEngine.csproj" />
