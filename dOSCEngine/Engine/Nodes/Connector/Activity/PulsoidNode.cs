@@ -16,7 +16,7 @@ namespace dOSCEngine.Engine.Nodes.Connector.Activity
             _service = service;
             if (_service != null)
             {
-                _service.OnPulsoidMessageRecieved += _service_OnPulsoidMessageRecieved;
+                _service.OnPulsoidMessageReceived += _service_OnPulsoidMessageReceived;
             }
             Value = 0;
         }
@@ -26,7 +26,7 @@ namespace dOSCEngine.Engine.Nodes.Connector.Activity
             _service = service;
             if (_service != null)
             {
-                _service.OnPulsoidMessageRecieved += _service_OnPulsoidMessageRecieved;
+                _service.OnPulsoidMessageReceived += _service_OnPulsoidMessageReceived;
             }
             Value = 0;
         }
@@ -34,15 +34,16 @@ namespace dOSCEngine.Engine.Nodes.Connector.Activity
         public override string NodeClass => GetType().Name.ToString();
         private readonly PulsoidService? _service = null;
         public override string BlockTypeClass => "connectorblock";
-        private void _service_OnPulsoidMessageRecieved(PulsoidReading e)
+        private void _service_OnPulsoidMessageReceived(PulsoidReading e)
         {
             Value = e.Data.HeartRate;
+            CalculateValue();
         }
 
         public void Dispose()
         {
             if (_service != null)
-                _service.OnPulsoidMessageRecieved -= _service_OnPulsoidMessageRecieved;
+                _service.OnPulsoidMessageReceived -= _service_OnPulsoidMessageReceived;
         }
     }
 }

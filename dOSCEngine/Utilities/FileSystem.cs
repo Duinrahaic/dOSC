@@ -1,6 +1,7 @@
 ﻿using dOSCEngine.Services;
 using dOSCEngine.Services.User;
 using Microsoft.JSInterop;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using System.Text;
 using System.Text.Json;
@@ -19,6 +20,12 @@ namespace dOSCEngine.Utilities
         public static string LogFolder = Path.Combine(BaseFolder, LogFolderName);
         public static string SettingsFolder = Path.Combine(BaseFolder, SettingsFolderName);
         public static string WiresheetFolder = Path.Combine(BaseFolder, WiresheetFolderName);
+        public static string DownloadsFolder => GetDownloadFolderPath();
+
+        public static string GetDownloadFolderPath()
+        {
+            return Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders", "{374DE290-123F-4565-9164-39C4925E467B}", String.Empty).ToString();
+        }
 
         public static void CreateFolders()
         {
@@ -134,7 +141,8 @@ namespace dOSCEngine.Utilities
             {
                 IncludeFields = true,
             };
-            string json = JsonConvert.SerializeObject(wiresheet.GetDTO(), Formatting.Indented);
+			await js.InvokeVoidAsync("GenerateToasterMessage", "Sent app to to downloads folder!");
+			string json = JsonConvert.SerializeObject(wiresheet.GetDTO(), Formatting.Indented);
             string filename = $"wiresheet-{wiresheet.AppGuid}.json";
             byte[] data = Encoding.UTF8.GetBytes(json);
             await js.InvokeAsync<object>(

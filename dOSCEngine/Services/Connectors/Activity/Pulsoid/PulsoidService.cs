@@ -15,7 +15,7 @@ namespace dOSCEngine.Services.Connectors.Activity.Pulsoid
     public class PulsoidService : ConnectorBase, IDisposable
     {
         public delegate void PulsoidSubscriptionEventHandler(PulsoidReading e);
-        public event PulsoidSubscriptionEventHandler? OnPulsoidMessageRecieved;
+        public event PulsoidSubscriptionEventHandler? OnPulsoidMessageReceived;
 
         public override string ServiceName => "Pulsoid";
         public override string IconRef => @"_content/dOSCEngine/images/Pulsoid-Logo-500x281.png";
@@ -136,7 +136,7 @@ namespace dOSCEngine.Services.Connectors.Activity.Pulsoid
                 result = JsonConvert.DeserializeObject<PulsoidReading>(jobject.ToString());
                 if (result != null)
                 {
-                    OnPulsoidMessageRecieved?.Invoke(result);
+                    OnPulsoidMessageReceived?.Invoke(result);
                     _logger.LogDebug($"Pulsoid Sent: {result.Data.HeartRate} bpm");
  
                 }

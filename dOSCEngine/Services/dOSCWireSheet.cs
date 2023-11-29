@@ -62,6 +62,10 @@ namespace dOSCEngine.Services
         {
             if (_Built)
             {
+                foreach(var node in _Nodes)
+                {
+                    Diagram.Nodes.Remove(node);
+                }
                 Diagram.Nodes.Added -= OnNodeAdded;
                 Diagram.Nodes.Removed -= OnNodeRemoved;
                 Diagram.Links.Added -= OnLinkAdded;

@@ -46,6 +46,46 @@
     opacity: 0;
   }
 }
+@-webkit-keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+@keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+@-webkit-keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+@keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
 .marquee {
   --gap: 1rem;
   position: relative;
@@ -894,6 +934,46 @@ label {
     opacity: 0;
   }
 }
+@-webkit-keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+@keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+@-webkit-keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+@keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
 .marquee {
   --gap: 1rem;
   position: relative;
@@ -923,14 +1003,32 @@ label {
     transform: translateX(calc(-100% - var(--gap)));
   }
 }
-.modal .modal-dialog .modal-content.modal-global {
-  background: #232428;
+#snackbar-container {
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+  z-index: 1000;
 }
-.modal .modal-dialog .modal-content.modal-global .modal-header {
-  border-color: #36373d;
+#snackbar-container .snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #1d1e23;
+  margin-bottom: 20px;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 4px;
+  padding: 5px;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 13px;
+  user-select: none;
 }
-.modal .modal-dialog .modal-content.modal-global .modal-footer {
-  border-color: #36373d;
+#snackbar-container .snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
 .dosc-modal {
@@ -1088,6 +1186,46 @@ label {
     opacity: 0;
   }
 }
+@-webkit-keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+@keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+@-webkit-keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+@keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
 .marquee {
   --gap: 1rem;
   position: relative;
@@ -1175,6 +1313,20 @@ label {
 .home-container .home-panel-options ul li:hover .option {
   box-shadow: 0 0 4px 1px #7289da;
 }
+.home-container .home-panel-options ul li:hover .option-text {
+  transition: ease-in-out 100ms;
+  opacity: 1;
+}
+.home-container .home-panel-options ul li .option-text {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  opacity: 0;
+  position: absolute;
+  word-break: keep-all;
+  white-space: nowrap;
+  transform: translateY(45px);
+}
 .home-container .home-panel-options ul li .option {
   background-color: #1d1e23;
   height: 60px;
@@ -1183,6 +1335,7 @@ label {
   padding: 8px;
   position: relative;
   object-fit: contain;
+  z-index: 1000;
 }
 .home-container .home-panel-options ul li .option .icon {
   font-size: 36px;
@@ -1564,6 +1717,46 @@ label {
     opacity: 1;
   }
   100% {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+@keyframes fadein {
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
+}
+@-webkit-keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
+}
+@keyframes fadeout {
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
     opacity: 0;
   }
 }
