@@ -1,22 +1,22 @@
 ﻿@using Blazor.Diagrams.Components.Renderers
 @using dOSCEngine.Engine.Helper
-<div class="@this.Node.BlockHeaderClass" style="width: 150px;">
+<div class="@this.Node.BlockHeaderClass" style="width: 150px;"> @* Set the width in pixels*@
     <div class="block-header d-flex d-inline">
-        <div class="icon">+</div>
-        <div class="title">Add</div>
+        <div class="icon">+</div> @* Give it an icon (Optional)*@
+        <div class="title">Add</div> @* Give it a name*@
     </div>
     <div class="block-body">
         <div class="d-flex flex-column">
             <div class="d-flex d-inline p-1 align-items-center justify-center">
-                <PortRenderer Class="numeric" Port="this.Node.Ports[0]" />
+                <PortRenderer Class="numeric" Port="this.Node.Ports[0]" /> @*Build Port A*@
                 <h5>Input A</h5>
             </div>
             <div class="d-flex d-inline align-items-center justify-center-end py-2">
-                <PortValueLabel LabelPosition=PortValueLabel.Position.Right DisplayValue="this.Node.Value" />
+                <PortValueLabel LabelPosition=PortValueLabel.Position.Right DisplayValue="this.Node.Value" /> @*Build an output port and give it text over the port  *@
                 <PortRenderer Class="numeric" Port="this.Node.Ports[2]" />
             </div>
             <div class="d-flex d-inline p-1 align-items-center justify-center">
-                <PortRenderer Class="numeric" Port="this.Node.Ports[1]" />
+                <PortRenderer Class="numeric" Port="this.Node.Ports[1]" /> @*Build Port B*@
                 <h5>Input B</h5>
             </div>
         </div>
