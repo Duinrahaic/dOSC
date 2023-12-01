@@ -34,9 +34,9 @@ namespace dOSCEngine.Engine.Nodes.Connector.OSC
         public string SelectedOption { get; set; } = string.Empty;
         public override string BlockTypeClass => "connectorblock";
 
-        public override void Refresh()
-        {
-            if (_service != null)
+		public override void CalculateValue()
+		{
+			if (_service != null)
             {
                 var input = Ports.First();
                 if (input.Links.Any())
@@ -47,7 +47,6 @@ namespace dOSCEngine.Engine.Nodes.Connector.OSC
                     _service.SendMessage(SelectedOption, v);
                 }
             }
-            base.Refresh();
         }
     }
 }

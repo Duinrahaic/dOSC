@@ -3,6 +3,8 @@ using dOSCEngine.Services.Connectors.OSC;
 using dOSCEngine.Services;
 using Serilog;
 using dOSCEngine.Utilities;
+using System.Net.Sockets;
+using System.Net;
 
 namespace dOSC
 {
@@ -12,12 +14,9 @@ namespace dOSC
         public static bool IsRunning { get => _isRunning; }
         private static WebApplication app;
 
- 
-
         public static List<string> GetUrls()
         {
             if(_isRunning){
-
                 return app.Urls.ToList();
             }
             else
@@ -25,7 +24,6 @@ namespace dOSC
                 return new();
             }
         }
-
 
         public static void Start(string[] args)
         {
@@ -82,17 +80,34 @@ namespace dOSC
             _isRunning = true;
 
 
-            if (!args.Any(x => x.ToLower().Equals("--headless")))
-            {
-                app.RunAsync();
-            }
-            else
-            {
-                app.Run();
-            }
-        }
 
-        public static void Stop()
+			string url = $@"https://localhost:{FreeTcpPort()}";
+#if DEBUG
+            url = $@"https://localhost:5231";
+#endif
+
+            if (!args.Any(x => x.ToLower().Equals("--headless")))
+			{
+				app.RunAsync(url);
+			}
+			else
+			{
+				app.Run(url);
+			}
+		}
+
+
+		private static int FreeTcpPort()
+		{
+			TcpListener l = new TcpListener(IPAddress.Loopback, 0);
+			l.Start();
+			int port = ((IPEndPoint)l.LocalEndpoint).Port;
+			l.Stop();
+			return port;
+		}
+
+
+		public static void Stop()
         {
             _isRunning = false;
             app.StopAsync();

@@ -4,23 +4,23 @@ using dOSCEngine.Engine.Nodes;
 using dOSCEngine.Engine.Ports;
 using Newtonsoft.Json;
 
-namespace dOSCEngine.Engine.Nodes.Connector.OSC
+namespace dOSCEngine.Engine.Nodes.Connector.VRChat
 {
-    public class OSCFloatNode : BaseNode
+    public class AvatarParameterFloatNode : BaseNode
     {
-        public OSCFloatNode(OSCService? service = null, Point? position = null) : base(position ?? new Point(0, 0))
+        public AvatarParameterFloatNode(OSCService? service = null, Point? position = null) : base(position ?? new Point(0, 0))
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, true));
             _service = service;
             SelectedOption = string.Empty;
         }
-        public OSCFloatNode(string? SelectedOption, OSCService? service = null, Point? position = null) : base(position ?? new Point(0, 0))
+        public AvatarParameterFloatNode(string? SelectedOption, OSCService? service = null, Point? position = null) : base(position ?? new Point(0, 0))
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, true));
             _service = service;
             this.SelectedOption = string.IsNullOrEmpty(SelectedOption) ? string.Empty : SelectedOption;
         }
-        public OSCFloatNode(Guid guid, string? SelectedOption, OSCService? service = null, Point? position = null) : base(guid, position ?? new Point(0, 0))
+        public AvatarParameterFloatNode(Guid guid, string? SelectedOption, OSCService? service = null, Point? position = null) : base(guid, position ?? new Point(0, 0))
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, true));
             _service = service;
@@ -45,7 +45,7 @@ namespace dOSCEngine.Engine.Nodes.Connector.OSC
                     var i = GetInputValue(input, input.Links.First());
                     var v = Convert.ToInt32(i);
                     v = System.Math.Clamp(v, -1, 1);
-                    _service.SendMessage(SelectedOption, v);
+                    _service.SendMessage(string.Join("/avatar/parameters/", SelectedOption), v);
                 }
             }
         }

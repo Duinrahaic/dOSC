@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace dOSCEngine.Engine.Nodes.Connector.OSC
 {
-    public class OSCIntNode : BaseNode
+    public class OSCIntNode : BaseNode 
     {
         public OSCIntNode(OSCService? service = null, Point? position = null) : base(position ?? new Point(0, 0))
         {
@@ -19,6 +19,7 @@ namespace dOSCEngine.Engine.Nodes.Connector.OSC
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, true));
             _service = service;
+
             this.SelectedOption = string.IsNullOrEmpty(SelectedOption) ? string.Empty : SelectedOption;
         }
         public OSCIntNode(Guid guid, string? SelectedOption, OSCService? service = null, Point? position = null) : base(guid, position ?? new Point(0, 0))
@@ -36,7 +37,7 @@ namespace dOSCEngine.Engine.Nodes.Connector.OSC
         public string SelectedOption { get; set; } = string.Empty;
         public override string BlockTypeClass => "connectorblock";
 
-        public override void Refresh()
+        public override void CalculateValue()
         {
             if (_service != null)
             {
@@ -49,7 +50,7 @@ namespace dOSCEngine.Engine.Nodes.Connector.OSC
                     _service.SendMessage(SelectedOption, v);
                 }
             }
-            base.Refresh();
         }
     }
 }
+

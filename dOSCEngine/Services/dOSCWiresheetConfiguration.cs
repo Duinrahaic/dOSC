@@ -4,14 +4,14 @@ using Blazor.Diagrams.Core.Routers;
 using Blazor.Diagrams.Options;
 using dOSCEngine.Engine.Blocks.Connectors.Activity;
 using dOSCEngine.Engine.Blocks.Connectors.OSC;
-using dOSCEngine.Engine.Blocks.Connectors.OSC.VRChat;
+using dOSCEngine.Engine.Blocks.Connectors.VRChat;
 using dOSCEngine.Engine.Blocks.Constant;
 using dOSCEngine.Engine.Blocks.Logic;
 using dOSCEngine.Engine.Blocks.Math;
 using dOSCEngine.Engine.Blocks.Utility;
 using dOSCEngine.Engine.Nodes.Connector.Activity;
 using dOSCEngine.Engine.Nodes.Connector.OSC;
-using dOSCEngine.Engine.Nodes.Connector.OSC.VRChat;
+using dOSCEngine.Engine.Nodes.Connector.VRChat;
 using dOSCEngine.Engine.Nodes.Constant;
 using dOSCEngine.Engine.Nodes.Logic;
 using dOSCEngine.Engine.Nodes.Math;
@@ -64,8 +64,16 @@ namespace dOSCEngine.Services
             BD.RegisterComponent<OSCFloatReadNode, OSCFloatReadBlock>();
 
             // OSC - VRChat
+            BD.RegisterComponent<AvatarParameterBooleanNode, AvatarParameterBooleanBlock>();
+            BD.RegisterComponent<AvatarParameterBooleanReadNode, AvatarParameterBooleanReadBlock>();
+            BD.RegisterComponent<AvatarParameterIntNode, AvatarParameterIntBlock>();
+            BD.RegisterComponent<AvatarParameterIntReadNode, AvatarParameterIntReadBlock>();
+            BD.RegisterComponent<AvatarParameterFloatNode, AvatarParameterFloatBlock>();
+            BD.RegisterComponent<AvatarParameterFloatReadNode, AvatarParameterFloatReadBlock>();
             BD.RegisterComponent<OSCVRCButtonNode, OSCVRCButtonBlock>();
-            BD.RegisterComponent<OSCVRCAvatarReadNode, OSCVRCAvatarReadBlock>();
+            BD.RegisterComponent<OSCVRCAvatarIntReadNode, OSCVRCAvatarIntReadBlock>();
+            BD.RegisterComponent<OSCVRCAvatarFloatReadNode, OSCVRCAvatarFloatReadBlock>();
+            BD.RegisterComponent<OSCVRCAvatarBooleanReadNode, OSCVRCAvatarBooleanReadBlock>();
             BD.RegisterComponent<OSCVRCChatboxNode, OSCVRCChatboxBlock>();
             BD.RegisterComponent<OSCVRCAxisNode, OSCVRCAxisBlock>();
 

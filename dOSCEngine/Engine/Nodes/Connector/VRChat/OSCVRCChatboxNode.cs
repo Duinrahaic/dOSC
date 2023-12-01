@@ -4,7 +4,7 @@ using dOSCEngine.Services.Connectors.OSC;
 using dOSCEngine.Engine.Ports;
 using Newtonsoft.Json;
 
-namespace dOSCEngine.Engine.Nodes.Connector.OSC.VRChat
+namespace dOSCEngine.Engine.Nodes.Connector.VRChat
 {
     public class OSCVRCChatboxNode : BaseNode
     {
@@ -35,7 +35,7 @@ namespace dOSCEngine.Engine.Nodes.Connector.OSC.VRChat
 
         private bool MessageSent = false;
 
-        public override void Refresh()
+        public override void CalculateValue()
         {
             if (_service != null)
             {
@@ -85,11 +85,6 @@ namespace dOSCEngine.Engine.Nodes.Connector.OSC.VRChat
                 }
             }
 
-            base.Refresh();
         }
-
-
-
-
     }
 }

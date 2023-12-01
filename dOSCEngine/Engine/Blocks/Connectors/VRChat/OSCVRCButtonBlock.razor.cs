@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using dOSCEngine.Services.Connectors.OSC;
-using dOSCEngine.Engine.Nodes.Connector.OSC.VRChat;
+using dOSCEngine.Engine.Nodes.Connector.VRChat;
 
-namespace dOSCEngine.Engine.Blocks.Connectors.OSC.VRChat
+namespace dOSCEngine.Engine.Blocks.Connectors.VRChat
 {
     public partial class OSCVRCButtonBlock
 

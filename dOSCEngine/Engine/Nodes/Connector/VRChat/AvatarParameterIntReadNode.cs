@@ -5,11 +5,11 @@ using dOSCEngine.Engine.Ports;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
-namespace dOSCEngine.Engine.Nodes.Connector.OSC
+namespace dOSCEngine.Engine.Nodes.Connector.VRChat
 {
-    public class OSCIntReadNode : BaseNode, IDisposable
+    public class AvatarParameterIntReadNode : BaseNode, IDisposable
     {
-        public OSCIntReadNode(OSCService? service = null, Point? position = null) : base(position ?? new Point(0, 0))
+        public AvatarParameterIntReadNode(OSCService? service = null, Point? position = null) : base(position ?? new Point(0, 0))
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, false));
             _service = service;
@@ -21,13 +21,13 @@ namespace dOSCEngine.Engine.Nodes.Connector.OSC
         }
 
 
-        public OSCIntReadNode(string? SelectedOption, OSCService? service = null, Point? position = null) : base(position ?? new Point(0, 0))
+        public AvatarParameterIntReadNode(string? SelectedOption, OSCService? service = null, Point? position = null) : base(position ?? new Point(0, 0))
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, false));
             _service = service;
             this.SelectedOption = string.IsNullOrEmpty(SelectedOption) ? string.Empty : SelectedOption;
         }
-        public OSCIntReadNode(Guid guid, string? SelectedOption, OSCService? service = null, Point? position = null) : base(guid, position ?? new Point(0, 0))
+        public AvatarParameterIntReadNode(Guid guid, string? SelectedOption, OSCService? service = null, Point? position = null) : base(guid, position ?? new Point(0, 0))
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, false));
             _service = service;
@@ -46,7 +46,7 @@ namespace dOSCEngine.Engine.Nodes.Connector.OSC
         {
             if (SelectedOption != null)
             {
-                if (e.Address.ToLower() == SelectedOption.ToLower())
+                if (e.Address.ToLower() == string.Join("/avatar/parameters/", SelectedOption.ToLower()))
                 {
                     var val = Convert.ToInt32(e.Arguments.First());
                     Value = val;

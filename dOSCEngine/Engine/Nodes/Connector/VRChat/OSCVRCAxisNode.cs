@@ -1,10 +1,9 @@
 ﻿using Blazor.Diagrams.Core.Geometry;
 using dOSCEngine.Services.Connectors.OSC;
-using dOSCEngine.Engine.Nodes;
 using dOSCEngine.Engine.Ports;
 using Newtonsoft.Json;
 
-namespace dOSCEngine.Engine.Nodes.Connector.OSC.VRChat
+namespace dOSCEngine.Engine.Nodes.Connector.VRChat
 {
     public class OSCVRCAxisNode : BaseNode
     {
@@ -57,8 +56,7 @@ namespace dOSCEngine.Engine.Nodes.Connector.OSC.VRChat
             { OSCService.SpinHoldLR ,"Spin Object Left/Right"},
         };
 
-
-        public override void Refresh()
+        public override void CalculateValue()
         {
             if (_service != null)
             {
@@ -68,11 +66,9 @@ namespace dOSCEngine.Engine.Nodes.Connector.OSC.VRChat
                     var i = GetInputValue(input, input.Links.First());
                     var v = Convert.ToInt32(i);
                     _service.SendMessage(SelectedOption, v);
+                    Value = v;
                 }
             }
-            base.Refresh();
         }
-
-
     }
 }

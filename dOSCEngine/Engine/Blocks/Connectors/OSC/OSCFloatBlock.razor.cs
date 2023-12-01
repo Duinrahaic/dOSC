@@ -7,10 +7,5 @@ namespace dOSCEngine.Engine.Blocks.Connectors.OSC
     {
         [Parameter]
         public OSCFloatNode Node { get; set; } = null;
-
-        private void OnValueChanged(string value)
-        {
-            Node.SelectedOption = value;
-        }
     }
 }

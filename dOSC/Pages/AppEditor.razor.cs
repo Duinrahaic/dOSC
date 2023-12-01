@@ -9,7 +9,7 @@ using dOSCEngine.Engine.Links;
 using dOSCEngine.Engine.Nodes;
 using dOSCEngine.Engine.Nodes.Connector.Activity;
 using dOSCEngine.Engine.Nodes.Connector.OSC;
-using dOSCEngine.Engine.Nodes.Connector.OSC.VRChat;
+using dOSCEngine.Engine.Nodes.Connector.VRChat;
 using dOSCEngine.Engine.Nodes.Constant;
 using dOSCEngine.Engine.Nodes.Logic;
 using dOSCEngine.Engine.Nodes.Math;
@@ -183,6 +183,17 @@ namespace dOSC.Pages
             link.TargetChanged += OnLinkTargetChanged;
             var sp = (link.Source as SinglePortAnchor)!;
             var tp = (link.Target as SinglePortAnchor)!;
+
+            if(sp != null && tp != null)
+            {
+				var InputPort = (sp.Port as BasePort)!.Input ? sp : tp;
+				if (InputPort != null)
+				{
+					(InputPort.Port.Parent as BaseNode)!.CalculateValue();
+
+				}
+			}
+
             foreach (var node in diagram.Nodes)
             {
                 node.Refresh();
@@ -190,7 +201,14 @@ namespace dOSC.Pages
         }
         private void OnLinkRemoved(BaseLinkModel link)
         {
-            
+            try
+            {
+                diagram.Links.Remove(link);
+            }
+            catch(Exception ex)
+            {
+
+            }
             link.TargetChanged -= OnLinkTargetChanged;
             (link.Source.Model as PortModel)!.Parent.Refresh();
             var s = (link.Source.Model as BasePort);
@@ -326,9 +344,16 @@ namespace dOSC.Pages
         private void OSCInt() => diagram.Nodes.Add(new OSCIntNode(service: _OSC, position: CenterOfScreen()));
         private void OSCReadInt() => diagram.Nodes.Add(new OSCIntReadNode(service: _OSC, position: CenterOfScreen()));
 
-        // OSC - VRChat
-        private void OSCVRCAvatarRead() => diagram.Nodes.Add(new OSCVRCAvatarReadNode(service:_OSC, position: CenterOfScreen()));
-        private void OSCVRCAvatarWrite() => diagram.Nodes.Add(new OSCVRCAvatarWriteNode(service:_OSC, position: CenterOfScreen()));
+        // VRChat
+        private void AvatarParameterBoolean() => diagram.Nodes.Add(new AvatarParameterBooleanNode(service: _OSC, position: CenterOfScreen()));
+        private void AvatarParameterReadBoolean() => diagram.Nodes.Add(new AvatarParameterBooleanReadNode(service: _OSC, position: CenterOfScreen()));
+        private void AvatarParameterFloat() => diagram.Nodes.Add(new AvatarParameterFloatNode(service: _OSC, position: CenterOfScreen()));
+        private void AvatarParameterReadFloat() => diagram.Nodes.Add(new AvatarParameterFloatReadNode(service: _OSC, position: CenterOfScreen()));
+        private void AvatarParameterInt() => diagram.Nodes.Add(new AvatarParameterIntNode(service: _OSC, position: CenterOfScreen()));
+        private void AvatarParameterReadInt() => diagram.Nodes.Add(new AvatarParameterIntReadNode(service: _OSC, position: CenterOfScreen()));
+        private void OSCVRCAvatarIntRead() => diagram.Nodes.Add(new OSCVRCAvatarIntReadNode(service:_OSC, position: CenterOfScreen()));
+        private void OSCVRCAvatarFloatRead() => diagram.Nodes.Add(new OSCVRCAvatarFloatReadNode(service:_OSC, position: CenterOfScreen()));
+        private void OSCVRCAvatarBooleanRead() => diagram.Nodes.Add(new OSCVRCAvatarBooleanReadNode(service:_OSC, position: CenterOfScreen()));
         private void OSCVRCAxis() => diagram.Nodes.Add(new OSCVRCAxisNode(service:_OSC, position: CenterOfScreen()));
         private void OSCVRCChat() => diagram.Nodes.Add(new OSCVRCChatboxNode(service:_OSC, position: CenterOfScreen()));
         private void OSCVRCButton() => diagram.Nodes.Add(new OSCVRCButtonNode(service:_OSC, position: CenterOfScreen()));
