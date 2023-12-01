@@ -19,8 +19,6 @@ namespace dOSCEngine.Components.Inputs
         public double Min { get; set; } = double.MinValue;
         [Parameter]
         public int PortNumber { get; set; } = 0;
-
-
         private double _value;
         private double Value
         {
@@ -38,8 +36,15 @@ namespace dOSCEngine.Components.Inputs
                 }
             }
         }
-
         private void Increment() => Value += Step;
         private void Decrement() => Value -= Step;
+
+
+        protected override void OnParametersSet()
+        {
+            _value = Node.Value;
+        }
+
+
     }
 }

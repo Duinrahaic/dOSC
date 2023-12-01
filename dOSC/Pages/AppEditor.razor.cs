@@ -114,6 +114,8 @@ namespace dOSC.Pages
                 }
             }
 
+            diagram.Refresh();
+
 
             this.diagram.ContainerChanged += Diagram_ContainerChanged;
             
