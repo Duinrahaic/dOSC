@@ -21,6 +21,8 @@ namespace dOSC
             Webserver.Start(args);
 
             if (!args.Any(x => x.ToLower().Equals("--headless"))){
+
+
                 Application.Run(new MainWindow());
             }
 
