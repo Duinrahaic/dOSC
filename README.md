@@ -2,7 +2,7 @@
 
 dOSC is a dynamic OSC app sharing platform with the goal of allowing users to create, run, and distribute apps that can be configured to interact with avatars in VRChat.
 
-## Note: This project is under development and currently in a `Beta` state. 
+### Note: This project is under development and is currently in a `Beta` state. 
 
 ## Features:
 
