@@ -7,7 +7,7 @@ using dOSCEngine.Engine.Nodes.Constant;
 
 namespace dOSCEngine.Components.Inputs
 {
-    public partial class ToggleSwitch
+    public partial class ToggleSwitch   
     {
         [Parameter]
         public LogicNode Node { get; set; }
@@ -28,6 +28,12 @@ namespace dOSCEngine.Components.Inputs
                 _value = value;
                 Node.Value = value;
             }
+        }
+
+        protected override void OnParametersSet()
+        {
+            _value = Node.Value;
+            StateHasChanged();
         }
     }
 }

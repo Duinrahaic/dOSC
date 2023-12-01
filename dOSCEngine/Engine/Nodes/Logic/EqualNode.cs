@@ -38,6 +38,9 @@ namespace dOSCEngine.Engine.Nodes.Logic
         public override string BlockTypeClass => "logicblock";
 
 
+        
+
+
         public override void CalculateValue()
         {
             var inA = Ports[0];
@@ -74,6 +77,7 @@ namespace dOSCEngine.Engine.Nodes.Logic
                 Value = false;
             }
         }
+
 
 
         private void ConfigurePortAType()
