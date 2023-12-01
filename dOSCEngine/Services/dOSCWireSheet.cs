@@ -145,7 +145,15 @@ namespace dOSCEngine.Services
         }
         private void OnLinkRemoved(BaseLinkModel link)
         {
-            (link.Source.Model as PortModel)!.Parent.Refresh();
+			try
+			{
+				Diagram.Links.Remove(link);
+			}
+			catch (Exception ex)
+			{
+
+			}
+			(link.Source.Model as PortModel)!.Parent.Refresh();
 
             if (link.Target.Model != null)
             {

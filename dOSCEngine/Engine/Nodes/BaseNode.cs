@@ -84,9 +84,6 @@ namespace dOSCEngine.Engine.Nodes
             get => _value;
             set
             {
-                
-                if (_value == value)
-                    return;
                 _value = value;
                 ValueChanged?.Invoke(this);
                 _LastUpdate = DateTime.Now;

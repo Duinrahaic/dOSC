@@ -13,56 +13,72 @@ using System.Xml.Linq;
 
 namespace dOSC
 {
-    public partial class MainWindow : Form
-    {
-        public MainWindow()
-        {
-            InitializeComponent();
-            var URL = Webserver.GetUrls().First();
+	public partial class MainWindow : Form
+	{
+		public MainWindow()
+		{
+			InitializeComponent();
+			this.Name = "dOSC";
 
-            chromiumWebBrowser1.LoadUrl(URL);
-            chromiumWebBrowser1.MenuHandler = new CustomMenuHandler();
-            chromiumWebBrowser1.DownloadHandler = new Helpers.DownloadHelper();
-            this.Name = "dOSC";
-            this.Resize += MainWindow_Resize;
-        }
-
-        private void MainWindow_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void MainWindow_Resize(object sender, EventArgs e)
-        {
-            if (this.WindowState == FormWindowState.Minimized)
+			var URL = Webserver.GetUrls();
+            if (!URL.Any())
             {
-                //Hide();
-                //notifyIcon.Visible = true;
-            }
-        }
-
-
-
-
-        private void chromiumWebBrowser1_LoadingStateChanged(object sender, LoadingStateChangedEventArgs e)
-        {
-
-        }
-
-        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (this.WindowState == FormWindowState.Minimized)
+				label1.Text = "Unable to bind to webserver! Webserver may not be running!";
+				
+			}
+            else
             {
-                //Show();
-                //this.WindowState = FormWindowState.Normal;
-                //notifyIcon.Visible = false;
-            }
-        }
-    }
+                label1.Dispose();
+				chromiumWebBrowser1.LoadUrl(URL.First());
+				chromiumWebBrowser1.MenuHandler = new CustomMenuHandler();
+				chromiumWebBrowser1.DownloadHandler = new Helpers.DownloadHelper();
+			}
+
+            
+
+
+            
+			
+			this.Resize += MainWindow_Resize;
+		}
+
+		private void MainWindow_Load(object sender, EventArgs e)
+		{
+
+		}
+
+		private void MainWindow_Resize(object sender, EventArgs e)
+		{
+			if (this.WindowState == FormWindowState.Minimized)
+			{
+				//Hide();
+				//notifyIcon.Visible = true;
+			}
+		}
 
 
 
-    public class ContextMenuHandler : IContextMenuHandler
+
+		private void chromiumWebBrowser1_LoadingStateChanged(object sender, LoadingStateChangedEventArgs e)
+		{
+
+		}
+
+		private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			if (this.WindowState == FormWindowState.Minimized)
+			{
+				//Show();
+				//this.WindowState = FormWindowState.Normal;
+				//notifyIcon.Visible = false;
+			}
+		}
+
+	}
+
+
+
+	public class ContextMenuHandler : IContextMenuHandler
     {
         public void OnBeforeContextMenu(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IContextMenuParams parameters, IMenuModel model)
         {

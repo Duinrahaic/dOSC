@@ -6,10 +6,10 @@ using dOSCEngine.Engine.Nodes.Utility;
 using dOSCEngine.Engine.Nodes;
 using dOSCEngine.Utilities;
 using dOSCEngine.Engine.Nodes.Connector.Activity;
-using dOSCEngine.Engine.Nodes.Connector.OSC.VRChat;
 using dOSCEngine.Engine.Ports;
 using dOSCEngine.Services;
 using Microsoft.Extensions.Logging;
+using dOSCEngine.Engine.Nodes.Connector.VRChat;
 
 namespace dOSCEngine.Services
 {
@@ -132,6 +132,8 @@ namespace dOSCEngine.Services
         {
             switch (dto.NodeClass)
             {
+
+                // Math
                 case "SummationNode":
                     return new SummationNode(dto.Guid, dto.Position);
                 case "SineNode":
@@ -162,6 +164,8 @@ namespace dOSCEngine.Services
                     return new RollingAverageNode(dto.Guid, dto.Position);
                 case "SquareRootNode":
                     return new SquareRootNode(dto.Guid, dto.Position);
+
+                // Logic
                 case "AndNode":
                     return new AndNode(dto.Guid, dto.Position);
                 case "OrNode":
@@ -178,12 +182,18 @@ namespace dOSCEngine.Services
                     return new GreaterThanEqualNode(dto.Guid, dto.Position);
                 case "LessThanOrEqualNode":
                     return new LessThanEqualNode(dto.Guid, dto.Position);
+
+                // Constants
                 case "NumericNode":
                     return new NumericNode(dto.Guid, dto.Value, dto.Position);
                 case "LogicNode":
                     return new LogicNode(dto.Guid, dto.Value, dto.Position);
+
+                // Activity
                 case "PulsoidNode":
                     return new PulsoidNode(dto.Guid, _Pulsoid, dto.Position);
+
+                // OSC
                 case "OSCBooleanNode":
                     return new OSCBooleanNode(dto.Guid, dto.Option, _OSC, dto.Position);
                 case "OSCBooleanReadNode":
@@ -196,16 +206,34 @@ namespace dOSCEngine.Services
                     return new OSCFloatNode(dto.Guid, dto.Option, _OSC, dto.Position);
                 case "OSCFloatReadNode":
                     return new OSCFloatReadNode(dto.Guid, dto.Option, _OSC, dto.Position);
-                case "OSCVRCAvatarReadNode":
-                    return new OSCVRCAvatarReadNode(dto.Guid, _OSC, dto.Position);
-                case "OSCVRCAvatarWriteNode":
-                    return new OSCVRCAvatarWriteNode(dto.Guid, _OSC, dto.Position);
-                case "OSCVRCAxisNode":
+
+                // VRChat 
+                case "AvatarParameterBooleanNode":
+                    return new AvatarParameterBooleanNode(dto.Guid, dto.Option, _OSC, dto.Position);
+                case "AvatarParameterBooleanReadNode":
+                    return new AvatarParameterBooleanReadNode(dto.Guid, dto.Option, _OSC, dto.Position);
+                case "AvatarParameterIntNode":
+                    return new AvatarParameterIntNode(dto.Guid, dto.Option, _OSC, dto.Position);
+                case "AvatarParameterIntReadNode":
+                    return new AvatarParameterIntReadNode(dto.Guid, dto.Option, _OSC, dto.Position);
+                case "AvatarParameterFloatNode":
+                    return new AvatarParameterFloatNode(dto.Guid, dto.Option, _OSC, dto.Position);
+                case "AvatarParameterFloatReadNode":
+                    return new AvatarParameterFloatReadNode(dto.Guid, dto.Option, _OSC, dto.Position);
+
+                case "OSCVRCAvatarFloatReadNode":
+                    return new OSCVRCAvatarFloatReadNode(dto.Guid, dto.Option, _OSC, dto.Position);
+				case "OSCVRCAvatarIntReadNode":
+					return new OSCVRCAvatarIntReadNode(dto.Guid, dto.Option, _OSC, dto.Position);
+				case "OSCVRCAvatarBooleanReadNode":
+					return new OSCVRCAvatarBooleanReadNode(dto.Guid, dto.Option, _OSC, dto.Position);
+                 case "OSCVRCAxisNode":
                     return new OSCVRCAxisNode(dto.Guid, dto.Option, _OSC, dto.Position);
                 case "OSCVRCButtonNode":
                     return new OSCVRCButtonNode(dto.Guid, dto.Option, _OSC, dto.Position);
                 case "OSCVRCChatboxNode":
                     return new OSCVRCChatboxNode(dto.Guid, _OSC, dto.Position);
+ 
                 // Utility Nodes
                 case "LogicSwitchNode":
                     return new LogicSwitchNode(dto.Guid, dto.Position);

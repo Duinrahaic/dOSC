@@ -2,25 +2,27 @@
 using dOSCEngine.Services.Connectors.OSC;
 using dOSCEngine.Engine.Nodes;
 using dOSCEngine.Engine.Ports;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
-namespace dOSCEngine.Engine.Nodes.Connector.OSC
+namespace dOSCEngine.Engine.Nodes.Connector.VRChat
 {
-    public class OSCFloatNode : BaseNode
+    public class AvatarParameterIntNode : BaseNode 
     {
-        public OSCFloatNode(OSCService? service = null, Point? position = null) : base(position ?? new Point(0, 0))
+        public AvatarParameterIntNode(OSCService? service = null, Point? position = null) : base(position ?? new Point(0, 0))
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, true));
             _service = service;
             SelectedOption = string.Empty;
         }
-        public OSCFloatNode(string? SelectedOption, OSCService? service = null, Point? position = null) : base(position ?? new Point(0, 0))
+        public AvatarParameterIntNode(string? SelectedOption, OSCService? service = null, Point? position = null) : base(position ?? new Point(0, 0))
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, true));
             _service = service;
+
             this.SelectedOption = string.IsNullOrEmpty(SelectedOption) ? string.Empty : SelectedOption;
         }
-        public OSCFloatNode(Guid guid, string? SelectedOption, OSCService? service = null, Point? position = null) : base(guid, position ?? new Point(0, 0))
+        public AvatarParameterIntNode(Guid guid, string? SelectedOption, OSCService? service = null, Point? position = null) : base(guid, position ?? new Point(0, 0))
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, true));
             _service = service;
@@ -34,20 +36,20 @@ namespace dOSCEngine.Engine.Nodes.Connector.OSC
         public override string Option => SelectedOption;
         public string SelectedOption { get; set; } = string.Empty;
         public override string BlockTypeClass => "connectorblock";
-
-		public override void CalculateValue()
-		{
-			if (_service != null)
+        public override void CalculateValue()
+        {
+            if (_service != null)
             {
                 var input = Ports.First();
                 if (input.Links.Any())
                 {
                     var i = GetInputValue(input, input.Links.First());
                     var v = Convert.ToInt32(i);
-                    v = System.Math.Clamp(v, -1, 1);
-                    _service.SendMessage(SelectedOption, v);
+                    v = System.Math.Clamp(v, 0, 255);
+                    _service.SendMessage(string.Join("/avatar/parameters/", SelectedOption), v);
                 }
             }
         }
     }
 }
+

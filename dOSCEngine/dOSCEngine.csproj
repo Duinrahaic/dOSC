@@ -37,7 +37,6 @@
     <Folder Include="Engine\Blocks\Trigger\" />
     <Folder Include="Engine\Blocks\Writable\" />
     <Folder Include="Services\Connectors\Game\" />
-    <Folder Include="Services\Connectors\OSC\VRChat\" />
   </ItemGroup>
 
   <ItemGroup>
