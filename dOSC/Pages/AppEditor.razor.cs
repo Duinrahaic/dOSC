@@ -5,6 +5,7 @@ using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.Models.Base;
 using dOSC.Components.Modals;
 using dOSCEngine.Components.Modals;
+using dOSCEngine.Engine;
 using dOSCEngine.Engine.Links;
 using dOSCEngine.Engine.Nodes;
 using dOSCEngine.Engine.Nodes.Connector.Activity;
@@ -22,6 +23,7 @@ using dOSCEngine.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
+using static System.Windows.Forms.LinkLabel;
 using Point = Blazor.Diagrams.Core.Geometry.Point;
 
 namespace dOSC.Pages
@@ -156,6 +158,8 @@ namespace dOSC.Pages
                 foreach (var link in op.Ports.Where(x=> !(x as BasePort).Input).SelectMany(x=>x.Links))
                 {
 
+                    // Future Duin: Prevent links with errors from executing
+
                     var sp = (link.Source as SinglePortAnchor)!;
                     var tp = (link.Target as SinglePortAnchor)!;
                     if (sp != null && tp != null)
@@ -180,6 +184,8 @@ namespace dOSC.Pages
 
         }
 
+
+
         private void OnLinkAdded(BaseLinkModel link)
         {
             link.TargetChanged += OnLinkTargetChanged;
@@ -188,13 +194,32 @@ namespace dOSC.Pages
 
             if(sp != null && tp != null)
             {
-				var InputPort = (sp.Port as BasePort)!.Input ? sp : tp;
-				if (InputPort != null)
-				{
-					(InputPort.Port.Parent as BaseNode)!.CalculateValue();
 
-				}
-			}
+            }
+
+
+
+
+
+            
+
+
+
+            if (sp != null && tp != null)
+            {
+                bool IsCircular = diagram.CheckForCircularLinks();
+                
+
+                if (!IsCircular)
+                {
+                    var InputPort = (sp.Port as BasePort)!.Input ? sp : tp;
+                    if (InputPort != null)
+                    {
+                        (InputPort.Port.Parent as BaseNode)!.CalculateValue();
+
+                    }
+                }
+            }
 
             foreach (var node in diagram.Nodes)
             {
@@ -219,7 +244,7 @@ namespace dOSC.Pages
             {
                 var Port = (link.Target.Model as BasePort)!;
                 var Node = (Port.Parent as BaseNode)!;
-                Node.ResetValue();
+                //Node.ResetValue();
             }
             foreach (var node in diagram.Nodes)
             {
@@ -230,6 +255,20 @@ namespace dOSC.Pages
 
         private void OnLinkTargetChanged(BaseLinkModel link, Anchor? oldTarget, Anchor? newTarget)
         {
+            var sp = (link.Source as SinglePortAnchor)!;
+            var tp = (link.Target as SinglePortAnchor)!;
+
+            if (sp != null && tp != null)
+            {
+                bool IsCircular = diagram.CheckForCircularLinks();
+                if (IsCircular) 
+                {
+                     _JS.InvokeVoidAsync("GenerateToasterMessage", "Infinite/Circular Link Detected! Removing last link!").ConfigureAwait(false);
+
+                    diagram.Links.Remove(link);
+                }
+            }
+
             if (oldTarget.Model == null && newTarget.Model != null) // First attach
             {
                 (newTarget.Model as BasePort)!.Parent.Refresh();
