@@ -196,20 +196,9 @@ namespace dOSC.Pages
             {
 
             }
-
-
-
-
-
-            
-
-
-
             if (sp != null && tp != null)
             {
-                bool IsCircular = diagram.CheckForCircularLinks();
-                
-
+                bool IsCircular = new GraphUtilities().CheckForCircularLinks(diagram);
                 if (!IsCircular)
                 {
                     var InputPort = (sp.Port as BasePort)!.Input ? sp : tp;
@@ -260,7 +249,7 @@ namespace dOSC.Pages
 
             if (sp != null && tp != null)
             {
-                bool IsCircular = diagram.CheckForCircularLinks();
+                bool IsCircular = new GraphUtilities().CheckForCircularLinks(diagram);
                 if (IsCircular) 
                 {
                      _JS.InvokeVoidAsync("GenerateToasterMessage", "Infinite/Circular Link Detected! Removing last link!").ConfigureAwait(false);

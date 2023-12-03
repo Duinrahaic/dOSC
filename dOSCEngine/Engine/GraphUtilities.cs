@@ -8,14 +8,23 @@ using System.Threading.Tasks;
 using Blazor.Diagrams;
 using dOSCEngine.Engine.Nodes;
 using dOSCEngine.Engine.Ports;
+using System.Runtime.CompilerServices;
+using Blazor.Diagrams.Core.Geometry;
 
 namespace dOSCEngine.Engine
 {
-    public static class GraphUtilities
+    public class GraphUtilities
     {
-        private static Dictionary<string, List<string>> adjacencyList = new Dictionary<string, List<string>>();
+
+        private Dictionary<string, List<string>> adjacencyList = new Dictionary<string, List<string>>();
  
-        private static void AddEdge(string source, string target)
+        public GraphUtilities()
+        {
+            adjacencyList.Clear();  
+        }
+
+
+        private void AddEdge(string source, string target)
         {
             if (!adjacencyList.ContainsKey(source))
             {
@@ -24,7 +33,7 @@ namespace dOSCEngine.Engine
             adjacencyList[source].Add(target);
         }
 
-        private static bool HasCycle()
+        private bool HasCycle()
         {
             HashSet<string> visited = new HashSet<string>();
             HashSet<string> stack = new HashSet<string>();
@@ -43,7 +52,7 @@ namespace dOSCEngine.Engine
             return false;
         }
 
-        private static bool DFS(string node, HashSet<string> visited, HashSet<string> stack)
+        private bool DFS(string node, HashSet<string> visited, HashSet<string> stack)
         {
             visited.Add(node);
             stack.Add(node);
@@ -70,9 +79,9 @@ namespace dOSCEngine.Engine
             return false;
         }
 
-        public static bool CheckForCircularLinks(this BlazorDiagram diagram)
+        public bool CheckForCircularLinks(BlazorDiagram diagram)
         {
-
+            adjacencyList.Clear();
             // Get all links
             foreach (var l in diagram.Links.ToList())
             {
