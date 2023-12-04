@@ -14,26 +14,78 @@ using Blazor.Diagrams.Core.Models;
 using dOSCEngine.Engine.Links;
 using ApexCharts;
 using System.Xml.Linq;
+using dOSCEngine.Services.Connectors.OSC;
 
 namespace dOSCEngine.Engine
 {
-	public class EngineLogic: IDisposable
-	{
+    public class EngineLogic : IDisposable
+    {
+        // Events
+        public delegate void OnEngineStateChanged(string WiresheetGuid, AutomationState state);
+        public event OnEngineStateChanged? EngineStateChanged;
+
+        public delegate void OnEngineDetectedCircularLoop(string WiresheetGuid);
+        public event OnEngineDetectedCircularLoop? EngineDetectedCircularLoop;
+
+        // Variables
         public BlazorDiagram diagram;
         public dOSCService dOSC;
         public dOSCWiresheet wiresheet;
-        private bool _Built = false;
-        private bool _IsPlaying => _Built;
+        
+        /*
+            Engine State is the overall state
+         */
 
-		public EngineLogic(dOSCWiresheet wiresheet, dOSCService dOSC)
+
+        private bool _Built = false;
+        public bool IsRunning => _Built;
+        private bool _InEditMode = false;
+        public bool InEditMode => _InEditMode;  
+        
+        
+
+        private EngineState _EngineState;
+        public EngineState EngineState => _EngineState;
+        public bool IsAutomated => AutomationState.Ignored != _AutomationState;
+        private AutomationState _AutomationState = AutomationState.Ignored;
+        public AutomationState AutomationState => _AutomationState;
+
+        // Constructor 
+        public EngineLogic(dOSCWiresheet wiresheet, dOSCService dOSC)
 		{     
             diagram = new BlazorDiagram(dOSCWiresheetConfiguration.Options);
             diagram.RegisterBlocks();
             this.wiresheet = wiresheet;
             this.dOSC = dOSC;
         }
+        public dOSCWiresheet GetWiresheet() => wiresheet; 
+        public void SetWiresheet(dOSCWiresheet wiresheet)
+        {
+            if(!IsRunning)
+            {
+                this.wiresheet = wiresheet;
+            }
+            else
+            {
+                throw new Exception("Wiresheet is running. Cannot update while running.");
+            }
+        }
 
-        public void Load(dOSCWiresheet wiresheet)
+
+        public void EnableAutomation()
+        {
+            _AutomationState = AutomationState.Automated;
+        }
+        public void DisableAutomation()
+        {
+            _AutomationState = AutomationState.Ignored;
+        }
+
+
+
+
+
+        public void Load()
         {
             if (!_Built)
             {
@@ -64,9 +116,9 @@ namespace dOSCEngine.Engine
 
 
                 _Built = true;
+                
             }
         }
-
         public void Unload()
         {
             diagram.Nodes.Added -= OnNodeAdded;
@@ -79,7 +131,7 @@ namespace dOSCEngine.Engine
             diagram.Refresh();
         }
 
-
+        //Event Call Backs
         private void Diagram_ContainerChanged()
         {
             try
