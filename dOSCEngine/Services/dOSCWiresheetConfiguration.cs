@@ -2,6 +2,7 @@
 using Blazor.Diagrams.Core.PathGenerators;
 using Blazor.Diagrams.Core.Routers;
 using Blazor.Diagrams.Options;
+using dOSCEngine.Engine;
 using dOSCEngine.Engine.Blocks.Connectors.Activity;
 using dOSCEngine.Engine.Blocks.Connectors.OSC;
 using dOSCEngine.Engine.Blocks.Connectors.VRChat;
@@ -44,13 +45,14 @@ namespace dOSCEngine.Services
             {
 
             },
-            
+
 
 
         };
 
         public static void RegisterBlocks(this BlazorDiagram BD)
         {
+
             // Connectors
             // Activity
             BD.RegisterComponent<PulsoidNode, PulsoidBlock>();
@@ -113,6 +115,8 @@ namespace dOSCEngine.Services
             // Utility
             BD.RegisterComponent<LogicSwitchNode, LogicSwitchBlock>();
             BD.RegisterComponent<NumericSwitchNode, NumericSwitchBlock>();
+            BD.RegisterComponent<DelayNode,DelayBlock>();
+
         }
     }
 }

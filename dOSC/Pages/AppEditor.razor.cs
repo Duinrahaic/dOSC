@@ -1,4 +1,4 @@
-﻿ using Blazor.Diagrams;
+﻿using Blazor.Diagrams;
 using Blazor.Diagrams.Core.Anchors;
 using Blazor.Diagrams.Core.Geometry;
 using Blazor.Diagrams.Core.Models;
@@ -273,19 +273,12 @@ namespace dOSC.Pages
             diagram.Links.Removed -= OnLinkRemoved;
         }
 
-        #region File
         
         private void Save()
         {
             if (Wiresheet == null) return;
             SaveModal.Open();
 
-        }
-
-        private void HandleOnChange(ChangeEventArgs args)
-        {
-            
-            Wiresheet!.AppDescription = args.Value?.ToString() ?? "";
         }
 
         private void SaveApp(EditContext context)
@@ -352,89 +345,5 @@ namespace dOSC.Pages
             }
             NM!.NavigateTo($"/apps/{Wiresheet.AppGuid}");
         }
-        #endregion
-
-        private Point CenterOfScreen()
-        {
-            if (diagram == null) return Point.Zero;
-            var x = (diagram.Container.Width / 2 - diagram.Pan.X) / diagram.Zoom;
-            var y = (diagram.Container.Height / 2 - diagram.Pan.Y) / diagram.Zoom;
-            return new Point(x, y);
-        }
-
-        #region Connectors
-        // Activity
-        private void Pulsoid() => diagram.Nodes.Add(new PulsoidNode(service: _Pulsoid, position: CenterOfScreen()));
-
-        // OSC
-        private void OSCBoolean() => diagram.Nodes.Add(new OSCBooleanNode(service: _OSC, position: CenterOfScreen()));
-        private void OSCReadBoolean() => diagram.Nodes.Add(new OSCBooleanReadNode(service: _OSC, position: CenterOfScreen()));
-        private void OSCFloat() => diagram.Nodes.Add(new OSCFloatNode(service: _OSC, position: CenterOfScreen()));
-        private void OSCReadFloat() => diagram.Nodes.Add(new OSCFloatReadNode(service: _OSC, position: CenterOfScreen()));
-        private void OSCInt() => diagram.Nodes.Add(new OSCIntNode(service: _OSC, position: CenterOfScreen()));
-        private void OSCReadInt() => diagram.Nodes.Add(new OSCIntReadNode(service: _OSC, position: CenterOfScreen()));
-
-        // VRChat
-        private void AvatarParameterBoolean() => diagram.Nodes.Add(new AvatarParameterBooleanNode(service: _OSC, position: CenterOfScreen()));
-        private void AvatarParameterReadBoolean() => diagram.Nodes.Add(new AvatarParameterBooleanReadNode(service: _OSC, position: CenterOfScreen()));
-        private void AvatarParameterFloat() => diagram.Nodes.Add(new AvatarParameterFloatNode(service: _OSC, position: CenterOfScreen()));
-        private void AvatarParameterReadFloat() => diagram.Nodes.Add(new AvatarParameterFloatReadNode(service: _OSC, position: CenterOfScreen()));
-        private void AvatarParameterInt() => diagram.Nodes.Add(new AvatarParameterIntNode(service: _OSC, position: CenterOfScreen()));
-        private void AvatarParameterReadInt() => diagram.Nodes.Add(new AvatarParameterIntReadNode(service: _OSC, position: CenterOfScreen()));
-        private void OSCVRCAvatarIntRead() => diagram.Nodes.Add(new OSCVRCAvatarIntReadNode(service:_OSC, position: CenterOfScreen()));
-        private void OSCVRCAvatarFloatRead() => diagram.Nodes.Add(new OSCVRCAvatarFloatReadNode(service:_OSC, position: CenterOfScreen()));
-        private void OSCVRCAvatarBooleanRead() => diagram.Nodes.Add(new OSCVRCAvatarBooleanReadNode(service:_OSC, position: CenterOfScreen()));
-        private void OSCVRCAxis() => diagram.Nodes.Add(new OSCVRCAxisNode(service:_OSC, position: CenterOfScreen()));
-        private void OSCVRCChat() => diagram.Nodes.Add(new OSCVRCChatboxNode(service:_OSC, position: CenterOfScreen()));
-        private void OSCVRCButton() => diagram.Nodes.Add(new OSCVRCButtonNode(service:_OSC, position: CenterOfScreen()));
-        #endregion
-
-        #region Constants
-        private void Logic() => diagram.Nodes.Add(new LogicNode(position: CenterOfScreen()));
-        private void Numeric() => diagram.Nodes.Add(new NumericNode(position: CenterOfScreen()));
-        #endregion
-
-        #region Logic
-        private void AndBlock() => diagram.Nodes.Add(new AndNode(position: CenterOfScreen()));
-        private void EqualBlock() => diagram.Nodes.Add(new EqualNode(position: CenterOfScreen()));
-        private void GreaterThan() => diagram.Nodes.Add(new GreaterThanNode(position: CenterOfScreen()));
-        private void GreaterThanEqual() => diagram.Nodes.Add(new GreaterThanEqualNode(position: CenterOfScreen()));
-        private void LessThan() => diagram.Nodes.Add(new LessThanNode(position: CenterOfScreen()));
-        private void LessThanEqual() => diagram.Nodes.Add(new LessThanEqualNode(position: CenterOfScreen()));
-        private void NotEqual() => diagram.Nodes.Add(new NotEqualNode(position: CenterOfScreen()));
-        private void Not() => diagram.Nodes.Add(new NotNode(position: CenterOfScreen()));
-        private void Or() => diagram.Nodes.Add(new OrNode(position: CenterOfScreen()));
-        private void XOr() => diagram.Nodes.Add(new XOrNode(position: CenterOfScreen()));
-        #endregion
-
-        #region Math
-        private void Absolute() => diagram.Nodes.Add(new AbsoluteNode(position: CenterOfScreen()));
-        private void Add() => diagram.Nodes.Add(new AddNode(position: CenterOfScreen()));
-        private void Average() => diagram.Nodes.Add(new AverageNode(position: CenterOfScreen()));
-        private void Clamp() => diagram.Nodes.Add(new ClampNode(position: CenterOfScreen()));
-        private void Divide() => diagram.Nodes.Add(new DivisionNode(position: CenterOfScreen()));
-        private void Max() => diagram.Nodes.Add(new MaxNode(position: CenterOfScreen()));
-        private void Min() => diagram.Nodes.Add(new MinNode(position: CenterOfScreen()));
-        private void Multiply() => diagram.Nodes.Add(new MultiplicationNode(position: CenterOfScreen()));
-        private void Negative() => diagram.Nodes.Add(new NegativeNode(position: CenterOfScreen()));
-        private void Power() => diagram.Nodes.Add(new PowerNode(position: CenterOfScreen()));
-        private void RollingAverage() => diagram.Nodes.Add(new RollingAverageNode(position: CenterOfScreen()));
-        private void Sine() => diagram.Nodes.Add(new SineNode(position: CenterOfScreen()));
-        private void Subtract() => diagram.Nodes.Add(new SubtractNode(position: CenterOfScreen()));
-        private void SquareRoot() => diagram.Nodes.Add(new SquareRootNode(position: CenterOfScreen()));
-        private void Summation() => diagram.Nodes.Add(new SummationNode(position: CenterOfScreen()));
-
-        #endregion
-
-        #region Utility
-
-        private void LogicSwitch() => diagram.Nodes.Add(new LogicSwitchNode(position: CenterOfScreen()));
-        private void NumericSwitch() => diagram.Nodes.Add(new NumericSwitchNode(position: CenterOfScreen()));
-
-        #endregion
-
-
-
-
     }
 }

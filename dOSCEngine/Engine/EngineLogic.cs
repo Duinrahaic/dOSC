@@ -14,10 +14,27 @@ using Blazor.Diagrams.Core.Models;
 using dOSCEngine.Engine.Links;
 using ApexCharts;
 using System.Xml.Linq;
+using Blazor.Diagrams.Core.PathGenerators;
+using Blazor.Diagrams.Core.Routers;
+using Blazor.Diagrams.Options;
+using dOSCEngine.Engine.Nodes.Connector.Activity;
+using dOSCEngine.Engine.Blocks.Connectors.Activity;
+using dOSCEngine.Engine.Nodes.Connector.OSC;
+using dOSCEngine.Engine.Blocks.Connectors.OSC;
+using dOSCEngine.Engine.Nodes.Connector.VRChat;
+using dOSCEngine.Engine.Blocks.Connectors.VRChat;
+using dOSCEngine.Engine.Nodes.Constant;
+using dOSCEngine.Engine.Blocks.Constant;
+using dOSCEngine.Engine.Nodes.Logic;
+using dOSCEngine.Engine.Blocks.Logic;
+using dOSCEngine.Engine.Nodes.Math;
+using dOSCEngine.Engine.Blocks.Math;
+using dOSCEngine.Engine.Nodes.Utility;
+using dOSCEngine.Engine.Blocks.Utility;
 
 namespace dOSCEngine.Engine
 {
-	public class EngineLogic: IDisposable
+    public class EngineLogic: IDisposable
 	{
         public BlazorDiagram diagram;
         public dOSCService dOSC;
@@ -25,10 +42,39 @@ namespace dOSCEngine.Engine
         private bool _Built = false;
         private bool _IsPlaying => _Built;
 
-		public EngineLogic(dOSCWiresheet wiresheet, dOSCService dOSC)
+        public BlazorDiagramOptions Options = new BlazorDiagramOptions
+        {
+            GridSnapToCenter = true,
+            Zoom =
+            {
+                Enabled = true,
+                Inverse = true,
+                Maximum = 3.0
+            },
+            AllowPanning = true,
+            Links =
+            {
+                DefaultRouter = new NormalRouter(),
+                DefaultPathGenerator = new SmoothPathGenerator()
+            },
+            Groups =
+            {
+                Enabled =  false,
+            },
+            Constraints =
+            {
+
+            },
+
+
+
+        };
+
+
+        public EngineLogic(dOSCWiresheet wiresheet, dOSCService dOSC)
 		{     
-            diagram = new BlazorDiagram(dOSCWiresheetConfiguration.Options);
-            diagram.RegisterBlocks();
+            diagram = new BlazorDiagram(Options);
+            RegisterBlocks(diagram);
             this.wiresheet = wiresheet;
             this.dOSC = dOSC;
         }
@@ -208,6 +254,15 @@ namespace dOSCEngine.Engine
                 (newTarget.Model as BasePort)!.Parent.Refresh();
             }
         }
+
+
+        private void RegisterBlocks(BlazorDiagram BD)
+        {
+            BD.RegisterBlocks();
+        }
+
+
+
         public void Dispose()
         {
             diagram.Nodes.Added -= OnNodeAdded;
