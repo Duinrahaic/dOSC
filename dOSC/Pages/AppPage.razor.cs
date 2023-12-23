@@ -1,12 +1,9 @@
-﻿using dOSC.Components.Modals;
+﻿using dOSCEngine.Components.Modals;
+using dOSCEngine.Engine;
 using dOSCEngine.Services;
-using dOSCEngine.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using System.IO;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-
+    
 namespace dOSC.Pages
 {
     public partial class AppPage
@@ -22,8 +19,9 @@ namespace dOSC.Pages
         [Parameter]
         public Guid? AppId { get; set; }
 
-        private List<dOSCWiresheet> Wiresheets = new();
-        private dOSCWiresheet? Wiresheet;
+        
+        private List<AppLogic> Apps = new();
+        private AppLogic? SelectedApp;
 
         private List<string> NavTabs = new() { "All", "Activity", "Fun", "Tech" };
         private string ActiveTab = "All";
@@ -32,8 +30,8 @@ namespace dOSC.Pages
 
         protected override void OnInitialized()
         {
-            Wiresheets = Engine?.GetWireSheets() ?? new();
-            Wiresheet = Wiresheets.FirstOrDefault();
+            Apps = Engine?.GetApps() ?? new();
+            SelectedApp = Apps.FirstOrDefault();
         }
 
         protected override void OnParametersSet()
@@ -41,14 +39,11 @@ namespace dOSC.Pages
             if (Engine == null) return;
             if (AppId.HasValue)
             {
-                Wiresheet = Engine.GetWiresheet(AppId.Value);
+                SelectedApp = Engine.GetAppByID(AppId.Value);
             }
         }
 
-        private void OnSelected(dOSCWiresheet wiresheet)
-        {
-            Wiresheet = wiresheet;
-        }
+      
 
 
 
@@ -57,25 +52,30 @@ namespace dOSC.Pages
             if(UploadedFile != null)
             {
                 UploadAppModal.Close();
-                dOSCWiresheet? wiresheet = Engine.DeserializeDTO(UploadedFile);
-                Engine.SaveWiresheet(wiresheet);
+                dOSCData? ws = UploadedFile.DeserializeDTO(Engine.ServiceBundle);
+                if(ws != null)
+                {
+                    AppLogic UploadedApp = new AppLogic(ws, AppState.Disabled, AutomationState.Disabled);
+                    Engine.AddApp(UploadedApp);
 
-                try
-                {
-                    Engine.AddWiresheet(wiresheet);
+                    try
+                    {
+                        Engine.AddApp(UploadedApp);
+                    }
+                    catch
+                    {
+
+                    }
+                    Apps = Engine.GetApps();
+                    SelectedApp = Apps.FirstOrDefault();
                 }
-                catch
-                {
                 
-                }
-                Wiresheets = Engine.GetWireSheets();
-                OnSelected(wiresheet);
             }
             HasFile = false;
         }
 
-        private dOSCWiresheetDTO? UploadedFile;
-        private void UploadedFileCallback(dOSCWiresheetDTO? Upload)
+        private dOSCDataDTO? UploadedFile;
+        private void UploadedFileCallback(dOSCDataDTO? Upload)
         {
             if (Upload == null)
             {
@@ -94,29 +94,29 @@ namespace dOSC.Pages
         {
             if (NM != null)
             {
-                NM.NavigateTo($"apps/editor/");
+                NM.NavigateTo($"/editor");
             }
         }
     
-        private void ShowSettings(dOSCWiresheet wiresheet)
+        private void ShowSettings(AppLogic app)
         {
-            if (wiresheet != null)
+            if (app != null)
             {
-                Wiresheet = wiresheet;
+                SelectedApp = app;
                 AppSettingsPanel.Open();
             }
 
         }
 
-        private void Save(dOSCWiresheet wiresheet)
+        private void Save(AppLogic app)
         {
-            if (wiresheet != null && Engine != null)
+            if (app != null && Engine != null)
             {
-                Engine.SaveWiresheet(wiresheet);
+                Engine.UpdateApp(app);
             }
         }
 
-        private void OnUpdated(dOSCWiresheet wiresheet)
+        private void OnUpdated(AppLogic appLogic)
         {
             this.StateHasChanged();
         }

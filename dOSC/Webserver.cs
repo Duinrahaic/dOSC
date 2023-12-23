@@ -37,6 +37,7 @@ namespace dOSC
             builder.Services.AddSingleton<OSCService>();
             builder.Services.AddSingleton<dOSCService>();
             builder.Services.AddSingleton<PulsoidService>();
+            builder.Services.AddSingleton<ServiceBundle>();
             builder.Services.AddHostedService(sp => sp.GetRequiredService<OSCService>());
             builder.Services.AddHostedService(sp => sp.GetRequiredService<PulsoidService>());
             builder.Services.AddHostedService(sp => sp.GetRequiredService<dOSCService>());

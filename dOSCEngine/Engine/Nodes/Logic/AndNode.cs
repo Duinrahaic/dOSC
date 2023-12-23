@@ -36,7 +36,7 @@ namespace dOSCEngine.Engine.Nodes.Logic
                 var ValA = GetInputValue(inA, l1);
                 var ValB = GetInputValue(inB, l2);
 
-                if(ValA != null && ValB != null)
+                if (ValA != null && ValB != null)
                 {
                     Value = (bool)ValA && (bool)ValB;
                 }

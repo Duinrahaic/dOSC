@@ -3,31 +3,38 @@ using Blazor.Diagrams.Core.Models.Base;
 using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.Geometry;
 using dOSCEngine.Engine.Ports;
- 
+using dOSCEngine.Utilities;
+
 namespace dOSCEngine.Engine.Nodes
 {
     public abstract class BaseNode : NodeModel
     {
-        private dynamic _value;
+        private dynamic _value = null!;
         public event Action<BaseNode>? ValueChanged;
-        public delegate void SettingsMenuCalled(BaseNode Node);
-        public event SettingsMenuCalled? OnSettingsMenuCalled;
-
+ 
         protected BaseNode(Point position) : base(position)
         {
-            this.Size = new Size(200, 200);
+            Size = new Size(1, 1);
+            Initialize();
+            TryInitializeProperty(PropertyType.DisplayName, string.Empty);
         }
 
         protected BaseNode(Guid guid, Point position) : base(position)
         {
             Guid = guid;
-            this.Size = new Size(200, 200);
-
-
+            Size = new Size(1, 1);
+            Initialize();
+            TryInitializeProperty(PropertyType.DisplayName, string.Empty);
         }
-        public IReadOnlyList<BasePort> GetPorts()
+
+        protected BaseNode(Guid guid, Dictionary<string, dynamic> properties, Point position): base(position)
         {
-            return (IReadOnlyList<BasePort>)Ports;
+            Guid = guid;
+            Size = new Size(1, 1);
+            Properties = properties ?? new();
+            Initialize();
+            TryInitializeProperty(PropertyType.DisplayName, string.Empty);
+
         }
 
         public Guid Guid { get; set; } = Guid.NewGuid();
@@ -41,44 +48,118 @@ namespace dOSCEngine.Engine.Nodes
         private string ErrorClass => Error ? "error" : string.Empty;
         private DateTime _LastUpdate = DateTime.MinValue;
         public DateTime LastUpdate => _LastUpdate;
-        public virtual string OriginalName { get;set; } = string.Empty;
-        public string DisplayName { get; set; } = string.Empty;
-        private bool _Hovered { get; set; } = false;
-        public bool Hovered => _Hovered;
-        public void OnHoverOver()
-        {
-            _Hovered = true; 
-        }
-        public void OnHoverOut()
-        {
-            _Hovered = false;
-        }
-        public void OpenSettingsMenu()
-        {
-            OnSettingsMenuCalled?.Invoke(this);
-        }
-         
+        public Dictionary<string,dynamic> Properties { get; set; } = new Dictionary<string,dynamic>();
 
-        public void LockNode()
+        protected virtual void Initialize()
         {
-            this.Locked = true;
+
         }
 
-        public void UnlockNode()
+
+        public bool TryGetProperty<T>(string propertyName, out T value)
         {
-            this.Locked = false;
+            if (Properties.TryGetValue(propertyName, out dynamic? propertyValue))
+            {
+                // Note: This assumes that the property with the specified name is of the correct type T
+                value = (T)propertyValue;
+                return true;
+            }
+
+            // Handle the case where the property doesn't exist
+            value = default!;
+            return false;
         }
+        public T GetProperty<T>(string propertyName)
+        {
+            if (Properties.ContainsKey(propertyName))
+            {
+                // Note: This assumes that the property with the specified name is of the correct type T
+                return (T)Properties[propertyName];
+            }
+            else
+            {
+                // Handle the case where the property doesn't exist
+                throw new ArgumentException($"Property with name '{propertyName}' not found.");
+            }
+        }
+
+        public void SetProperty<T>(string propertyName, T value)
+        {
+            // Note: This assumes that the property with the specified name is of the correct type T
+            Properties[propertyName] = value!;
+        }
+
+        public bool TryInitializeProperty<T>(string propertyName, T value)
+        {
+
+            bool result = TryGetProperty<T>(propertyName, out var existingValue);
+            if(result)
+            {
+                if (existingValue == null || value == null)
+                {
+                    return true; // null values are considered compatible
+                }
+
+                Type existingType = existingValue.GetType();
+                Type newType = value.GetType();
+
+                // Check for numeric compatibility
+                if (Classifier.IsNumericType(existingType) && Classifier.IsNumericType(newType))
+                {
+                    return true;
+                }
+
+                // Check for DateTime compatibility
+                if (existingType == typeof(DateTime) && newType == typeof(DateTime))
+                {
+                    return true;
+                }
+
+                // Check for string compatibility
+                if (existingType == typeof(string) && newType == typeof(string))
+                {
+                    return true;
+                }
+
+                // Check for boolean compatibility
+                if (existingType == typeof(bool) && newType == typeof(bool))
+                {
+                    return true;
+                }
+            }
+
+            // Types are different or property doesn't exist, override the existing value or add a new key-value pair
+            SetProperty(propertyName, value);
+            return true;
+
+        }
+
+ 
 
         public string GetDisplayName()
         {
-            if (string.IsNullOrEmpty(DisplayName))
+            if (string.IsNullOrEmpty(GetProperty<string>(PropertyType.DisplayName)))
             {
-                return OriginalName;
+                return GetProperty<string>(PropertyType.Name);
             }
-            return DisplayName;
+            return GetProperty<string>(PropertyType.DisplayName);
+        }
+        public void ResetDisplayName()
+        {
+            SetProperty(PropertyType.DisplayName, string.Empty);
         }
 
-        
+        public void SetDisplayName(string DisplayName)
+        {
+            if (string.IsNullOrEmpty(DisplayName))
+            {
+                ResetDisplayName();
+                return;
+            }
+            SetProperty(PropertyType.DisplayName, string.Empty);
+        }
+
+
         public dynamic Value
         {
             get => _value;
@@ -88,7 +169,6 @@ namespace dOSCEngine.Engine.Nodes
                 ValueChanged?.Invoke(this);
                 _LastUpdate = DateTime.Now;
             }
-            
         }
 
 
@@ -135,7 +215,7 @@ namespace dOSCEngine.Engine.Nodes
             return GetInputValue(port, link);
         }
 
-  
+
         public BaseNodeDTO GetDTO()
         {
             return new BaseNodeDTO(this);

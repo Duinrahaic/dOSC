@@ -28,3 +28,14 @@ function GenerateToasterMessage(HTML, Duration = 3000) {
     el.className = "snackbar show";
     setTimeout(function () { el.className = el.className.replace("snackbar show", "snackbar"); }, Duration);
 }
+
+
+function GetBlockDimensions(Id)
+{
+    var block = document.getElementById(Id);
+    if (block == null) {
+        return { Height: 0, Width: 0 };
+    } else {
+        return { Height: block.clientHeight, Width: block.clientWidth };
+    }
+}

@@ -3,7 +3,6 @@ using Blazor.Diagrams.Core.Models.Base;
 using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.Geometry;
 using Newtonsoft.Json;
-using dOSCEngine.Engine.Nodes;
 using dOSCEngine.Engine.Ports;
 
 namespace dOSCEngine.Engine.Nodes.Logic

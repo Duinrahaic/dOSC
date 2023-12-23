@@ -1,8 +1,7 @@
-﻿@using Blazor.Diagrams;
-@using dOSCEngine.Components.Wiresheet.UI
-@using dOSCEngine.Engine.Nodes.Connector.Activity;
-@using dOSCEngine.Engine.Nodes.Connector.OSC;
-@using dOSCEngine.Engine.Nodes.Connector.VRChat;
+﻿@using dOSCEngine.Components.Wiresheet.UI
+@using dOSCEngine.Engine.Nodes.Connectors.Activity;
+@using dOSCEngine.Engine.Nodes.Connectors.OSC;
+@using dOSCEngine.Engine.Nodes.Connectors.VRChat;
 @using dOSCEngine.Engine.Nodes.Constant;
 @using dOSCEngine.Engine.Nodes.Logic;
 @using dOSCEngine.Engine.Nodes.Math;
@@ -18,68 +17,68 @@
         <WiresheetToolbarDropdown Title="Blocks">
             <WiresheetToolbarDropdownSubmenuItem Title="Connectors">
                 <WiresheetToolbarDropdownSubmenuItem Title="Activity">
-                    <WiresheetToolbarDropdownItem Title="Pulsoid" OnClick="() => diagram.Nodes.Add(new PulsoidNode(service: _Pulsoid, position: diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="Pulsoid" OnClick="() => App.Data.Diagram.Nodes.Add(new PulsoidNode(service: SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
                 </WiresheetToolbarDropdownSubmenuItem>
                 <WiresheetToolbarDropdownSubmenuItem Title="OSC">
-                    <WiresheetToolbarDropdownItem Title="OSC Boolean" OnClick="()=>diagram.Nodes.Add(new OSCBooleanNode(service: _OSC, position: diagram.GetCenterOfScreen()))" />
-                    <WiresheetToolbarDropdownItem Title="OSC Boolean Read" OnClick="()=>diagram.Nodes.Add(new OSCBooleanReadNode(service: _OSC, position: diagram.GetCenterOfScreen()))" />
-                    <WiresheetToolbarDropdownItem Title="OSC Float" OnClick="()=>diagram.Nodes.Add(new OSCFloatNode(service: _OSC, position: diagram.GetCenterOfScreen()))" />
-                    <WiresheetToolbarDropdownItem Title="OSC Float Read" OnClick="()=> diagram.Nodes.Add(new OSCFloatReadNode(service: _OSC, position: diagram.GetCenterOfScreen()))" />
-                    <WiresheetToolbarDropdownItem Title="OSC Int" OnClick="() => diagram.Nodes.Add(new OSCIntNode(service: _OSC, position: diagram.GetCenterOfScreen()))" />
-                    <WiresheetToolbarDropdownItem Title="OSC Int Read" OnClick="() => diagram.Nodes.Add(new OSCIntReadNode(service: _OSC, position: diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="OSC Boolean" OnClick="()=>App.Data.Diagram.Nodes.Add(new OSCBooleanNode(service: SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="OSC Boolean Read" OnClick="()=>App.Data.Diagram.Nodes.Add(new OSCBooleanReadNode(service: SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="OSC Float" OnClick="()=>App.Data.Diagram.Nodes.Add(new OSCFloatNode(service: SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="OSC Float Read" OnClick="()=> App.Data.Diagram.Nodes.Add(new OSCFloatReadNode(service: SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="OSC Int" OnClick="() => App.Data.Diagram.Nodes.Add(new OSCIntNode(service: SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="OSC Int Read" OnClick="() => App.Data.Diagram.Nodes.Add(new OSCIntReadNode(service: SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
                 </WiresheetToolbarDropdownSubmenuItem>
                 <WiresheetToolbarDropdownSubmenuItem Title="VRChat">
-                    <WiresheetToolbarDropdownItem Title="Avatar Parameters Boolean" OnClick="() => diagram.Nodes.Add(new AvatarParameterBooleanNode(service: _OSC, position: diagram.GetCenterOfScreen()))" />
-                    <WiresheetToolbarDropdownItem Title="Avatar Parameters Boolean Read" OnClick="() => diagram.Nodes.Add(new AvatarParameterBooleanReadNode(service: _OSC, position: diagram.GetCenterOfScreen()))" />
-                    <WiresheetToolbarDropdownItem Title="Avatar Parameters Float" OnClick="() => diagram.Nodes.Add(new AvatarParameterFloatNode(service: _OSC, position: diagram.GetCenterOfScreen()))" />
-                    <WiresheetToolbarDropdownItem Title="Avatar Parameters Float Read" OnClick="()=>diagram.Nodes.Add(new AvatarParameterFloatReadNode(service: _OSC, position: diagram.GetCenterOfScreen()))" />
-                    <WiresheetToolbarDropdownItem Title="Avatar Parameters Int" OnClick="()=>diagram.Nodes.Add(new AvatarParameterIntNode(service: _OSC, position: diagram.GetCenterOfScreen()))" />
-                    <WiresheetToolbarDropdownItem Title="Avatar Parameters Int Read" OnClick="() => diagram.Nodes.Add(new AvatarParameterIntReadNode(service: _OSC, position: diagram.GetCenterOfScreen()))" />
-                    <WiresheetToolbarDropdownItem Title="OSC VRC Avatar Int Read" OnClick="() => diagram.Nodes.Add(new OSCVRCAvatarIntReadNode(service:_OSC, position: diagram.GetCenterOfScreen()))" />
-                    <WiresheetToolbarDropdownItem Title="OSC VRC Avatar Float Read" OnClick="() => diagram.Nodes.Add(new OSCVRCAvatarFloatReadNode(service:_OSC, position: diagram.GetCenterOfScreen()))" />
-                    <WiresheetToolbarDropdownItem Title="OSC VRC Avatar Boolean Read" OnClick="() => diagram.Nodes.Add(new OSCVRCAvatarBooleanReadNode(service:_OSC, position: diagram.GetCenterOfScreen()))" />
-                    <WiresheetToolbarDropdownItem Title="OSC VRC Axis" OnClick="() => diagram.Nodes.Add(new OSCVRCAxisNode(service:_OSC, position: diagram.GetCenterOfScreen()))" />
-                    <WiresheetToolbarDropdownItem Title="OSC VRC Button" OnClick="() => diagram.Nodes.Add(new OSCVRCButtonNode(service:_OSC, position: diagram.GetCenterOfScreen()))" />
-                    <WiresheetToolbarDropdownItem Title="OSC VRC ChatBox" OnClick="() => diagram.Nodes.Add(new OSCVRCChatboxNode(service:_OSC, position: diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="Avatar Parameters Boolean" OnClick="() => App.Data.Diagram.Nodes.Add(new AvatarParameterBooleanNode(service: SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="Avatar Parameters Boolean Read" OnClick="() => App.Data.Diagram.Nodes.Add(new AvatarParameterBooleanReadNode(service: SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="Avatar Parameters Float" OnClick="() => App.Data.Diagram.Nodes.Add(new AvatarParameterFloatNode(service: SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="Avatar Parameters Float Read" OnClick="()=>App.Data.Diagram.Nodes.Add(new AvatarParameterFloatReadNode(service: SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="Avatar Parameters Int" OnClick="()=>App.Data.Diagram.Nodes.Add(new AvatarParameterIntNode(service: SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="Avatar Parameters Int Read" OnClick="() => App.Data.Diagram.Nodes.Add(new AvatarParameterIntReadNode(service: SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="OSC VRC Avatar Int Read" OnClick="() => App.Data.Diagram.Nodes.Add(new OSCVRCAvatarIntReadNode(service:SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="OSC VRC Avatar Float Read" OnClick="() => App.Data.Diagram.Nodes.Add(new OSCVRCAvatarFloatReadNode(service:SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="OSC VRC Avatar Boolean Read" OnClick="() => App.Data.Diagram.Nodes.Add(new OSCVRCAvatarBooleanReadNode(service:SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="OSC VRC Axis" OnClick="() => App.Data.Diagram.Nodes.Add(new OSCVRCAxisNode(service:SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="OSC VRC Button" OnClick="() => App.Data.Diagram.Nodes.Add(new OSCVRCButtonNode(service:SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
+                    <WiresheetToolbarDropdownItem Title="OSC VRC ChatBox" OnClick="() => App.Data.Diagram.Nodes.Add(new OSCVRCChatboxNode(service:SB, position: App.Data.Diagram.GetCenterOfScreen()))" />
                 </WiresheetToolbarDropdownSubmenuItem>
             </WiresheetToolbarDropdownSubmenuItem>
             <WiresheetToolbarDropdownSubmenuItem Title="Constants">
-                <WiresheetToolbarDropdownItem Title="Logic" OnClick="() => diagram.Nodes.Add(new LogicNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="Numeric" OnClick="() => diagram.Nodes.Add(new NumericNode(position: diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Logic" OnClick="() => App.Data.Diagram.Nodes.Add(new LogicNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Numeric" OnClick="() => App.Data.Diagram.Nodes.Add(new NumericNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
             </WiresheetToolbarDropdownSubmenuItem>
             <WiresheetToolbarDropdownSubmenuItem Title="Logic">
-                <WiresheetToolbarDropdownItem Title="And" OnClick="() => diagram.Nodes.Add(new AndNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="Equal" OnClick="() => diagram.Nodes.Add(new EqualNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="Greater Than" OnClick="()=> diagram.Nodes.Add(new GreaterThanNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="Greater Than Equal" OnClick="() => diagram.Nodes.Add(new GreaterThanEqualNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="Less Than" OnClick="() => diagram.Nodes.Add(new LessThanNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="Less Than Equal" OnClick="() => diagram.Nodes.Add(new LessThanEqualNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="Not" OnClick="() => diagram.Nodes.Add(new NotNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="Not Equal" OnClick="() => diagram.Nodes.Add(new NotEqualNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="Or" OnClick="() => diagram.Nodes.Add(new OrNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="XOr" OnClick="() => diagram.Nodes.Add(new XOrNode(position: diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="And" OnClick="() => App.Data.Diagram.Nodes.Add(new AndNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Equal" OnClick="() => App.Data.Diagram.Nodes.Add(new EqualNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Greater Than" OnClick="()=> App.Data.Diagram.Nodes.Add(new GreaterThanNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Greater Than Equal" OnClick="() => App.Data.Diagram.Nodes.Add(new GreaterThanEqualNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Less Than" OnClick="() => App.Data.Diagram.Nodes.Add(new LessThanNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Less Than Equal" OnClick="() => App.Data.Diagram.Nodes.Add(new LessThanEqualNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Not" OnClick="() => App.Data.Diagram.Nodes.Add(new NotNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Not Equal" OnClick="() => App.Data.Diagram.Nodes.Add(new NotEqualNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Or" OnClick="() => App.Data.Diagram.Nodes.Add(new OrNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="XOr" OnClick="() => App.Data.Diagram.Nodes.Add(new XOrNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
             </WiresheetToolbarDropdownSubmenuItem>
             <WiresheetToolbarDropdownSubmenuItem Title="Math">
-                <WiresheetToolbarDropdownItem Title="Absolute" OnClick="() => diagram.Nodes.Add(new AbsoluteNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="Add" OnClick="() => diagram.Nodes.Add(new AddNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="Average" OnClick="()=>diagram.Nodes.Add(new AverageNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="Clamp" OnClick="()=> diagram.Nodes.Add(new ClampNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="Division" OnClick="() => diagram.Nodes.Add(new DivisionNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="Max" OnClick="() => diagram.Nodes.Add(new MaxNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="Min" OnClick="() => diagram.Nodes.Add(new MinNode(position: diagram.GetCenterOfScreen()))" />
-                <WiresheetToolbarDropdownItem Title="Multiplication" OnClick="(()=> diagram.Nodes.Add(new MultiplicationNode(position: diagram.GetCenterOfScreen())))" />
-                <WiresheetToolbarDropdownItem Title="Negative" OnClick="(()=> diagram.Nodes.Add(new NegativeNode(position: diagram.GetCenterOfScreen())))" />
-                <WiresheetToolbarDropdownItem Title="Power" OnClick="(()=> diagram.Nodes.Add(new PowerNode(position: diagram.GetCenterOfScreen())))" />
-                <WiresheetToolbarDropdownItem Title="Rolling Average" OnClick="(()=> diagram.Nodes.Add(new RollingAverageNode(position: diagram.GetCenterOfScreen())))" />
-                <WiresheetToolbarDropdownItem Title="Sine" OnClick="(()=> diagram.Nodes.Add(new SineNode(position: diagram.GetCenterOfScreen())))" />
-                <WiresheetToolbarDropdownItem Title="Square Root" OnClick="(()=> diagram.Nodes.Add(new SquareRootNode(position: diagram.GetCenterOfScreen())))" />
-                <WiresheetToolbarDropdownItem Title="Subtract" OnClick="(()=> diagram.Nodes.Add(new SubtractNode(position: diagram.GetCenterOfScreen())))" />
-                <WiresheetToolbarDropdownItem Title="Summation" OnClick="(()=>  diagram.Nodes.Add(new SummationNode(position: diagram.GetCenterOfScreen())))" />
+                <WiresheetToolbarDropdownItem Title="Absolute" OnClick="() => App.Data.Diagram.Nodes.Add(new AbsoluteNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Add" OnClick="() => App.Data.Diagram.Nodes.Add(new AddNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Average" OnClick="()=>App.Data.Diagram.Nodes.Add(new AverageNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Clamp" OnClick="()=> App.Data.Diagram.Nodes.Add(new ClampNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Division" OnClick="() => App.Data.Diagram.Nodes.Add(new DivisionNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Max" OnClick="() => App.Data.Diagram.Nodes.Add(new MaxNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Min" OnClick="() => App.Data.Diagram.Nodes.Add(new MinNode(position: App.Data.Diagram.GetCenterOfScreen()))" />
+                <WiresheetToolbarDropdownItem Title="Multiplication" OnClick="(()=> App.Data.Diagram.Nodes.Add(new MultiplicationNode(position: App.Data.Diagram.GetCenterOfScreen())))" />
+                <WiresheetToolbarDropdownItem Title="Negative" OnClick="(()=> App.Data.Diagram.Nodes.Add(new NegativeNode(position: App.Data.Diagram.GetCenterOfScreen())))" />
+                <WiresheetToolbarDropdownItem Title="Power" OnClick="(()=> App.Data.Diagram.Nodes.Add(new PowerNode(position: App.Data.Diagram.GetCenterOfScreen())))" />
+                <WiresheetToolbarDropdownItem Title="Rolling Average" OnClick="(()=> App.Data.Diagram.Nodes.Add(new RollingAverageNode(position: App.Data.Diagram.GetCenterOfScreen())))" />
+                <WiresheetToolbarDropdownItem Title="Sine" OnClick="(()=> App.Data.Diagram.Nodes.Add(new SineNode(position: App.Data.Diagram.GetCenterOfScreen())))" />
+                <WiresheetToolbarDropdownItem Title="Square Root" OnClick="(()=> App.Data.Diagram.Nodes.Add(new SquareRootNode(position: App.Data.Diagram.GetCenterOfScreen())))" />
+                <WiresheetToolbarDropdownItem Title="Subtract" OnClick="(()=> App.Data.Diagram.Nodes.Add(new SubtractNode(position: App.Data.Diagram.GetCenterOfScreen())))" />
+                <WiresheetToolbarDropdownItem Title="Summation" OnClick="(()=>  App.Data.Diagram.Nodes.Add(new SummationNode(position: App.Data.Diagram.GetCenterOfScreen())))" />
             </WiresheetToolbarDropdownSubmenuItem>
             <WiresheetToolbarDropdownSubmenuItem Title="Utility">
-                <WiresheetToolbarDropdownItem Title="Logic Switch" OnClick="(()=>diagram.Nodes.Add(new LogicSwitchNode(position: diagram.GetCenterOfScreen())))" />
-                <WiresheetToolbarDropdownItem Title="Numeric Switch" OnClick="(()=>  diagram.Nodes.Add(new NumericSwitchNode(position: diagram.GetCenterOfScreen())))" />
-                <WiresheetToolbarDropdownItem Title="Delay" OnClick="(()=>  diagram.Nodes.Add(new DelayNode(position: diagram.GetCenterOfScreen())))" />
+                <WiresheetToolbarDropdownItem Title="Logic Switch" OnClick="(()=>App.Data.Diagram.Nodes.Add(new LogicSwitchNode(position: App.Data.Diagram.GetCenterOfScreen())))" />
+                <WiresheetToolbarDropdownItem Title="Numeric Switch" OnClick="(()=>  App.Data.Diagram.Nodes.Add(new NumericSwitchNode(position: App.Data.Diagram.GetCenterOfScreen())))" />
+                <WiresheetToolbarDropdownItem Title="Delay" OnClick="(()=>  App.Data.Diagram.Nodes.Add(new DelayNode(position: App.Data.Diagram.GetCenterOfScreen())))" />
             </WiresheetToolbarDropdownSubmenuItem>
         </WiresheetToolbarDropdown>
     </ChildContent>
@@ -89,16 +88,16 @@
 
 
 @code {
-    [Parameter] public BlazorDiagram diagram { get; set; }
+    [Parameter] public AppLogic App { get; set; }
+    
 
     [Parameter] public RenderFragment Options { get; set; }
 
     [Inject]
     public dOSCService? _dOSC { get; set; }
     [Inject]
-    public PulsoidService? _Pulsoid { get; set; }
-    [Inject]
-    public OSCService? _OSC { get; set; }
+    public ServiceBundle? SB { get; set; }
+ 
 
     
 

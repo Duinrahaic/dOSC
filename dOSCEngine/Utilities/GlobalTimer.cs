@@ -13,7 +13,7 @@ namespace dOSCEngine.Utilities
         public static void StartGlobalTimer()
         {
             timer.Elapsed += (sender, e) => OnTimerElapsed?.Invoke();
-            timer.Interval = 10;
+            timer.Interval = 1;
             timer.AutoReset = true;
             timer.Start();
         }

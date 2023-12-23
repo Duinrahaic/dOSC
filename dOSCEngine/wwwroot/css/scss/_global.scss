@@ -63,6 +63,23 @@
     }
 }
 
+.dOSC-progress-bar-container {
+    height: 4px;
+    width: 100%;
+    background-color: $color-theme-3;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+
+    .dOSC-progress-bar-indicator {
+        height: inherit;
+        width: 100%;
+        background-color: $color-blue-lighter;
+        transition: width ease-in-out 100ms;
+        border-radius: 12px;
+    }
+}
+
 
 
 

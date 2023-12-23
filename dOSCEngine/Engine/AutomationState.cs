@@ -8,7 +8,8 @@ namespace dOSCEngine.Engine
 {
     public enum AutomationState
     {
-        Ignored,
-        Automated
+        Disabled = 0,
+        Paused = 1,
+        Running = 2
     }
 }

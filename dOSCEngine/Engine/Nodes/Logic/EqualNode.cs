@@ -1,6 +1,5 @@
 ﻿using Blazor.Diagrams.Core.Geometry;
 using dOSCEngine.Services.Connectors.OSC;
-using dOSCEngine.Engine.Nodes;
 using dOSCEngine.Engine.Ports;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
@@ -38,7 +37,7 @@ namespace dOSCEngine.Engine.Nodes.Logic
         public override string BlockTypeClass => "logicblock";
 
 
-        
+
 
 
         public override void CalculateValue()
@@ -55,7 +54,7 @@ namespace dOSCEngine.Engine.Nodes.Logic
 
                 var valA = GetInputValue(inA, l1);
                 var valB = GetInputValue(inB, l2);
-                if(valA != null && valB != null)
+                if (valA != null && valB != null)
                 {
                     if (valA.GetType() == valB.GetType())
                     {
@@ -88,8 +87,8 @@ namespace dOSCEngine.Engine.Nodes.Logic
                 var l1 = inA.Links.First();
                 var sp = (l1.Source as SinglePortAnchor)!;
                 var tp = (l1.Source as SinglePortAnchor)!;
-                var p = sp.Port.Parent.Id == this.Id ? tp : sp;
-                var port = (p.Port as BasePort);
+                var p = sp.Port.Parent.Id == Id ? tp : sp;
+                var port = p.Port as BasePort;
                 if (port is MultiPort)
                     _PortAType = "multi";
                 if (port is LogicPort)
@@ -113,8 +112,8 @@ namespace dOSCEngine.Engine.Nodes.Logic
                 var l1 = inB.Links.First();
                 var sp = (l1.Source as SinglePortAnchor)!;
                 var tp = (l1.Target as SinglePortAnchor)!;
-                var p = sp.Port.Parent.Id == this.Id ? tp : sp;
-                var port = (p.Port as BasePort);
+                var p = sp.Port.Parent.Id == Id ? tp : sp;
+                var port = p.Port as BasePort;
                 if (port is MultiPort)
                     _PortBType = "multi";
                 if (port is LogicPort)

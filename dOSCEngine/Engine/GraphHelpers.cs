@@ -1,24 +1,9 @@
 ﻿using Blazor.Diagrams;
 using Blazor.Diagrams.Core.Geometry;
-using dOSCEngine.Engine.Blocks.Connectors.Activity;
-using dOSCEngine.Engine.Blocks.Connectors.OSC;
-using dOSCEngine.Engine.Blocks.Connectors.VRChat;
-using dOSCEngine.Engine.Blocks.Constant;
-using dOSCEngine.Engine.Blocks.Logic;
-using dOSCEngine.Engine.Blocks.Math;
-using dOSCEngine.Engine.Blocks.Utility;
-using dOSCEngine.Engine.Nodes.Connector.Activity;
-using dOSCEngine.Engine.Nodes.Connector.OSC;
-using dOSCEngine.Engine.Nodes.Connector.VRChat;
-using dOSCEngine.Engine.Nodes.Constant;
-using dOSCEngine.Engine.Nodes.Logic;
-using dOSCEngine.Engine.Nodes.Math;
-using dOSCEngine.Engine.Nodes.Utility;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using dOSCEngine.Engine.Links;
+using dOSCEngine.Engine.Nodes;
+using dOSCEngine.Engine.Ports;
+using dOSCEngine.Services;
 
 namespace dOSCEngine.Engine
 {
@@ -50,5 +35,66 @@ namespace dOSCEngine.Engine
                 return new Point(x, y);
             }
         }
+
+        public static dOSCData DeserializeDTO(this dOSCDataDTO dto, ServiceBundle sb)
+        {
+            dOSCData dOSCWiresheet = new dOSCData(dto);
+            var cNodes = dto.Nodes.Select(x => x.ConvertNode(sb)).Where(x => x != null);
+            var cLinks = dto.Links;
+            foreach (var n in cNodes)
+            {
+                if (n != null)
+                {
+                    dOSCWiresheet.AddNode(n);
+                }
+            }
+            foreach (var l in cLinks)
+            {
+                if (l != null)
+                {
+                    var sourcePort = cNodes.FirstOrDefault(x => x.Guid == l.SourceNode)?.Ports.Select(x => x as BasePort).First(x => x.Guid == l.SourcePort);
+                    var targetPort = cNodes.FirstOrDefault(x => x.Guid == l.TargetNode)?.Ports.Select(x => x as BasePort).First(x => x.Guid == l.TargetPort);
+
+                    if (sourcePort != null && targetPort != null)
+                    {
+                        dOSCWiresheet.AddRelationship(sourcePort, targetPort);
+                    }
+                }
+            }
+
+            return dOSCWiresheet;
+        }
+
+        public static (List<BaseNode> Nodes, List<BaseLink> Links) ExtractData(this BlazorDiagram diagram )
+        {
+            List<BaseNode> Nodes = new List<BaseNode>();
+            List<BaseLink> Links = new List<BaseLink>();
+            diagram.Nodes.ToList().ForEach(node =>
+            {
+                var n = node as BaseNode;
+                Nodes.Add(n);
+            });
+            diagram.Links.ToList().ForEach(link =>
+            {
+                var s = link.Source.Model as BasePort;
+                var t = link.Target.Model as BasePort;
+
+                if (diagram.Nodes.Any(x => (x as BaseNode)?.Guid == s!.ParentGuid) == false
+                    || Nodes.Any(x => x.Guid == t!.ParentGuid) == false)
+                {
+
+                }
+                else
+                {
+                    Links.Add(new(s, t));
+                }
+
+
+            });
+
+            return (Nodes, Links);
+        }
+
+
     }
 }

@@ -22,8 +22,7 @@ namespace dOSCEngine.Engine.Ports
             Guid = guid;
             ParentGuid = parent.Guid;
             Input = input;
-            LimitLink = limitLink;
-            
+            LimitLink = limitLink;  
         }
         public Guid Guid { get; set; } = Guid.NewGuid();
         public Guid ParentGuid { get; set; } = Guid.NewGuid();

@@ -2,7 +2,6 @@
 using Blazor.Diagrams.Core.Geometry;
 using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.Models.Base;
-using dOSCEngine.Engine.Nodes;
 using dOSCEngine.Engine.Ports;
 using Newtonsoft.Json;
 

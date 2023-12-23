@@ -91,7 +91,7 @@ namespace dOSCEngine.Services.Connectors.OSC
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Error occured while sending OSC message: {ex}");
+                    _logger.LogError($"Error occurred while sending OSC message: {ex}");
                 }
             }
             else

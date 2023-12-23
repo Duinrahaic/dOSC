@@ -1,0 +1,70 @@
+﻿@using Microsoft.AspNetCore.Components.Forms;
+@using Newtonsoft.Json;
+@using dOSCEngine.Services;
+<div style="padding: 8px 16px;">
+@*     <div>
+        @if(UploadedDTO != null)
+        {
+            <p>
+                @UploadedDTO?.AppName
+            </p>
+        }else{
+            <p>
+                Drop your application here and click upload.
+            </p>
+        }
+    </div> *@
+    <div class="file-input-error" style="color:#bf3134;">
+        @ErrorMessage
+    </div>
+    <InputFile class="file-input" accept=".json" OnChange="@OnChange" />
+    
+</div>
+
+@code {
+
+    private string ErrorMessage = string.Empty;
+
+    [Parameter]
+    public EventCallback<dOSCDataDTO?> DataCallback { get; set; }
+
+ 
+
+    private dOSCDataDTO? UploadedDTO;  
+    private async Task OnChange(InputFileChangeEventArgs e)
+    {
+        ErrorMessage = string.Empty;
+        if (e.FileCount > 1)
+        {
+            ErrorMessage = $"Error - Only {1} file can be uploaded";
+            return;
+        }
+        foreach (var file in e.GetMultipleFiles(1))
+        {
+            try
+            {
+                using (var ms = new MemoryStream())
+                {
+                    await file.OpenReadStream().CopyToAsync(ms);
+                    string jsonString = System.Text.Encoding.ASCII.GetString(ms.ToArray());
+                    UploadedDTO = JsonConvert.DeserializeObject<dOSCDataDTO>(jsonString);
+                    if(UploadedDTO == null)
+                    {
+                        ErrorMessage = "Error - Unable to process uploaded file";
+                    }
+                    else if (string.IsNullOrEmpty(UploadedDTO.AppName) || string.IsNullOrEmpty(UploadedDTO.AppGuid.ToString()))
+                    {
+                        ErrorMessage = "Error - Unable to process uploaded file: Not an app.";
+                    }
+                    await DataCallback.InvokeAsync(UploadedDTO);
+                }
+            }
+            catch
+            {
+                ErrorMessage = "Error - Unable to process uploaded file";
+                await DataCallback.InvokeAsync(null);
+            }
+            
+        }
+     }
+}

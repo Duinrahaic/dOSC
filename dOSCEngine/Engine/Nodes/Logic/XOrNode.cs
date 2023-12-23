@@ -2,7 +2,6 @@
 using Blazor.Diagrams.Core.Geometry;
 using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.Models.Base;
-using dOSCEngine.Engine.Nodes;
 using dOSCEngine.Engine.Ports;
 using Newtonsoft.Json;
 using System.Net.NetworkInformation;
@@ -35,7 +34,9 @@ namespace dOSCEngine.Engine.Nodes.Logic
             {
                 var l1 = inA.Links.First();
                 var l2 = inB.Links.First();
-                Value = GetInputValue(inA, l1) || GetInputValue(inB, l2);
+                bool A = Convert.ToBoolean(GetInputValue(inA, l1));
+                bool B = Convert.ToBoolean(GetInputValue(inB, l2));
+                Value = A && !B || !A && B;
             }
             else
             {

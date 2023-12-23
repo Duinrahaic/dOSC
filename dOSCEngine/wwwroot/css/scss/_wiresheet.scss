@@ -1,5 +1,6 @@
 ﻿
-@import "variables.scss";
+@import "_variables.scss";
+@import "_animations.scss";
 
 
 .navbar.wiresheet-toolbar {
@@ -266,10 +267,8 @@
     background-color: $color-full-white;
     width: 16px;
     height: 16px;
-    border-bottom-left-radius: 50%;
-    border-bottom-right-radius: 50%;
-    border-top-left-radius: 50%;
-    border-top-right-radius: 50%;
+    border-radius: 50%;
+ 
 }
 .diagram-port.top {
     border-top-left-radius: 50%;
@@ -366,4 +365,238 @@
 
 
 
+}
+
+
+
+.block-container {
+    border-radius: 10px;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    gap: 2px 2px;
+    min-width: 120px;
+    background-color: $color-grey-white;
+    border: solid 2px $color-theme-1;
+    user-select: none;
+    font-weight: bolder;
+    font-size: 18px;
+ 
+
+    &.numeric {
+        background-color: $color-purple;
+        color: $color-full-white;
+    }
+
+    &.logic {
+        background-color: $color-green;
+        color: $color-full-white;
+    }
+
+    &.connector {
+        background-color: $color-pink;
+        color: $color-full-white;
+    }
+
+    &.string {
+        background-color: $color-orange;
+        color: $color-full-white;
+    }
+
+    &:hover {
+        .block-container-header {
+            .block-container-header-setting {
+                opacity: 1;
+                transition: opacity ease-in-out 250ms;
+            }
+        }
+    }
+
+    &.selected {
+        box-shadow: 0 0 8px 1px $color-selected;
+    }
+
+    &.error :not(.selected) {
+        border-radius: 10px;
+        box-shadow: 0 0 0 $color-error-60;
+        animation: error 2s infinite;
+    }
+
+    .block-container-header {
+        display: flex;
+        flex-direction: row;
+        gap: 0px 2px;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2px 4px;
+
+        .block-container-header-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 18px;
+            width: 18px;
+            padding: 10px;
+        }
+
+        .block-container-header-title {
+            flex-grow: 1;
+            height: 18px;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .block-container-header-setting {
+            opacity: 0;
+            transition: opacity ease-in-out 250ms;
+            height: 18px;
+            width: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            padding: 10px;
+
+
+
+            &:hover {
+                background: $color-theme-3;
+            }
+        }
+    }
+
+    .block-container-body-container {
+        padding-left: 4px;
+         font-weight: bolder;
+        font-size: 18px;
+        color: $color-full-white;
+
+        .block-container-body {
+            border: 1px solid $color-theme-1;
+            padding: 4px 4px;
+            background: $color-theme-1;
+            display: flex;
+            gap: 0 20px;
+            flex-direction: column;
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+            justify-content: end;
+            align-items: center;
+
+            .block-container-body-ports {
+                border: 1px solid $color-theme-1;
+                padding: 0px 4px;
+                background: $color-theme-1;
+                display: flex;
+                gap: 0 20px;
+                flex-direction: row;
+                border-top-left-radius: 8px;
+                border-bottom-left-radius: 8px;
+                justify-content: end;
+                align-items: center;
+                position: relative;
+                width: 100%;
+                
+                .block-container-port-container {
+                    padding: 4px;
+                    width: 100%;
+                    &.input {
+                        .item {
+                            align-items: start;
+
+                            .port {
+                                position:absolute;
+                                left: -26px;
+                            }
+                        }
+                    }
+
+                    &.output {
+                        .item {
+                            align-items: end;
+                            .label{
+                                text-align: right;
+                                width: 100%;
+                            }
+
+
+                            .port-label {
+                                right: -124px;
+                                text-align: left;
+                                width: 100px;
+                                transform: translateY(-14px);
+                            }
+
+                            .port {
+                                right: -24px;
+                            }
+                        }
+                    }
+
+                    .item {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        padding: 4px 0;
+
+                        .port-label {
+                            position: absolute;
+                            color: $color-full-white;
+                            font-weight: 400;
+                            pointer-events: none;
+                        }
+
+                        .port {
+                            transform: translateY(2px);
+                            position: absolute;
+                            background-color: $color-full-white;
+                            width: 16px;
+                            height: 16px;
+                            border-radius: 50%;
+                            border: solid 2px $color-theme-1;
+
+                            &:hover {
+                                box-shadow: 0 0 2px 1px $color-selected;
+                            }
+
+                            &.logic {
+                                background-color: $color-green;
+
+                                &:hover {
+                                    background-color: $color-green-darker;
+                                }
+                            }
+
+                            &.numeric {
+                                background-color: $color-purple;
+
+                                &:hover {
+                                    background-color: $color-purple-darker;
+                                }
+                            }
+
+                            &.multi {
+                                background-color: $color-full-white;
+
+                                &:hover {
+                                    background-color: $color-grey;
+                                }
+                            }
+
+                            &.string {
+                                background-color: $color-orange;
+
+                                &:hover {
+                                    background-color: $color-orange-darker;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

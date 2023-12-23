@@ -1,70 +1,42 @@
 ﻿using Blazor.Diagrams.Core.Geometry;
 using dOSCEngine.Engine.Ports;
+using dOSCEngine.Engine.Units;
+using dOSCEngine.Utilities;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace dOSCEngine.Engine.Nodes.Utility
 {
     public class DelayNode : BaseNode
     {
-        public DelayNode(string? SelectedOption = null, Point? position = null) : base(position ?? new Point(0, 0))
+        public DelayNode(Point? position = null) : base(position ?? new Point(0, 0))
         {
-            AddPort(new MultiPort(PortGuids.Port_1, this, true));
-            AddPort(new MultiPort(PortGuids.Port_2, this, false));
-            int.TryParse(SelectedOption, out int result);
-            this.SelectedOption = result == 0? _DefaultValue : result;
+        }
+        public DelayNode(Guid guid, Dictionary<string, dynamic>? properties = null, Point? position = null) : base(guid, properties ?? new(), position ?? new Point(0, 0))
+        {
+            Properties = properties ?? new Dictionary<string, dynamic>();
 
         }
-        public DelayNode(Guid guid, string? SelectedOption = null, Point? position = null) : base(guid, position ?? new Point(0, 0))
+        protected override void Initialize()
         {
             AddPort(new MultiPort(PortGuids.Port_1, this, true));
             AddPort(new MultiPort(PortGuids.Port_2, this, false));
-            int.TryParse(SelectedOption, out int result);
-            this.SelectedOption = result == 0 ? _DefaultValue : result;
+            TryInitializeProperty("DelayTime", (int)100);
+            TryInitializeProperty("DelayTimeUnits", (int)TimeUnits.millisecond);
+            TryInitializeProperty("ShowPercent", false);
+            TryInitializeProperty(PropertyType.Name, "Delay");
+            TryInitializeProperty(PropertyType.Type, GetType().Name.ToString());
         }
+       
+
         [JsonProperty]
         public override string NodeClass => GetType().Name.ToString();
         public override string BlockTypeClass => "numericblock";
-        [JsonProperty]
-        public override string Option => SelectedOption.ToString();
-
-        private static int _DefaultValue => 1000; // ms
-
-        [Range(100,int.MaxValue)]
-        private int _SelectedOption { get; set; } = _DefaultValue; //ms
-        public int SelectedOption
-        {
-            get => _SelectedOption;
-            set
-            {
-                if (Value != null)
-                {
-                    if(value >= 100)
-                    {
-                        _SelectedOption = value;
-                    }
-                    else
-                    {
-                        _SelectedOption = _DefaultValue;
-                    }
-                }
-                else
-                {
-                    _SelectedOption = _DefaultValue;
-                }
-            }
-        }
-
         private bool Delaying = false;
-
+        private DateTime StartTime = DateTime.MinValue;
+        private DateTime EndTime = DateTime.MinValue;
         public override void CalculateValue()
         {
-            if(Delaying == false)
+            if (Delaying == false)
             {
                 var Input = Ports[0];
                 if (Input != null)
@@ -80,16 +52,59 @@ namespace dOSCEngine.Engine.Nodes.Utility
                     }
                 }
             }
+        }
+
+        public string IndicatorToString()
+        {
+            if(CalculateRemainingPercent() == 0)
+            {
+                return "Waiting";
+            }
             else
             {
+                if (GetProperty<bool>("ShowPercent"))
+                {
+                    return $"{CalculateRemainingPercent().ToString("N1")}%";
+                }
+                else
+                {
+                    TimeSpan remainingTime = EndTime - DateTime.Now;
+                    return BeautifyString.BeautifyMilliseconds((int)remainingTime.TotalMilliseconds);
+                }
             }
+            
+        }
+
+        public double CalculateRemainingPercent()
+        {
+            if(Delaying == false)
+            {
+                return 0;
+            }
+            TimeSpan totalTime = EndTime - StartTime;
+            TimeSpan elapsedTime = DateTime.Now - StartTime;
+            TimeSpan remainingTime = EndTime - DateTime.Now;
+
+            // Calculate percentage completion
+            double percentRemaining  = ((remainingTime.TotalMilliseconds / totalTime.TotalMilliseconds) * 100);
+
+            return System.Math.Clamp(percentRemaining, 0.0, 100.0);
+        }
+
+        private int GetDelayTime()
+        {
+            int Delay = GetProperty<int>("DelayTime");
+            int Units = GetProperty<int>("DelayTimeUnits");
+            return System.Math.Clamp(Delay * Units, 1, int.MaxValue);
         }
 
         private async void DelayUpdate(dynamic? Value)
         {
-            await Task.Delay(SelectedOption);
+            StartTime = DateTime.Now;
+            EndTime = DateTime.Now.AddMilliseconds(GetDelayTime());
+            await Task.Delay(GetDelayTime());
             Delaying = false;
-            this.Value = Value;
+            this.Value = Value!;
         }
     }
 }

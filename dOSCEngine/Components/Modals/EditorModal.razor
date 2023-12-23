@@ -1,0 +1,25 @@
+﻿@using dOSCEngine.Engine
+@using dOSCEngine.Services
+
+
+
+<ModalV2 @ref=Modal Title=@GetNodeName() Size="ModalV2.ModalSize.Medium">
+    <Body>
+        @if (SelectedBaseNodeSetting != null && SelectedBaseNode != null)
+        {
+            switch (SelectedBaseNode.GetProperty<string>(PropertyType.Type))
+            {
+                case "osc":
+                    break;
+                case "pulsoid":
+                    break;
+            }
+        }
+    </Body>
+    <Footer>
+        <button form="setting-form" inputmode="button" class="dosc-button primary"> Save </button>
+    </Footer>
+</ModalV2>
+
+
+

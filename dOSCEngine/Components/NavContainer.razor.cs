@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace dOSCEngine.Components
 {
-    public partial class NavContainer
+    public partial class NavContainer : IDisposable
     {
         [Parameter]
         public List<NavItem> Apps { get; set; } = new();
@@ -13,41 +13,62 @@ namespace dOSCEngine.Components
         public NavigationManager? NM { get; set; }
         [Inject]
         public dOSCService? Engine { get; set; }
-        [Parameter]
-        public EventCallback<NavItem> SelectedItemChanged { get; set; }
+
+
+        protected override void OnInitialized()
+        {
+            NM!.LocationChanged += NavContainer_LocationChanged;
+        }
+
+        private void NavContainer_LocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+        {
+            Update();
+        }
 
         protected override void OnAfterRender(bool firstRender)
         {
             if (firstRender)
             {
-                string route = NM.Uri.Replace(NM.BaseUri, "");
-                if (route.ToLower().StartsWith("apps"))
-                {
-                    SelectedItem = Apps.FirstOrDefault(x => x.Name.ToLower() == "apps");
-
-                }
-                else if (route.ToLower().StartsWith("settings"))
-                {
-                    SelectedItem = Apps.FirstOrDefault(x => x.Name.ToLower() == "settings");
-                }
-                else
-                {
-                    SelectedItem = Apps.FirstOrDefault();
-
-                }
-
+                Update();
             }
         }
 
-        private async Task OnNavItemSelected(NavItem item)
+        private void Update()
         {
-            SelectedItem = item;
-            if (SelectedItemChanged.HasDelegate)
+            string route = NM.Uri.Replace(NM.BaseUri, "");
+            if (route.ToLower().StartsWith("apps"))
             {
+                SelectedItem = Apps.FirstOrDefault(x => x.Name.ToLower() == "apps");
 
-                await SelectedItemChanged.InvokeAsync(item);
             }
+            else if (route.ToLower().StartsWith("settings"))
+            {
+                SelectedItem = Apps.FirstOrDefault(x => x.Name.ToLower() == "settings");
+            }
+            else if (route.ToLower().StartsWith("editor"))
+            {
+                SelectedItem = Apps.FirstOrDefault(x => x.Name.ToLower() == "editor");
+            }
+            else
+            {
+                SelectedItem = Apps.FirstOrDefault();
+            }
+            StateHasChanged();
+        }
+
+
+        private void OnNavItemSelected(NavItem item)
+        {
+
+            if (SelectedItem?.Name == item.Name)
+                return;
+            Update();
             NM!.NavigateTo($"{item.Navigation}");
+        }
+
+        public void Dispose()
+        {
+            NM!.LocationChanged -= NavContainer_LocationChanged;
         }
     }
 }
