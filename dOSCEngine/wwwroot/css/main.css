@@ -732,6 +732,7 @@
   flex-direction: column;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
   justify-content: end;
   align-items: center;
 }
@@ -3094,6 +3095,14 @@ label {
   color: #a02d25;
   padding: 2px 0;
 }
+.dosc-form .dosc-form-row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px 10px;
+  width: 100%;
+  align-items: center;
+  justify-items: center;
+}
 .dosc-form .dosc-form-item {
   display: flex;
   flex-direction: column;
@@ -3101,6 +3110,25 @@ label {
   width: 100%;
   border-radius: 6px;
   font-size: 16px;
+}
+.dosc-form .dosc-form-item .validation-message {
+  font-size: 12px;
+}
+.dosc-form .dosc-form-item.centered {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.dosc-form .dosc-form-item .item-row {
+  flex-direction: row;
+  gap: 10px 10px;
+  align-items: center;
+  justify-items: center;
+}
+.dosc-form .dosc-form-item .item-row label {
+  padding-bottom: unset;
 }
 .dosc-form .dosc-form-item label {
   font-weight: 400;
@@ -3131,6 +3159,26 @@ label {
 }
 .dosc-form .dosc-form-item input[type=number], .dosc-form .dosc-form-item textarea[type=number] {
   -moz-appearance: textfield;
+}
+.dosc-form .dosc-form-item input.invalid, .dosc-form .dosc-form-item textarea.invalid {
+  outline: solid 1px rgb(237, 67, 55);
+  box-shadow: 0 0 4px 1px rgb(237, 67, 55);
+}
+.dosc-form .dosc-form-item input[type=radio], .dosc-form .dosc-form-item textarea[type=radio] {
+  width: 16px;
+  height: 16px;
+  border: none;
+  background-color: #232428;
+  border: solid 1px #1d1e23;
+  color: #ffffff;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-bottom: 4px;
+}
+.dosc-form .dosc-form-item input[type=radio]:checked, .dosc-form .dosc-form-item textarea[type=radio]:checked {
+  background-color: #7289da;
+  border: solid 1px #4337ff;
 }
 
 .editform {

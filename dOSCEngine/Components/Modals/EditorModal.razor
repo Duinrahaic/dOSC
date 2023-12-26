@@ -1,17 +1,20 @@
 ﻿@using dOSCEngine.Engine
 @using dOSCEngine.Services
-
+@using dOSCEngine.Engine.Nodes.Utility
+@using dOSCEngine.Engine.Nodes
 
 
 <ModalV2 @ref=Modal Title=@GetNodeName() Size="ModalV2.ModalSize.Medium">
     <Body>
-        @if (SelectedBaseNodeSetting != null && SelectedBaseNode != null)
+        @if (SelectedBaseNode != null)
         {
             switch (SelectedBaseNode.GetProperty<string>(PropertyType.Type))
             {
-                case "osc":
+                case "DelayNode":
+                    <DelayBlockSetting Node="@SelectedBaseNode" Updated=@Updated />
                     break;
-                case "pulsoid":
+                default:
+                    <DefaultBlockSetting Node="@SelectedBaseNode" Updated=@Updated />
                     break;
             }
         }

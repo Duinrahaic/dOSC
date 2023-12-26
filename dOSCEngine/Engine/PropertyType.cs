@@ -13,5 +13,6 @@ namespace dOSCEngine.Engine
         public static string Description => "Description";
         public static string Type => "Type";
         public static string Mode => "Mode";
+        public static string CSSClass => "CSSClass";
     }
 }

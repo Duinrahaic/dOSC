@@ -10,7 +10,6 @@ namespace dOSCEngine.Components.Modals
         [Inject] ServiceBundle? sb { get; set; }
         ModalV2? Modal;
         BaseNode? SelectedBaseNode;
-        BaseNodeSetting? SelectedBaseNodeSetting;
 
         protected override void OnInitialized()
         {
@@ -46,7 +45,10 @@ namespace dOSCEngine.Components.Modals
         }
 
 
-
+        private void Updated()
+        {
+            Modal?.Close();
+        }
 
 
 

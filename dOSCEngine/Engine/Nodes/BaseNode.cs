@@ -4,6 +4,7 @@ using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.Geometry;
 using dOSCEngine.Engine.Ports;
 using dOSCEngine.Utilities;
+using System;
 
 namespace dOSCEngine.Engine.Nodes
 {
@@ -11,7 +12,10 @@ namespace dOSCEngine.Engine.Nodes
     {
         private dynamic _value = null!;
         public event Action<BaseNode>? ValueChanged;
- 
+        public delegate void PropertyChangeUpdate(string PropertyName, dynamic? Value);
+        public event PropertyChangeUpdate? OnPropertyChangeUpdate;
+
+
         protected BaseNode(Point position) : base(position)
         {
             Size = new Size(1, 1);
@@ -58,6 +62,30 @@ namespace dOSCEngine.Engine.Nodes
 
         public bool TryGetProperty<T>(string propertyName, out T value)
         {
+
+            try
+            {
+                if (typeof(T).IsEnum)
+                {
+                    var PropertyValue = Properties[propertyName];
+                    if (Enum.TryParse(PropertyValue, out T result))
+                    {
+                        value = result;
+                        return true;
+                    }
+                    else
+                    {
+                        value = default!;
+                        return false;
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+            
+
             if (Properties.TryGetValue(propertyName, out dynamic? propertyValue))
             {
                 // Note: This assumes that the property with the specified name is of the correct type T
@@ -74,6 +102,16 @@ namespace dOSCEngine.Engine.Nodes
             if (Properties.ContainsKey(propertyName))
             {
                 // Note: This assumes that the property with the specified name is of the correct type T
+
+
+                if(typeof(T).IsEnum)
+                {
+                    var PropertyValue = Properties[propertyName];
+                    if (Enum.TryParse(PropertyValue.ToString(), out T result))
+                    {
+                        return result;
+                    }
+                }
                 return (T)Properties[propertyName];
             }
             else
@@ -85,8 +123,18 @@ namespace dOSCEngine.Engine.Nodes
 
         public void SetProperty<T>(string propertyName, T value)
         {
-            // Note: This assumes that the property with the specified name is of the correct type T
-            Properties[propertyName] = value!;
+
+            if (typeof(T).IsEnum && value != null)
+            {
+                Properties[propertyName] = value.ToString() ;
+
+            }
+            else
+            {
+                // Note: This assumes that the property with the specified name is of the correct type T
+                Properties[propertyName] = value!;
+            }
+            OnPropertyChangeUpdate?.Invoke(propertyName,value);
         }
 
         public bool TryInitializeProperty<T>(string propertyName, T value)

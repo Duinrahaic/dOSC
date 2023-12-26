@@ -8,10 +8,10 @@ namespace dOSCEngine.Engine.Units
 {
     public enum TimeUnits : int
     {
-        millisecond = 1,
-        second = 1000,
-        minute = 60 * second,
-        hour = 60 * minute,
-        day = 24 * hour,
+        Millisecond = 1,
+        Second = 1000,
+        Minute = 60 * Second,
+        Hour = 60 * Minute,
+        Day = 24 * Hour,
     }
 }
