@@ -16,6 +16,9 @@
     <RepositoryType>git</RepositoryType>
     <SignAssembly>False</SignAssembly>
     <ServerGarbageCollection>false</ServerGarbageCollection>
+    <Platforms>AnyCPU;x64</Platforms>
+    <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
+    <CefSharpBuildAction> Content </CefSharpBuildAction>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="DawnCache\**" />
@@ -73,5 +76,14 @@
     <ProjectReference Include="..\dOSCEngine\dOSCEngine.csproj" />
     <ProjectReference Include="..\dOSCHub\dOSCHub.csproj" />
   </ItemGroup>
-
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <CefBinaries Include="$(SolutionDir)CEF\$(UnmanagedPlatform)\*.*" />
+      <LocaleFiles Include="$(SolutionDir)CEF\locales\*.*" />
+      <SubProcessFiles Include="$(SolutionDir)$(UnmanagedPlatform)\$(Configuration)\CefSharp.BrowserSubprocess.exe" />
+    </ItemGroup>
+    <Copy SourceFiles="@(CefBinaries)" DestinationFolder="$(TargetDir)" />
+    <Copy SourceFiles="@(LocaleFiles)" DestinationFolder="$(TargetDir)locales" />
+    <Copy SourceFiles="@(SubProcessFiles)" DestinationFolder="$(TargetDir)" />
+  </Target>
 </Project>
