@@ -1,9 +1,9 @@
 ﻿@if (DisplayValue != null)
 {
-    <span class="diagram-label @LabelPositionClass.ToString()">  
-        @if (IsNumeric)
+    <span class="port-label @LabelPositionClass.ToString()">
+        @if (Utilities.Classifier.IsNumericType(DisplayValue.GetType()))
         {
-            @DisplayValue?.ToString("G5")
+            @DisplayValue?.ToString(StringFormat)
         }
         else
         {

@@ -1,17 +1,17 @@
-﻿@page "/apps/editor/"
-@page "/apps/editor/{AppId:guid}"
+﻿@page "/editor/"
+@page "/editor/{AppId:guid}"
 @using Blazor.Diagrams.Components
-@using dOSC.Components
+@using dOSCEngine.Components
 @using Blazor.Diagrams.Components.Widgets
-@using dOSC.Components.Modals
+@using dOSCEngine.Components.Modals
 @using dOSCEngine.Components.Wiresheet
 @using dOSCEngine.Components.Wiresheet.UI
 @using dOSCEngine.Components.Modals
 @using Microsoft.AspNetCore.Components.Forms
-@if (Wiresheet != null)
+@if (EditorAppLogic != null)
 {
-    <WiresheetToolbar>
-        <ChildContent>
+    <WiresheetToolbarComponent App="EditorAppLogic">
+        <Options>
             <WiresheetToolbarDropdown Title="File" >
                 <WiresheetToolbarDropdownItem Title="Save" OnClick="Save"/>
                 <WiresheetToolbarDropdownItem Title="Revert" OnClick="Revert"/>
@@ -28,81 +28,16 @@
 @*             <WiresheetToolbarDropdown Title="Wiresheet Controls" >
                 <WiresheetToolbarDropdownItem Title="Play/Pause" />
             </WiresheetToolbarDropdown> *@
-            <WiresheetToolbarDropdown Title="Blocks">
-                <WiresheetToolbarDropdownSubmenuItem Title="Connectors">
-                    <WiresheetToolbarDropdownSubmenuItem Title="Activity">
-                        <WiresheetToolbarDropdownItem Title="Pulsoid" OnClick="Pulsoid" />
-                    </WiresheetToolbarDropdownSubmenuItem>
-                    <WiresheetToolbarDropdownSubmenuItem Title="OSC">
-                        <WiresheetToolbarDropdownItem Title="OSC Boolean" OnClick="OSCBoolean" />
-                        <WiresheetToolbarDropdownItem Title="OSC Boolean Read" OnClick="OSCReadBoolean" />
-                        <WiresheetToolbarDropdownItem Title="OSC Float" OnClick="OSCFloat" />
-                        <WiresheetToolbarDropdownItem Title="OSC Float Read" OnClick="OSCReadFloat" />
-                        <WiresheetToolbarDropdownItem Title="OSC Int" OnClick="OSCInt" />
-                        <WiresheetToolbarDropdownItem Title="OSC Int Read" OnClick="OSCReadInt" />
-                    </WiresheetToolbarDropdownSubmenuItem>
-                    <WiresheetToolbarDropdownSubmenuItem Title="VRChat">
-                        <WiresheetToolbarDropdownItem Title="Avatar Parameters Boolean" OnClick="AvatarParameterBoolean" />
-                        <WiresheetToolbarDropdownItem Title="Avatar Parameters Boolean Read" OnClick="AvatarParameterReadBoolean" />
-                        <WiresheetToolbarDropdownItem Title="Avatar Parameters Float" OnClick="AvatarParameterFloat" />
-                        <WiresheetToolbarDropdownItem Title="Avatar Parameters Float Read" OnClick="AvatarParameterReadFloat" />
-                        <WiresheetToolbarDropdownItem Title="Avatar Parameters Int" OnClick="AvatarParameterInt" />
-                        <WiresheetToolbarDropdownItem Title="Avatar Parameters Int Read" OnClick="AvatarParameterReadInt" />
-                        <WiresheetToolbarDropdownItem Title="OSC VRC Avatar Int Read" OnClick="OSCVRCAvatarIntRead" />
-                        <WiresheetToolbarDropdownItem Title="OSC VRC Avatar Float Read" OnClick="OSCVRCAvatarFloatRead" />
-                        <WiresheetToolbarDropdownItem Title="OSC VRC Avatar Boolean Read" OnClick="OSCVRCAvatarBooleanRead" />
-                        <WiresheetToolbarDropdownItem Title="OSC VRC Axis" OnClick="OSCVRCAxis" />
-                        <WiresheetToolbarDropdownItem Title="OSC VRC Button" OnClick="OSCVRCButton" />
-                        <WiresheetToolbarDropdownItem Title="OSC VRC ChatBox" OnClick="OSCVRCChat" />
-                    </WiresheetToolbarDropdownSubmenuItem>
-                </WiresheetToolbarDropdownSubmenuItem>
-                <WiresheetToolbarDropdownSubmenuItem Title="Constants">
-                    <WiresheetToolbarDropdownItem Title="Logic" OnClick="Logic" />
-                    <WiresheetToolbarDropdownItem Title="Numeric" OnClick="Numeric" />
-                </WiresheetToolbarDropdownSubmenuItem>
-                <WiresheetToolbarDropdownSubmenuItem Title="Logic">
-                    <WiresheetToolbarDropdownItem Title="And" OnClick="AndBlock" />
-                    <WiresheetToolbarDropdownItem Title="Equal" OnClick="EqualBlock" />
-                    <WiresheetToolbarDropdownItem Title="Greater Than" OnClick="GreaterThan" />
-                    <WiresheetToolbarDropdownItem Title="Greater Than Equal" OnClick="GreaterThanEqual" />
-                    <WiresheetToolbarDropdownItem Title="Less Than" OnClick="LessThan" />
-                    <WiresheetToolbarDropdownItem Title="Less Than Equal" OnClick="LessThanEqual" />
-                    <WiresheetToolbarDropdownItem Title="Not" OnClick="Not" />
-                    <WiresheetToolbarDropdownItem Title="Not Equal" OnClick="NotEqual" />
-                    <WiresheetToolbarDropdownItem Title="Or" OnClick="Or" />
-                    <WiresheetToolbarDropdownItem Title="XOr" OnClick="XOr" />
-                </WiresheetToolbarDropdownSubmenuItem>
-                <WiresheetToolbarDropdownSubmenuItem Title="Math">
-                    <WiresheetToolbarDropdownItem Title="Absolute" OnClick="Absolute" />
-                    <WiresheetToolbarDropdownItem Title="Add" OnClick="Add" />
-                    <WiresheetToolbarDropdownItem Title="Average" OnClick="Average" />
-                    <WiresheetToolbarDropdownItem Title="Clamp" OnClick="Clamp" />
-                    <WiresheetToolbarDropdownItem Title="Division" OnClick="Divide" />
-                    <WiresheetToolbarDropdownItem Title="Max" OnClick="Max" />
-                    <WiresheetToolbarDropdownItem Title="Min" OnClick="Min" />
-                    <WiresheetToolbarDropdownItem Title="Multiplication" OnClick="Multiply" />
-                    <WiresheetToolbarDropdownItem Title="Negative" OnClick="Negative" />
-                    <WiresheetToolbarDropdownItem Title="Power" OnClick="Power" />
-                    <WiresheetToolbarDropdownItem Title="Rolling Average" OnClick="RollingAverage" />
-                    <WiresheetToolbarDropdownItem Title="Sine" OnClick="Sine" />
-                    <WiresheetToolbarDropdownItem Title="Square Root" OnClick="SquareRoot" />
-                    <WiresheetToolbarDropdownItem Title="Subtract" OnClick="Subtract" />
-                    <WiresheetToolbarDropdownItem Title="Summation" OnClick="Summation" />
-                </WiresheetToolbarDropdownSubmenuItem>
-                <WiresheetToolbarDropdownSubmenuItem Title="Utility">
-                    <WiresheetToolbarDropdownItem Title="Logic Switch" OnClick="LogicSwitch" />
-                    <WiresheetToolbarDropdownItem Title="Numeric Switch" OnClick="NumericSwitch" />
-                </WiresheetToolbarDropdownSubmenuItem>
-            </WiresheetToolbarDropdown>
-        </ChildContent>
-    </WiresheetToolbar>
+        </Options>
+    </WiresheetToolbarComponent>
+            
     <div class="diagram-container" oncontextmenu="return false;">
-    @if (Wiresheet != null)
+    @if (EditorAppLogic != null)
     {
-            <CascadingValue Value="diagram" IsFixed="true">
+            <CascadingValue Value="EditorAppLogic.Data.Diagram" >
             <DiagramCanvas>
                 <Widgets>
-                    <SelectionBoxWidget />
+                    <SelectionBoxWidget  />
                     <GridWidget Size="30" Mode="GridMode.Point" BackgroundColor="#2e3035" />
                 </Widgets>
              </DiagramCanvas>
@@ -112,37 +47,49 @@
     </div>
 }
 
- 
+<EditorModal/>
+
+<NavigationLock OnBeforeInternalNavigation=this.OnLocationChanging ConfirmExternalNavigation=ConfirmExit />
 
 <ModalV2 @ref=SaveModal Title="Save Application">
     <Body>
-        <EditForm id="SubmitForm" Model="Wiresheet" OnValidSubmit="@SaveApp" class="dosc-form">
+        <EditForm id="SubmitForm" Model="EditorAppLogic.Data" OnValidSubmit="@SaveApp" class="dosc-form">
             <DataAnnotationsValidator />
             <div class="dosc-form-item">
-                <label for="inputAppName" class=" ">Name*</label>
-                <ValidationMessage For="@(() => Wiresheet.AppName)" />
-                <InputText @bind-Value=@Wiresheet.AppName id="inputAppName" autocomplete="off" />
+                <label for="inputAppName" class=" ">name<span style="color:red;">*</span></label>
+                <ValidationMessage For="@(() => EditorAppLogic.Data.AppName)" />
+                <InputText @bind-Value=@EditorAppLogic.Data.AppName id="inputAppName" autocomplete="off" />
             </div>
             <div class="dosc-form-item">
                 <label for="inputAppDescription" class=" ">Description</label>
-                <ValidationMessage For="@(() => Wiresheet.AppDescription)" />
-                <InputTextArea @bind-Value=@Wiresheet.AppDescription id="inputAppDescription" rows="12" autocomplete="off" />
+                <ValidationMessage For="@(() => EditorAppLogic.Data.AppDescription)" />
+                <InputTextArea @bind-Value=@EditorAppLogic.Data.AppDescription id="inputAppDescription" rows="12" autocomplete="off" />
             </div>
             
         </EditForm>
     </Body>
     <Footer>
-        <button type="submit" form="SubmitForm" class="dosc-button dosc-button-primary">Save</button>
-        <button type="button" class="dosc-button dosc-button-secondary" @onclick="()=> SaveModal.Close()">Cancel</button>
+        <button type="submit" form="SubmitForm" class="dosc-button dosc-button-primary">@(ConfirmExit ? "Save & Exit" : "Save" )</button>
+        <button type="button" class="dosc-button dosc-button-secondary" @onclick="SaveCancel">Cancel</button>
     </Footer>
 </ModalV2>
 
-<ModalV2 @ref=NodeSettingsModal Title="Node Settings">
+
+<ModalV2 @ref=ExitConfirmationModal Title="Exit" Size="ModalV2.ModalSize.Medium">
     <Body>
-        <h3> Test </h3>
+        <div class="dosc-modal-body-content-alert ">
+
+            <div class="dosc-modal-body-content-alert-icon danger icon-alert-octagon" />
+            <div class="dosc-modal-body-content-alert-content">
+                <div class="dosc-modal-body-content-alert-content-title">Are you sure you want to leave this page?</div>
+                <div class="dosc-modal-body-content-alert-content-subtitle">Leaving this page could result in the loss of changes!</div>
+            </div>
+        </div>
+        
     </Body>
     <Footer>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => NodeSettingsModal.Close()">Cancel</button>
-
+        <button type="button" class="dosc-button dosc-button-secondary" @onclick="ExitConfirmationModal.Close">Cancel</button>
+        <button type="button" class="dosc-button dosc-button-danger" @onclick="ExitNoSave">Exit</button>
+        <button type="button" class="dosc-button dosc-button-primary" @onclick="SaveExit">Save & Exit</button>
     </Footer>
 </ModalV2>

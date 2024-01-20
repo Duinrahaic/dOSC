@@ -5,56 +5,97 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Concurrent;
+using dOSCEngine.Engine;
+using dOSCEngine.Utilities;
 
 namespace dOSCEngine.Services
 {
     public partial class dOSCService : IHostedService
     {
-        private ConcurrentDictionary<DateTime, string> _Log = new ConcurrentDictionary<DateTime, string>(2, capacity:200);
-        public ConcurrentDictionary<DateTime,string> Log => _Log;
         public readonly string Version = "1";
         private readonly ILogger<OSCService> _logger;
-        private readonly OSCService? _OSC;
-        private readonly PulsoidService? _Pulsoid;
-        private List<dOSCWiresheet> _WiresheetMemory = new();
-        public dOSCWiresheet? ActiveWiresheet { get; set; }
-        public BlazorDiagram _diagram { get; set; } = null!;
+        public readonly ServiceBundle? ServiceBundle;
+        private List<AppLogic> _AppMemory = new();
 
-        // Write a subcription event for on wiresheet change
-        public Action<dOSCWiresheet?>? OnWiresheetChange;
+     
 
         public dOSCService(IServiceProvider services)
         {
             _logger = services.GetService<ILogger<OSCService>>()!;
             _logger.LogInformation("Initialized OSCService");
-            _OSC = services.GetService<OSCService>();
-            _Pulsoid = services.GetService<PulsoidService>();
-            LoadWiresheets();
-
-            //_WiresheetMemory.ForEach(w => w.Start());
+            ServiceBundle = services.GetService<ServiceBundle>();
+            var AppData = GetAppData();
+    
+            CompileApps(AppData).ConfigureAwait(true);
         }
 
-        public List<dOSCWiresheet> GetWireSheets()
+        public List<AppLogic> GetApps() => _AppMemory.OrderBy(x=>x.Data.AppName).ToList();
+        public AppLogic? GetAppByID(Guid AppId) => _AppMemory.FirstOrDefault(x => x.AppGuid.Equals(AppId));
+        private List<dOSCDataDTO> GetAppData() => FileSystem.LoadApps() ?? new ();
+
+        public async Task AddApp(AppLogic app)
         {
-            return _WiresheetMemory;
+            if(!_AppMemory.Any(x=>x.AppGuid == app.AppGuid))
+            {
+                _AppMemory.Add(app);
+                app.Save();
+                //await app.Process();
+            }
         }
-
-        public dOSCWiresheet? GetWiresheet(Guid AppId)
+        public void RemoveApp(AppLogic app) => RemoveApp(app.AppGuid);
+        public void RemoveApp(Guid? AppGuid) => RemoveApp(AppGuid.ToString() ?? string.Empty);   
+        public void RemoveApp(string AppGuid)
         {
-            return _WiresheetMemory.FirstOrDefault(x => x.AppGuid.Equals(AppId));
+            AppLogic? app = _AppMemory.FirstOrDefault(x => x.AppGuid.ToString() == AppGuid);
+        
+            if(app != null)
+            {
+                _AppMemory.Remove(app);
+                FileSystem.RemoveApp(app);
+            }
         }
 
-        private void AddLog(DateTime time, string message)
+        public void UpdateApp(AppLogic app)
         {
-            _Log.TryAdd(time, message);
+            AppLogic? appLogic = _AppMemory.FirstOrDefault(x => x.AppGuid == app.AppGuid);
+
+            if(appLogic == null)
+            {
+                _AppMemory.Add(app);
+            }
+            else
+            {
+                _AppMemory.Remove(appLogic);
+                _AppMemory.Add(app);
+            }
+            app.Save();
         }
 
+
+        private async Task CompileApps(List<dOSCDataDTO> PreCompiledApps)
+        {
+            foreach (var app in PreCompiledApps)
+            {
+                await CompileApp(app);
+            }
+        }
+
+        private async Task CompileApp(dOSCDataDTO PreCompiledApp)
+        {
+            try
+            {
+                var CompiledAppData = PreCompiledApp.DeserializeDTO(ServiceBundle!);
+                await AddApp(new AppLogic(CompiledAppData, PreCompiledApp.Enabled ? AppState.Enabled : AppState.Disabled, PreCompiledApp.AutomationEnabled ? AutomationState.Paused : AutomationState.Disabled));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"Unable to Compile app {PreCompiledApp.AppGuid}: {ex}");
+            }
+        }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            
             return Task.CompletedTask;
-
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
@@ -62,7 +103,5 @@ namespace dOSCEngine.Services
             return Task.CompletedTask;
         }
 
-
-        
     }
 }

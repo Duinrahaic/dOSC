@@ -10,10 +10,10 @@ namespace dOSCEngine.Utilities
         public static void Start() => timer.Start();
         public static void Stop() => timer.Stop();
 
-        public static void StartGlobalTimer()
+        public static void Initialize()
         {
             timer.Elapsed += (sender, e) => OnTimerElapsed?.Invoke();
-            timer.Interval = 10;
+            timer.Interval = 100;
             timer.AutoReset = true;
             timer.Start();
         }

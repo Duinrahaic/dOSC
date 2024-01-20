@@ -3,7 +3,7 @@
     "http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5231"
+      "applicationUrl": "https://localhost:5231"
     },
     "http (headless)": {
       "commandName": "Project",

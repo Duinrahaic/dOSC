@@ -113,6 +113,8 @@
                 text-align: center;
                 border-bottom: 1px solid $color-theme-3;
                 padding: 6px 12px;
+                color: $color-full-white;
+
 
                 .dosc-modal-header-title {
                     display: flex;
@@ -146,6 +148,44 @@
                 .dosc-modal-body-content {
                     max-height: 80vh;
                     overflow-y: auto;
+
+                    .dosc-modal-body-content-alert {
+                        display: flex;
+                        flex-direction: row;
+                        padding: 8px 16px;
+
+                        .dosc-modal-body-content-alert-icon {
+                            font-size: 80px;
+
+                            &.danger {
+                                color: $color-danger;
+                            }
+
+                            &.info {
+                                color: $color-primary;
+                            }
+                        }
+
+                        .dosc-modal-body-content-alert-content {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            padding-left: 12px;
+                            user-select: none;
+
+                            .dosc-modal-body-content-alert-content-title {
+                                font-weight: 800;
+                                font-size: 23px;
+                                color: $color-full-white;
+                            }
+
+                            .dosc-modal-body-content-alert-content-subtitle {
+                                color: $color-titlebar-textcolor;
+                                font-weight: 200;
+                                font-size: 16px;
+                            }
+                        }
+                    }
                 }
             }
 

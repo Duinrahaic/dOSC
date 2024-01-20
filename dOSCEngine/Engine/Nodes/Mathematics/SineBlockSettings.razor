@@ -1,0 +1,76 @@
+﻿@using System.ComponentModel.DataAnnotations;
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel;
+@using dOSCEngine.Components.UI
+@using dOSCEngine.Engine.Units
+@using dOSCEngine.Utilities;
+
+<NodePropertyEditor Setting="@Setting" OnValidSubmit="Update">
+    <Fields>
+        @if (Setting != null)
+        {
+            <hr />
+            <div class="dosc-form-item">
+                <label>Amplitude: <span style="color:red;">*</span></label>
+                <ValidationMessage For="@(() => Setting.Amplitude)" />
+                <InputNumber type="number" placeholder="1" @bind-Value=@Setting.Amplitude />
+            </div>
+            <div class="dosc-form-item">
+                <label>Frequency: <span style="color:red;">*</span></label>
+                <ValidationMessage For="@(() => Setting.Frequency)" />
+                <InputNumber type="number" placeholder="1" @bind-Value=@Setting.Frequency />
+            </div>
+
+        }
+    </Fields>
+</NodePropertyEditor>
+
+
+
+@code {
+    [CascadingParameter]
+    public BaseNode? Node { get; set; }
+    private NodeSetting? Setting;
+
+    [Parameter] public EventCallback Updated { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (Node != null)
+        {
+            Setting = new NodeSetting(Node);
+        }
+    }
+
+
+    private class NodeSetting : BaseNodeSetting
+    {
+        [Required]
+        public double Amplitude { get; set; } = 1.0;
+        [Required]
+        public double Frequency { get; set; } = 1.0;
+        public NodeSetting(BaseNode Node)
+        {
+            Amplitude = Node.Properties.GetProperty<double>(EntityPropertyEnum.Amplitude);
+            Frequency = Node.Properties.GetProperty<double>(EntityPropertyEnum.Frequency);
+        }
+    }
+
+    public void Update(BaseNodeSetting Setting)
+    {
+        var UpdatedSettings = (NodeSetting)Setting;
+
+        if (Node != null)
+        {
+            Node.Properties.SetProperty(EntityPropertyEnum.Amplitude, UpdatedSettings.Amplitude);
+            Node.Properties.SetProperty(EntityPropertyEnum.Frequency, UpdatedSettings.Frequency);
+            Node.DisplayName = UpdatedSettings.DisplayName;
+        }
+
+        if (Updated.HasDelegate)
+        {
+            Updated.InvokeAsync();
+        }
+    }
+
+}

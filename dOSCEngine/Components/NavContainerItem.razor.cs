@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using MouseEventArgs = Microsoft.AspNetCore.Components.Web.MouseEventArgs;
 
 namespace dOSCEngine.Components
 {
@@ -33,35 +34,35 @@ namespace dOSCEngine.Components
             List<string> Classes = new();
             if (Visible)
             {
-                switch (Item?.Type)
-                {
-                    case NavItemType.App:
-                        Classes.Add("purple-app");
-                        break;
-                    case NavItemType.Home:
-                        Classes.Add("green-app");
-                        break;
-                    case NavItemType.Repo:
-                        Classes.Add("pink-app");
-                        break;
-                    case NavItemType.Settings:
-                        Classes.Add("purple-app");
-                        break;
+                //switch (Item?.Type)
+                //{
+                //	case NavItemType.App:
+                //		Classes.Add("purple-app");
+                //		break;
+                //	case NavItemType.Home:
+                //		Classes.Add("green-app");
+                //		break;
+                //	case NavItemType.Repo:
+                //		Classes.Add("pink-app");
+                //                    break;
+                //	case NavItemType.Settings:
+                //		Classes.Add("purple-app");
+                //                    break;
 
-                }
+                //}
                 if (IsActive)
                 {
-                    Classes.Add("squircle-active");
+                    Classes.Add("active");
                 }
                 else
                 {
-                    Classes.Add("squircle");
+                    Classes.Add("");
                 }
             }
             else
             {
-                Classes.Add("squircle");
-                Classes.Add("purple-app");
+                //Classes.Add("squircle");
+                //Classes.Add("purple-app");
             }
             return string.Join(" ", Classes);
         }

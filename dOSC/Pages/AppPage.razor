@@ -1,10 +1,10 @@
 ﻿@page "/apps"
 @page "/apps/{AppId:guid}"
 @using Microsoft.AspNetCore.Components.Web.Virtualization
-@using dOSC.Components.UI.App
-@using global::dOSC.Components.UI
-@using global::dOSC.Components.Modals
-@using Microsoft.AspNetCore.Components.Forms;
+ 
+@using Microsoft.AspNetCore.Components.Forms
+@using dOSCEngine.Components.UI.App
+@using dOSCEngine.Components.Modals
 
 <div class="app-container">
     <div class="header">
@@ -24,13 +24,13 @@
             </div>
         </div> *@
     </div>
-@*     <AppPageNavigationComponent @bind-TabNames="NavTabs" @bind-ActiveTab="ActiveTab" />
- *@    <div class="app-list">
+@*     <AppPageNavigationComponent @bind-Tabnames="NavTabs" @bind-ActiveTab="ActiveTab" />
+ *@<div class="app-list">
         <div class="app-list-container">
             @{
-                foreach(var app in Wiresheets)
+                foreach(var app in Apps)
                 {
-                    <AppProfileItem dOSCWiresheet="app" OnPlayPause="Save" OnShowSettings="ShowSettings" />
+                    <AppProfileItem App="app" OnPlayPause="Save" OnShowSettings="ShowSettings" />
                 }
             }
             <div class="new-item-app" >
@@ -59,7 +59,7 @@
  Modals
 *@
 
-<SidePanelBase @ref=AppSettingsPanel dOSCWiresheet="Wiresheet" OnUpdate="OnUpdated" />
+<SidePanelBase @ref=AppSettingsPanel App="SelectedApp" OnUpdate="OnUpdated" />
 
 <ModalV2 @ref=UploadAppModal Title="Upload Application">
     <Body>

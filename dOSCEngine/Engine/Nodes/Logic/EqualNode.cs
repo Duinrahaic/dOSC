@@ -1,44 +1,29 @@
 ﻿using Blazor.Diagrams.Core.Geometry;
 using dOSCEngine.Services.Connectors.OSC;
-using dOSCEngine.Engine.Nodes;
 using dOSCEngine.Engine.Ports;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using static dOSCEngine.Services.Connectors.OSC.OSCService;
 using Blazor.Diagrams.Core.Anchors;
+using System;
+using System.Collections.Concurrent;
 
 namespace dOSCEngine.Engine.Nodes.Logic
 {
     public class EqualNode : BaseNode
     {
-        public EqualNode(Point? position = null) : base(position ?? new Point(0, 0))
+        public EqualNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
-            _PortA = new MultiPort(PortGuids.Port_1, this, true);
-            _PortB = new MultiPort(PortGuids.Port_2, this, true);
-            AddPort(_PortA);
-            AddPort(_PortB);
-            AddPort(new LogicPort(PortGuids.Port_3, this, false));
+            AddPort(new MultiPort(PortGuids.Port_1, this, true, name: "Value A" ));
+            AddPort(new MultiPort(PortGuids.Port_2, this, true, name: "Value B" ));
+            AddPort(new LogicPort(PortGuids.Port_3, this, false, name: "Output" ));
+            SubscribeToAllPortTypeChanges();
         }
-        public EqualNode(Guid guid, Point? position = null) : base(guid, position ?? new Point(0, 0))
-        {
-            _PortA = new MultiPort(PortGuids.Port_1, this, true);
-            _PortB = new MultiPort(PortGuids.Port_2, this, true);
-            AddPort(_PortA);
-            AddPort(_PortB);
-            AddPort(new LogicPort(PortGuids.Port_3, this, false));
-        }
-        [JsonProperty]
-        public override string NodeClass => GetType().Name.ToString();
-        private MultiPort _PortA;
-        private MultiPort _PortB;
-        private string _PortAType = "multi";
-        private string _PortBType = "multi";
-        public string PortAType => _PortAType;
-        public string PortBType => _PortBType;
-        public override string BlockTypeClass => "logicblock";
 
+        public override string Name => "Equal";
+        public override string Category => NodeCategoryType.Logic;
+        public override string TextIcon => "=";
 
-        
 
 
         public override void CalculateValue()
@@ -46,8 +31,6 @@ namespace dOSCEngine.Engine.Nodes.Logic
             var inA = Ports[0];
             var inB = Ports[1];
 
-            ConfigurePortAType();
-            ConfigurePortBType();
             if (inA.Links.Any() && inB.Links.Any())
             {
                 var l1 = inA.Links.First();
@@ -55,80 +38,40 @@ namespace dOSCEngine.Engine.Nodes.Logic
 
                 var valA = GetInputValue(inA, l1);
                 var valB = GetInputValue(inB, l2);
-                if(valA != null && valB != null)
+                if (valA != null && valB != null)
                 {
-                    if (valA.GetType() == valB.GetType())
+
+                    if (GetCurrentMultiPortType() == PortType.Logic)
                     {
-                        Value = valA == valB;
-                        ErrorMessage = string.Empty;
-                        Error = false;
+                        Value = Convert.ToBoolean(valA) && Convert.ToBoolean(valB);
+                    }
+                    else if (GetCurrentMultiPortType()== PortType.String)
+                    {
+                        string strA = Convert.ToString(valA) ?? string.Empty;
+                        string strB = Convert.ToString(valB) ?? string.Empty;
+                        Value = strA.Equals(strB);
+                    }
+                    else if(GetCurrentMultiPortType() == PortType.Numeric)
+                    {
+                        Value = Convert.ToDouble(valA) == Convert.ToDouble(valB);
                     }
                     else
                     {
-                        ErrorMessage = "Cannot compare two different data types!";
-                        Error = true;
+                        SetValue(null!, false);
                     }
+                     
                 }
             }
             else
             {
-                Error = false;
-                ErrorMessage = string.Empty;
                 Value = false;
             }
         }
 
-
-
-        private void ConfigurePortAType()
+        public override void OnDispose()
         {
-            var inA = Ports[0];
-            if (inA.Links.Any())
-            {
-                var l1 = inA.Links.First();
-                var sp = (l1.Source as SinglePortAnchor)!;
-                var tp = (l1.Source as SinglePortAnchor)!;
-                var p = sp.Port.Parent.Id == this.Id ? tp : sp;
-                var port = (p.Port as BasePort);
-                if (port is MultiPort)
-                    _PortAType = "multi";
-                if (port is LogicPort)
-                    _PortAType = "logic";
-                if (port is NumericPort)
-                    _PortAType = "numeric";
-                if (port is StringPort)
-                    _PortAType = "string";
-            }
-            else
-            {
-                _PortAType = "multi";
-            }
-            inA.Refresh();
-        }
-        private void ConfigurePortBType()
-        {
-            var inB = Ports[1];
-            if (inB.Links.Any())
-            {
-                var l1 = inB.Links.First();
-                var sp = (l1.Source as SinglePortAnchor)!;
-                var tp = (l1.Target as SinglePortAnchor)!;
-                var p = sp.Port.Parent.Id == this.Id ? tp : sp;
-                var port = (p.Port as BasePort);
-                if (port is MultiPort)
-                    _PortBType = "multi";
-                if (port is LogicPort)
-                    _PortBType = "logic";
-                if (port is NumericPort)
-                    _PortBType = "numeric";
-                if (port is StringPort)
-                    _PortBType = "string";
-            }
-            else
-            {
-                _PortBType = "multi";
-            }
-            inB.Refresh();
+            UnsubscribeToAllPortTypeChanged();
+            base.OnDispose();
         }
     }
 }

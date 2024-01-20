@@ -1,31 +1,23 @@
 ﻿using Blazor.Diagrams.Core.Geometry;
 using dOSCEngine.Engine.Ports;
 using Newtonsoft.Json;
+using System.Collections.Concurrent;
 
 namespace dOSCEngine.Engine.Nodes.Utility
 {
     public class NumericSwitchNode : BaseNode
     {
-        public NumericSwitchNode(Point? position = null) : base(position ?? new Point(0, 0))
+        public NumericSwitchNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
-            AddPort(new LogicPort(PortGuids.Port_1, this, true));
-            AddPort(new NumericPort(PortGuids.Port_2, this, true));
-            AddPort(new NumericPort(PortGuids.Port_3, this, true));
-            AddPort(new NumericPort(PortGuids.Port_4, this, false));
+            AddPort(new NumericPort(PortGuids.Port_1, this, true, name: "Switch"));
+            AddPort(new MultiPort(PortGuids.Port_2, this, true, name: "Case 1"));
+            AddPort(new MultiPort(PortGuids.Port_3, this, true, name: "Case 2"));
+            AddPort(new MultiPort(PortGuids.PortGuidGenerator(1000), this, false, name: "Output"));
+            SubscribeToAllPortTypeChanges();
         }
-        public NumericSwitchNode(Guid guid, Point? position = null) : base(guid, position ?? new Point(0, 0))
-        {
-            AddPort(new LogicPort(PortGuids.Port_1, this, true));
-            AddPort(new NumericPort(PortGuids.Port_2, this, true));
-            AddPort(new NumericPort(PortGuids.Port_3, this, true));
-            AddPort(new NumericPort(PortGuids.Port_4, this, false));
-        }
-
-        [JsonProperty]
-        public override string NodeClass => GetType().Name.ToString();
-        public override string BlockTypeClass => "numericblock";
-
-
+        public override string Name => "Numeric Switch";
+        public override string Category => NodeCategoryType.Utilities;
+        public override string Icon => "icon-circuit-board";
         public override void CalculateValue()
         {
             var inSwitch = Ports[0];
@@ -45,7 +37,7 @@ namespace dOSCEngine.Engine.Nodes.Utility
                 }
                 catch
                 {
-                    
+
                 }
             }
             if (inInputB.Links.Any())
@@ -57,7 +49,7 @@ namespace dOSCEngine.Engine.Nodes.Utility
                 }
                 catch
                 {
-                    
+
                 }
             }
 
@@ -68,7 +60,7 @@ namespace dOSCEngine.Engine.Nodes.Utility
                 try
                 {
                     var SwitchVal = GetInputValue(inSwitch, lSwitch);
-                    if(SwitchVal != null)
+                    if (SwitchVal != null)
                     {
                         if (SwitchVal)
                         {
@@ -79,13 +71,13 @@ namespace dOSCEngine.Engine.Nodes.Utility
                             Value = ValB;
                         }
                     }
-                    
+
                 }
                 catch
                 {
-                    
+
                 }
-                
+
             }
             else
             {
@@ -95,6 +87,10 @@ namespace dOSCEngine.Engine.Nodes.Utility
         }
 
 
-
+        public override void OnDispose()
+        {
+            UnsubscribeToAllPortTypeChanged();
+            base.OnDispose();
+        }
     }
 }

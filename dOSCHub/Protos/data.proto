@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option csharp_namespace = "dOSCHub";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+package data;
+
+service Data {
+  rpc WriteData (DataWriteRequest) returns (SuccessMessage);
+  rpc ReadData (DataRadRequest) returns (SuccessMessage);
+  rpc GetTypes (google.protobuf.Empty) returns (Types);
+}
+
+message DataWriteRequest {
+  string name = 1;
+  string data = 2;
+}
+
+message DataRadRequest {
+  string name = 1;
+}
+
+message Types {
+  repeated string types = 1;
+}
+
+message SuccessMessage {
+  google.protobuf.Timestamp timestamp = 1;
+  string message = 2;
+  bool success = 3;
+  optional string data = 4;
+}

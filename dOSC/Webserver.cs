@@ -5,6 +5,10 @@ using Serilog;
 using dOSCEngine.Utilities;
 using System.Net.Sockets;
 using System.Net;
+using dOSCHub;
+using dOSCHub.Services;
+using Grpc.Core;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace dOSC
 {
@@ -27,20 +31,37 @@ namespace dOSC
 
         public static void Start(string[] args)
         {
+            
+            
+            
             var builder = WebApplication.CreateBuilder();
 
             builder.WebHost.UseStaticWebAssets();
-
+            
+            Server server = new Server
+            {
+                Services = { Greeter.BindService(new GreeterService()),Data.BindService(new DataService()) },
+                Ports = { new ServerPort("localhost", 5001, ServerCredentials.Insecure) }
+            };
+            builder.Services.AddSingleton<Server>(server);
+            builder.Services.AddSingleton<IHostedService, dOSCHubService>();
+            
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
 
             builder.Services.AddSingleton<OSCService>();
             builder.Services.AddSingleton<dOSCService>();
             builder.Services.AddSingleton<PulsoidService>();
+            builder.Services.AddSingleton<ServiceBundle>();
+            
             builder.Services.AddHostedService(sp => sp.GetRequiredService<OSCService>());
             builder.Services.AddHostedService(sp => sp.GetRequiredService<PulsoidService>());
             builder.Services.AddHostedService(sp => sp.GetRequiredService<dOSCService>());
-
+            
+            
+            
+            GlobalTimer.Initialize();
+            VisualUpdateTimer.Initialize();
             var Serilog = new LoggerConfiguration()
                 .WriteTo.Async(writeTo => writeTo.Console(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff}[{Level}] {Message}{NewLine}{Exception}"))
                 .WriteTo.Async(writeTo => writeTo.File(
@@ -70,10 +91,8 @@ namespace dOSC
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
 
             app.UseStaticFiles();
-
             app.UseRouting();
             app.MapBlazorHub();
             app.MapFallbackToPage("/_Host");

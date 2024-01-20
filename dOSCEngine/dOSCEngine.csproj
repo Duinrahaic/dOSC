@@ -13,10 +13,12 @@
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
+
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blazor-ApexCharts" Version="2.1.0" />
+    <PackageReference Include="Blazor-ApexCharts" Version="2.2.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.14" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.14" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.14" />
@@ -29,14 +31,12 @@
     <PackageReference Include="XSNotifications" Version="0.1.2" />
     <PackageReference Include="Z.Blazor.Diagrams" Version="3.0.1" />
     <PackageReference Include="Z.Blazor.Diagrams.Algorithms" Version="3.0.1" />
+    <PackageReference Include="Z.Blazor.Diagrams.Core" Version="3.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Engine\Blocks\Conversion\" />
-    <Folder Include="Engine\Blocks\Latch\" />
-    <Folder Include="Engine\Blocks\Trigger\" />
-    <Folder Include="Engine\Blocks\Writable\" />
     <Folder Include="Services\Connectors\Game\" />
+    <Folder Include="Services\gRPC\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +56,15 @@
     <Content Update="Components\AppNav.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
+    <Content Update="Components\Form\SettingsPages\DOSCSettings.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\Form\SettingsPages\OSCSettings.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\Form\SettingsPages\PulsoidSettings.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
     <Content Update="Components\Inputs\NumericInput.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
@@ -68,10 +77,46 @@
     <Content Update="Components\Modals\ModalBase.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
+    <Content Update="Components\Modals\ModalV2.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\Modals\SidePanelBase.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
     <Content Update="Components\NavContainer.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
     <Content Update="Components\NavContainerItem.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\UI\App\AppDetailItem.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\UI\App\AppPageNavigationComponent.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\UI\App\AppPageNavigationItem.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\UI\App\AppProfileItem.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\UI\Setting\GeneralSettingsPage.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\UI\Setting\SettingNavItemComponent.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\UI\Setting\StatusPill.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\UI\Table\ConnectorTable.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\UI\Table\SettingsTableRow.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\UI\UploadWiresheetFile.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
     <Content Update="Components\Wiresheet\PlayPauseButton.razor">

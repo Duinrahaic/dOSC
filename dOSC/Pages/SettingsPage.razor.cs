@@ -1,10 +1,4 @@
-﻿using dOSC.Components.UI.Table;
-using dOSCEngine.Services;
-using dOSCEngine.Services.Connectors.Activity.Pulsoid;
-using dOSCEngine.Services.User;
-using dOSCEngine.Utilities;
-using Microsoft.AspNetCore.Components;
-using System;
+﻿using dOSCEngine.Components.UI.Table;
 
 namespace dOSC.Pages
 {

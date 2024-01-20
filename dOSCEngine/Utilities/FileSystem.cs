@@ -1,4 +1,5 @@
-﻿using dOSCEngine.Services;
+﻿using dOSCEngine.Engine;
+using dOSCEngine.Services;
 using dOSCEngine.Services.User;
 using Microsoft.JSInterop;
 using Microsoft.Win32;
@@ -82,73 +83,86 @@ namespace dOSCEngine.Utilities
             string json = File.ReadAllText(Path.Combine(SettingsFolder, "settings.json"));
             return JsonConvert.DeserializeObject<UserSettings>(json);
         }
-        public static void RemoveWiresheet(Guid AppGuid)
+
+        
+        
+
+        public async static Task DownloadWiresheet(IJSRuntime js, dOSCData wiresheet)
+        {
+			await js.InvokeVoidAsync("GenerateToasterMessage", "Sent app to to downloads folder!");
+			string json = JsonConvert.SerializeObject(wiresheet.GetDTO(), Formatting.Indented);
+            string filename = $"wiresheet-{wiresheet.AppGuid}.json";
+            byte[] data = Encoding.UTF8.GetBytes(json);
+            await js.InvokeAsync<object>( "saveAsFile", filename, Convert.ToBase64String(data));
+        }
+
+
+
+        // App Logic  
+
+        public static void SaveApp(AppLogic app)
+        {
+            string json = JsonConvert.SerializeObject(app.GetDTO(), Formatting.Indented);
+            File.WriteAllText(Path.Combine(WiresheetFolder, $"app-{app.Data.AppGuid}.json"), json);
+        }
+        private static void SaveApp(dOSCDataDTO app)
+        {
+            string json = JsonConvert.SerializeObject(app, Formatting.Indented);
+            File.WriteAllText(Path.Combine(WiresheetFolder, $"app-{app.AppGuid}.json"), json);
+        }
+        public static void RemoveApp(AppLogic app) => RemoveApp(app.AppGuid.ToString() ?? string.Empty);
+        public static void RemoveApp(dOSCData wiresheet) => RemoveApp(wiresheet.AppGuid);
+        public static void RemoveApp(Guid AppGuid) => RemoveApp(AppGuid.ToString());
+        public static void RemoveApp(string AppGuid)
+        {
+            if (File.Exists(Path.Combine(WiresheetFolder, $"app-{AppGuid}.json")))
+            {
+                File.Delete(Path.Combine(WiresheetFolder, $"app-{AppGuid}.json"));
+            }
+        }
+        public static List<dOSCDataDTO> LoadApps()
+        {
+            List<dOSCDataDTO> s = new();
+            // Get all files in the wiresheet folder
+            string[] files = Directory.GetFiles(WiresheetFolder);
+            foreach (var f in files)
+            {
+                string json = File.ReadAllText(f);
+                try
+                {
+                    var obj = JsonConvert.DeserializeObject<dOSCDataDTO>(json);
+                    if (obj != null)
+                    {
+                        s.Add(obj);
+                        if (f.Contains("wiresheet"))
+                        {
+                            SaveApp(obj);
+                            RemoveWiresheet(obj.AppGuid);
+                        }
+                    }
+                }
+                catch
+                {
+
+                }
+                
+            }
+            return s;
+        }
+        private static void RemoveWiresheet(Guid AppGuid)
         {
             if (File.Exists(Path.Combine(WiresheetFolder, $"wiresheet-{AppGuid}.json")))
             {
                 File.Delete(Path.Combine(WiresheetFolder, $"wiresheet-{AppGuid}.json"));
             }
         }
-        public static void RemoveWiresheet(dOSCWiresheet wiresheet)
+        public async static Task DownloadApp(this IJSRuntime js, AppLogic AppLogic)
         {
-            if (File.Exists(Path.Combine(WiresheetFolder, $"wiresheet-{wiresheet.AppGuid}.json")))
-            {
-                File.Delete(Path.Combine(WiresheetFolder, $"wiresheet-{wiresheet.AppGuid}.json"));
-            }
-        }
-        public static void SaveWiresheet(dOSCWiresheet wiresheet)
-        {
-            var options = new JsonSerializerOptions
-            {
-                IncludeFields = true,
-            };
-            string json = JsonConvert.SerializeObject(wiresheet.GetDTO(), Formatting.Indented);
-            File.WriteAllText(Path.Combine(WiresheetFolder, $"wiresheet-{wiresheet.AppGuid}.json"), json);
-        }
-        public static dOSCWiresheetDTO? LoadWiresheet(Guid AppGuid)
-        {
-            var options = new JsonSerializerSettings
-            {
-
-            };
-            string json = File.ReadAllText(Path.Combine(WiresheetFolder, $"wiresheet-{AppGuid}.json"));
-            return JsonConvert.DeserializeObject<dOSCWiresheetDTO>(json, options);
-        }
-        public static List<dOSCWiresheetDTO> LoadWiresheets()
-        {
-            var options = new JsonSerializerSettings
-            {
-
-            };
-            List<dOSCWiresheetDTO> s = new();
-            // Get all files in the wiresheet folder
-            string[] files = Directory.GetFiles(WiresheetFolder);
-            foreach (var f in files)
-            {
-                string json = File.ReadAllText(f);
-                var obj = JsonConvert.DeserializeObject<dOSCWiresheetDTO>(json, options);
-                if (obj != null)
-                {
-                    s.Add(obj);
-                }
-            }
-            return s;
-        }
-
-        public async static Task DownloadWiresheet(IJSRuntime js, dOSCWiresheet wiresheet)
-        {
-            var options = new JsonSerializerOptions
-            {
-                IncludeFields = true,
-            };
-			await js.InvokeVoidAsync("GenerateToasterMessage", "Sent app to to downloads folder!");
-			string json = JsonConvert.SerializeObject(wiresheet.GetDTO(), Formatting.Indented);
-            string filename = $"wiresheet-{wiresheet.AppGuid}.json";
+            await js.InvokeVoidAsync("GenerateToasterMessage", "Sent app to to downloads folder!");
+            string json = JsonConvert.SerializeObject(AppLogic.Data.GetDTO(AppLogic.IsEnabled(), AppLogic.IsRunning()), Formatting.Indented);
+            string filename = $"app-{AppLogic.AppGuid}.json";
             byte[] data = Encoding.UTF8.GetBytes(json);
-            await js.InvokeAsync<object>(
-                "saveAsFile",
-                filename,
-                Convert.ToBase64String(data));
+            await js.InvokeAsync<object>("saveAsFile", filename, Convert.ToBase64String(data));
         }
     }
 }

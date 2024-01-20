@@ -1,4 +1,6 @@
-﻿@keyframes slideInFromLeft {
+﻿@import "_variables.scss";
+
+@keyframes slideInFromLeft {
     0% {
 
         transform: translateX(-100%);
@@ -137,5 +139,35 @@
 
     to {
         transform: translateX(calc(-100% - var(--gap)));
+    }
+}
+@-webkit-keyframes error {
+    0% {
+        -webkit-box-shadow: 0 0 0 0 $color-error-60;
+    }
+
+    70% {
+        -webkit-box-shadow: 0 0 0 10px $color-error-0;
+    }
+
+    100% {
+        -webkit-box-shadow: 0 0 0 0 $color-error-0;
+    }
+}
+
+@keyframes error {
+    0% {
+        -moz-box-shadow: 0 0 0 0 $color-error-60;
+        box-shadow: 0 0 0 0 $color-error-60;
+    }
+
+    70% {
+        -moz-box-shadow: 0 0 0 10px $color-error-0;
+        box-shadow: 0 0 0 10px $color-error-0;
+    }
+
+    100% {
+        -moz-box-shadow: 0 0 0 0 $color-error-0;
+        box-shadow: 0 0 0 0 $color-error-0;
     }
 }
