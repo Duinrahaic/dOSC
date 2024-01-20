@@ -4,6 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,7 @@
   <ItemGroup>
     <PackageReference Include="Blazor-ApexCharts" Version="2.2.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
+    <PackageReference Include="Markdig" Version="0.34.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.14" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.14" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.14" />

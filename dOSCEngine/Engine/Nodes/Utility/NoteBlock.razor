@@ -1,4 +1,5 @@
 ﻿@using dOSCEngine.Services
+@using Markdig
 <div @key="@Node" id="@Node.Guid" class="block-note-container @Node.NoteColor @(Node.Selected ? "selected" : string.Empty)">
       <div class="block-container-header">    
             @if (string.IsNullOrEmpty(Node.TextIcon))
@@ -18,13 +19,14 @@
         </div>
         <div class="block-container-body-container">
             <div class="note-container" @key="@Node.Note">
-                @Node.Note
+                @((MarkupString) Node.MarkdownContent)
             </div>
         </div>
 </div>
 @code {
     [Parameter] public NoteNode Node { get; set; } = null!;
     [Inject] public ServiceBundle? SB { get; set; }
+    
     
     private void OpenSettings()
     {

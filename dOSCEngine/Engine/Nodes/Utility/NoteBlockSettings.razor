@@ -13,6 +13,8 @@
             <hr />
             <div class="dosc-form-item">
                 <label> Note: </label>
+                <label class="subtitle">For information on markdown read <a href="" @onclick:preventDefault @onclick="OpenHelp">here</a>.</label>
+
                 <ValidationMessage For="@(() => Setting.Note)" />
                 <AutoResizingNoteArea @bind-Value="@Setting.Note"/>
             </div>
@@ -105,6 +107,11 @@
         {
             Updated.InvokeAsync();
         }
+    }
+    
+    private void OpenHelp()
+    {
+        WebUtilities.OpenUrl("https://github.com/xoofx/markdig/blob/master/src/Markdig.Tests/Specs/readme.md");
     }
 
 }

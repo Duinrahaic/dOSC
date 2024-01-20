@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using Blazor.Diagrams.Core.Geometry;
+using Markdig;
 
 namespace dOSCEngine.Engine.Nodes.Utility;
 
@@ -30,6 +31,8 @@ public class NoteNode: BaseNode
     }
     public string Note;
     public string NoteColor;
+
+    public string MarkdownContent => Markdown.ToHtml(Note);
     public override string Name => "Note";
     public override string Category => NodeCategoryType.Utilities;
     public override string Icon => "icon-sticky-note";
