@@ -29,7 +29,7 @@
                         {
                             <EditForm id="detailForm" Model="App.Data" class="editform" OnValidSubmit="OnValidSubmit">
                                 <div class="content-item">
-                                    <label>Name</label>
+                                    <label>name</label>
                                     <ValidationMessage For="@(() => App.Data.AppName)" autocomplete="off" />
                                     <InputText @bind-Value=App.Data.AppName />
                                 </div>
@@ -40,7 +40,7 @@
                                 @*                             
                                     <div class="content-item">
                                         <label>Avatar Tigger Ids</label>
-                                        <InputTextArea rows="12" @bind-Value=dOSCWiresheet. />
+                                        <ValueTextArea rows="12" @bind-Value=dOSCWiresheet. />
                                     </div> 
                                 *@
                             </EditForm>

@@ -64,6 +64,7 @@ namespace dOSC.Pages
                 if(EditorAppLogic != null)
                 {
                     await EditorAppLogic.Load();
+                    
                 }
 
             }
@@ -183,9 +184,9 @@ namespace dOSC.Pages
             }
             else
             {
-                if(ReferencedAppLogic == null) return;
-                ReferencedAppLogic.EditApp(false);
-                ReferencedAppLogic.Process();
+                ReferencedAppLogic?.EditApp(false);
+                ReferencedAppLogic?.Process();
+                EditorAppLogic?.Dispose();
             }
         }
         

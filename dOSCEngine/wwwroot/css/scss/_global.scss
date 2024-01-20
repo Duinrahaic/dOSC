@@ -70,16 +70,39 @@
     position: relative;
     border-radius: 12px;
     overflow: hidden;
+    transition: ease-in-out 250ms;
+
+    &.square {
+        border-radius: 0;
+
+        .dOSC-progress-bar-indicator {
+            border-radius: 0;
+        }
+    }
+
+    &.green-indicator {
+        .dOSC-progress-bar-indicator{
+            background-color: $color-green-lighter;
+        }
+    }
 
     .dOSC-progress-bar-indicator {
         height: inherit;
         width: 100%;
         background-color: $color-blue-lighter;
-        transition: width ease-in-out 100ms;
         border-radius: 12px;
+
     }
 }
 
+.dOSC-queue-container{
+    display: flex;
+    width: 100%; 
+    flex-direction: row; 
+    flex-wrap: nowrap; 
+    gap: 4px 4px;
+    height: 4px;
+ }
 
 
 

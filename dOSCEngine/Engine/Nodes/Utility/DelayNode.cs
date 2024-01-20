@@ -2,67 +2,115 @@
 using dOSCEngine.Engine.Ports;
 using dOSCEngine.Engine.Units;
 using dOSCEngine.Utilities;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
 
 namespace dOSCEngine.Engine.Nodes.Utility
 {
-    public class DelayNode : BaseNode, IDisposable
+    public class DelayNode : BaseNode
     {
-        public DelayNode(Point? position = null) : base(position ?? new Point(0, 0))
+        public DelayNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
-        }
-        public DelayNode(Guid guid, Dictionary<string, dynamic>? properties = null, Point? position = null) : base(guid, properties ?? new(), position ?? new Point(0, 0))
-        {
-            Properties = properties ?? new Dictionary<string, dynamic>();
-
-        }
-        protected override void Initialize()
-        {
-            AddPort(new MultiPort(PortGuids.Port_1, this, true));
-            AddPort(new MultiPort(PortGuids.Port_2, this, false));
+            AddPort(new MultiPort(PortGuids.Port_1, this, input: true, "Value"));
+            AddPort(new MultiPort(PortGuids.Port_2, this, input: false, "Output"));
 
             // Block Properties
-            TryInitializeProperty("DelayTime", (int)100);
-            TryInitializeProperty("DelayTimeUnits", TimeUnits.Millisecond);
-            TryInitializeProperty("ShowPercent", false);
-            TryInitializeProperty("ShowNumbersOnly", false);
-            // Parallel Properties
-
-            TryInitializeProperty("MaxQueue", 1);
-            TryInitializeProperty("SequentialQueue", true);
-            // Standard Properties - Never to be changed or saved
-            SetProperty(PropertyType.Name, "Delay");
-			SetProperty(PropertyType.Type, GetType().Name.ToString());
-
-            OnPropertyChangeUpdate += DelayNode_OnPropertyChangeUpdate;
-
-            var IsSequential = GetProperty<bool>("SequentialQueue");
+            Properties.TryInitializeProperty(EntityPropertyEnum.DelayTime, (int)1);
+            Properties.TryInitializeProperty(EntityPropertyEnum.DelayTimeUnits, TimeUnits.Second);
+            Properties.TryInitializeProperty(EntityPropertyEnum.MaxQueue, 1);
+            Properties.TryInitializeProperty(EntityPropertyEnum.DecimalPlaceCount, 0);
+            Properties.TryInitializeProperty(EntityPropertyEnum.ShowPercent, false);
+            Properties.TryInitializeProperty(EntityPropertyEnum.ShowNumbersOnly, false);
+            
+            _delayTime = Properties.GetProperty<long>(EntityPropertyEnum.DelayTime);
+            _delayTimeUnits = Properties.GetProperty<TimeUnits>(EntityPropertyEnum.DelayTimeUnits);
+            _showPercent = Properties.GetProperty<bool>(EntityPropertyEnum.ShowPercent);
+            _showNumbersOnly = Properties.GetProperty<bool>(EntityPropertyEnum.ShowNumbersOnly);
+            QueueSize = Properties.GetProperty<int>(EntityPropertyEnum.MaxQueue);
+            ShowProgressBar = true;
+            VisualIndicator = IndicatorToString();
+            
+            Queue = new QueueProcessor<DelayAction>(
+                customProcessItemAsync: Process,
+                isSequential: true);
+            Queue.StartProcessing();
+            SubscribeToAllPortTypeChanges();
         }
 
+        public override string Name => "Delay";
+        public override string Category => NodeCategoryType.Utilities;
+        public override string Icon => "icon-clock";
+        
+        
+        
+        public override void PropertyNotifyEvent(EntityPropertyEnum property, dynamic? value)
+        {
+            if(property == EntityPropertyEnum.DelayTime)
+            {
+                _delayTime = value;
+            }
+            else if(property == EntityPropertyEnum.DelayTimeUnits)
+            {
+                _delayTimeUnits = value;
+            }
+            else if(property == EntityPropertyEnum.ShowPercent)
+            {
+                _showPercent = value;
+            }
+            else if(property == EntityPropertyEnum.ShowNumbersOnly)
+            {
+                _showNumbersOnly = value;
+            }
+            else if(property == EntityPropertyEnum.MaxQueue)
+            {
+                QueueSize = (int)value;
+            }
 
-
-
+        }
         
 
 
-        private async Task CustomProcessItemAsync(DelayAction item)
-        {
-            await item.Start();
-            await Task.Delay(item.Duration);
-            this.Value = item.Value!;
-        }
+        private QueueProcessor<DelayAction> Queue = new QueueProcessor<DelayAction>();
+        private DelayAction? ActiveAction;
+        private long _delayTime = 1;
+        private TimeUnits _delayTimeUnits = TimeUnits.Millisecond;
+        private bool _showPercent = false;
+        private bool _showNumbersOnly = false;
 
-
-        private void DelayNode_OnPropertyChangeUpdate(string PropertyName, dynamic? Value)
+        private async Task Process(DelayAction item)
         {
-            if (PropertyName.Equals("SequentialQueue",StringComparison.InvariantCultureIgnoreCase))
+            ActiveAction = item;
+            await ActiveAction.Start();
+            do
             {
-                Queue.SetSequentialProcessing(Value);
+                Progress = ActiveAction.CalculateRemainingPercent();
+                VisualIndicator = ActiveAction.IndicatorToString(Percent:_showPercent, NumbersOnly:_showNumbersOnly);
+                if (QueueSize > 1)
+                {
+                    ItemsInQueue = Queue.GetQueueCount();
+                }
+                
+                
+
+                
+                await Task.Delay(100);
+            } while (ActiveAction.CalculateRemainingPercent() != 0);
+            
+            VisualIndicator = ActiveAction.IndicatorToString();   
+            Progress = ActiveAction.CalculateRemainingPercent();
+            
+            
+            if(GetCurrentMultiPortType() == PortType.Multi)
+            {
+                SetValue(null!, false);
+                Queue.ClearQueue();
+            }
+            else
+            {
+                this.Value = ActiveAction.Value!;
             }
         }
 
+ 
         public class DelayAction
         {
             public string Guid = System.Guid.NewGuid().ToString();
@@ -121,8 +169,6 @@ namespace dOSCEngine.Engine.Nodes.Utility
             }
         }
 
-
-
         public override void CalculateValue()
         {
             var Input = Ports[0];
@@ -131,8 +177,8 @@ namespace dOSCEngine.Engine.Nodes.Utility
                 if (Input.Links.Any())
                 {
                     var Value = GetInputValue(Input, Input.Links.First());
-                    
-                    if(Queue.GetQueueCount() < GetProperty<int>("MaxQueue"))
+
+                    if (Queue.GetQueueCount() < QueueSize)
                     {
                         DelayAction a = new DelayAction(Value, GetDelayTime());
                         Queue.EnqueueItem(a);
@@ -142,35 +188,36 @@ namespace dOSCEngine.Engine.Nodes.Utility
 
         }
 
-        public int GetQueueCount()
+        public int GetCountInQueue()
         {
             return Queue.GetQueueCount();
         }
         
-
         public string GetQueueIndicator()
         {
-            if(Queue.HasItemsInQueue())
+            if (Queue.HasItemsInQueue())
             {
-                var item = Queue.PeekQueue();
-                if(item != null)
+                if (ActiveAction != null)
                 {
-                    var action = (DelayAction)item;
-                    return action.IndicatorToString();
+                    return ActiveAction.IndicatorToString();
                 }
             }
             return "Waiting";
-        }
+        } 
         
-       
-     
+        
+
         public string IndicatorToString()
         {
-            var currentItem = (DelayAction)Queue.PeekQueue().FirstOrDefault()!;
-            if (currentItem != null)
+            if (ActiveAction != null)
             {
-                var RP = currentItem.CalculateRemainingPercent();
-                var RT = currentItem.CalculateRemainingTime();
+                var RP = ActiveAction.CalculateRemainingPercent();
+                var RT = ActiveAction.CalculateRemainingTime();
+
+                if(ActiveAction.Duration == TimeSpan.Zero)
+                {
+                    return "Instant";
+                }
 
                 if(RP == 0)
                 {
@@ -178,14 +225,13 @@ namespace dOSCEngine.Engine.Nodes.Utility
                 }
 
 
-                if (GetProperty<bool>("ShowPercent"))
+                if (_showPercent)
                 {
                     return $"{RP.ToString("N1")}%";
                 }
                 else
                 {
-                    bool NumbersOnly = GetProperty<bool>("ShowNumbersOnly");
-                    return BeautifyString.BeautifyMilliseconds(RT, NumbersOnly);
+                    return BeautifyString.BeautifyMilliseconds(RT, _showNumbersOnly);
                 }
             }
 
@@ -194,19 +240,25 @@ namespace dOSCEngine.Engine.Nodes.Utility
 
         public double CalculateRemainingPercent()
         {
-            var currentItem = (DelayAction)Queue.PeekQueue().FirstOrDefault()!;
-
-            if (currentItem == null) {
+            if (ActiveAction == null) {
                 return 0;
             }
-            return currentItem.CalculateRemainingPercent();
+
+            if (ActiveAction.Duration == TimeSpan.Zero)
+            {
+                return 0;
+            }
+
+            return ActiveAction.CalculateRemainingPercent();
         }
 
+
+
+      
+        
         private TimeSpan GetDelayTime()
         {
-            long Delay = GetProperty<long>("DelayTime");
-            TimeUnits Units = GetProperty<TimeUnits>("DelayTimeUnits");
-            TimeSpan ts = TimeSpan.FromMilliseconds(Delay * (long)Units);
+            TimeSpan ts = TimeSpan.FromMilliseconds(_delayTime * (long)_delayTimeUnits);
             int maxDelayMilliseconds = int.MaxValue;
             if (ts.TotalMilliseconds > maxDelayMilliseconds)
             {
@@ -215,9 +267,9 @@ namespace dOSCEngine.Engine.Nodes.Utility
             return ts;
         }
 
-        public void Dispose()
+        public override void OnDispose()
         {
-            OnPropertyChangeUpdate -= DelayNode_OnPropertyChangeUpdate;
+            UnsubscribeToAllPortTypeChanged();
             Queue.Dispose();
         }
     }

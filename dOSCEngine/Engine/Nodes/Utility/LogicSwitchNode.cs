@@ -1,32 +1,31 @@
 ﻿using Blazor.Diagrams.Core.Geometry;
 using Blazor.Diagrams.Core.Models;
 using dOSCEngine.Engine.Ports;
+using dOSCEngine.Engine.Units;
+using dOSCEngine.Utilities;
 using Newtonsoft.Json;
+using static dOSCEngine.Engine.Nodes.Utility.DelayNode;
+using System.Diagnostics;
+using System.Collections.Concurrent;
 
 namespace dOSCEngine.Engine.Nodes.Utility
 {
     public class LogicSwitchNode : BaseNode
     {
-        public LogicSwitchNode(Point? position = null) : base(position ?? new Point(0, 0))
+        public LogicSwitchNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position,properties)
         {
-            AddPort(new LogicPort(PortGuids.Port_1, this, true));
-            AddPort(new LogicPort(PortGuids.Port_2, this, true));
-            AddPort(new LogicPort(PortGuids.Port_3, this, true));
-            AddPort(new LogicPort(PortGuids.Port_4, this, false));
+            AddPort(new LogicPort(PortGuids.Port_1, this, true, name: "Switch"));
+            AddPort(new MultiPort(PortGuids.Port_2, this, true, name: "Case 1"));
+            AddPort(new MultiPort(PortGuids.Port_3, this, true, name: "Case 2"));
+            // TO DO: Dynamically add and remove ports
+            AddPort(new MultiPort(PortGuids.PortGuidGenerator(1000), this, false, name: "Output"));
+            SubscribeToAllPortTypeChanges();
         }
-        public LogicSwitchNode(Guid guid, Point? position = null) : base(guid, position ?? new Point(0, 0))
-        {
-            AddPort(new LogicPort(PortGuids.Port_1, this, true));
-            AddPort(new LogicPort(PortGuids.Port_2, this, true));
-            AddPort(new LogicPort(PortGuids.Port_3, this, true));
-            AddPort(new LogicPort(PortGuids.Port_4, this, false));
-        }
-
-        [JsonProperty]
-        public override string NodeClass => GetType().Name.ToString();
-        public override string BlockTypeClass => "logicblock";
-
-
+        
+        public override string Name => "Logic Switch";
+        public override string Category => NodeCategoryType.Utilities;
+        public override string Icon => "icon-circuit-board";
+        
         public override void CalculateValue()
         {
             var inSwitch = Ports[0];
@@ -63,7 +62,7 @@ namespace dOSCEngine.Engine.Nodes.Utility
             if (inSwitch.Links.Any())
             {
                 var lSwitch = inSwitch.Links.First();
-                bool? SwitchVal = GetInputValue(inSwitch, lSwitch);
+                bool? SwitchVal = Convert.ToBoolean(GetInputValue(inSwitch, lSwitch));
                 if (SwitchVal != null)
                 {
                     if (SwitchVal.Value)
@@ -82,7 +81,10 @@ namespace dOSCEngine.Engine.Nodes.Utility
             }
         }
 
-
-
+        public override void OnDispose()
+        {
+            UnsubscribeToAllPortTypeChanged();
+            base.OnDispose();
+        }
     }
 }

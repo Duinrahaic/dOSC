@@ -1,5 +1,46 @@
 ﻿@import "_variables.scss";
 
+#red.color-block
+{
+    background-color: $color-red;
+}
+#green.color-block
+{
+    background-color: $color-green;
+}
+#blue.color-block
+{
+    background-color: $color-blue;
+}
+#yellow.color-block
+{
+    background-color: $color-yellow;
+}
+#orange.color-block
+{
+    background-color: $color-orange;
+}
+#purple.color-block
+{
+    background-color: $color-purple;
+}
+#magenta.color-block
+ {
+     background-color: $color-magenta;
+ }
+#pink.color-block
+{
+    background-color: $color-pink;
+}
+#black.color-block
+{
+    background-color: $color-black;
+}
+#grey.color-block
+{
+    background-color: $color-grey;
+}
+
 .dosc-form {
     display: flex;
     flex-direction: column;
@@ -20,7 +61,11 @@
         gap: 10px 10px;
         width: 100%;
         align-items: center;
-        justify-items: center;
+        justify-content: center;
+        
+        .row-wrap{
+            flex-wrap: wrap;
+        }
     }
 
     .dosc-form-item {
@@ -47,7 +92,7 @@
             flex-direction: row;
             gap: 10px 10px;
             align-items: center;
-            justify-items: center;
+            justify-content: center;
 
             label {
                 padding-bottom: unset;
@@ -65,6 +110,10 @@
             }
         }
 
+        textarea{
+            overflow: hidden;
+        }
+ 
         input, textarea {
             font-size: 14px;
             padding: 8px;
@@ -95,10 +144,12 @@
                 box-shadow: 0 0 4px 1px $color-error;
             }
 
+ 
+            
+            
             &[type=radio] {
                 width: 16px;
                 height: 16px;
-                border: none;
                 background-color: $color-theme-2;
                 border: solid 1px $color-theme-1;
                 color: $color-full-white;
@@ -108,8 +159,23 @@
                 padding-bottom: 4px;
 
                 &:checked {
-                    background-color: $color-selected;
                     border: solid 1px $color-blue-lighter;
+                }
+                
+                &.color-block{
+                    width: 24px;
+                    height: 24px;
+                    border: solid 1px $color-theme-1;
+                    color: $color-full-white;
+                    appearance: none;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+
+                    &:checked {
+                        border: solid 2px $color-selected;
+                        outline: solid 1px $color-selected;
+                    }
+                    
                 }
             }
         }
@@ -117,7 +183,7 @@
 }
 
 
-    .editform {
+.editform {
         display: flex;
         flex-direction: column;
         gap: 10px 10px;

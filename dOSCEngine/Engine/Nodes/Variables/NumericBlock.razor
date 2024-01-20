@@ -1,0 +1,11 @@
+﻿<DefaultBlock Node=Node>
+    <NodeBody>
+        @Node.Value.ToString()
+    </NodeBody>     
+</DefaultBlock>
+
+@code{
+
+    [Parameter] public NumericNode Node { get; set; }
+
+}

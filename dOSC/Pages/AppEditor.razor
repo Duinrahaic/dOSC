@@ -34,7 +34,7 @@
     <div class="diagram-container" oncontextmenu="return false;">
     @if (EditorAppLogic != null)
     {
-            <CascadingValue Value="EditorAppLogic.Data.Diagram" IsFixed="true">
+            <CascadingValue Value="EditorAppLogic.Data.Diagram" >
             <DiagramCanvas>
                 <Widgets>
                     <SelectionBoxWidget  />
@@ -56,7 +56,7 @@
         <EditForm id="SubmitForm" Model="EditorAppLogic.Data" OnValidSubmit="@SaveApp" class="dosc-form">
             <DataAnnotationsValidator />
             <div class="dosc-form-item">
-                <label for="inputAppName" class=" ">Name<span style="color:red;">*</span></label>
+                <label for="inputAppName" class=" ">name<span style="color:red;">*</span></label>
                 <ValidationMessage For="@(() => EditorAppLogic.Data.AppName)" />
                 <InputText @bind-Value=@EditorAppLogic.Data.AppName id="inputAppName" autocomplete="off" />
             </div>

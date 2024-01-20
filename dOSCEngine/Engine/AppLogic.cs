@@ -1,4 +1,5 @@
-﻿using Blazor.Diagrams.Core.Anchors;
+﻿using Blazor.Diagrams.Core;
+using Blazor.Diagrams.Core.Anchors;
 using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.Models.Base;
 using dOSCEngine.Engine.Links;
@@ -154,9 +155,6 @@ namespace dOSCEngine.Engine
 
         public async Task Load()
         {
-            if (Data == null) return;
-
-
             if (!Built)
             {
                 Data.Diagram.Nodes.Added += OnNodeAdded;
@@ -174,27 +172,45 @@ namespace dOSCEngine.Engine
 
                     if (BlockSource != null && BlockTarget != null)
                     {
-                        var SourcePort = BlockSource.Ports.FirstOrDefault(x => (x as BasePort)?.Guid == l.SourcePort.Guid);
-                        var TargetPort = BlockTarget.Ports.FirstOrDefault(x => (x as BasePort)?.Guid == l.TargetPort.Guid);
-                        if (SourcePort != null && TargetPort != null)
+                        var sourcePort = BlockSource.Ports.FirstOrDefault(x => (x as BasePort)?.Guid == l.SourcePort.Guid);
+                        var targetPort = BlockTarget.Ports.FirstOrDefault(x => (x as BasePort)?.Guid == l.TargetPort.Guid);
+                        if (sourcePort != null && targetPort != null)
                         {
-                            var Link = new LinkModel(SourcePort, TargetPort);
-                            Data.Diagram.Links.Add(Link);
+                            Data.Diagram.Links.Add(new LinkModel(sourcePort, targetPort));
+                            var sp = sourcePort as BasePort;
+                            sp?.PortUpdated(sp);
+                            
+                            var tp = targetPort as BasePort;
+                            tp?.PortUpdated(tp);
                         }
                     }
                 }
 
 
                 Built = true;
+      
                 Data.Diagram.Refresh();
+
+                foreach (var n in Data.Diagram.Nodes)
+                {
+                    if (n as BaseNode is { } node)
+                    {
+                        foreach (var port in node.Ports)
+                        {
+                            port.Refresh();
+                        }
+                    }
+                    
+                    
+                }
+                
+                
                 Data.Diagram.ContainerChanged += Diagram_ContainerChanged;
             }
             await Task.CompletedTask;
         }
         public async Task Unload()
         {
-            if (Data == null) return;
-
             Data.Diagram.Nodes.Added -= OnNodeAdded;
             Data.Diagram.Nodes.Removed -= OnNodeRemoved;
             Data.Diagram.Links.Added -= OnLinkAdded;
@@ -236,6 +252,7 @@ namespace dOSCEngine.Engine
             var n = node as BaseNode;
             n!.ValueChanged += OnValueChanged;
             AppDataChanged?.Invoke(this.AppGuid, true);
+            
         }
         private void OnNodeRemoved(NodeModel node)
         {
@@ -268,13 +285,14 @@ namespace dOSCEngine.Engine
 
                     }
                 }
-                Data.Diagram.Nodes.ToList().ForEach(x => x.Refresh());
+                op.Refresh();
             }
 
         }
         private void OnLinkAdded(BaseLinkModel link)
         {
             link.TargetChanged += OnLinkTargetChanged;
+            link.Changed += OnLinkChanged;
             var sp = (link.Source as SinglePortAnchor)!;
             var tp = (link.Target as SinglePortAnchor)!;
 
@@ -286,18 +304,28 @@ namespace dOSCEngine.Engine
                     var InputPort = (sp.Port as BasePort)!.Input ? sp : tp;
                     if (InputPort != null)
                     {
-                        //(InputPort.Port.Parent as BaseNode)!.CalculateValue();
-
+                        (InputPort.Port.Parent as BaseNode)!.CalculateValue();
+                        
                     }
                 }
+                
             }
-
-            foreach (var node in Data.Diagram.Nodes)
-            {
-                node.Refresh();
-            }
+            
+          
+            
+            (sp?.Port as BasePort)?.UpdateLinkCount();
+            (tp?.Port as BasePort)?.UpdateLinkCount();
             AppDataChanged?.Invoke(this.AppGuid, true);
         }
+
+        private void OnLinkChanged(Model obj)
+        {
+            var link = obj as BaseLinkModel;
+           
+            
+        }
+ 
+ 
         private void OnLinkRemoved(BaseLinkModel link)
         {
             try
@@ -309,19 +337,13 @@ namespace dOSCEngine.Engine
 
             }
             link.TargetChanged -= OnLinkTargetChanged;
+            link.Changed += OnLinkChanged;
             (link.Source.Model as PortModel)!.Parent.Refresh();
-            var s = (link.Source.Model as BasePort);
-            var t = (link.Target.Model as BasePort);
-            if (link.Target.Model != null)
-            {
-                var Port = (link.Target.Model as BasePort)!;
-                var Node = (Port.Parent as BaseNode)!;
-                //Node.ResetValue();
-            }
-            foreach (var node in Data.Diagram.Nodes)
-            {
-                node.Refresh();
-            }
+            var sp = (link.Source as SinglePortAnchor)!;
+            var tp = (link.Target as SinglePortAnchor)!;
+            (sp?.Port as BasePort)?.UpdateLinkCount();
+            (tp?.Port as BasePort)?.UpdateLinkCount();
+            Data.Diagram.Nodes.ToList().Where(x => x != null).ToList().ForEach(x => x.Refresh());
             AppDataChanged?.Invoke(this.AppGuid, true);
         }
         private void OnLinkTargetChanged(BaseLinkModel link, Anchor? oldTarget, Anchor? newTarget)
@@ -342,6 +364,7 @@ namespace dOSCEngine.Engine
             {
                 (newTarget.Model as BasePort)!.Parent.Refresh();
             }
+
             AppDataChanged?.Invoke(this.AppGuid, true);
         }
 

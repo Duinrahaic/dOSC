@@ -6,7 +6,7 @@ using Blazor.Diagrams.Core.Models.Base;
 using dOSCEngine.Engine;
 using dOSCEngine.Engine.Links;
 using dOSCEngine.Engine.Nodes;
-using dOSCEngine.Engine.Nodes.Constant;
+using dOSCEngine.Engine.Nodes.Variables;
 using dOSCEngine.Engine.Nodes.Logic;
 using dOSCEngine.Engine.Ports;
 using dOSCEngine.Utilities;

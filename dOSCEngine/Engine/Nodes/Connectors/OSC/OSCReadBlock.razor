@@ -1,0 +1,25 @@
+﻿@using Blazor.Diagrams.Components.Renderers
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+@using System.Timers
+@using dOSCEngine.Components.Inputs
+@using dOSCEngine.Components.Modals
+@using dOSCEngine.Engine.Helper
+@using dOSCEngine.Engine.Nodes
+@using dOSCEngine.Engine.Nodes.Utility
+@using dOSCEngine.Engine.Ports
+@using dOSCEngine.Services
+@using dOSCEngine.Utilities
+
+<DefaultBlock RequiresUpdate Node=Node>
+    <NodeBody>
+        <div class="label"> @(Node?.OSCAddress ?? "No Address Configured")</div>
+    </NodeBody>
+    <NodeOutputs>
+        <PortDesigner Port="Node.Ports.First() as BasePort" Value="this.Node.Value" />
+    </NodeOutputs>
+</DefaultBlock>
+@code
+{
+    [Parameter] public OSCReadNode Node { get; set; }
+}

@@ -4,28 +4,22 @@ using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.Models.Base;
 using dOSCEngine.Engine.Ports;
 using Newtonsoft.Json;
+using System.Collections.Concurrent;
 using System.Net.NetworkInformation;
 
 namespace dOSCEngine.Engine.Nodes.Logic
 {
     public class XOrNode : BaseNode
     {
-        public XOrNode(Point? position = null) : base(position ?? new Point(0, 0))
+        public XOrNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
-            AddPort(new LogicPort(PortGuids.Port_1, this, true));
-            AddPort(new LogicPort(PortGuids.Port_2, this, true));
-            AddPort(new LogicPort(PortGuids.Port_3, this, false));
+            AddPort(new LogicPort(PortGuids.Port_1, this, true, name: "Value A"));
+            AddPort(new LogicPort(PortGuids.Port_2, this, true, name: "Value B"));
+            AddPort(new LogicPort(PortGuids.Port_3, this, false, name: "Output"));
         }
-        public XOrNode(Guid guid, Point? position = null) : base(guid, position ?? new Point(0, 0))
-        {
-            AddPort(new LogicPort(PortGuids.Port_1, this, true));
-            AddPort(new LogicPort(PortGuids.Port_2, this, true));
-            AddPort(new LogicPort(PortGuids.Port_3, this, false));
-        }
-        [JsonProperty]
-        public override string NodeClass => GetType().Name.ToString();
-        public override string BlockTypeClass => "logicblock";
-
+        public override string Name => "XOR";
+        public override string Category => NodeCategoryType.Logic;
+        public override string Icon => "icon-plus-circle";
         public override void CalculateValue()
         {
             var inA = Ports[0];
@@ -34,9 +28,13 @@ namespace dOSCEngine.Engine.Nodes.Logic
             {
                 var l1 = inA.Links.First();
                 var l2 = inB.Links.First();
-                bool A = Convert.ToBoolean(GetInputValue(inA, l1));
-                bool B = Convert.ToBoolean(GetInputValue(inB, l2));
-                Value = A && !B || !A && B;
+                var ValA = GetInputValue(inA, l1);
+                var ValB = GetInputValue(inB, l2);
+
+                if (ValA != null && ValB != null)
+                {
+                    Value = Convert.ToBoolean(ValA) ^ Convert.ToBoolean(ValB);
+                }
             }
             else
             {

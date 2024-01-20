@@ -12,7 +12,7 @@
 
 
 @code{
-    [Parameter]
+    [CascadingParameter]
     public BaseNode? Node { get; set; }
     private NodeSetting? Setting;
 
@@ -36,8 +36,8 @@
 
         public NodeSetting(BaseNode Node)
         {
-            DisplayName = Node.GetProperty<string>(PropertyType.DisplayName);
-            Name = Node.GetProperty<string>(PropertyType.Name);
+            DisplayName = Node.DisplayName;
+            Name = Node.Name;
         }
 
 
@@ -49,7 +49,7 @@
 
         if (Node != null)
         {
-            Node.SetProperty(PropertyType.DisplayName, UpdatedSettings.DisplayName);
+            Node.DisplayName = UpdatedSettings.DisplayName;
         }
 
         if (Updated.HasDelegate)

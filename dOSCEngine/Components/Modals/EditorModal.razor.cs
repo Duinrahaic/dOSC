@@ -18,20 +18,7 @@ namespace dOSCEngine.Components.Modals
                 sb.OnNodeEdit += OnEdit;
             }
         }
-
-        private string GetNodeName()
-        {
-            string Name = "Unknown";
-            if (SelectedBaseNode != null)
-            {
-                if (!SelectedBaseNode.TryGetProperty<string>(PropertyType.Name, out Name))
-                {
-                    Name = "Unknown";
-                }
-            }
-            return $"{Name} Node Properties";
-        }
-
+        
         private void OnEdit(BaseNode node)
         {
             SelectedBaseNode = node;

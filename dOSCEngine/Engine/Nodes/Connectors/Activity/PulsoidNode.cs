@@ -5,14 +5,15 @@ using dOSCEngine.Services.Connectors.Activity.Pulsoid;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using dOSCEngine.Services;
+using System.Collections.Concurrent;
 
 namespace dOSCEngine.Engine.Nodes.Connectors.Activity
 {
-    public class PulsoidNode : BaseNode, IDisposable
+    public class PulsoidNode : BaseNode
     {
-        public PulsoidNode(ServiceBundle? service = null, Point? position = null) : base(position ?? new Point(0, 0))
+        public PulsoidNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null, ServiceBundle? service = null) : base(guid, position, properties)
         {
-            AddPort(new NumericPort(PortGuids.Port_1, this, false));
+            AddPort(new NumericPort(PortGuids.Port_1, this, false, "Heart Rate"));
             _service = service.Pulsoid;
             if (_service != null)
             {
@@ -20,27 +21,17 @@ namespace dOSCEngine.Engine.Nodes.Connectors.Activity
             }
             Value = 0;
         }
-        public PulsoidNode(Guid guid, ServiceBundle? service = null, Point? position = null) : base(guid, position ?? new Point(0, 0))
-        {
-            AddPort(new NumericPort(PortGuids.Port_1, this, false));
-            _service = service.Pulsoid;
-            if (_service != null)
-            {
-                _service.OnPulsoidMessageReceived += _service_OnPulsoidMessageReceived;
-            }
-            Value = 0;
-        }
-        [JsonProperty]
-        public override string NodeClass => GetType().Name.ToString();
+        public override string Name => "Pulsoid";
+        public override string Category => NodeCategoryType.Connector;
+        public override string Icon => "icon-heart-pulse";
         private readonly PulsoidService? _service = null;
-        public override string BlockTypeClass => "connectorblock";
         private void _service_OnPulsoidMessageReceived(PulsoidReading e)
         {
             Value = e.Data.HeartRate;
             CalculateValue();
         }
 
-        public void Dispose()
+        public override void OnDispose()
         {
             if (_service != null)
                 _service.OnPulsoidMessageReceived -= _service_OnPulsoidMessageReceived;

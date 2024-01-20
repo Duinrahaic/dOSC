@@ -1,5 +1,7 @@
 ﻿using Blazor.Diagrams;
+using Blazor.Diagrams.Core.Anchors;
 using Blazor.Diagrams.Core.Geometry;
+using Blazor.Diagrams.Core.Models.Base;
 using dOSCEngine.Engine.Links;
 using dOSCEngine.Engine.Nodes;
 using dOSCEngine.Engine.Ports;
@@ -36,6 +38,48 @@ namespace dOSCEngine.Engine
             }
         }
 
+        public static dynamic? GetInputValue(this BasePort port)
+        {
+            BaseLink? link = port.GetAllBaseLinks().FirstOrDefault();
+            if(link == null)
+                return null;
+            
+            var sp = (link.Source as SinglePortAnchor)!;
+            var tp = (link.Target as SinglePortAnchor)!;
+            var p = sp.Port == port ? tp : sp;
+            try
+            {
+                return (p.Port.Parent as BaseNode)!.Value;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        public static List<dynamic?> GetAllInputValues(this BasePort port)
+        {
+            List<dynamic?> values = new();
+            List<BaseLink> links = port.GetAllBaseLinks();
+            if(links.Any())
+                return values;
+            foreach (var link in links)
+            {
+                var sp = (link.Source as SinglePortAnchor)!;
+                var tp = (link.Target as SinglePortAnchor)!;
+                var p = sp.Port == port ? tp : sp;
+                try
+                {
+                    values.Add((p.Port.Parent as BaseNode)!.Value);
+                }
+                catch
+                {
+                    values.Add(null);
+                }
+            }
+
+            return values;
+        }
+        
         public static dOSCData DeserializeDTO(this dOSCDataDTO dto, ServiceBundle sb)
         {
             dOSCData dOSCWiresheet = new dOSCData(dto);

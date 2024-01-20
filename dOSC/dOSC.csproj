@@ -15,6 +15,7 @@
     <Copyright>Duinrahaic</Copyright>
     <RepositoryType>git</RepositoryType>
     <SignAssembly>False</SignAssembly>
+    <ServerGarbageCollection>false</ServerGarbageCollection>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="DawnCache\**" />
@@ -30,6 +31,10 @@
     <PackageReference Include="Blazor-ApexCharts" Version="2.2.0" />
     <PackageReference Include="Blazor.ContextMenu" Version="1.16.0" />
     <PackageReference Include="CefSharp.WinForms.NETCore" Version="119.4.30" />
+    <PackageReference Include="Google.Protobuf" Version="3.25.2" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
+    <PackageReference Include="Grpc.AspNetCore.Web" Version="2.60.0" />
+    <PackageReference Include="Grpc.Core" Version="2.46.6" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.14" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.14">
       <TreatAsUsed>true</TreatAsUsed>
@@ -66,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dOSCEngine\dOSCEngine.csproj" />
+    <ProjectReference Include="..\dOSCHub\dOSCHub.csproj" />
   </ItemGroup>
 
 </Project>

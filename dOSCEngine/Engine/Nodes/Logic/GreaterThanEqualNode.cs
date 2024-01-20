@@ -2,26 +2,21 @@
 using dOSCEngine.Engine.Ports;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Concurrent;
 
 namespace dOSCEngine.Engine.Nodes.Logic
 {
     public class GreaterThanEqualNode : BaseNode
     {
-        public GreaterThanEqualNode(Point? position = null) : base(position ?? new Point(0, 0))
+        public GreaterThanEqualNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
-            AddPort(new NumericPort(PortGuids.Port_1, this, true));
-            AddPort(new NumericPort(PortGuids.Port_2, this, true));
-            AddPort(new LogicPort(PortGuids.Port_3, this, false));
+            AddPort(new NumericPort(PortGuids.Port_1, this, true, name: "Value A"));
+            AddPort(new NumericPort(PortGuids.Port_2, this, true, name: "Value B"));
+            AddPort(new LogicPort(PortGuids.Port_3, this, false, name: "Output"));
         }
-        public GreaterThanEqualNode(Guid guid, Point? position = null) : base(guid, position ?? new Point(0, 0))
-        {
-            AddPort(new NumericPort(PortGuids.Port_1, this, true));
-            AddPort(new NumericPort(PortGuids.Port_2, this, true));
-            AddPort(new LogicPort(PortGuids.Port_3, this, false));
-        }
-        [JsonProperty]
-        public override string NodeClass => GetType().Name.ToString();
-        public override string BlockTypeClass => "logicblock";
+        public override string Name => "Greater Than Or Equal To";
+        public override string Category => NodeCategoryType.Logic;
+        public override string TextIcon => ">=";
 
         public override void CalculateValue()
         {
@@ -31,10 +26,13 @@ namespace dOSCEngine.Engine.Nodes.Logic
             {
                 var l1 = inA.Links.First();
                 var l2 = inB.Links.First();
+                var ValA = GetInputValue(inA, l1);
+                var ValB = GetInputValue(inB, l2);
 
-                var valA = GetInputValue(inA, l1);
-                var valB = GetInputValue(inB, l2);
-                Value = valA >= valB;
+                if (ValA != null && ValB != null)
+                {
+                    Value = Convert.ToBoolean(ValA) >= Convert.ToBoolean(ValB);
+                }
             }
             else
             {

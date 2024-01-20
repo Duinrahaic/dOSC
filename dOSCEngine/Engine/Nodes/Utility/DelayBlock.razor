@@ -5,97 +5,73 @@
 @using dOSCEngine.Components.Inputs
 @using dOSCEngine.Components.Modals
 @using dOSCEngine.Engine.Helper
+@using dOSCEngine.Engine.Nodes
 @using dOSCEngine.Engine.Nodes.Utility
 @using dOSCEngine.Engine.Ports
 @using dOSCEngine.Services
-@implements IDisposable
-
-<DefaultBlock EditCallback="EditNode" Icon="icon-clock" Node=Node >
+@using dOSCEngine.Utilities
+<DefaultBlock Node=Node RequiresUpdate=true>
     <NodeBody>
-        <div class="label"> @VisualIndicator </div>
+        <div class="label"> @(Node?.IndicatorToString() ?? "Unknown")</div>
         <div class="dOSC-progress-bar-container">
-            <div class="dOSC-progress-bar-indicator" style="width: @VisualIndicatorPercent%;" />
+            <div class="dOSC-progress-bar-indicator" style="width: @(Node?.CalculateRemainingPercent() ?? 0)%;" />
         </div>
-        <div class="dOSC-progress-bar-container">
-            <div class="dOSC-progress-bar-indicator" style="width: @VisualIndicatorPercent%;" />
+        <div class="queue-container" style="opacity: @( Node.QueueSize == 1 ? "0" : "1" );">
+            @{
+                int QS = Node.GetCountInQueue();
+                int MQS = Node.QueueSize;
+                int SpaceRemaining = MQS - QS;
+                
+                @if (MQS > 20)
+                {
+                    int Percent = Convert.ToInt32((((double)QS / (double)MQS))*100);
+
+                    <div class="dOSC-progress-bar-container green-indicator">
+                        <div class="dOSC-progress-bar-indicator" style="width: @Percent%;" ></div>
+                    </div>
+                }
+                else
+                {
+                    for (int i = 0; i < QS; i++)
+                    {
+                        <div class="dOSC-progress-bar-container square green-indicator">
+                            <div class="dOSC-progress-bar-indicator" style="width: 100%;" ></div>
+                        </div>
+                    }
+                    for (int i = 0; i < SpaceRemaining; i++)
+                    {
+                        <div class="dOSC-progress-bar-container square green-indicator">
+                            <div class="dOSC-progress-bar-indicator" style="width: 0%;" ></div>
+                        </div>
+                    }
+                }
+            }
         </div>
     </NodeBody>
     <NodeInputs>
-        <div class="item">
-            <div class="label">Input</div>
-            <PortRenderer Class="port numeric" Port="this.Node.Ports[0]" />
-        </div>
-    </NodeInputs>
-    <NodeOutputs>
-        <div class="item">
-            <div class="label">Output</div>
-            <PortValueLabel LabelPosition=PortValueLabel.Position.Right DisplayValue="this.Node.Value" />
-            <PortRenderer Class="port numeric" Port="this.Node.Ports[1]" />
-        </div>
+        <PortDesigner Port="Node.Ports[0] as BasePort" />
+    </NodeInputs>     
+    <NodeOutputs>     
+        <PortDesigner Port="Node.Ports[1] as BasePort" Value="this.Node.Value" />
     </NodeOutputs>
 </DefaultBlock>
 
+<style>
+
+    .queue-container{
+        padding-top: 4px;
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 4px 4px;
+    }
+
+</style>
 
  
  
 @code
 {
     [Parameter] public DelayNode Node { get; set; }
-    [Inject] public ServiceBundle? SB { get; set; }
-
-    private System.Timers.Timer UpdateTimer = new();
-    private string VisualIndicator = "Waiting";
-    private double VisualIndicatorPercent = 0;
-    protected override void OnInitialized()
-    {
-        if(SB != null)
-        {
-            SB.OnNodeUpdate += OnUpdate;
-        }
-
-        if (Node != null)
-        {
-            UpdateTimer.AutoReset = true;
-            UpdateTimer.Interval = 100;
-            UpdateTimer.Elapsed += UpdateVisuals;
-            UpdateTimer.Start();
-        }
-
-    }
-
-    private void OnUpdate(BaseNode node)
-    {
-        if(node.Guid == Node.Guid)
-        {
-            var n = (DelayNode)node;
-            Node.Properties = n.Properties;
-            this.StateHasChanged();
-        }
-    }
-
-    private void UpdateVisuals(object? sender, ElapsedEventArgs e)
-    {
-        VisualIndicatorPercent = Node?.CalculateRemainingPercent() ?? 0;
-        VisualIndicator = Node?.IndicatorToString() ?? "Unknown"; 
-        InvokeAsync(() =>
-        {
-            StateHasChanged();
-        }).ConfigureAwait(false);
-    }
-
-    private void EditNode()
-    {
-        SB?.EditNode(Node);
-    }
-
-    public void Dispose()
-    {
-        if (SB != null)
-        {
-            UpdateTimer.Elapsed -= UpdateVisuals;
-            UpdateTimer.Dispose();
-        }
-    }
-
-
 }

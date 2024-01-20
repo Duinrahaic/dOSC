@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dOSC", "dOSC\dOSC.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dOSCEngine", "dOSCEngine\dOSCEngine.csproj", "{71038A07-E78F-4F98-AE28-ADC1A55F940C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dOSCHub", "dOSCHub\dOSCHub.csproj", "{351BACE5-0681-463F-AFCC-2A6C1ED015CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{71038A07-E78F-4F98-AE28-ADC1A55F940C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71038A07-E78F-4F98-AE28-ADC1A55F940C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71038A07-E78F-4F98-AE28-ADC1A55F940C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{351BACE5-0681-463F-AFCC-2A6C1ED015CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{351BACE5-0681-463F-AFCC-2A6C1ED015CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{351BACE5-0681-463F-AFCC-2A6C1ED015CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{351BACE5-0681-463F-AFCC-2A6C1ED015CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

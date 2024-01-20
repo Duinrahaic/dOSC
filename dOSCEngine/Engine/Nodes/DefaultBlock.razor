@@ -1,57 +1,85 @@
-﻿
+﻿@using System.Timers
+@using dOSCEngine.Engine.Ports
+@using dOSCEngine.Engine.Nodes.BlockVisualizations
+@using dOSCEngine.Services
+@using dOSCEngine.Utilities
+@inherits Microsoft.AspNetCore.Components.ComponentBase
 
-<div id="@Node.Guid" class="block-container @NodeCSS @SelectedCSS @ErrorCSS" style=@WidthCSS>
-    <div class="block-container-header">    
-        <div class="block-container-header-icon @Icon"></div>
-        <div class="block-container-header-title"> @Node.GetDisplayName() </div>
-        @if (EditCallback.HasDelegate)
-        {
-            <div class="block-container-header-setting icon-cog " @onclick="OpenSettings"></div>
-        }
-    </div>
+
+<div  id="@Node.Guid" class="block-container @Node.Category @( Node.Selected ? "selected" : string.Empty) @(Node.Error ? "error" :string.Empty)"  style=@WidthCss>
+    <DefaultBlockHeader Node=@Node />
     <div class="block-container-body-container">
         <div class="block-container-body">
-            @NodeBody
+            <BlockLabel Node="@Node" />
+            @if (Node.ShowProgressBar)
+            {
+                <BlockProgressBar Node="@Node" />
+            }
+
+            @if (Node.ShowQueueCount)
+            {
+               <BlockQueueBar Node="@Node" />
+            }
+
+            
+
+
             <div class="block-container-body-ports">
                 <div class="block-container-port-container input">
-                    @NodeInputs
+                    @if (NodeInputs != null)
+                    {
+                        @NodeInputs
+                    }
+                    else
+                    {
+                        foreach (var IP in Node.GetAllInputs())
+                        {
+                            <PortDesigner Port="IP"/>
+                        }
+                    }
+
+
                 </div>
                 <div class="block-container-port-container output">
-                    @NodeOutputs
+                    @if (NodeOutputs != null)
+                    {
+                        @NodeOutputs
+                    }
+                    else
+                    {
+                        foreach (var OP in Node.GetAllOutputs())
+                        {
+                            <PortDesigner Port="OP" Value="Node.Value"/>
+                        }
+                    }
                 </div>
             </div>
+            @NodeBodyBottom
         </div>
-
-        
-
     </div>
 </div>
 
+
+
+
+
+
+
+
 @code {
 
-
-
+    [Parameter] public BaseNode Node { get; set; } = null!;
     [Parameter] public int? Width { get; set; }
-    private string WidthCSS => Width != null ? $"width: {Width}px;" : string.Empty;
-    [Parameter] public NodeType NodeType { get; set; } = NodeType.Logic;
-    [Parameter] public string Icon { get; set; } = string.Empty;
-    [Parameter] public string Name { get; set; } = string.Empty;
     [Parameter] public RenderFragment? NodeBody { get; set; }
+    [Parameter] public RenderFragment? NodeBodyBottom { get; set; }
     [Parameter] public RenderFragment? NodeInputs{ get; set; }
     [Parameter] public RenderFragment? NodeOutputs { get; set; }
-    [Parameter] public bool HasSettings { get; set; } = false;
-    [Parameter] public EventCallback EditCallback { get; set; }
-    [Parameter] public BaseNode Node { get; set; }
+    
     [Inject] public IJSRuntime JS { get; set; }
 
-    private string SelectedCSS => Node.Selected ? "selected" : string.Empty;
-    private string ErrorCSS => Node.Error ? "error" : string.Empty;
-    private string NodeCSS => GetNodeTypeCSS();
 
-    private string GetNodeTypeCSS()
-    {
-        return NodeType.ToString().ToLower();
-    }
+    private string WidthCss => Width != null ? $"width: {Width}px;" : string.Empty;
+
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -72,15 +100,4 @@
         public double Height { get; set; } = 0;
         public double Width { get; set; } = 0;
     }
-
-
-    private async Task OpenSettings()
-    {
-        if (EditCallback.HasDelegate)
-        {
-            await EditCallback.InvokeAsync();
-        }
-    }
-
-
 }

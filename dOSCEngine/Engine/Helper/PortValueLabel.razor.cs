@@ -12,16 +12,27 @@ namespace dOSCEngine.Engine.Helper
         [Parameter]
         public dynamic? DisplayValue { get; set; }
 
-        private bool IsNumeric => DisplayValue is int || DisplayValue is float || DisplayValue is double || DisplayValue is decimal;
-
         [Parameter]
         public Position LabelPosition { get; set; } = Position.Right;
+        [Parameter]
+        public string StringFormat { get; set; } = "G5";
 
         protected override void OnParametersSet()
         {
-            this.StateHasChanged();
+            Update();
         }
-
+        private DateTime _lastUpdate = DateTime.MinValue;
+    
+        private void Update()
+        {
+            if (DateTime.Now - _lastUpdate > GraphSettings.UpdateInterval)
+            {
+                _lastUpdate = DateTime.Now;
+                InvokeAsync(StateHasChanged);
+            }
+        }
+        
+        
         private string LabelPositionClass => LabelPosition switch
         {
             Position.Left => "left",

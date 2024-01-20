@@ -15,5 +15,10 @@ namespace dOSCEngine.Utilities
                    type == typeof(float) || type == typeof(double) || type == typeof(decimal) ||
                    type == typeof(short) || type == typeof(int) || type == typeof(long);
         }
+
+        public static bool IsBooleanType(Type type)
+        {
+            return type == typeof(bool) || type == typeof(sbyte);
+        }
     }
 }

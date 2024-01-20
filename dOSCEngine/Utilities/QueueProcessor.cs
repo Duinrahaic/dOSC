@@ -14,7 +14,8 @@ namespace dOSCEngine.Utilities
     public class QueueProcessor<T> : IDisposable
     {
         // Concurrent queue to store items and their associated custom processing functions
-        private readonly ConcurrentQueue<(T Item, Func<T, Task> ProcessFunc)> itemQueue = new ConcurrentQueue<(T Item, Func<T, Task> ProcessFunc)>();
+        private readonly ConcurrentQueue<(T Item, Func<T, Task> ProcessFunc, Action<T> Callback)> itemQueue =
+            new ConcurrentQueue<(T Item, Func<T, Task> ProcessFunc, Action<T> Callback)>();
 
         // Semaphore to ensure thread safety when processing items
         private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
@@ -40,7 +41,10 @@ namespace dOSCEngine.Utilities
         /// <param name="customProcessItemAsync">The custom asynchronous processing function.</param>
         /// <param name="customProcessItemCallback">The custom callback function.</param>
         /// <param name="isSequential">Flag indicating whether processing should be sequential.</param>
-        public QueueProcessor(Func<T, Task> customProcessItemAsync = null, Action<T> customProcessItemCallback = null, bool isSequential = false)
+        public QueueProcessor(
+            Func<T, Task> customProcessItemAsync = null,
+            Action<T> customProcessItemCallback = null,
+            bool isSequential = false)
         {
             // Use the provided custom processing logic, or use a default implementation
             this.processItemAsync = customProcessItemAsync ?? DefaultProcessItemAsync;
@@ -53,13 +57,14 @@ namespace dOSCEngine.Utilities
         }
 
         /// <summary>
-        /// Enqueues an item with an optional custom processing function.
+        /// Enqueues an item with an optional custom processing and callback functions.
         /// </summary>
         /// <param name="item">The item to enqueue.</param>
         /// <param name="customProcessItemAsync">The custom asynchronous processing function for the item.</param>
-        public void EnqueueItem(T item, Func<T, Task> customProcessItemAsync = null)
+        /// <param name="customCallback">The custom callback function for the item.</param>
+        public void EnqueueItem(T item, Func<T, Task> customProcessItemAsync = null, Action<T> customCallback = null)
         {
-            itemQueue.Enqueue((item, customProcessItemAsync));
+            itemQueue.Enqueue((item, customProcessItemAsync, customCallback));
         }
 
         /// <summary>
@@ -80,6 +85,16 @@ namespace dOSCEngine.Utilities
             return itemQueue.Count;
         }
 
+        /// <summary>
+        /// Clears the queue
+        /// </summary>
+        public void ClearQueue()
+        {
+            itemQueue.Clear();
+        }
+        
+        
+        
         /// <summary>
         /// Checks if there are any items in the queue.
         /// </summary>
@@ -127,8 +142,8 @@ namespace dOSCEngine.Utilities
             {
                 while (!cancellationTokenSource.Token.IsCancellationRequested)
                 {
-                    // Dequeue an item and its associated custom processing function
-                    if (itemQueue.TryDequeue(out (T Item, Func<T, Task> ProcessFunc) item))
+                    // Dequeue an item and its associated custom processing and callback functions
+                    if (itemQueue.TryDequeue(out (T Item, Func<T, Task> ProcessFunc, Action<T> Callback) item))
                     {
                         processItemCallback?.Invoke(item.Item); // Invoke the callback before processing
                         await (item.ProcessFunc?.Invoke(item.Item) ?? processItemAsync(item.Item));
@@ -149,14 +164,14 @@ namespace dOSCEngine.Utilities
         /// <summary>
         /// Sequentially processes the item queue.
         /// </summary>
-        private void ProcessQueueSequential()
+        private async Task ProcessQueueSequential()
         {
             try
             {
                 while (!cancellationTokenSource.Token.IsCancellationRequested)
                 {
-                    // Dequeue an item and its associated custom processing function
-                    if (itemQueue.TryDequeue(out (T Item, Func<T, Task> ProcessFunc) item))
+                    // Dequeue an item and its associated custom processing and callback functions
+                    if (itemQueue.TryDequeue(out (T Item, Func<T, Task> ProcessFunc, Action<T> Callback) item))
                     {
                         processItemCallback?.Invoke(item.Item); // Invoke the callback before processing
                         (item.ProcessFunc?.Invoke(item.Item) ?? processItemAsync(item.Item)).GetAwaiter().GetResult();
@@ -164,7 +179,7 @@ namespace dOSCEngine.Utilities
                     else
                     {
                         // Optionally, add a delay or perform other actions when the queue is empty
-                        Thread.Sleep(100);
+                        await Task.Delay(100);
                     }
                 }
             }
@@ -188,7 +203,7 @@ namespace dOSCEngine.Utilities
                 // Default processing logic
 
                 // Simulate work by delaying asynchronously
-                await Task.Delay(1000);
+                await Task.Delay(100);
             }
             finally
             {

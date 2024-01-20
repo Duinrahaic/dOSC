@@ -4,27 +4,21 @@ using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.Models.Base;
 using dOSCEngine.Engine.Ports;
 using Newtonsoft.Json;
+using System.Collections.Concurrent;
 
 namespace dOSCEngine.Engine.Nodes.Logic
 {
     public class AndNode : BaseNode
     {
-        public AndNode(Point? position = null) : base(position ?? new Point(0, 0))
+        public AndNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
-            AddPort(new LogicPort(PortGuids.Port_1, this, true));
-            AddPort(new LogicPort(PortGuids.Port_2, this, true));
-            AddPort(new LogicPort(PortGuids.Port_3, this, false));
+            AddPort(new LogicPort(PortGuids.Port_1, this, true, name: "Value A"));
+            AddPort(new LogicPort(PortGuids.Port_2, this, true, name: "Value B"));
+            AddPort(new LogicPort(PortGuids.Port_3, this, false, name: "Output"));
         }
-        public AndNode(Guid guid, Point? position = null) : base(guid, position ?? new Point(0, 0))
-        {
-            AddPort(new LogicPort(PortGuids.Port_1, this, true));
-            AddPort(new LogicPort(PortGuids.Port_2, this, true));
-            AddPort(new LogicPort(PortGuids.Port_3, this, false));
-        }
-        [JsonProperty]
-        public override string NodeClass => GetType().Name.ToString();
-        public override string BlockTypeClass => "logicblock";
-
+        public override string Name => "And";
+        public override string Category => NodeCategoryType.Logic;
+        public override string TextIcon => "&";
         public override void CalculateValue()
         {
             var inA = Ports[0];
@@ -38,7 +32,7 @@ namespace dOSCEngine.Engine.Nodes.Logic
 
                 if (ValA != null && ValB != null)
                 {
-                    Value = (bool)ValA && (bool)ValB;
+                    Value = Convert.ToBoolean(ValA) && Convert.ToBoolean(ValB);
                 }
             }
             else

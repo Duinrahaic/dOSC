@@ -5,17 +5,20 @@ using Blazor.Diagrams.Options;
 using dOSCEngine.Engine.Nodes;
 using dOSCEngine.Engine.Nodes.Connectors.Activity;
 using dOSCEngine.Engine.Nodes.Connectors.OSC;
-using dOSCEngine.Engine.Nodes.Connectors.VRChat;
-using dOSCEngine.Engine.Nodes.Constant;
+using dOSCEngine.Engine.Nodes.Variables;
 using dOSCEngine.Engine.Nodes.Logic;
-using dOSCEngine.Engine.Nodes.Math;
+using dOSCEngine.Engine.Nodes.Mathematics;
 using dOSCEngine.Engine.Nodes.Utility;
 using dOSCEngine.Services;
+using System.Collections.Concurrent;
 
 namespace dOSCEngine.Engine
 {
     public static class GraphSettings
     {
+        public static TimeSpan UpdateInterval = TimeSpan.FromMilliseconds(100);
+        
+        
         public static BlazorDiagramOptions Options = new BlazorDiagramOptions
         {
             GridSnapToCenter = true,
@@ -30,8 +33,8 @@ namespace dOSCEngine.Engine
             {
                 DefaultRouter = new NormalRouter(),
                 DefaultPathGenerator = new SmoothPathGenerator(),
-                EnableSnapping = true,
-            },
+                EnableSnapping = false
+             },
             Groups =
             {
                 Enabled =  false,
@@ -50,199 +53,143 @@ namespace dOSCEngine.Engine
 
         public static void RegisterBlocks(this BlazorDiagram BD)
         {
-
-            // Connectors
             // Activity
-            BD.RegisterComponent<PulsoidNode, PulsoidBlock>();
+            BD.RegisterComponent<PulsoidNode, DefaultBlock>();
 
             // OSC
-            BD.RegisterComponent<OSCBooleanNode, OSCBooleanBlock>();
-            BD.RegisterComponent<OSCBooleanReadNode, OSCBooleanReadBlock>();
-            BD.RegisterComponent<OSCIntNode, OSCIntBlock>();
-            BD.RegisterComponent<OSCIntReadNode, OSCIntReadBlock>();
-            BD.RegisterComponent<OSCFloatNode, OSCFloatBlock>();
-            BD.RegisterComponent<OSCFloatReadNode, OSCFloatReadBlock>();
-
-            // OSC - VRChat
-            BD.RegisterComponent<AvatarParameterBooleanNode, AvatarParameterBooleanBlock>();
-            BD.RegisterComponent<AvatarParameterBooleanReadNode, AvatarParameterBooleanReadBlock>();
-            BD.RegisterComponent<AvatarParameterIntNode, AvatarParameterIntBlock>();
-            BD.RegisterComponent<AvatarParameterIntReadNode, AvatarParameterIntReadBlock>();
-            BD.RegisterComponent<AvatarParameterFloatNode, AvatarParameterFloatBlock>();
-            BD.RegisterComponent<AvatarParameterFloatReadNode, AvatarParameterFloatReadBlock>();
-            BD.RegisterComponent<OSCVRCButtonNode, OSCVRCButtonBlock>();
-            BD.RegisterComponent<OSCVRCAvatarIntReadNode, OSCVRCAvatarIntReadBlock>();
-            BD.RegisterComponent<OSCVRCAvatarFloatReadNode, OSCVRCAvatarFloatReadBlock>();
-            BD.RegisterComponent<OSCVRCAvatarBooleanReadNode, OSCVRCAvatarBooleanReadBlock>();
-            BD.RegisterComponent<OSCVRCChatboxNode, OSCVRCChatboxBlock>();
-            BD.RegisterComponent<OSCVRCAxisNode, OSCVRCAxisBlock>();
+            BD.RegisterComponent<OSCReadNode, DefaultBlock>();
+            BD.RegisterComponent<OSCWriteNode, DefaultBlock>();
 
             // Constants
-            BD.RegisterComponent<LogicNode, LogicBlock>();
-            BD.RegisterComponent<NumericNode, NumericBlock>();
+            BD.RegisterComponent<LogicNode, DefaultBlock>();
+            BD.RegisterComponent<NumericNode, DefaultBlock>();
 
             // Logic
-            BD.RegisterComponent<AndNode, AndBlock>();
-            BD.RegisterComponent<EqualNode, EqualBlock>();
-            BD.RegisterComponent<GreaterThanNode, GreaterThanBlock>();
-            BD.RegisterComponent<GreaterThanEqualNode, GreaterThanEqualBlock>();
-            BD.RegisterComponent<LessThanNode, LessThanBlock>();
-            BD.RegisterComponent<LessThanEqualNode, LessThanEqualBlock>();
-            BD.RegisterComponent<NotNode, NotBlock>();
-            BD.RegisterComponent<NotEqualNode, NotEqualBlock>();
-            BD.RegisterComponent<OrNode, OrBlock>();
-            BD.RegisterComponent<XOrNode, XOrBlock>();
+            BD.RegisterComponent<AndNode, DefaultBlock>();
+            BD.RegisterComponent<EqualNode, DefaultBlock>();
+            BD.RegisterComponent<GreaterThanNode, DefaultBlock>();
+            BD.RegisterComponent<GreaterThanEqualNode, DefaultBlock>();
+            BD.RegisterComponent<LessThanNode, DefaultBlock>();
+            BD.RegisterComponent<LessThanEqualNode, DefaultBlock>();
+            BD.RegisterComponent<NotNode, DefaultBlock>();
+            BD.RegisterComponent<NotEqualNode, DefaultBlock>();
+            BD.RegisterComponent<OrNode, DefaultBlock>();
+            BD.RegisterComponent<XOrNode, DefaultBlock>();
 
             // Math
-            BD.RegisterComponent<AbsoluteNode, AbsoluteBlock>();
-            BD.RegisterComponent<AddNode, AddBlock>();
-            BD.RegisterComponent<AverageNode, AverageBlock>();
-            BD.RegisterComponent<ClampNode, ClampBlock>();
-            BD.RegisterComponent<DivisionNode, DivisionBlock>();
-            BD.RegisterComponent<MaxNode, MaxBlock>();
-            BD.RegisterComponent<MinNode, MinBlock>();
-            BD.RegisterComponent<MultiplicationNode, MultiplicationBlock>();
-            BD.RegisterComponent<NegativeNode, NegativeBlock>();
-            BD.RegisterComponent<PowerNode, PowerBlock>();
-            BD.RegisterComponent<RollingAverageNode, RollingAverageBlock>();
-            BD.RegisterComponent<SineNode, SineBlock>();
-            BD.RegisterComponent<SquareRootNode, SquareRootBlock>();
-            BD.RegisterComponent<SubtractNode, SubstractBlock>();
-            BD.RegisterComponent<SummationNode, SummationBlock>();
+            BD.RegisterComponent<AbsoluteNode, DefaultBlock>();
+            BD.RegisterComponent<AddNode, DefaultBlock>();
+            BD.RegisterComponent<AverageNode, DefaultBlock>();
+            BD.RegisterComponent<ClampNode, DefaultBlock>();
+            BD.RegisterComponent<DivisionNode, DefaultBlock>();
+            BD.RegisterComponent<MultiplicationNode, DefaultBlock>();
+            BD.RegisterComponent<PowerNode, DefaultBlock>();
+            BD.RegisterComponent<SineNode, DefaultBlock>();
+            BD.RegisterComponent<SquareRootNode, DefaultBlock>();
+            BD.RegisterComponent<SubtractNode, DefaultBlock>();
 
             // Utility
-            BD.RegisterComponent<LogicSwitchNode, LogicSwitchBlock>();
-            BD.RegisterComponent<NumericSwitchNode, NumericSwitchBlock>();
-            BD.RegisterComponent<DelayNode, DelayBlock>();
-
+            BD.RegisterComponent<DelayNode, DefaultBlock>();
+            BD.RegisterComponent<LogicSwitchNode, DefaultBlock>();
+            BD.RegisterComponent<InvertNode, DefaultBlock>();
+            BD.RegisterComponent<NoteNode, NoteBlock>();
+            BD.RegisterComponent<NumericSwitchNode, DefaultBlock>();
+            BD.RegisterComponent<RandomNode, DefaultBlock>();
         }
 
 
         public static BaseNode? ConvertNode(this BaseNodeDTO dto, ServiceBundle SB)
         {
-            dynamic? type;
-            if (!dto.Properties.TryGetValue(PropertyType.Type, out type))
+            switch (dto.NodeClass)
             {
-                type = dto.NodeClass ?? string.Empty;
-            }
-            switch (type)
-            {
-
                 // Math
-                case "SummationNode":
-                    return new SummationNode(dto.Guid, dto.Position);
                 case "SineNode":
-                    return new SineNode(dto.Guid, dto.Position);
-                case "RandomNode":
-                    return new RandomNode(dto.Guid, dto.Position);
-                case "MinNode":
-                    return new MinNode(dto.Guid, dto.Position);
-                case "MaxNode":
-                    return new MaxNode(dto.Guid, dto.Position);
-                case "CounterNode":
-                    return new CounterNode(dto.Guid, dto.Position);
+                    return new SineNode(dto.Guid, dto.Properties, dto.Position);
                 case "AverageNode":
-                    return new AverageNode(dto.Guid, dto.Position);
+                    return new AverageNode(dto.Guid, dto.Properties, dto.Position);
                 case "SubtractNode":
-                    return new SubtractNode(dto.Guid, dto.Position);
+                    return new SubtractNode(dto.Guid, dto.Properties, dto.Position);
                 case "MultiplicationNode":
-                    return new MultiplicationNode(dto.Guid, dto.Position);
+                    return new MultiplicationNode(dto.Guid, dto.Properties, dto.Position);
                 case "DivisionNode":
-                    return new DivisionNode(dto.Guid, dto.Position);
+                    return new DivisionNode(dto.Guid, dto.Properties, dto.Position);
                 case "AddNode":
-                    return new AddNode(dto.Guid, dto.Position);
+                    return new AddNode(dto.Guid, dto.Properties, dto.Position);
                 case "AbsoluteNode":
-                    return new AbsoluteNode(dto.Guid, dto.Position);
+                    return new AbsoluteNode(dto.Guid, dto.Properties, dto.Position);
                 case "ClampNode":
-                    return new ClampNode(dto.Guid, dto.Position);
-                case "RollingAverageNode":
-                    return new RollingAverageNode(dto.Guid, dto.Position);
+                    return new ClampNode(dto.Guid, dto.Properties, dto.Position);
                 case "SquareRootNode":
-                    return new SquareRootNode(dto.Guid, dto.Position);
+                    return new SquareRootNode(dto.Guid, dto.Properties, dto.Position);
+                case "PowerNode":
+                    return new PowerNode(dto.Guid, dto.Properties, dto.Position);
 
                 // Logic
                 case "AndNode":
-                    return new AndNode(dto.Guid, dto.Position);
+                    return new AndNode(dto.Guid, dto.Properties, dto.Position);
                 case "OrNode":
-                    return new OrNode(dto.Guid, dto.Position);
+                    return new OrNode(dto.Guid, dto.Properties, dto.Position);
                 case "XOrNode":
-                    return new XOrNode(dto.Guid, dto.Position);
+                    return new XOrNode(dto.Guid, dto.Properties, dto.Position);
                 case "NotNode":
-                    return new NotNode(dto.Guid, dto.Position);
+                    return new NotNode(dto.Guid, dto.Properties, dto.Position);
                 case "EqualNode":
-                    return new EqualNode(dto.Guid, dto.Position);
+                    return new EqualNode(dto.Guid, dto.Properties, dto.Position);
+                case "NotEqualNode":
+                    return new NotEqualNode(dto.Guid, dto.Properties, dto.Position);
                 case "GreaterThanNode":
-                    return new GreaterThanNode(dto.Guid, dto.Position);
+                    return new GreaterThanNode(dto.Guid, dto.Properties, dto.Position);
                 case "LessThanNode":
-                    return new LessThanNode(dto.Guid, dto.Position);
-                case "GreaterThanOrEqualNode":
-                    return new GreaterThanEqualNode(dto.Guid, dto.Position);
-                case "LessThanOrEqualNode":
-                    return new LessThanEqualNode(dto.Guid, dto.Position);
+                    return new LessThanNode(dto.Guid, dto.Properties, dto.Position);
+                case "GreaterThanEqualNode":
+                    return new GreaterThanEqualNode(dto.Guid, dto.Properties, dto.Position);
+                case "LessThanEqualNode":
+                    return new LessThanEqualNode(dto.Guid, dto.Properties, dto.Position);
 
                 // Constants
                 case "NumericNode":
-                    return new NumericNode(dto.Guid, dto.Value, dto.Position);
+                    return new NumericNode(dto.Guid, dto.Properties, dto.Position);
                 case "LogicNode":
-                    return new LogicNode(dto.Guid, dto.Value, dto.Position);
+                    return new LogicNode(dto.Guid, dto.Properties, dto.Position);
 
                 // Activity
                 case "PulsoidNode":
-                    return new PulsoidNode(dto.Guid, SB, dto.Position);
-
-                // OSC
-                case "OSCBooleanNode":
-                    return new OSCBooleanNode(dto.Guid, dto.Option, SB, dto.Position);
-                case "OSCBooleanReadNode":
-                    return new OSCBooleanReadNode(dto.Guid, dto.Option, SB, dto.Position);
-                case "OSCIntNode":
-                    return new OSCIntNode(dto.Guid, dto.Option, SB, dto.Position);
-                case "OSCIntReadNode":
-                    return new OSCIntReadNode(dto.Guid, dto.Option, SB, dto.Position);
-                case "OSCFloatNode":
-                    return new OSCFloatNode(dto.Guid, dto.Option, SB, dto.Position);
-                case "OSCFloatReadNode":
-                    return new OSCFloatReadNode(dto.Guid, dto.Option, SB, dto.Position);
-
-                // VRChat 
-                case "AvatarParameterBooleanNode":
-                    return new AvatarParameterBooleanNode(dto.Guid, dto.Option, SB, dto.Position);
-                case "AvatarParameterBooleanReadNode":
-                    return new AvatarParameterBooleanReadNode(dto.Guid, dto.Option, SB, dto.Position);
-                case "AvatarParameterIntNode":
-                    return new AvatarParameterIntNode(dto.Guid, dto.Option, SB, dto.Position);
-                case "AvatarParameterIntReadNode":
-                    return new AvatarParameterIntReadNode(dto.Guid, dto.Option, SB, dto.Position);
-                case "AvatarParameterFloatNode":
-                    return new AvatarParameterFloatNode(dto.Guid, dto.Option, SB, dto.Position);
-                case "AvatarParameterFloatReadNode":
-                    return new AvatarParameterFloatReadNode(dto.Guid, dto.Option, SB, dto.Position);
-
-                case "OSCVRCAvatarFloatReadNode":
-                    return new OSCVRCAvatarFloatReadNode(dto.Guid, dto.Option, SB, dto.Position);
-                case "OSCVRCAvatarIntReadNode":
-                    return new OSCVRCAvatarIntReadNode(dto.Guid, dto.Option, SB, dto.Position);
-                case "OSCVRCAvatarBooleanReadNode":
-                    return new OSCVRCAvatarBooleanReadNode(dto.Guid, dto.Option, SB, dto.Position);
-                case "OSCVRCAxisNode":
-                    return new OSCVRCAxisNode(dto.Guid, dto.Option, SB, dto.Position);
-                case "OSCVRCButtonNode":
-                    return new OSCVRCButtonNode(dto.Guid, dto.Option, SB, dto.Position);
-                case "OSCVRCChatboxNode":
-                    return new OSCVRCChatboxNode(dto.Guid, SB, dto.Position);
+                    return new PulsoidNode(dto.Guid, dto.Properties, dto.Position, SB);
+                // OSC 
+                case "OSCReadNode":
+                    return new OSCReadNode(dto.Guid, dto.Properties, dto.Position, SB);
+                case "OSCWriteNode":
+                    return new OSCWriteNode(dto.Guid, dto.Properties, dto.Position, SB);
 
                 // Utility Nodes
-                case "LogicSwitchNode":
-                    return new LogicSwitchNode(dto.Guid, dto.Position);
-                case "NumericSwitchNode":
-                    return new NumericSwitchNode(dto.Guid, dto.Position);
                 case "DelayNode":
                     return new DelayNode(dto.Guid, dto.Properties, dto.Position);
-
-
+                case "InvertNode":
+                    return new InvertNode(dto.Guid, dto.Properties, dto.Position);
+                case "LogicSwitchNode":
+                    return new LogicSwitchNode(dto.Guid, dto.Properties, dto.Position);
+                case "NoteNode":
+                    return new NoteNode(dto.Guid, dto.Properties, dto.Position);
+                case "NumericSwitchNode":
+                    return new NumericSwitchNode(dto.Guid, dto.Properties, dto.Position);
+                case "RandomNode":
+                    return new RandomNode(dto.Guid, dto.Properties, dto.Position);
                 default:
                     return null;
             }
+
+            
+        }
+
+
+
+
+        private static ConcurrentDictionary<string, dynamic>? ConvertToProperty<T>(string PropertyName, string Value)
+        {
+            ConcurrentDictionary<string, dynamic>? Properties = new();
+
+            Properties.TryAdd(PropertyName, Value);
+            return Properties;
         }
     }
 }

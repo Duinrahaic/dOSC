@@ -80,7 +80,7 @@ namespace dOSCEngine.Engine
                 var tp = (l.Target.Model as BasePort)!;
                 if (sp != null && tp != null)
                 {
-                    // Get Input Node and Output Node
+                    // Get Value Node and Output Node
                     var SourceIsInput = sp!.Input ? true : false;
                     var sn = (sp.Parent as BaseNode)!;
                     var tn = (tp.Parent as BaseNode)!;
@@ -101,6 +101,9 @@ namespace dOSCEngine.Engine
             return HasCycle();
         }
 
-
+        
+        
+        
+        
     }
 }

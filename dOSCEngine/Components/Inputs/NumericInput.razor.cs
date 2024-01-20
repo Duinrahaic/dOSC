@@ -1,7 +1,7 @@
 ﻿using Blazor.Diagrams.Core.Models;
 using Microsoft.AspNetCore.Components;
 using dOSCEngine.Engine.Nodes;
-using dOSCEngine.Engine.Nodes.Constant;
+using dOSCEngine.Engine.Nodes.Variables;
 
 namespace dOSCEngine.Components.Inputs
 {

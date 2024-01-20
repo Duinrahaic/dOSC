@@ -2,12 +2,6 @@
 using dOSCEngine.Services.Connectors.Activity.Pulsoid;
 using dOSCEngine.Services.Connectors.OSC;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace dOSCEngine.Services
 {
@@ -18,7 +12,8 @@ namespace dOSCEngine.Services
         public delegate void NodeUpdateCallbackHandler(BaseNode node);
         public event NodeUpdateCallbackHandler? OnNodeUpdate;
 
-
+        
+        
         public readonly OSCService? OSC;
         public readonly PulsoidService? Pulsoid;
  
@@ -37,6 +32,10 @@ namespace dOSCEngine.Services
         {
             OnNodeUpdate?.Invoke(node);
         }
+
+        
+
+
 
 
 

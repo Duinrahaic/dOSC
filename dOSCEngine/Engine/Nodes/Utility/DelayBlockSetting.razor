@@ -83,23 +83,23 @@
                 <ValidationMessage For="@(() => Setting.QueueSize)" />
                 <InputNumber type="number" placeholder="1" @bind-Value=@Setting.QueueSize />
             </div>
-            <div class="dosc-form-item">
+@*             <div class="dosc-form-item">
                 <label> Queue Type: </label>
-                <ValidationMessage For="@(() => Setting.SequentialQueue)" />
-                <InputRadioGroup @bind-Value="Setting.SequentialQueue">
+                <ValidationMessage For="@(() => setting.SequentialQueue)" />
+                <ValueRadioGroup @bind-Value="setting.SequentialQueue">
                     <div class="dosc-form-row">
                         <div class="dosc-form-item item-row">
-                            <InputRadio id="radio-SQ1" Value="false" checked="checked" />
+                            <ValueRadio id="radio-SQ1" Value="false" checked="checked" />
                             <label for="radio-SQ1">Parallel</label>
                         </div>
 
                         <div class="dosc-form-item item-row">
-                            <InputRadio id="radio-SQ2" Value="true" />
+                            <ValueRadio id="radio-SQ2" Value="true" />
                             <label for="radio-SQ2">Sequential</label>
                         </div>
                     </div>
-                </InputRadioGroup>
-            </div>
+                </ValueRadioGroup>
+            </div> *@
         }
         
 
@@ -110,7 +110,7 @@
 
 
 @code{
-    [Parameter]
+    [CascadingParameter]
     public BaseNode? Node { get; set; }
     private NodeSetting? Setting;
 
@@ -166,49 +166,46 @@
         [DisplayName("Delay Time")]
         [Range(1, 10000, ErrorMessage = "Delay time must be between 1 and 10000")]
         [Required]
-        public int DelayTime { get; set; } = 1;
+        public int DelayTime { get; set; }
+        
         [DisplayName("Queue Size")]
         [Range(1, 100, ErrorMessage = "Queue size must be between 1 and 100")]
         [Required]
-        public int QueueSize { get; set; } = 1;
+        public int QueueSize { get; set; }
         [Required]
-        public TimeUnits Unit { get; set; } = TimeUnits.Millisecond;
+        public TimeUnits Unit { get; set; }
         [Required]
-        public bool ShowPercent { get; set; } = false;
+        public bool ShowPercent { get; set; }
         [Required]
-        public bool ShowNumbersOnly { get; set; } = false;
-        [Required]
-        public bool SequentialQueue { get; set; } = false;
+        public bool ShowNumbersOnly { get; set; } 
         public List<TimeUnits> UnitOptions => ListUtilities.GetEnumValues<TimeUnits>();
-        public NodeSetting(BaseNode Node)
+        public NodeSetting(BaseNode node)
         {
-            DelayTime = Node.GetProperty<int>("DelayTime");
-            QueueSize = Node.GetProperty<int>("MaxQueue");
-            Unit = Node.GetProperty<TimeUnits>("DelayTimeUnits");
-            ShowPercent = Node.GetProperty<bool>("ShowPercent");
-            ShowNumbersOnly = Node.GetProperty<bool>("ShowNumbersOnly");
-            SequentialQueue = Node.GetProperty<bool>("SequentialQueue");
-            DisplayName = Node.GetProperty<string>(PropertyType.DisplayName);
-            Name = Node.GetProperty<string>(PropertyType.Name);
+            DelayTime = node.Properties.GetProperty<int>(EntityPropertyEnum.DelayTime);
+            Unit = node.Properties.GetProperty<TimeUnits>(EntityPropertyEnum.DelayTimeUnits);
+            QueueSize = node.Properties.GetProperty<int>(EntityPropertyEnum.MaxQueue);
+            ShowPercent = node.Properties.GetProperty<bool>(EntityPropertyEnum.ShowPercent);
+            ShowNumbersOnly = node.Properties.GetProperty<bool>(EntityPropertyEnum.ShowNumbersOnly);
+            DisplayName = node.DisplayName;
+            Name = node.Name;
         }
 
 
 
     }
 
-    public void Update(BaseNodeSetting Setting)
+    public void Update(BaseNodeSetting setting)
     {
-        var UpdatedSettings = (NodeSetting)Setting;
+        var updatedSettings = (NodeSetting)setting;
 
         if (Node != null)
         {
-            Node.SetProperty("DelayTime", (int)UpdatedSettings.DelayTime);
-            Node.SetProperty("DelayTimeUnits", UpdatedSettings.Unit);
-            Node.SetProperty("ShowPercent", UpdatedSettings.ShowPercent);
-            Node.SetProperty("ShowNumbersOnly", UpdatedSettings.ShowNumbersOnly);
-            Node.SetProperty("SequentialQueue", UpdatedSettings.SequentialQueue);
-            Node.SetProperty("MaxQueue", UpdatedSettings.QueueSize);
-            Node.SetProperty(PropertyType.DisplayName, UpdatedSettings.DisplayName);
+            Node.DisplayName = updatedSettings.DisplayName;
+            Node.Properties.SetProperty(EntityPropertyEnum.DelayTime, (int)updatedSettings.DelayTime);
+            Node.Properties.SetProperty(EntityPropertyEnum.DelayTimeUnits, updatedSettings.Unit);
+            Node.Properties.SetProperty(EntityPropertyEnum.ShowPercent, updatedSettings.ShowPercent);
+            Node.Properties.SetProperty(EntityPropertyEnum.ShowNumbersOnly, updatedSettings.ShowNumbersOnly);
+            Node.Properties.SetProperty(EntityPropertyEnum.MaxQueue, updatedSettings.QueueSize);
         }
 
         if (Updated.HasDelegate)
