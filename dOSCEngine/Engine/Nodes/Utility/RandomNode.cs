@@ -12,26 +12,26 @@ namespace dOSCEngine.Engine.Nodes.Utility
 {
     public class RandomNode : BaseNode
     {
-        public RandomNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
+        public RandomNode(Guid? guid = null, ConcurrentDictionary<EntityProperty, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
             AddPort(new MultiPort(PortGuids.Port_1, this, false, allowedTypes: new() { PortType.Numeric, PortType.Logic, PortType.Multi }, name: "Output"));
 
-            Properties.TryInitializeProperty(EntityPropertyEnum.DelayTime, (int)1);
-            Properties.TryInitializeProperty(EntityPropertyEnum.DelayTimeUnits, TimeUnits.Second);
-            Properties.TryInitializeProperty(EntityPropertyEnum.Max, (double) 255.0);
-            Properties.TryInitializeProperty(EntityPropertyEnum.Min,(double) -255.0);
-            Properties.TryInitializeProperty(EntityPropertyEnum.DecimalPlaceCount, 0);
-            Properties.TryInitializeProperty(EntityPropertyEnum.ShowPercent, false);
-            Properties.TryInitializeProperty(EntityPropertyEnum.ShowNumbersOnly, false);
+            Properties.TryInitializeProperty(EntityProperty.DelayTime, (int)1);
+            Properties.TryInitializeProperty(EntityProperty.DelayTimeUnits, TimeUnits.Second);
+            Properties.TryInitializeProperty(EntityProperty.Max, (double) 255.0);
+            Properties.TryInitializeProperty(EntityProperty.Min,(double) -255.0);
+            Properties.TryInitializeProperty(EntityProperty.DecimalPlaceCount, 0);
+            Properties.TryInitializeProperty(EntityProperty.ShowPercent, false);
+            Properties.TryInitializeProperty(EntityProperty.ShowNumbersOnly, false);
             ShowProgressBar = true;
             VisualIndicator = IndicatorToString();
-            _delayTime = Properties.GetProperty<long>(EntityPropertyEnum.DelayTime);
-            _delayTimeUnits = Properties.GetProperty<TimeUnits>(EntityPropertyEnum.DelayTimeUnits);
-            _showPercent = Properties.GetProperty<bool>(EntityPropertyEnum.ShowPercent);
-            _showNumbersOnly = Properties.GetProperty<bool>(EntityPropertyEnum.ShowNumbersOnly);
-            _max = Properties.GetProperty<double>(EntityPropertyEnum.Max);
-            _min = Properties.GetProperty<double>(EntityPropertyEnum.Min);
-            _decimalPlaces = Properties.GetProperty<int>(EntityPropertyEnum.DecimalPlaceCount);
+            _delayTime = Properties.GetProperty<long>(EntityProperty.DelayTime);
+            _delayTimeUnits = Properties.GetProperty<TimeUnits>(EntityProperty.DelayTimeUnits);
+            _showPercent = Properties.GetProperty<bool>(EntityProperty.ShowPercent);
+            _showNumbersOnly = Properties.GetProperty<bool>(EntityProperty.ShowNumbersOnly);
+            _max = Properties.GetProperty<double>(EntityProperty.Max);
+            _min = Properties.GetProperty<double>(EntityProperty.Min);
+            _decimalPlaces = Properties.GetProperty<int>(EntityProperty.DecimalPlaceCount);
             
             Queue = new QueueProcessor<object>(
                 customProcessItemAsync: Update,
@@ -61,34 +61,34 @@ namespace dOSCEngine.Engine.Nodes.Utility
 
         private object QueueLock = new object();
         
-        public override void PropertyNotifyEvent(EntityPropertyEnum property, dynamic? value)
+        public override void PropertyNotifyEvent(EntityProperty property, dynamic? value)
         {
             
-            if(property == EntityPropertyEnum.DelayTime)
+            if(property == EntityProperty.DelayTime)
             {
                 _delayTime = value;
             }
-            else if(property == EntityPropertyEnum.DelayTimeUnits)
+            else if(property == EntityProperty.DelayTimeUnits)
             {
                 _delayTimeUnits = value;
             }
-            else if(property == EntityPropertyEnum.ShowPercent)
+            else if(property == EntityProperty.ShowPercent)
             {
                 _showPercent = value;
             }
-            else if(property == EntityPropertyEnum.ShowNumbersOnly)
+            else if(property == EntityProperty.ShowNumbersOnly)
             {
                 _showNumbersOnly = value;
             }
-            else if(property == EntityPropertyEnum.Max)
+            else if(property == EntityProperty.Max)
             {
                 _max = value;
             }
-            else if(property == EntityPropertyEnum.Min)
+            else if(property == EntityProperty.Min)
             {
                 _min = value;
             }
-            else if(property == EntityPropertyEnum.DecimalPlaceCount)
+            else if(property == EntityProperty.DecimalPlaceCount)
             {
                 _decimalPlaces = value;
             }

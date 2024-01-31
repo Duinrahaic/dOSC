@@ -181,11 +181,11 @@
         public List<TimeUnits> UnitOptions => ListUtilities.GetEnumValues<TimeUnits>();
         public NodeSetting(BaseNode node)
         {
-            DelayTime = node.Properties.GetProperty<int>(EntityPropertyEnum.DelayTime);
-            Unit = node.Properties.GetProperty<TimeUnits>(EntityPropertyEnum.DelayTimeUnits);
-            QueueSize = node.Properties.GetProperty<int>(EntityPropertyEnum.MaxQueue);
-            ShowPercent = node.Properties.GetProperty<bool>(EntityPropertyEnum.ShowPercent);
-            ShowNumbersOnly = node.Properties.GetProperty<bool>(EntityPropertyEnum.ShowNumbersOnly);
+            DelayTime = node.Properties.GetProperty<int>(EntityProperty.DelayTime);
+            Unit = node.Properties.GetProperty<TimeUnits>(EntityProperty.DelayTimeUnits);
+            QueueSize = node.Properties.GetProperty<int>(EntityProperty.MaxQueue);
+            ShowPercent = node.Properties.GetProperty<bool>(EntityProperty.ShowPercent);
+            ShowNumbersOnly = node.Properties.GetProperty<bool>(EntityProperty.ShowNumbersOnly);
             DisplayName = node.DisplayName;
             Name = node.Name;
         }
@@ -201,11 +201,11 @@
         if (Node != null)
         {
             Node.DisplayName = updatedSettings.DisplayName;
-            Node.Properties.SetProperty(EntityPropertyEnum.DelayTime, (int)updatedSettings.DelayTime);
-            Node.Properties.SetProperty(EntityPropertyEnum.DelayTimeUnits, updatedSettings.Unit);
-            Node.Properties.SetProperty(EntityPropertyEnum.ShowPercent, updatedSettings.ShowPercent);
-            Node.Properties.SetProperty(EntityPropertyEnum.ShowNumbersOnly, updatedSettings.ShowNumbersOnly);
-            Node.Properties.SetProperty(EntityPropertyEnum.MaxQueue, updatedSettings.QueueSize);
+            Node.Properties.SetProperty(EntityProperty.DelayTime, (int)updatedSettings.DelayTime);
+            Node.Properties.SetProperty(EntityProperty.DelayTimeUnits, updatedSettings.Unit);
+            Node.Properties.SetProperty(EntityProperty.ShowPercent, updatedSettings.ShowPercent);
+            Node.Properties.SetProperty(EntityProperty.ShowNumbersOnly, updatedSettings.ShowNumbersOnly);
+            Node.Properties.SetProperty(EntityProperty.MaxQueue, updatedSettings.QueueSize);
         }
 
         if (Updated.HasDelegate)

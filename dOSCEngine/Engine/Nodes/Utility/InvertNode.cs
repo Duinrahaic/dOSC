@@ -6,7 +6,7 @@ namespace dOSCEngine.Engine.Nodes.Utility
 {
     public class InvertNode: BaseNode
     {
-        public InvertNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
+        public InvertNode(Guid? guid = null, ConcurrentDictionary<EntityProperty, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
             AddPort(new MultiPort(PortGuids.Port_1, this, true, allowedTypes: new() { PortType.Numeric, PortType.Logic, PortType.Multi }, name: "Value"));
             AddPort(new MultiPort(PortGuids.Port_2, this, false, allowedTypes: new() { PortType.Numeric, PortType.Logic, PortType.Multi }, name: "Output"));

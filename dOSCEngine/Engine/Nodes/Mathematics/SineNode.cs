@@ -7,15 +7,15 @@ namespace dOSCEngine.Engine.Nodes.Mathematics
 {
     public class SineNode : BaseNode
     {
-        public SineNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
+        public SineNode(Guid? guid = null, ConcurrentDictionary<EntityProperty, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, false, name: "Output"));
 
-            Properties.TryInitializeProperty(EntityPropertyEnum.Amplitude, 1.0);
-            Properties.TryInitializeProperty(EntityPropertyEnum.Frequency, 1.0);
+            Properties.TryInitializeProperty(EntityProperty.Amplitude, 1.0);
+            Properties.TryInitializeProperty(EntityProperty.Frequency, 1.0);
             
-            _amplitude = Properties.GetProperty<double>(EntityPropertyEnum.Amplitude);
-            _frequency = Properties.GetProperty<double>(EntityPropertyEnum.Frequency);
+            _amplitude = Properties.GetProperty<double>(EntityProperty.Amplitude);
+            _frequency = Properties.GetProperty<double>(EntityProperty.Frequency);
             GlobalTimer.OnTimerElapsed += GetSineWave;
         }
         public override string Name => "Sine Wave";
