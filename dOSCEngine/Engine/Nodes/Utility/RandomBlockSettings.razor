@@ -182,13 +182,13 @@
         public List<TimeUnits> UnitOptions => ListUtilities.GetEnumValues<TimeUnits>();
         public NodeSetting(BaseNode Node)
         {
-            DelayTime = Node.Properties.GetProperty<int>(EntityProperty.DelayTime);
-            Unit = Node.Properties.GetProperty<TimeUnits>(EntityProperty.DelayTimeUnits);
-            ShowPercent = Node.Properties.GetProperty<bool>(EntityProperty.ShowPercent);
-            ShowNumbersOnly = Node.Properties.GetProperty<bool>(EntityProperty.ShowNumbersOnly);
-            Max = Node.Properties.GetProperty<double>(EntityProperty.Max);
-            Min = Node.Properties.GetProperty<double>(EntityProperty.Min);
-            DecimalPlaceCount = Node.Properties.GetProperty<int>(EntityProperty.DecimalPlaceCount);
+            DelayTime = Node.Properties.GetProperty<int>(EntityPropertyEnum.DelayTime);
+            Unit = Node.Properties.GetProperty<TimeUnits>(EntityPropertyEnum.DelayTimeUnits);
+            ShowPercent = Node.Properties.GetProperty<bool>(EntityPropertyEnum.ShowPercent);
+            ShowNumbersOnly = Node.Properties.GetProperty<bool>(EntityPropertyEnum.ShowNumbersOnly);
+            Max = Node.Properties.GetProperty<double>(EntityPropertyEnum.Max);
+            Min = Node.Properties.GetProperty<double>(EntityPropertyEnum.Min);
+            DecimalPlaceCount = Node.Properties.GetProperty<int>(EntityPropertyEnum.DecimalPlaceCount);
             DisplayName = Node.DisplayName;
             Name = Node.Name;
         }
@@ -204,13 +204,13 @@
         if (Node != null)
         {
             Node.DisplayName = updatedSettings.DisplayName;
-            Node.Properties.SetProperty(EntityProperty.DelayTime, (int)updatedSettings.DelayTime);
-            Node.Properties.SetProperty(EntityProperty.DelayTimeUnits, updatedSettings.Unit);
-            Node.Properties.SetProperty(EntityProperty.ShowPercent, updatedSettings.ShowPercent);
-            Node.Properties.SetProperty(EntityProperty.ShowNumbersOnly, updatedSettings.ShowNumbersOnly);
-            Node.Properties.SetProperty(EntityProperty.Max, updatedSettings.Max);
-            Node.Properties.SetProperty(EntityProperty.Min, updatedSettings.Min);
-            Node.Properties.SetProperty(EntityProperty.DecimalPlaceCount, updatedSettings.DecimalPlaceCount);
+            Node.Properties.SetProperty(EntityPropertyEnum.DelayTime, (int)updatedSettings.DelayTime);
+            Node.Properties.SetProperty(EntityPropertyEnum.DelayTimeUnits, updatedSettings.Unit);
+            Node.Properties.SetProperty(EntityPropertyEnum.ShowPercent, updatedSettings.ShowPercent);
+            Node.Properties.SetProperty(EntityPropertyEnum.ShowNumbersOnly, updatedSettings.ShowNumbersOnly);
+            Node.Properties.SetProperty(EntityPropertyEnum.Max, updatedSettings.Max);
+            Node.Properties.SetProperty(EntityPropertyEnum.Min, updatedSettings.Min);
+            Node.Properties.SetProperty(EntityPropertyEnum.DecimalPlaceCount, updatedSettings.DecimalPlaceCount);
         }
 
         if (Updated.HasDelegate)

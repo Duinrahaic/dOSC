@@ -14,17 +14,17 @@ namespace dOSCEngine.Engine.Nodes.Connectors.OSC
 {
     public class OSCReadNode : BaseNode
     {
-        public OSCReadNode(Guid? guid = null, ConcurrentDictionary<EntityProperty, dynamic>? properties = null, Point? position = null, ServiceBundle? service = null) : base(guid, position, properties)
+        public OSCReadNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null, ServiceBundle? service = null) : base(guid, position, properties)
         {
             AddPort(new MultiPort(PortGuids.Port_1, this, false, limitLink: false, name: "Read Value", allowedTypes: new() { PortType.Numeric, PortType.Logic, PortType.Multi }));
             _service = service?.OSC;
-            Properties.TryInitializeProperty(EntityProperty.IsAvatarParameter, true);
-            Properties.TryInitializeProperty(EntityProperty.OSCAddress, string.Empty);
-            Properties.TryInitializeProperty(EntityProperty.WriteAsFloat, true);
+            Properties.TryInitializeProperty(EntityPropertyEnum.IsAvatarParameter, true);
+            Properties.TryInitializeProperty(EntityPropertyEnum.OSCAddress, string.Empty);
+            Properties.TryInitializeProperty(EntityPropertyEnum.WriteAsFloat, true);
 
-            OSCAddress = Properties.GetProperty<string>(EntityProperty.OSCAddress);
-            _isAvatarParameter = Properties.GetProperty<bool>(EntityProperty.IsAvatarParameter);
-            _writeAsFloat = Properties.GetProperty<bool>(EntityProperty.WriteAsFloat);
+            OSCAddress = Properties.GetProperty<string>(EntityPropertyEnum.OSCAddress);
+            _isAvatarParameter = Properties.GetProperty<bool>(EntityPropertyEnum.IsAvatarParameter);
+            _writeAsFloat = Properties.GetProperty<bool>(EntityPropertyEnum.WriteAsFloat);
    
             if (_service != null)
                 _service.OnOSCMessageRecieved += OnOSCMessageReceived;
@@ -52,19 +52,19 @@ namespace dOSCEngine.Engine.Nodes.Connectors.OSC
             
         }
         
-        public override void PropertyNotifyEvent(EntityProperty property, dynamic? value)
+        public override void PropertyNotifyEvent(EntityPropertyEnum property, dynamic? value)
         {
-            if(property == EntityProperty.OSCAddress)
+            if(property == EntityPropertyEnum.OSCAddress)
             {
                 OSCAddress = value;
                 VisualIndicator = OSCAddress ?? "No Address Set";
                 VisualIndicator = string.IsNullOrEmpty(VisualIndicator) ? "No Address Set" : VisualIndicator;
             }
-            else if(property == EntityProperty.IsAvatarParameter)
+            else if(property == EntityPropertyEnum.IsAvatarParameter)
             {
                 _isAvatarParameter = value;
             }
-            else if(property == EntityProperty.WriteAsFloat)
+            else if(property == EntityPropertyEnum.WriteAsFloat)
             {
                 _writeAsFloat = value;
             }

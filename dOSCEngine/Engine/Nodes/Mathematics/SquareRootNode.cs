@@ -7,7 +7,7 @@ namespace dOSCEngine.Engine.Nodes.Mathematics
 {
     public class SquareRootNode : BaseNode
     {
-        public SquareRootNode(Guid? guid = null, ConcurrentDictionary<EntityProperty, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
+        public SquareRootNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, true, name: "Value"));
             AddPort(new NumericPort(PortGuids.Port_2, this, false, name: "Output"));

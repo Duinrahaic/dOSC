@@ -80,11 +80,11 @@
             
             if(Type == "LogicNode")
             {
-                LogicInput = Convert.ToBoolean(node.Properties.GetProperty<bool>(EntityProperty.ConstantValue));
+                LogicInput = Convert.ToBoolean(node.Properties.GetProperty<bool>(EntityPropertyEnum.ConstantValue));
             }
             else if(Type == "NumericNode")
             {
-                NumericInput = node.Properties.GetProperty<double>(EntityProperty.ConstantValue);
+                NumericInput = node.Properties.GetProperty<double>(EntityPropertyEnum.ConstantValue);
             }
 
             DisplayName = node.DisplayName;
@@ -104,11 +104,11 @@
             
             if(Node.GetType().Name == "LogicNode")
             {
-                Node.Properties.SetProperty(EntityProperty.ConstantValue,updatedSettings.LogicInput);
+                Node.Properties.SetProperty(EntityPropertyEnum.ConstantValue,updatedSettings.LogicInput);
             }
             else if(Node.GetType().Name == "NumericNode")
             {
-                Node.Properties.SetProperty(EntityProperty.ConstantValue, updatedSettings.NumericInput);
+                Node.Properties.SetProperty(EntityPropertyEnum.ConstantValue, updatedSettings.NumericInput);
             }
             Node.DisplayName = updatedSettings.DisplayName;
 

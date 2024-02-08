@@ -93,10 +93,10 @@
         public double Max { get; set; } = 1;
         public NodeSetting(BaseNode Node)
         {
-            NoMax = Node.Properties.GetProperty<bool>(EntityProperty.NoMax);
-            NoMin = Node.Properties.GetProperty<bool>(EntityProperty.NoMin);
-            Min = Node.Properties.GetProperty<double>(EntityProperty.Min);
-            Max = Node.Properties.GetProperty<double>(EntityProperty.Max);
+            NoMax = Node.Properties.GetProperty<bool>(EntityPropertyEnum.NoMax);
+            NoMin = Node.Properties.GetProperty<bool>(EntityPropertyEnum.NoMin);
+            Min = Node.Properties.GetProperty<double>(EntityPropertyEnum.Min);
+            Max = Node.Properties.GetProperty<double>(EntityPropertyEnum.Max);
             DisplayName = Node.DisplayName;
             Name = Node.Name;   
         }
@@ -115,10 +115,10 @@
                 UpdatedSettings.Max = UpdatedSettings.Min;
                 UpdatedSettings.Min = Max;
             }
-            Node.Properties.SetProperty(EntityProperty.NoMax, UpdatedSettings.NoMax);
-            Node.Properties.SetProperty(EntityProperty.NoMin, UpdatedSettings.NoMin);
-            Node.Properties.SetProperty(EntityProperty.Min, UpdatedSettings.Min);
-            Node.Properties.SetProperty(EntityProperty.Max, UpdatedSettings.Max);
+            Node.Properties.SetProperty(EntityPropertyEnum.NoMax, UpdatedSettings.NoMax);
+            Node.Properties.SetProperty(EntityPropertyEnum.NoMin, UpdatedSettings.NoMin);
+            Node.Properties.SetProperty(EntityPropertyEnum.Min, UpdatedSettings.Min);
+            Node.Properties.SetProperty(EntityPropertyEnum.Max, UpdatedSettings.Max);
             Node.DisplayName = Setting.DisplayName;
         }
 

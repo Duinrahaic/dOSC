@@ -17,7 +17,6 @@ namespace dOSC
 	{
 		public MainWindow()
 		{
-
 			InitializeComponent();
 			this.Name = "dOSC";
 
@@ -30,11 +29,9 @@ namespace dOSC
             else
             {
                 label1.Dispose();
-                
-                chromiumWebBrowser1.LoadUrl(URL.First());
+				chromiumWebBrowser1.LoadUrl(URL.First());
 				chromiumWebBrowser1.MenuHandler = new CustomMenuHandler();
 				chromiumWebBrowser1.DownloadHandler = new Helpers.DownloadHelper();
-				chromiumWebBrowser1.RequestHandler = new Helpers.RequestHandlerHelper();
 			}
 
             
@@ -44,8 +41,6 @@ namespace dOSC
 			
 			this.Resize += MainWindow_Resize;
 		}
-		
-		
 
 		private void MainWindow_Load(object sender, EventArgs e)
 		{
