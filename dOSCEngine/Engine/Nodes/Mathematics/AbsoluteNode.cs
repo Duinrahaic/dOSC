@@ -8,7 +8,7 @@ namespace dOSCEngine.Engine.Nodes.Mathematics
 {
     public class AbsoluteNode : BaseNode
     {
-        public AbsoluteNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
+        public AbsoluteNode(Guid? guid = null, ConcurrentDictionary<EntityProperty, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
 
             AddPort(new NumericPort(PortGuids.Port_1, this, true, "Value"));

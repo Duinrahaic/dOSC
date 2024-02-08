@@ -6,17 +6,17 @@ namespace dOSCEngine.Engine;
 
 public class EntityProperties
 {
-    public delegate void PropertyChangeUpdate(EntityPropertyEnum property, dynamic? value);
+    public delegate void PropertyChangeUpdate(EntityProperty property, dynamic? value);
     public event PropertyChangeUpdate? OnPropertyChangeUpdate;
 
     [JsonConverter(typeof(StringEnumConverter))]
-    private readonly ConcurrentDictionary<EntityPropertyEnum, dynamic> _properties = new();
+    private readonly ConcurrentDictionary<EntityProperty, dynamic> _properties = new();
     
     
-    public EntityProperties() => _properties = new ConcurrentDictionary<EntityPropertyEnum, dynamic>();
-    public EntityProperties(ConcurrentDictionary<EntityPropertyEnum, dynamic> properties) => _properties = properties ?? new();
-    public ConcurrentDictionary<EntityPropertyEnum, dynamic>  GetAllProperties() => _properties;
-    public bool TryGetProperty<T>(EntityPropertyEnum property, out T value)
+    public EntityProperties() => _properties = new ConcurrentDictionary<EntityProperty, dynamic>();
+    public EntityProperties(ConcurrentDictionary<EntityProperty, dynamic> properties) => _properties = properties ?? new();
+    public ConcurrentDictionary<EntityProperty, dynamic>  GetAllProperties() => _properties;
+    public bool TryGetProperty<T>(EntityProperty property, out T value)
     {
         T result = default!;
         T enumResult = default!;
@@ -41,7 +41,7 @@ public class EntityProperties
         return false;
     }
 
-    public T GetProperty<T>(EntityPropertyEnum property)
+    public T GetProperty<T>(EntityProperty property)
     {
         T result = default!;
         T enumResult = default!;
@@ -63,7 +63,7 @@ public class EntityProperties
         return result;
     }
 
-    public void SetProperty<T>(EntityPropertyEnum property, T value)
+    public void SetProperty<T>(EntityProperty property, T value)
     {
         if (typeof(T).IsEnum && value != null)
         {
@@ -78,7 +78,7 @@ public class EntityProperties
     }
 
     
-    public void TryInitializeProperty<T>(EntityPropertyEnum property, T value)
+    public void TryInitializeProperty<T>(EntityProperty property, T value)
     {
         bool result = TryGetProperty(property, out T existingValue);
         

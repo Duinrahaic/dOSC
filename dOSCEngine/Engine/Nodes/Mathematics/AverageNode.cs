@@ -8,22 +8,22 @@ namespace dOSCEngine.Engine.Nodes.Mathematics
 {
     public class AverageNode : BaseNode
     {
-        public AverageNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
+        public AverageNode(Guid? guid = null, ConcurrentDictionary<EntityProperty, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, true, name: "Inputs", false));
             AddPort(new NumericPort(PortGuids.Port_2, this, false, name: "Average"));
 
-            Properties.TryInitializeProperty(EntityPropertyEnum.MaxQueue, 1);
-            QueueSize = Properties.GetProperty<int>(EntityPropertyEnum.MaxQueue);
+            Properties.TryInitializeProperty(EntityProperty.MaxQueue, 1);
+            QueueSize = Properties.GetProperty<int>(EntityProperty.MaxQueue);
         }
 
         private ShiftedList<double> _history = new();
         public override string Name => QueueSize >= 1 ? "Rolling Average" : "Average";
         public override string Category => NodeCategoryType.Math;
         public override string TextIcon => "x̄";
-        public override void PropertyNotifyEvent(EntityPropertyEnum property, dynamic? value)
+        public override void PropertyNotifyEvent(EntityProperty property, dynamic? value)
         {
-            if (property == EntityPropertyEnum.MaxQueue)
+            if (property == EntityProperty.MaxQueue)
             {
                 QueueSize = value;
                 if (QueueSize > 1)

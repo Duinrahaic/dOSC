@@ -10,7 +10,7 @@ namespace dOSCEngine.Engine.Nodes.Logic
 {
     public class AndNode : BaseNode
     {
-        public AndNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
+        public AndNode(Guid? guid = null, ConcurrentDictionary<EntityProperty, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
             AddPort(new LogicPort(PortGuids.Port_1, this, true, name: "Value A"));
             AddPort(new LogicPort(PortGuids.Port_2, this, true, name: "Value B"));

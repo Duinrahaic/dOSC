@@ -142,13 +142,13 @@
 
         public NodeSetting(BaseNode Node)
         {
-            IsAvatarParameter = Node.Properties.GetProperty<bool>(EntityPropertyEnum.IsAvatarParameter);
-            OscAddress = Node.Properties.GetProperty<string>(EntityPropertyEnum.OSCAddress);
-            WriteAsFloat = Node.Properties.GetProperty<bool>(EntityPropertyEnum.WriteAsFloat);
+            IsAvatarParameter = Node.Properties.GetProperty<bool>(EntityProperty.IsAvatarParameter);
+            OscAddress = Node.Properties.GetProperty<string>(EntityProperty.OSCAddress);
+            WriteAsFloat = Node.Properties.GetProperty<bool>(EntityProperty.WriteAsFloat);
             if (Node.NodeClass== "OSCWriteNode")
             {
-                SendChatMessageImmediately = Node.Properties.GetProperty<bool>(EntityPropertyEnum.SendChatMessageImmediately);
-                SendChatMessageWithSound = Node.Properties.GetProperty<bool>(EntityPropertyEnum.SendChatMessageWithSound);
+                SendChatMessageImmediately = Node.Properties.GetProperty<bool>(EntityProperty.SendChatMessageImmediately);
+                SendChatMessageWithSound = Node.Properties.GetProperty<bool>(EntityProperty.SendChatMessageWithSound);
             }
             // Required
             DisplayName = Node.DisplayName;
@@ -165,12 +165,12 @@
             Node.DisplayName = updatedSettings.DisplayName;
             if (Node.NodeClass == "OSCWriteNode")
             {
-                Node.Properties.SetProperty(EntityPropertyEnum.SendChatMessageImmediately, updatedSettings.SendChatMessageImmediately);
-                Node.Properties.SetProperty(EntityPropertyEnum.SendChatMessageWithSound, updatedSettings.SendChatMessageWithSound);
+                Node.Properties.SetProperty(EntityProperty.SendChatMessageImmediately, updatedSettings.SendChatMessageImmediately);
+                Node.Properties.SetProperty(EntityProperty.SendChatMessageWithSound, updatedSettings.SendChatMessageWithSound);
             }
-            Node.Properties.SetProperty(EntityPropertyEnum.WriteAsFloat, updatedSettings.WriteAsFloat);
-            Node.Properties.SetProperty(EntityPropertyEnum.IsAvatarParameter, updatedSettings.IsAvatarParameter);
-            Node.Properties.SetProperty(EntityPropertyEnum.OSCAddress, updatedSettings.OscAddress);
+            Node.Properties.SetProperty(EntityProperty.WriteAsFloat, updatedSettings.WriteAsFloat);
+            Node.Properties.SetProperty(EntityProperty.IsAvatarParameter, updatedSettings.IsAvatarParameter);
+            Node.Properties.SetProperty(EntityProperty.OSCAddress, updatedSettings.OscAddress);
         }
 
         if (Updated.HasDelegate)

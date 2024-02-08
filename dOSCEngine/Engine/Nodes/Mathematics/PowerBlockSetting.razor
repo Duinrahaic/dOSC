@@ -44,7 +44,7 @@
         public double Power { get; set; } = 2.0;
         public NodeSetting(BaseNode Node)
         {
-            Power = Node.Properties.GetProperty<double>(EntityPropertyEnum.Power);
+            Power = Node.Properties.GetProperty<double>(EntityProperty.Power);
         }
     }
 
@@ -54,7 +54,7 @@
 
         if (Node != null)
         {
-            Node.Properties.SetProperty(EntityPropertyEnum.Power, UpdatedSettings.Power);
+            Node.Properties.SetProperty(EntityProperty.Power, UpdatedSettings.Power);
             Node.DisplayName = UpdatedSettings.DisplayName;
         }
 

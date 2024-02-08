@@ -7,22 +7,22 @@ namespace dOSCEngine.Engine.Nodes.Mathematics
 {
     public class PowerNode : BaseNode
     {
-        public PowerNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
+        public PowerNode(Guid? guid = null, ConcurrentDictionary<EntityProperty, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, true, name: "Value"));
             AddPort(new NumericPort(PortGuids.Port_2, this, false, name: "Output"));
 
-            Properties.TryInitializeProperty(EntityPropertyEnum.Power, 2);
-            _power = Properties.GetProperty<double>(EntityPropertyEnum.Power);
+            Properties.TryInitializeProperty(EntityProperty.Power, 2);
+            _power = Properties.GetProperty<double>(EntityProperty.Power);
         }
         
         public override string Name => "Power";
         public override string Category => NodeCategoryType.Math;
         public override string Icon => "icon-chevron-up";
         private double _power;
-        public override void PropertyNotifyEvent(EntityPropertyEnum property, dynamic? value)
+        public override void PropertyNotifyEvent(EntityProperty property, dynamic? value)
         {
-            if(property == EntityPropertyEnum.Power)
+            if(property == EntityProperty.Power)
             {
                 _power = value;
             }
