@@ -6,12 +6,12 @@ using Newtonsoft.Json;
 namespace dOSCEngine.Engine.Nodes.Variables;
 public class NumericNode : BaseNode
 {
-    public NumericNode(Guid? guid = null, ConcurrentDictionary<EntityProperty, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
+    public NumericNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
     {
         Port = new NumericPort(PortGuids.Port_1, this, false, name: "Output");
         AddPort(Port);
-        Properties.TryInitializeProperty(EntityProperty.ConstantValue, 0.0);
-        Value = Properties.GetProperty<dynamic>(EntityProperty.ConstantValue);
+        Properties.TryInitializeProperty(EntityPropertyEnum.ConstantValue, 0.0);
+        Value = Properties.GetProperty<dynamic>(EntityPropertyEnum.ConstantValue);
         VisualIndicator = Value.ToString("G5");
         Port.OnPortLinksChanged += SendValue;
     }
@@ -20,9 +20,9 @@ public class NumericNode : BaseNode
     public override string TextIcon => "#";
     private NumericPort Port { get; set; }
 
-    public override void PropertyNotifyEvent(EntityProperty property, dynamic? value)
+    public override void PropertyNotifyEvent(EntityPropertyEnum property, dynamic? value)
     {
-        if (property == EntityProperty.ConstantValue)
+        if (property == EntityPropertyEnum.ConstantValue)
         {
             SetValue(value,true);
             VisualIndicator = Value.ToString("G5");

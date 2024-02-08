@@ -26,12 +26,12 @@ namespace dOSCEngine.Engine.Nodes
         public event UpdateQueueBar? OnQueueBarUpdateRequest;
         
 
-        protected BaseNode(Guid? guid = null, Point? position = null, ConcurrentDictionary<EntityProperty, dynamic>? properties = null) : base(position ?? new Point(0, 0))
+        protected BaseNode(Guid? guid = null, Point? position = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null) : base(position ?? new Point(0, 0))
         {
             Guid = guid ?? Guid.NewGuid();
             Size = new Size(1, 1);
 
-            Properties = new(properties ?? new ConcurrentDictionary<EntityProperty, dynamic>());
+            Properties = new(properties ?? new ConcurrentDictionary<EntityPropertyEnum, dynamic>());
             Properties.OnPropertyChangeUpdate += PropertyNotifyEvent;
             var autoEvent = new AutoResetEvent(true);
             _dragWatcher = new(UpdateDragState,autoEvent, 100,100);
@@ -42,7 +42,7 @@ namespace dOSCEngine.Engine.Nodes
         
         
 
-        public virtual void PropertyNotifyEvent(EntityProperty property, dynamic? value)
+        public virtual void PropertyNotifyEvent(EntityPropertyEnum property, dynamic? value)
         {
             
         }
@@ -104,7 +104,7 @@ namespace dOSCEngine.Engine.Nodes
                 if (_displayName != value)
                 {
                     _displayName = value;
-                    Properties.SetProperty(EntityProperty.DisplayName, value);
+                    Properties.SetProperty(EntityPropertyEnum.DisplayName, value);
                     OnHeaderUpdateRequest?.Invoke();
                 }
             }

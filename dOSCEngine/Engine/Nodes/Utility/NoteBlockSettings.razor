@@ -82,8 +82,8 @@
         
         public NodeSetting(BaseNode node)
         {
-            Note = node.Properties.GetProperty<string>(EntityProperty.Note);
-            NoteColor = node.Properties.GetProperty<string>(EntityProperty.NoteColor);
+            Note = node.Properties.GetProperty<string>(EntityPropertyEnum.Note);
+            NoteColor = node.Properties.GetProperty<string>(EntityPropertyEnum.NoteColor);
             DisplayName = node.DisplayName;
             Name = node.Name;
         }
@@ -99,8 +99,8 @@
         if (Node != null)
         {
             Node.DisplayName = updatedSettings.DisplayName;
-            Node.Properties.SetProperty(EntityProperty.Note, updatedSettings.Note.Trim());
-            Node.Properties.SetProperty(EntityProperty.NoteColor, updatedSettings.NoteColor);
+            Node.Properties.SetProperty(EntityPropertyEnum.Note, updatedSettings.Note.Trim());
+            Node.Properties.SetProperty(EntityPropertyEnum.NoteColor, updatedSettings.NoteColor);
         }
 
         if (Updated.HasDelegate)

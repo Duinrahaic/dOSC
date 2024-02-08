@@ -9,22 +9,22 @@ namespace dOSCEngine.Engine.Nodes.Connectors.OSC
 {
     public class OSCWriteNode: BaseNode
     {
-        public OSCWriteNode(Guid? guid = null, ConcurrentDictionary<EntityProperty, dynamic>? properties = null, Point? position = null, ServiceBundle? service = null) : base(guid, position, properties)
+        public OSCWriteNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null, ServiceBundle? service = null) : base(guid, position, properties)
         {
             AddPort(new MultiPort(PortGuids.Port_1, this, true, name: "Set Value", allowedTypes: new() { PortType.Numeric, PortType.String, PortType.Logic, PortType.Multi }));
             _service = service?.OSC;
-            Properties.TryInitializeProperty(EntityProperty.IsAvatarParameter, true);
-            Properties.TryInitializeProperty(EntityProperty.OSCAddress, string.Empty);
-            Properties.TryInitializeProperty(EntityProperty.WriteAsFloat, true);
-            Properties.TryInitializeProperty(EntityProperty.WriteAsFloat, true);
-            Properties.TryInitializeProperty(EntityProperty.SendChatMessageImmediately, true);
-            Properties.TryInitializeProperty(EntityProperty.SendChatMessageWithSound, true);
+            Properties.TryInitializeProperty(EntityPropertyEnum.IsAvatarParameter, true);
+            Properties.TryInitializeProperty(EntityPropertyEnum.OSCAddress, string.Empty);
+            Properties.TryInitializeProperty(EntityPropertyEnum.WriteAsFloat, true);
+            Properties.TryInitializeProperty(EntityPropertyEnum.WriteAsFloat, true);
+            Properties.TryInitializeProperty(EntityPropertyEnum.SendChatMessageImmediately, true);
+            Properties.TryInitializeProperty(EntityPropertyEnum.SendChatMessageWithSound, true);
             
-            OSCAddress = Properties.GetProperty<string>(EntityProperty.OSCAddress);
-            _isAvatarParameter = Properties.GetProperty<bool>(EntityProperty.IsAvatarParameter);
-            _writeAsFloat = Properties.GetProperty<bool>(EntityProperty.WriteAsFloat);
-            _sendChatMessageImmediately = Properties.GetProperty<bool>(EntityProperty.SendChatMessageImmediately);
-            _sendChatMessageWithSound = Properties.GetProperty<bool>(EntityProperty.SendChatMessageWithSound);
+            OSCAddress = Properties.GetProperty<string>(EntityPropertyEnum.OSCAddress);
+            _isAvatarParameter = Properties.GetProperty<bool>(EntityPropertyEnum.IsAvatarParameter);
+            _writeAsFloat = Properties.GetProperty<bool>(EntityPropertyEnum.WriteAsFloat);
+            _sendChatMessageImmediately = Properties.GetProperty<bool>(EntityPropertyEnum.SendChatMessageImmediately);
+            _sendChatMessageWithSound = Properties.GetProperty<bool>(EntityPropertyEnum.SendChatMessageWithSound);
             SubscribeToAllPortTypeChanges();
             VisualIndicator = OSCAddress ?? "No Address Set";
             VisualIndicator = string.IsNullOrEmpty(VisualIndicator) ? "No Address Set" : VisualIndicator;
@@ -40,28 +40,28 @@ namespace dOSCEngine.Engine.Nodes.Connectors.OSC
         private bool _sendChatMessageWithSound;
         private readonly OSCService? _service = null;
 
-        public override void PropertyNotifyEvent(EntityProperty property, dynamic? value)
+        public override void PropertyNotifyEvent(EntityPropertyEnum property, dynamic? value)
         {
-            if(property == EntityProperty.OSCAddress)
+            if(property == EntityPropertyEnum.OSCAddress)
             {
                 OSCAddress = value;
                 VisualIndicator = OSCAddress ?? "No Address Set";
                 VisualIndicator = string.IsNullOrEmpty(VisualIndicator) ? "No Address Set" : VisualIndicator;
 
             }
-            else if(property == EntityProperty.IsAvatarParameter)
+            else if(property == EntityPropertyEnum.IsAvatarParameter)
             {
                 _isAvatarParameter = value;
             }
-            else if(property == EntityProperty.WriteAsFloat)
+            else if(property == EntityPropertyEnum.WriteAsFloat)
             {
                 _writeAsFloat = value;
             }
-            else if(property == EntityProperty.SendChatMessageImmediately)
+            else if(property == EntityPropertyEnum.SendChatMessageImmediately)
             {
                 _sendChatMessageImmediately = value;
             }
-            else if(property == EntityProperty.SendChatMessageWithSound)
+            else if(property == EntityPropertyEnum.SendChatMessageWithSound)
             {
                 _sendChatMessageWithSound = value;
             }

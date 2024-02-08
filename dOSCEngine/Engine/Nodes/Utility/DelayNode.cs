@@ -8,24 +8,24 @@ namespace dOSCEngine.Engine.Nodes.Utility
 {
     public class DelayNode : BaseNode
     {
-        public DelayNode(Guid? guid = null, ConcurrentDictionary<EntityProperty, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
+        public DelayNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
             AddPort(new MultiPort(PortGuids.Port_1, this, input: true, "Value"));
             AddPort(new MultiPort(PortGuids.Port_2, this, input: false, "Output"));
 
             // Block Properties
-            Properties.TryInitializeProperty(EntityProperty.DelayTime, (int)1);
-            Properties.TryInitializeProperty(EntityProperty.DelayTimeUnits, TimeUnits.Second);
-            Properties.TryInitializeProperty(EntityProperty.MaxQueue, 1);
-            Properties.TryInitializeProperty(EntityProperty.DecimalPlaceCount, 0);
-            Properties.TryInitializeProperty(EntityProperty.ShowPercent, false);
-            Properties.TryInitializeProperty(EntityProperty.ShowNumbersOnly, false);
+            Properties.TryInitializeProperty(EntityPropertyEnum.DelayTime, (int)1);
+            Properties.TryInitializeProperty(EntityPropertyEnum.DelayTimeUnits, TimeUnits.Second);
+            Properties.TryInitializeProperty(EntityPropertyEnum.MaxQueue, 1);
+            Properties.TryInitializeProperty(EntityPropertyEnum.DecimalPlaceCount, 0);
+            Properties.TryInitializeProperty(EntityPropertyEnum.ShowPercent, false);
+            Properties.TryInitializeProperty(EntityPropertyEnum.ShowNumbersOnly, false);
             
-            _delayTime = Properties.GetProperty<long>(EntityProperty.DelayTime);
-            _delayTimeUnits = Properties.GetProperty<TimeUnits>(EntityProperty.DelayTimeUnits);
-            _showPercent = Properties.GetProperty<bool>(EntityProperty.ShowPercent);
-            _showNumbersOnly = Properties.GetProperty<bool>(EntityProperty.ShowNumbersOnly);
-            QueueSize = Properties.GetProperty<int>(EntityProperty.MaxQueue);
+            _delayTime = Properties.GetProperty<long>(EntityPropertyEnum.DelayTime);
+            _delayTimeUnits = Properties.GetProperty<TimeUnits>(EntityPropertyEnum.DelayTimeUnits);
+            _showPercent = Properties.GetProperty<bool>(EntityPropertyEnum.ShowPercent);
+            _showNumbersOnly = Properties.GetProperty<bool>(EntityPropertyEnum.ShowNumbersOnly);
+            QueueSize = Properties.GetProperty<int>(EntityPropertyEnum.MaxQueue);
             ShowProgressBar = true;
             VisualIndicator = IndicatorToString();
             
@@ -42,25 +42,25 @@ namespace dOSCEngine.Engine.Nodes.Utility
         
         
         
-        public override void PropertyNotifyEvent(EntityProperty property, dynamic? value)
+        public override void PropertyNotifyEvent(EntityPropertyEnum property, dynamic? value)
         {
-            if(property == EntityProperty.DelayTime)
+            if(property == EntityPropertyEnum.DelayTime)
             {
                 _delayTime = value;
             }
-            else if(property == EntityProperty.DelayTimeUnits)
+            else if(property == EntityPropertyEnum.DelayTimeUnits)
             {
                 _delayTimeUnits = value;
             }
-            else if(property == EntityProperty.ShowPercent)
+            else if(property == EntityPropertyEnum.ShowPercent)
             {
                 _showPercent = value;
             }
-            else if(property == EntityProperty.ShowNumbersOnly)
+            else if(property == EntityPropertyEnum.ShowNumbersOnly)
             {
                 _showNumbersOnly = value;
             }
-            else if(property == EntityProperty.MaxQueue)
+            else if(property == EntityPropertyEnum.MaxQueue)
             {
                 QueueSize = (int)value;
             }

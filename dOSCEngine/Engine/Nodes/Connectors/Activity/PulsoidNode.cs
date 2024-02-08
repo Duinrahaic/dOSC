@@ -11,7 +11,7 @@ namespace dOSCEngine.Engine.Nodes.Connectors.Activity
 {
     public class PulsoidNode : BaseNode
     {
-        public PulsoidNode(Guid? guid = null, ConcurrentDictionary<EntityProperty, dynamic>? properties = null, Point? position = null, ServiceBundle? service = null) : base(guid, position, properties)
+        public PulsoidNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null, ServiceBundle? service = null) : base(guid, position, properties)
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, false, "Heart Rate"));
             _service = service.Pulsoid;

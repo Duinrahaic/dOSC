@@ -12,7 +12,7 @@ namespace dOSCEngine.Engine.Nodes.Utility
 {
     public class LogicSwitchNode : BaseNode
     {
-        public LogicSwitchNode(Guid? guid = null, ConcurrentDictionary<EntityProperty, dynamic>? properties = null, Point? position = null) : base(guid, position,properties)
+        public LogicSwitchNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position,properties)
         {
             AddPort(new LogicPort(PortGuids.Port_1, this, true, name: "Switch"));
             AddPort(new MultiPort(PortGuids.Port_2, this, true, name: "Case 1"));

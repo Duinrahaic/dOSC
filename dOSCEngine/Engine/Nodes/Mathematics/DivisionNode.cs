@@ -7,7 +7,7 @@ namespace dOSCEngine.Engine.Nodes.Mathematics
     public class DivisionNode : BaseNode
     {
 
-        public DivisionNode(Guid? guid = null, ConcurrentDictionary<EntityProperty, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
+        public DivisionNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
             AddPort(new NumericPort(PortGuids.Port_1, this, true, name:"Value A"));
             AddPort(new NumericPort(PortGuids.Port_2, this, true, name: "Value B"));

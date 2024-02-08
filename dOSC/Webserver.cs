@@ -5,6 +5,8 @@ using Serilog;
 using dOSCEngine.Utilities;
 using System.Net.Sockets;
 using System.Net;
+using dOSCHub;
+using dOSCHub.Services;
 using Grpc.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
@@ -19,22 +21,11 @@ namespace dOSC
         public static List<string> GetUrls()
         {
             if(_isRunning){
-                var urls = app.Urls.ToList();
-                if (urls.Any())
-                {
-                    return urls;
-                }
-                else
-                {
-                    Environment.Exit(0);
-                    return new();
-                }
+                return app.Urls.ToList();
             }
             else
             {
-                Environment.Exit(0);
                 return new();
-                
             }
         }
 
@@ -47,13 +38,13 @@ namespace dOSC
 
             builder.WebHost.UseStaticWebAssets();
             
-            // Server server = new Server
-            // {
-            //     Services = { Greeter.BindService(new GreeterService()),Data.BindService(new DataService()) },
-            //     Ports = { new ServerPort("localhost", 5001, ServerCredentials.Insecure) }
-            // };
-            // builder.Services.AddSingleton<Server>(server);
-            // builder.Services.AddSingleton<IHostedService, dOSCHubService>();
+            Server server = new Server
+            {
+                Services = { Greeter.BindService(new GreeterService()),Data.BindService(new DataService()) },
+                Ports = { new ServerPort("localhost", 5001, ServerCredentials.Insecure) }
+            };
+            builder.Services.AddSingleton<Server>(server);
+            builder.Services.AddSingleton<IHostedService, dOSCHubService>();
             
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
@@ -108,9 +99,7 @@ namespace dOSC
             _isRunning = true;
 
 
-            int FreePort = FreeTcpPort();
-            
-            
+
 			string url = $@"http://localhost:{FreeTcpPort()}";
 #if DEBUG
             url = $@"http://localhost:5231";

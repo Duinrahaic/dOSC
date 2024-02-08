@@ -5,7 +5,7 @@ namespace dOSCEngine.Engine;
 
 
 [JsonConverter(typeof(StringEnumConverter))]
-public enum EntityProperty
+public enum EntityPropertyEnum
 {
     Name,
     DisplayName,
