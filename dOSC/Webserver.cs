@@ -111,9 +111,9 @@ namespace dOSC
             int FreePort = FreeTcpPort();
             
             
-			string url = $@"https://localhost:{8080}";
+			string url = $@"http://localhost:{FreeTcpPort()}";
 #if DEBUG
-            url = $@"https://localhost:5231";
+            url = $@"http://localhost:5231";
 #endif
 
             if (!args.Any(x => x.ToLower().Equals("--headless")))
