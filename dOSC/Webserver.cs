@@ -8,27 +8,16 @@ using System.Net;
 using dOSCHub;
 using dOSCHub.Services;
 using Grpc.Core;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace dOSC
 {
     public static class Webserver
     {
-        private static bool _isRunning = false;
-        public static bool IsRunning { get => _isRunning; }
+        public static bool IsRunning { get; private set; }
         private static WebApplication app;
 
-        public static List<string> GetUrls()
-        {
-            if(_isRunning){
-                return app.Urls.ToList();
-            }
-            else
-            {
-                return new();
-            }
-        }
-
+        public static List<string> GetUrls() => IsRunning ? app.Urls.ToList() : new();
+  
         public static void Start(string[] args)
         {
             
@@ -37,13 +26,6 @@ namespace dOSC
             var builder = WebApplication.CreateBuilder();
 
             builder.WebHost.UseStaticWebAssets();
-            
-            Server server = new Server
-            {
-                Services = { Greeter.BindService(new GreeterService()),Data.BindService(new DataService()) },
-                Ports = { new ServerPort("localhost", 5001, ServerCredentials.Insecure) }
-            };
-            builder.Services.AddSingleton<Server>(server);
             builder.Services.AddSingleton<IHostedService, dOSCHubService>();
             
             builder.Services.AddRazorPages();
@@ -96,7 +78,7 @@ namespace dOSC
             app.UseRouting();
             app.MapBlazorHub();
             app.MapFallbackToPage("/_Host");
-            _isRunning = true;
+            IsRunning = true;
 
 
 
@@ -128,7 +110,7 @@ namespace dOSC
 
 		public static void Stop()
         {
-            _isRunning = false;
+            IsRunning = false;
             app.StopAsync();
         }
     }

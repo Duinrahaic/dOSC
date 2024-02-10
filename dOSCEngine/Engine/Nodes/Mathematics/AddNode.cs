@@ -14,7 +14,7 @@ namespace dOSCEngine.Engine.Nodes.Mathematics
     {
         public AddNode(Guid? guid = null, ConcurrentDictionary<EntityPropertyEnum, dynamic>? properties = null, Point? position = null) : base(guid, position, properties)
         {
-            AddPort(new NumericPort(PortGuids.Port_1, this, true, name: "Value")); // Defines an Value Port A with a GUID of Port 1
+            AddPort(new NumericPort(PortGuids.Port_1, this, true, limitLink: false , name: "Value")); // Defines an Value Port A with a GUID of Port 1
 			AddPort(new NumericPort(PortGuids.PortGuidGenerator(1000), this, false, name: "Output")); // Defines an Output Port with a GUID of Port 3
         }
         public override string Name => Links.Count <= 1 ? "Add" : "Sum";
