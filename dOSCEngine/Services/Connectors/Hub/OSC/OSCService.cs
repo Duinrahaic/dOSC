@@ -1,5 +1,4 @@
-﻿using CoreOSC;
-using dOSCEngine.Services.Connectors.OSC;
+﻿using dOSCEngine.Services.Connectors.OSC;
 using dOSCEngine.Services.User;
 using dOSCEngine.Utilities;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 using System.Net.Sockets;
+using CoreOSC;
 
 namespace dOSCEngine.Services.Connectors.OSC
 {
@@ -59,8 +59,16 @@ namespace dOSCEngine.Services.Connectors.OSC
                     }
                 };
                 _sender = new UDPSender("127.0.0.1", tcpPort);
-                _receiver = new UDPListener(udpPort, callback);
-                _logger.LogInformation($"OSCService started at TCP {tcpPort} and UDP {udpPort}");
+                try
+                {
+                    _receiver = new UDPListener(udpPort, callback);
+                    _logger.LogInformation($"OSCService started at TCP {tcpPort} and UDP {udpPort}");
+
+                }
+                catch
+                {
+                    _logger.LogError($"Unable to create OSC listener on port {udpPort}");
+                }
                 Running = true;
             }
         }

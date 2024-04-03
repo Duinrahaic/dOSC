@@ -9,7 +9,7 @@ using System.Text.Json;
 
 namespace dOSCEngine.Utilities
 {
-    public static class FileSystem
+    public static class dOSCFileSystem
     {
         public static string BaseFolderName = "dOSC";
         public static string LogFolderName = "Logs";
@@ -17,10 +17,11 @@ namespace dOSCEngine.Utilities
         public static string WiresheetFolderName = "Wiresheets";
 
         public static string ExecutingFolder = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) ?? string.Empty;
-        public static string BaseFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), BaseFolderName);
-        public static string LogFolder = Path.Combine(BaseFolder, LogFolderName);
-        public static string SettingsFolder = Path.Combine(BaseFolder, SettingsFolderName);
-        public static string WiresheetFolder = Path.Combine(BaseFolder, WiresheetFolderName);
+        public static string UpdateFolder = Path.Combine(ExecutingFolder, BaseFolderName, "Update");
+        public static string BaseDataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), BaseFolderName);
+        public static string LogFolder = Path.Combine(BaseDataFolder, LogFolderName);
+        public static string SettingsFolder = Path.Combine(BaseDataFolder, SettingsFolderName);
+        public static string WiresheetFolder = Path.Combine(BaseDataFolder, WiresheetFolderName);
         public static string DownloadsFolder => GetDownloadFolderPath();
 
         public static string GetDownloadFolderPath()
@@ -30,9 +31,9 @@ namespace dOSCEngine.Utilities
 
         public static void CreateFolders()
         {
-            if (!Directory.Exists(BaseFolder))
+            if (!Directory.Exists(BaseDataFolder))
             {
-                Directory.CreateDirectory(BaseFolder);
+                Directory.CreateDirectory(BaseDataFolder);
             }
             if (!Directory.Exists(LogFolder))
             {
