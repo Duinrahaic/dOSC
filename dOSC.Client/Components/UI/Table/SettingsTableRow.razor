@@ -1,0 +1,42 @@
+﻿@using dOSC.Client.Services.Connectors
+@using dOSC.Client.Components.UI.Setting
+
+<tr style="user-select: none;">
+    <td>
+        <div class="third-party-connector">
+            @if (string.IsNullOrEmpty(Service.IconRef))
+            {
+                <div class="text">
+                    @Service.ServiceName
+                </div>
+            }
+            else
+            {
+                <img src="@Service.IconRef"/>
+            }
+
+        </div>
+    </td>
+    <td>@Service.Description</td>
+    <td>
+        <StatusPill Status="@Service.isRunning()"/>
+    </td>
+    <td class="options">
+        <div class="option oi oi-cog" @onclick=OnEditClick></div>
+    </td>
+</tr>
+
+
+@code{
+    [Parameter] public ConnectorBase Service { get; set; }
+    [Parameter] public EventCallback<ConnectorBase> ServiceChanged { get; set; }
+
+    [Parameter] public EventCallback<ConnectorBase> OnEdit { get; set; }
+
+    private void OnEditClick()
+    {
+        OnEdit.InvokeAsync(Service);
+    }
+
+
+}

@@ -1,0 +1,65 @@
+﻿<DefaultBlock Node="Node" RequiresUpdate="true">
+    <NodeBody>
+        <div class="label"> @(Node?.IndicatorToString() ?? "Unknown")</div>
+        <div class="dOSC-progress-bar-container">
+            <div class="dOSC-progress-bar-indicator" style="width: @(Node?.CalculateRemainingPercent() ?? 0)%;"/>
+        </div>
+        <div class="queue-container" style="opacity: @(Node.QueueSize == 1 ? "0" : "1");">
+            @{
+                var QS = Node.GetCountInQueue();
+                var MQS = Node.QueueSize;
+                var SpaceRemaining = MQS - QS;
+
+                @if (MQS > 20)
+                {
+                    var Percent = Convert.ToInt32(QS / (double)MQS * 100);
+
+                    <div class="dOSC-progress-bar-container green-indicator">
+                        <div class="dOSC-progress-bar-indicator" style="width: @Percent%;"></div>
+                    </div>
+                }
+                else
+                {
+                    for (var i = 0; i < QS; i++)
+                    {
+                        <div class="dOSC-progress-bar-container square green-indicator">
+                            <div class="dOSC-progress-bar-indicator" style="width: 100%;"></div>
+                        </div>
+                    }
+
+                    for (var i = 0; i < SpaceRemaining; i++)
+                    {
+                        <div class="dOSC-progress-bar-container square green-indicator">
+                            <div class="dOSC-progress-bar-indicator" style="width: 0%;"></div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </NodeBody>
+    <NodeInputs>
+        <PortDesigner Port="Node.Ports[0] as BasePort"/>
+    </NodeInputs>
+    <NodeOutputs>
+        <PortDesigner Port="Node.Ports[1] as BasePort" Value="this.Node.Value"/>
+    </NodeOutputs>
+</DefaultBlock>
+
+<style>
+
+    .queue-container{
+        padding-top: 4px;
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 4px 4px;
+    }
+
+</style>
+
+
+@code
+{
+    [Parameter] public DelayNode Node { get; set; }
+}

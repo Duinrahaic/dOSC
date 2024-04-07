@@ -1,0 +1,15 @@
+﻿<div class="dOSC-Pill @(Status ? "configured" : "unconfigured")">
+    @if (Status)
+    {
+        <span>Running</span>
+    }
+    else
+    {
+        <span>Not Running</span>
+    }
+</div>
+
+@code{
+
+    [Parameter] public bool Status { get; set; }
+}

@@ -1,0 +1,35 @@
+﻿@implements IDisposable
+
+<div class="label" @key="@(Node.VisualIndicator)">@(Node.VisualIndicator)</div>
+
+@code {
+
+    [Parameter] public BaseNode Node { get; set; } = null!;
+
+    private DateTime _lastUpdate = DateTime.MinValue;
+
+    protected override bool ShouldRender()
+    {
+        return Node?.Dragging != true;
+    }
+
+    private void Update()
+    {
+        if ((DateTime.Now - _lastUpdate > GraphSettings.UpdateInterval) & (Node?.Dragging != true))
+        {
+            _lastUpdate = DateTime.Now;
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        Node.OnVisualUpdateRequest += Update;
+    }
+
+    public void Dispose()
+    {
+        Node.OnVisualUpdateRequest -= Update;
+    }
+
+}

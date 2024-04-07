@@ -1,0 +1,924 @@
+﻿@import "_variables.scss";
+@import "_animations.scss";
+
+.app-container {
+  overflow-x: hidden;
+  padding: 16px;
+  display: flex;
+  gap: 12px 12px;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  max-height: 100vh;
+
+  .header {
+    user-select: none;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+
+    @media(max-width: 768px) {
+      flex-direction: column;
+    }
+
+    .text-group {
+      flex-grow: 1;
+
+      .title {
+        font-size: 42px;
+        font-weight: 600;
+        color: $color-full-white;
+      }
+
+
+      .subtitle {
+        font-size: 18px;
+        font-weight: 300;
+      }
+    }
+
+    .search-bar-container {
+      -webkit-justify-content: flex-end;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding: 0;
+      margin: 0;
+      align-content: center;
+      justify-content: center;
+      justify-items: center;
+
+      .search-bar {
+        position: relative;
+        color: $color-full-white;
+
+        .search-icon {
+          color: $color-titlebar-textcolor;
+          position: absolute;
+          width: 10px;
+          height: 10px;
+          font-size: 24px;
+          top: 8px;
+          left: 8px;
+        }
+
+        input[type=search] {
+          &.search-box {
+            height: 40px;
+            width: 300px;
+            padding: 16px 2px;
+            padding-left: 40px;
+            border-radius: 8px;
+            background-color: $color-theme-5;
+            border: 1px solid $color-theme-2;
+            color: inherit;
+
+            &:focus {
+              outline: solid 1px $color-blurple;
+              box-shadow: 0 0 4px 1px $color-blurple;
+            }
+
+            @media(max-width: 768px) {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .navigation-container {
+    width: 100%;
+    position: relative;
+
+    .navigation-bottom-bar {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      margin: 0 8px;
+      border-bottom: solid 4px $color-theme-5;
+      border-radius: 12px;
+    }
+
+    ul.navigation-bar {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      width: 100%;
+
+      li {
+        float: left;
+
+        a {
+          display: block;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+          font-weight: 600;
+          color: $color-full-white;
+          position: relative;
+
+          .bottom-border {
+            border-bottom: 4px solid $color-blurple;
+            border-radius: 12px;
+            width: 0%;
+            height: 4px;
+            position: absolute;
+            bottom: 0;
+            left: 4px;
+            z-index: 100;
+            transition: 250ms ease-in-out;
+          }
+
+
+          &:hover:not(:active) {
+            color: $color-blurple;
+
+            .bottom-border {
+              width: 60%;
+            }
+
+            transition: 250ms ease-in-out;
+          }
+
+          &:hover:active {
+            color: $color-blurple;
+
+            .bottom-border {
+              width: 60%;
+            }
+          }
+
+          &.active {
+            color: $color-blurple;
+
+            .bottom-border {
+              width: 60%;
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+  .app-list {
+    height: 100%;
+    overflow-y: auto;
+    padding-bottom: 40px;
+    padding-top: 40px;
+    width: 100%;
+    user-select: none;
+
+    .app-list-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 24px 24px;
+
+      .new-item-app {
+        height: 380px;
+        width: 240px;
+        border: $color-green-darker 4px dashed;
+        border-radius: 18px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+        text-align: center;
+        font-size: 36px;
+        color: $color-full-white;
+        padding: 32px;
+        user-select: none;
+
+        &:hover {
+          transform: scale(1.05);
+          transition: all .2s ease-in-out;
+          box-shadow: 0 0 8px 1px $color-green-darker;
+        }
+
+        .content {
+          justify-content: center;
+          display: flex;
+          flex-direction: column;
+          color: $color-full-white;
+          height: 100%;
+          cursor: pointer;
+
+          .title {
+            font-size: 24px;
+            font-weight: 600;
+            color: $color-full-white;
+          }
+
+          &:hover {
+            transform: scale(1.25);
+            transition: all .2s ease-in-out;
+          }
+        }
+
+        hr {
+          color: solid 4px $color-full-white;
+        }
+
+        .lower {
+        }
+      }
+
+      .item-app {
+        height: 380px;
+        width: 240px;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        align-content: center;
+        position: relative;
+
+        &:hover {
+          transform: scale(1.05);
+          transition: all .2s ease-in-out;
+        }
+
+        .item-app-image {
+          position: absolute;
+          width: 200px;
+          height: 200px;
+          border-radius: 120px;
+          border: solid 6px $color-grey;
+          overflow: hidden;
+          transform: translatey(-160px) translatex(20px);
+          background: url("../../dOSCEngine/images/dev-icon.png") no-repeat center;
+          -webkit-background-size: contain;
+          -moz-background-size: contain;
+          -o-background-size: contain;
+          background-size: contain;
+          display: flex;
+          justify-items: center;
+          align-items: center;
+
+          &:hover {
+            .icon {
+              opacity: 1;
+              transition: all .25s ease-in-out;
+            }
+          }
+
+
+          .icon {
+            opacity: 0;
+            text-align: center;
+            text-shadow: 4px 4px 8px #000;
+            width: 100%;
+            font-size: 120px;
+            color: $color-full-white;
+          }
+
+          &.app-running {
+            border-color: $color-green;
+            box-shadow: 0 0 4px 2px $color-green;
+
+            &:hover {
+            }
+          }
+
+          &.app-automated-on {
+            border-color: $color-blue;
+            box-shadow: 0 0 4px 2px $color-blue;
+          }
+
+          &.app-stopped {
+            border-color: $color-error;
+            box-shadow: 0 0 4px 2px $color-error;
+          }
+
+          &.app-disabled {
+            -webkit-filter: grayscale(100%);
+            filter: grayscale(100%);
+          }
+        }
+
+        .item-app-content-status-container {
+          position: absolute;
+          top: 205px;
+          width: 100%;
+          display: flex;
+          align-items: end;
+          justify-content: center;
+          font-size: 14px;
+          transform: translateY(-10px);
+          user-select: none;
+          pointer-events: none;
+
+          .item-app-content-status {
+            color: $color-full-white;
+            background: $color-grey;
+            padding: 4px 8px;
+            border-radius: 20px;
+
+            &.app-running {
+              background: $color-green;
+              box-shadow: 0 0 4px 2px $color-green;
+            }
+
+            &.app-automated-on {
+              background: $color-blue;
+              box-shadow: 0 0 4px 2px $color-blue;
+            }
+
+            &.app-stopped {
+              background: $color-error;
+              box-shadow: 0 0 4px 2px $color-error;
+            }
+
+            &.app-disabled {
+              -webkit-filter: grayscale(100%);
+              filter: grayscale(100%);
+            }
+          }
+        }
+
+
+        .item-app-content {
+          background-color: $color-theme-2;
+          border-radius: 12px;
+          height: 300px;
+          padding: 16px 16px;
+          padding-top: 150px;
+          display: flex;
+          flex-direction: column;
+
+
+          .item-app-content-title {
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            align-items: start;
+            overflow: hidden;
+            font-weight: 500;
+            max-width: 208px;
+            word-break: break-word;
+            white-space: normal;
+            hyphens: auto;
+            text-overflow: ellipsis;
+            flex-grow: 1;
+            color: $color-full-white;
+            width: 100%;
+          }
+
+          .controls {
+            width: 100%;
+            opacity: 0;
+            display: flex;
+            padding-top: 10px;
+            flex-direction: row;
+            gap: 10px 10px;
+            justify-content: center;
+          }
+
+          &:hover {
+            .controls {
+              opacity: 1;
+              transition: all .25s ease-in-out;
+            }
+
+            transition: all .2s ease-in-out;
+            box-shadow: 0 0 8px 1px $color-selected;
+          }
+        }
+      }
+    }
+  }
+}
+
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  padding: 16px;
+  position: relative;
+  gap: 10px 10px;
+
+  .header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    user-select: none;
+
+    @media(max-width: 768px) {
+      flex-direction: column;
+    }
+
+    .text-group {
+      flex-grow: 1;
+
+      .title {
+        font-size: 42px;
+        font-weight: 600;
+        color: $color-full-white;
+      }
+
+
+      .subtitle {
+        font-size: 18px;
+        font-weight: 300;
+      }
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    gap: 10px 32px;
+
+    .settings-nav-container {
+      background: $color-theme-1;
+      border-radius: 16px;
+      width: 400px;
+      display: flex;
+      height: 100%;
+      flex-direction: column;
+      padding: 16px 0;
+
+      ul {
+        list-style: none;
+        padding-left: inherit;
+        height: 100%;
+        overflow-y: auto;
+
+        li {
+          width: 100%;
+          position: relative;
+          display: flex;
+          flex-direction: row;
+
+          .setting {
+            padding: 8px 32px;
+            display: flex;
+            flex-direction: row;
+            gap: 18px;
+            position: relative;
+            user-select: none;
+            cursor: pointer;
+            color: $color-full-white;
+            flex-grow: 1;
+
+            .icon {
+              position: absolute;
+              top: 8px;
+              left: 20px;
+              color: $color-full-white;
+            }
+
+
+            .content {
+              display: flex;
+              flex-direction: column;
+              gap: 4px;
+              height: fit-content;
+              padding-left: 16px;
+              color: $color-full-white;
+
+              .title {
+                font-size: 18px;
+                font-weight: 600;
+              }
+
+              .subtitle {
+                font-size: 14px;
+                font-weight: 300;
+              }
+            }
+          }
+
+          .accent-selector-container {
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+            justify-content: center;
+
+
+            .accent-selector {
+              background-color: $color-selected;
+              height: 0;
+              width: 8px;
+              border-radius: 12px;
+            }
+          }
+
+
+          &:hover:not(.active) {
+            background-color: $color-selected-darker;
+
+            .accent-selector-container {
+            }
+          }
+
+          &:hover & .active {
+            background-color: $color-selected-darker;
+
+            .setting {
+              background-color: $color-selected-darker;
+            }
+
+            .accent-selector-container {
+              .accent-selector {
+                height: 80%;
+                transition: ease-in-out 100ms;
+              }
+            }
+          }
+
+          &.active {
+            background-color: $color-selected-darker;
+
+            .setting {
+            }
+
+            .accent-selector-container {
+              .accent-selector {
+                height: 80%;
+                transition: ease-in-out 100ms;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .settings-content {
+      background: $color-theme-1;
+      border-radius: 16px;
+      width: 100%;
+      display: flex;
+      height: 100%;
+      flex-direction: column;
+      padding: 16px;
+      overflow-y: auto;
+
+      .settings-content-header {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        user-select: none;
+
+
+        @media(max-width: 768px) {
+          flex-direction: column;
+        }
+
+        .text-group {
+          flex-grow: 1;
+          padding-bottom: 16px;
+
+          .title {
+            font-size: 24px;
+            font-weight: 600;
+            color: $color-full-white;
+          }
+
+          .subtitle {
+            font-size: 18px;
+            font-weight: 300;
+          }
+        }
+      }
+
+      .settings-content-container {
+        border-radius: 0;
+        position: relative;
+        color: $color-full-white;
+        overflow-y: auto;
+        flex-grow: 1;
+
+        .settings-details {
+          display: flex;
+          flex-direction: row;
+          color: $color-full-white;
+          justify-content: center;
+          align-items: center;
+          border-top: solid 1px $color-wiresheet-toolbar;
+          border-bottom: solid 1px $color-wiresheet-toolbar;
+          padding: 16px 0;
+
+          .settings-label {
+            flex-grow: 1;
+            width: 100%;
+            font-weight: 800;
+            font-size: 18px;
+          }
+
+          .settings-content-row {
+            width: 100%;
+            color: $color-full-white;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+
+            .text-end {
+              justify-content: end;
+              align-content: end;
+            }
+
+
+            .settings-control {
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+
+          .settings-content-column {
+            width: 100%;
+            color: $color-full-white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .text-end {
+              justify-content: end;
+              align-content: end;
+            }
+
+            .settings-control {
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+.app-sidepanel-container {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+
+  &.close {
+    .sidepanel {
+      animation: 250ms ease-in-out 0s 1 slideOutToRight;
+    }
+
+    .backdrop {
+      animation: 250ms ease-in-out 0s 1 disappear;
+    }
+
+    transition-delay: 250ms;
+    opacity: 0;
+  }
+
+  .sidepanel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 600px;
+    background-color: $color-theme-2;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    overflow-y: hidden;
+    animation: 250ms ease-in-out 0s 1 slideInFromRight;
+
+    @media screen and (max-width: 600px) {
+      width: 100%;
+      border-radius: 0px;
+    }
+
+
+    .icon {
+      font-size: 24px;
+      color: $color-full-white;
+      font-weight: 800;
+      position: absolute;
+      padding: 0px 6px;
+      border-radius: 24px;
+
+      &.close {
+        top: 4px;
+        left: 4px;
+      }
+
+      &.download {
+        top: 4px;
+        right: 6px;
+      }
+
+      &:hover {
+        cursor: pointer;
+        background-color: $color-theme-3;
+      }
+    }
+
+    .content {
+      padding: 16px;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      position: relative;
+
+
+      .app-image-container {
+        position: relative;
+
+        .app-image-options {
+          width: 100%;
+
+          .item-app-content-status-container {
+            position: absolute;
+            top: 205px;
+            width: 100%;
+            display: flex;
+            align-items: end;
+            justify-content: center;
+            font-size: 14px;
+            transform: translateY(-28px);
+            user-select: none;
+            pointer-events: none;
+
+            .item-app-content-status {
+              color: $color-full-white;
+              background: $color-grey;
+              padding: 4px 8px;
+              border-radius: 20px;
+
+              &.app-running {
+                background: $color-green;
+                box-shadow: 0 0 4px 2px $color-green;
+              }
+
+              &.app-automated-on {
+                background: $color-blue;
+                box-shadow: 0 0 4px 2px $color-blue;
+              }
+
+              &.app-stopped {
+                background: $color-error;
+                box-shadow: 0 0 4px 2px $color-error;
+              }
+
+              &.app-disabled {
+                -webkit-filter: grayscale(100%);
+                filter: grayscale(100%);
+              }
+            }
+          }
+
+          .imageUpload {
+            color: $color-full-white;
+            position: relative;
+            bottom: 32px;
+            float: right;
+            font-size: 26px;
+            background: $color-theme-4;
+            border: solid 1px $color-full-white;
+            border-radius: 26px;
+            padding: 2px 8px;
+
+            .inputFile {
+              opacity: 0.0;
+              position: absolute;
+              top: 0;
+              left: 0;
+              bottom: 0;
+              right: 0;
+              width: 100%;
+              height: 100%;
+            }
+
+            &:hover {
+              transform: scale(1.1);
+              transition: all 250ms ease-in-out;
+            }
+          }
+
+          .imageRemove {
+            color: $color-full-white;
+            position: relative;
+            bottom: 32px;
+            float: left;
+            font-size: 26px;
+            background: $color-theme-4;
+            border: solid 1px $color-full-white;
+            border-radius: 26px;
+            padding: 2px 8px;
+
+
+            &:hover {
+              transform: scale(1.1);
+              transition: all 250ms ease-in-out;
+            }
+          }
+        }
+
+
+        .app-image {
+          width: 200px;
+          height: 200px;
+          min-width: 200px;
+          min-height: 200px;
+          border-radius: 120px;
+          border: solid 6px $color-grey;
+          overflow: hidden;
+          -webkit-background-size: contain;
+          -moz-background-size: contain;
+          -o-background-size: contain;
+          background-size: contain;
+          display: flex;
+          justify-items: center;
+          align-items: center;
+
+          &:hover {
+            .icon {
+              opacity: 1;
+              transition: all .25s ease-in-out;
+            }
+          }
+
+          &.app-running {
+            border-color: $color-green;
+            box-shadow: 0 0 4px 2px $color-green;
+          }
+
+          &.app-automated-on {
+            border-color: $color-blue;
+            box-shadow: 0 0 4px 2px $color-blue;
+          }
+
+          &.app-stopped {
+            border-color: $color-error;
+            box-shadow: 0 0 4px 2px $color-error;
+          }
+
+          &.app-waiting {
+            border-color: $color-grey;
+          }
+
+          &.app-disabled {
+            -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+            filter: grayscale(100%);
+          }
+        }
+      }
+
+
+      .content-body {
+        flex-grow: 1;
+        width: 100%;
+        height: 60px;
+        position: relative;
+
+        .scroll-content {
+          overflow-y: auto;
+          height: 100%;
+          padding-bottom: 12px;
+        }
+      }
+
+      .options {
+        height: 40px;
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        padding: 2px 24px;
+        align-content: center;
+        justify-content: space-evenly;
+      }
+    }
+  }
+
+  .backdrop {
+    background-color: $color-backdrop;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    animation: 250ms ease-in-out 0s 1 appear;
+    overflow: hidden;
+    z-index: $z-index-backdrop;
+  }
+}

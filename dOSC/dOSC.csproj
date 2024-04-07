@@ -1,78 +1,72 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-  <PropertyGroup>
-    <TargetFramework>net7.0-windows10.0.17763.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <OutputType>WinExe</OutputType>
-    <Title>dOSC</Title>
-    <Company>Duinrahaic</Company>
-    <RepositoryUrl>https://github.com/Duinrahaic/dOSC</RepositoryUrl>
-    <AssemblyVersion>0.2.1.0</AssemblyVersion>
-    <FileVersion>0.2.1.0</FileVersion>
-    <UseWindowsForms>True</UseWindowsForms>
-    <PlatformTarget>x64</PlatformTarget>
-    <PackageIcon>default-app-logo.png</PackageIcon>
-    <Copyright>Duinrahaic</Copyright>
-    <RepositoryType>git</RepositoryType>
-    <SignAssembly>False</SignAssembly>
-    <ServerGarbageCollection>false</ServerGarbageCollection>
-    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="DawnCache\**" />
-    <Compile Remove="GPUCache\**" />
-    <Content Remove="DawnCache\**" />
-    <Content Remove="GPUCache\**" />
-    <EmbeddedResource Remove="DawnCache\**" />
-    <EmbeddedResource Remove="GPUCache\**" />
-    <None Remove="DawnCache\**" />
-    <None Remove="GPUCache\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Blazor-ApexCharts" Version="2.2.0" />
-    <PackageReference Include="Blazor.ContextMenu" Version="1.16.0" />
-    <PackageReference Include="CefSharp.WinForms.NETCore" Version="119.4.30" />
-    <PackageReference Include="Google.Protobuf" Version="3.25.2" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
-    <PackageReference Include="Grpc.AspNetCore.Web" Version="2.60.0" />
-    <PackageReference Include="Grpc.Core" Version="2.46.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.14" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.14">
-      <TreatAsUsed>true</TreatAsUsed>
-    </PackageReference>
-    <PackageReference Include="Serilog.Sanitizer" Version="1.3.3" />
-    <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
-    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="Z.Blazor.Diagrams" Version="3.0.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="CoreOSC">
-      <HintPath>CoreOSC.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Update="wwwroot\**">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="icon.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\dOSCEngine\wwwroot\images\default-app-logo.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\dOSCEngine\dOSCEngine.csproj" />
-    <ProjectReference Include="..\dOSCHub\dOSCHub.csproj" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <OutputType>WinExe</OutputType>
+        <Title>dOSC</Title>
+        <Company>Duinrahaic</Company>
+        <RepositoryUrl>https://github.com/Duinrahaic/dOSC</RepositoryUrl>
+        <AssemblyVersion>0.2.1.0</AssemblyVersion>
+        <FileVersion>0.2.1.0</FileVersion>
+        <PackageIcon>default-app-logo.png</PackageIcon>
+        <Copyright>Duinrahaic</Copyright>
+        <RepositoryType>git</RepositoryType>
+        <SignAssembly>False</SignAssembly>
+        <ServerGarbageCollection>false</ServerGarbageCollection>
+        <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+        <UseAppHost>true</UseAppHost>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DebugSymbols>false</DebugSymbols>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Remove="DawnCache\**"/>
+        <Compile Remove="GPUCache\**"/>
+        <Content Remove="DawnCache\**"/>
+        <Content Remove="GPUCache\**"/>
+        <EmbeddedResource Remove="DawnCache\**"/>
+        <EmbeddedResource Remove="GPUCache\**"/>
+        <None Remove="DawnCache\**"/>
+        <None Remove="GPUCache\**"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Clowd.Squirrel" Version="2.11.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.17" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.17"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.17"/>
+        <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0"/>
+
+    </ItemGroup>
+    <ItemGroup>
+        <Content Update="wwwroot\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="icon.ico">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <Reference Include="CoreOSC">
+            <HintPath>Libs\CoreOSC.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="Libs\CoreOSC.dll"/>
+        <Resource Include="Libs\CoreOSC.dll">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Resource>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\dOSC.Client\dOSC.Client.csproj" />
+      <ProjectReference Include="..\dOSC.Shared\dOSC.Shared.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\dOSC.Shared\dOSC.Shared.csproj" />
+    </ItemGroup>
 
 </Project>

@@ -1,0 +1,17 @@
+﻿@using Blazor.Diagrams.Components.Renderers
+<div class="d-flex d-inline pa-1 align-items-center">
+    <span @onclick="Decrement" class="input-number-decrement">–</span>
+    <input class="input-number" type="number" @bind-value="@Value" min="@Min" max="@Max" step="@Step"
+           @onpointerdown:stopPropagation
+           @onpointerup:stopPropagation
+           @onpointermove:stopPropagation>
+    <span @onclick="Increment" class="input-number-increment">+</span>
+    <div class="ps-2 text-center">
+        <h5 style="color:white;"> @Text </h5>
+    </div>
+    @if (Node != null)
+    {
+        <PortRenderer Class="numeric" Port="@Node.Ports[PortNumber]"/>
+    }
+
+</div>

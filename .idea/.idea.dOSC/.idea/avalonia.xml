@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="dOSC.Client/Desktop/App.axaml" value="dOSC.Client/dOSC.Client.csproj" />
+        <entry key="dOSC.Client/Desktop/ViewModels/ApplicationViewModel.axaml" value="dOSC.Client/dOSC.Client.csproj" />
+        <entry key="dOSC.Client/Desktop/ViewModels/MainWindow.axaml" value="dOSC.Client/dOSC.Client.csproj" />
+        <entry key="dOSC.Client/Desktop/Views/MainView.axaml" value="dOSC.Client/dOSC.Client.csproj" />
+        <entry key="dOSC.Client/Desktop/Views/MainWindow.axaml" value="dOSC.Client/dOSC.Client.csproj" />
+        <entry key="dOSC.DesktopClient/App.axaml" value="dOSC.DesktopClient/dOSC.DesktopClient.csproj" />
+        <entry key="dOSC.DesktopClient/Views/MainView.axaml" value="dOSC.DesktopClient/dOSC.DesktopClient.csproj" />
+        <entry key="dOSC.DesktopClient/Views/MainWindow.axaml" value="dOSC.DesktopClient/dOSC.DesktopClient.csproj" />
+        <entry key="dOSC/App.axaml" value="dOSC/dOSC.csproj" />
+        <entry key="dOSC/Browser.axaml" value="dOSC/dOSC.csproj" />
+        <entry key="dOSC/MainWindow.axaml" value="dOSC/dOSC.csproj" />
+        <entry key="dOSC/Views/BrowserView.axaml" value="dOSC/dOSC.csproj" />
+        <entry key="dOSC/Views/MainView.axaml" value="dOSC/dOSC.csproj" />
+        <entry key="dOSC/Views/MainWindow.axaml" value="dOSC/dOSC.csproj" />
+        <entry key="dOSC/Windows/Browser.axaml" value="dOSC/dOSC.csproj" />
+        <entry key="dOSC/app.axaml" value="dOSC/dOSC.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

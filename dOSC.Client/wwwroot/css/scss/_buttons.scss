@@ -1,0 +1,71 @@
+﻿@import "_variables.scss";
+
+.dosc-button {
+  border: none;
+  padding: 4px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  border-radius: 6px;
+  height: 36px;
+  background-color: $color-primary;
+  color: $color-full-white;
+
+  &:disabled {
+    background-color: $color-disabled;
+    color: $color-grey-dark;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &:not(:disabled) {
+    &.dosc-button-primary {
+      background-color: $color-primary;
+      color: $color-full-white;
+
+      &:hover {
+        background-color: $color-primary-darker;
+      }
+    }
+
+    &.dosc-button-secondary {
+      background-color: $color-secondary;
+      color: $color-full-white;
+
+      &:hover {
+        background-color: $color-secondary-darker;
+      }
+    }
+
+    &.dosc-button-danger {
+      background-color: $color-danger;
+      color: $color-full-white;
+
+      &:hover {
+        background-color: $color-danger-darker;
+      }
+    }
+
+    &.dosc-button-warning {
+      background-color: $color-warning;
+      color: $color-full-white;
+
+      &:hover {
+        background-color: $color-warning-darker;
+      }
+    }
+
+    &.dosc-button-success {
+      background-color: $color-success;
+      color: $color-full-white;
+
+      &:hover {
+        background-color: $color-success-darker;
+      }
+    }
+  }
+
+  /*
+  */
+}

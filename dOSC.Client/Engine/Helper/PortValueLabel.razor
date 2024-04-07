@@ -1,0 +1,14 @@
+﻿@using dOSC.Shared.Utilities
+@if (DisplayValue != null)
+{
+    <span class="port-label @LabelPositionClass">
+        @if (Classifier.IsNumericType(DisplayValue.GetType()))
+        {
+            @DisplayValue?.ToString(StringFormat)
+        }
+        else
+        {
+            @DisplayValue?.ToString()
+        }
+    </span>
+}

@@ -1,0 +1,30 @@
+﻿@if (Setting != null)
+{
+    <EditForm id="setting-form" Model="@Setting" class="dosc-form" OnValidSubmit="FormSubmitted">
+        <div class="dosc-form-item">
+            <label>Display name:</label>
+            <label class="subtitle">The display name for the block. This overrides the default name of the block. </label>
+            <InputText dataType="search" @bind-Value=Setting.DisplayName placeholder="@Setting.Name" clearable="true"/>
+        </div>
+        @Fields
+    </EditForm>
+}
+
+
+@code {
+    [Parameter] public BaseNodeSetting? Setting { get; set; }
+
+    [Parameter] public RenderFragment? Fields { get; set; }
+
+    [Parameter] public EventCallback<BaseNodeSetting> OnValidSubmit { get; set; }
+
+    void FormSubmitted(EditContext editContext)
+    {
+        var formIsValid = editContext.Validate();
+        if (formIsValid)
+        {
+            OnValidSubmit.InvokeAsync(Setting);
+        }
+    }
+
+}

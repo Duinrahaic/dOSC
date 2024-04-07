@@ -1,11 +1,15 @@
-﻿using dOSCEngine;
+﻿/*
+using dOSCEngine;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using dOSC.Client;
 
 namespace dOSC
 {
@@ -13,7 +17,7 @@ namespace dOSC
     {
         private NotifyIcon trayIcon;
         private OVRIntegration ovr;
- 
+
 
         public dOSCWebInterfaceContext()
         {
@@ -34,7 +38,7 @@ namespace dOSC
                 Text = "dOSC",
             };
 
- 
+
             ovr = new OVRIntegration();
             ovr.TryInit();
 
@@ -60,7 +64,7 @@ namespace dOSC
             }
             else
             {
-                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Start/Attach to SteamVR", null, AttachSteamVR));
+                trayIcon.ContextMenuStrip.Items.Add(new ToolStripMenuItem("Listen/Attach to SteamVR", null, AttachSteamVR));
             }
 
             trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
@@ -91,12 +95,14 @@ namespace dOSC
             setupTrayMenu();
         }
 
- 
+
         private void Exit(object? sender, EventArgs e)
         {
-            Webserver.Stop();
+            SetupClient.Stop();
             trayIcon.Visible = false;
             Application.Exit();
         }
     }
 }
+*/
+
