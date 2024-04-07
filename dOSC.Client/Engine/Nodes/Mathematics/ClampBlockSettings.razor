@@ -1,0 +1,131 @@
+﻿@using System.ComponentModel.DataAnnotations;
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel;
+@using dOSC.Shared.Models.Wiresheet
+@using dOSCEngine.Components.UI
+@using dOSCEngine.Utilities;
+
+<NodePropertyEditor Setting="@Setting" OnValidSubmit="Update">
+    <Fields>
+        @if (Setting != null)
+        {
+            <hr />
+            
+            <div class="dosc-form-row">
+                <div class="dosc-form-item">
+                    <label>Max Clamp: <span style="color:red;">*</span></label>
+                    <ValidationMessage For="@(() => Setting.Max)" />
+                    <InputNumber dataType="number" placeholder="1" @bind-Value=@Setting.Max />
+                </div>
+                <div class="dosc-form-item">
+                    <label> Use Max Clamp </label>
+                    <ValidationMessage For="@(() => Setting.NoMax)" />
+                    <InputRadioGroup @bind-Value="Setting.NoMax">
+                        <div class="dosc-form-row">
+                            <div class="dosc-form-item item-row">
+                                <InputRadio id="radio-MaxClamp1" Value="false" checked="checked" />
+                                <label for="radio-MaxClamp1">Yes</label>
+                            </div>
+
+                            <div class="dosc-form-item item-row">
+                                <InputRadio id="radio-MaxClamp2" Value="true" />
+                                <label for="radio-MaxClamp2">No</label>
+                            </div>
+                        </div>
+                    </InputRadioGroup>
+                </div>
+            </div>
+            <div class="dosc-form-row">
+                <div class="dosc-form-item">
+                    <label>Min Clamp: <span style="color:red;">*</span></label>
+                    <ValidationMessage For="@(() => Setting.Min)" />
+                    <InputNumber dataType="number" placeholder="-1" @bind-Value=@Setting.Min />
+                </div>
+                <div class="dosc-form-item">
+                    <label> Use Min Clamp </label>
+                    <ValidationMessage For="@(() => Setting.NoMin)" />
+                    <InputRadioGroup @bind-Value="Setting.NoMin">
+                        <div class="dosc-form-row">
+                            <div class="dosc-form-item item-row">
+                                <InputRadio id="radio-MinClamp1" Value="false" checked="checked" />
+                                <label for="radio-MinClamp1">Yes</label>
+                            </div>
+
+                            <div class="dosc-form-item item-row">
+                                <InputRadio id="radio-MinClamp2" Value="true" />
+                                <label for="radio-MinClamp2">No</label>
+                            </div>
+                        </div>
+                    </InputRadioGroup>
+                </div>
+            </div>
+        }
+    </Fields>
+</NodePropertyEditor>
+
+
+
+@code {
+    [CascadingParameter]
+    public BaseNode? Node { get; set; }
+    private NodeSetting? Setting;
+
+    [Parameter] public EventCallback Updated { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (Node != null)
+        {
+            Setting = new NodeSetting(Node);
+        }
+    }
+
+
+    private class NodeSetting : BaseNodeSetting
+    {
+        [Required]
+        public bool NoMax { get; set; } = false;
+        [Required]
+        public bool NoMin { get; set; } = false;
+        [Required]
+        public double Min { get; set; } = -1;
+        [Required]
+        public double Max { get; set; } = 1;
+        public NodeSetting(BaseNode Node)
+        {
+            NoMax = Node.Properties.GetProperty<bool>(EntityPropertyEnum.NoMax);
+            NoMin = Node.Properties.GetProperty<bool>(EntityPropertyEnum.NoMin);
+            Min = Node.Properties.GetProperty<double>(EntityPropertyEnum.Min);
+            Max = Node.Properties.GetProperty<double>(EntityPropertyEnum.Max);
+            DisplayName = Node.DisplayName;
+            Name = Node.Name;   
+        }
+    }
+
+    public void Update(BaseNodeSetting Setting)
+    {
+        var UpdatedSettings = (NodeSetting)Setting;
+
+        if (Node != null)
+        {
+
+            if(UpdatedSettings.Max < UpdatedSettings.Min)
+            {
+                var Max = UpdatedSettings.Max;
+                UpdatedSettings.Max = UpdatedSettings.Min;
+                UpdatedSettings.Min = Max;
+            }
+            Node.Properties.SetProperty(EntityPropertyEnum.NoMax, UpdatedSettings.NoMax);
+            Node.Properties.SetProperty(EntityPropertyEnum.NoMin, UpdatedSettings.NoMin);
+            Node.Properties.SetProperty(EntityPropertyEnum.Min, UpdatedSettings.Min);
+            Node.Properties.SetProperty(EntityPropertyEnum.Max, UpdatedSettings.Max);
+            Node.DisplayName = Setting.DisplayName;
+        }
+
+        if (Updated.HasDelegate)
+        {
+            Updated.InvokeAsync();
+        }
+    }
+
+}

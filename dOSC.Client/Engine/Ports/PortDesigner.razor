@@ -1,0 +1,52 @@
+﻿@using Blazor.Diagrams.Components.Renderers
+@using System.Timers
+@using Blazor.Diagrams.Core.Models.Base
+@using dOSC.Client.Engine.Helper
+@using dOSCEngine.Utilities
+@using static Nodes.BaseNode
+@implements IDisposable
+<div class="item">
+
+    <div class="label">
+        @if(!string.IsNullOrEmpty(Label))
+        {
+            @Label
+        }
+        else
+        {
+            @Port.Name
+        }
+    </div>
+    <PortValueLabel LabelPosition=@(Port.Input ? PortValueLabel.Position.Left : PortValueLabel.Position.Right) DisplayValue="Value" />
+    <PortRenderer Class="@(Port.GetPortStyle())" Port="this.Port" @key="@(Port.GetPortStyle())" />
+</div>
+ 
+@code {
+    [Parameter]
+    public string Label { get; set; } = string.Empty;
+    [Parameter]
+    public BasePort Port { get; set; } = null!;
+    [Parameter]
+    public dynamic? Value { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        Port.OnPortTypeChanged += PortOnOnPortTypeChanged;
+    }
+
+    public void Dispose()
+    {
+        Port.OnPortTypeChanged -= PortOnOnPortTypeChanged;
+    }
+    
+    private async void PortOnOnPortTypeChanged(Guid portguid, PortType portType)
+    {
+        await InvokeAsync(StateHasChanged);    
+    }
+
+    private async void VisualUpdate()
+    {
+        await InvokeAsync(StateHasChanged);   
+    }
+
+}

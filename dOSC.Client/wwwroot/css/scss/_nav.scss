@@ -1,0 +1,211 @@
+﻿@import "_variables.scss";
+@import "_indicators.scss";
+
+
+.appbody {
+    position: relative;
+    -webkit-app-region: no-drag;
+    background: $color-theme-1;
+    font-family: "Open Sans", sans-serif;
+    color: $color-full-white;
+    height: calc(100vh - $title-bar-size);
+    overflow: hidden;
+
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    gap: 0;
+
+    .nav {
+        background: $color-theme-1;
+        display: flex;
+        flex-direction: column;
+        bottom: 0;
+        overflow-y: auto;
+        z-index: 100;
+        min-width: 80px;
+        padding: 16px 0 16px 0;
+        height: 100%;
+
+        ul {
+            background: $color-theme-1;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            z-index: 2;
+            list-style: none;
+            padding-left: 0;
+            height: 100%;
+
+           
+
+            li {
+                height: 80px;
+                width: 100%;
+                text-align: center;
+                position: relative;
+                padding-left: 4px;
+                cursor: pointer;
+
+                &.nav-connection-container{
+                    width:  inherit;
+                    display: flex;
+                    flex-direction: column;
+                    cursor: unset;
+                    align-items: center;
+                    justify-content: space-around;
+                    padding: 0 2px;
+
+
+                    .nav-connection-indicator{
+                        
+                        display:flex;
+                        flex-direction: row;
+                        align-items: center;
+                        justify-content: space-evenly;
+                        gap: 8px;
+                        .indicator-text{
+                            user-select: none;
+                        }
+                    }
+
+
+
+                }
+                
+                
+                &:nth-last-child(-n+2)  {
+                    margin-top: auto;
+                    height: 20px;
+
+                }
+
+                .content {
+                    height: 100%;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-bottom-left-radius: 16px;
+                    border-top-left-radius: 16px;
+
+                    .app-icon-container {
+                        height: 50px;
+                        width: 50px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 8px;
+                        z-index: 102;
+
+                        .app-icon {
+                            font-size: 1.5rem;
+                            text-align: center;
+                            width: 100%;
+                            font-weight: 600;
+                            align-self: center;
+                            color: $color-full-white;
+                        }
+                    }
+                }
+
+
+
+                &.active {
+                    .content {
+                        background: $color-theme-3;
+
+                        .app-icon-container {
+                            background: $color-blurple;
+                        }
+                    }
+
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        background-color: transparent;
+                        top: -50px;
+                        right: 0;
+                        height: 50px;
+                        width: 25px;
+                        border-bottom-right-radius: 16px;
+                        box-shadow: 0 25px 0 0 $color-theme-3;
+                        z-index: 101;
+                        pointer-events: none;
+                    }
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        background-color: transparent;
+                        bottom: -50px;
+                        right: 0;
+                        height: 50px;
+                        width: 25px;
+                        border-top-right-radius: 16px;
+                        box-shadow: 0 -25px 0 0 $color-theme-3;
+                        z-index: 101;
+                        pointer-events: none;
+                    }
+                }
+
+                &:hover:not(.active) {
+                    .content {
+                        background: $color-theme-2;
+                        transition: ease-in-out .1s;
+                    }
+                }
+            }
+        }
+
+
+        &::-webkit-scrollbar {
+            display: none;
+            width: 80px;
+        }
+    }
+
+    .body {
+        background: $color-theme-3;
+        overflow: hidden;
+        flex-grow: 1;
+
+        .navbar {
+            background-color: $color-wiresheet-toolbar;
+            color: $color-grey-white;
+        }
+
+        .search-form {
+            display: flex;
+            justify-items: center;
+            align-items: center;
+            padding-left: 1rem;
+            gap: 0.5rem;
+            background-color: $color-theme-1;
+            border-color: transparent;
+            border-radius: 75px;
+        }
+
+        .search-input {
+            padding-left: 0;
+            color: $color-full-white;
+            background-color: transparent;
+            border-color: transparent;
+
+            &:focus {
+                box-shadow: none;
+            }
+
+            &::placeholder {
+                color: $color-grey-white;
+            }
+        }
+
+        .content {
+            width: 100%;
+            height: calc(100vh);
+            border-top-left-radius: 16px;
+            color: $color-titlebar-textcolor;
+        }
+    }
+}

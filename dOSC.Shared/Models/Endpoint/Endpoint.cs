@@ -1,0 +1,34 @@
+﻿using System;
+using dOSC.Shared.Models.Database;
+
+namespace dOSC.Shared.Models.Endpoint;
+
+public class EndpointDto
+{
+    public string ServiceName { get; set; }
+    public string Parameter { get; set; }
+    public DataType Type { get; set; }
+    public Policy Policy { get; set; }
+    public Facet? Facet { get; set; }
+    public string? Value { get; set; } 
+    public DateTime LastUpdated { get; set; }
+    
+    public EndpointDto(string serviceName, string parameter,string value) // User For Updates
+    {
+        ServiceName = serviceName;
+        Parameter = parameter;
+        Value = value;
+        LastUpdated = DateTime.Now.ToUniversalTime();
+    }
+    
+    public EndpointDto(string serviceName, string parameter, DataType type, Policy policy, Facet? facet, string? value) // Used For Registration
+    {
+        ServiceName = serviceName;
+        Parameter = parameter;
+        Type = type;
+        Policy = policy;
+        Facet = facet;
+        Value = value;
+        LastUpdated = DateTime.Now.ToUniversalTime();
+    }
+}

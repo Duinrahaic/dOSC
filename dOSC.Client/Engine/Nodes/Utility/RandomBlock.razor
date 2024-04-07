@@ -1,0 +1,19 @@
+﻿@using Blazor.Diagrams.Components.Renderers;
+@using dOSCEngine.Components.Inputs;
+<DefaultBlock Node=Node RequiresUpdate=true>
+    <NodeBody>
+        <div class="label"> @(Node?.IndicatorToString() ?? "Unknown")</div>
+        <div class="dOSC-progress-bar-container">
+            <div class="dOSC-progress-bar-indicator" style="width: @(Node?.CalculateRemainingPercent() ?? 0)%;" />
+        </div>
+    </NodeBody>
+    <NodeOutputs>
+        <PortDesigner Port="Node.Ports.First() as BasePort" Value="this.Node.Value" />
+    </NodeOutputs>
+</DefaultBlock>
+
+@code {
+    [Parameter]
+    public RandomNode Node { get; set; } = null;
+
+}

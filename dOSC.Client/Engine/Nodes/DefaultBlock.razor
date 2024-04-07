@@ -1,0 +1,101 @@
+﻿@using System.Timers
+@using dOSCEngine.Services
+@using dOSCEngine.Utilities
+@inherits Microsoft.AspNetCore.Components.ComponentBase
+
+
+<div  id="@Node.Guid" class="block-container @Node.Category @( Node.Selected ? "selected" : string.Empty) @(Node.Error ? "error" :string.Empty)"  style=@WidthCss>
+    <DefaultBlockHeader Node=@Node />
+    <div class="block-container-body-container">
+        <div class="block-container-body">
+            <BlockLabel Node="@Node" />
+            @if (Node.ShowProgressBar)
+            {
+                <BlockProgressBar Node="@Node" />
+            }
+
+            @if (Node.ShowQueueCount)
+            {
+               <BlockQueueBar Node="@Node" />
+            }
+
+            
+
+
+            <div class="block-container-body-ports">
+                <div class="block-container-port-container input">
+                    @if (NodeInputs != null)
+                    {
+                        @NodeInputs
+                    }
+                    else
+                    {
+                        foreach (var IP in Node.GetAllInputs())
+                        {
+                            <PortDesigner Port="IP"/>
+                        }
+                    }
+
+
+                </div>
+                <div class="block-container-port-container output">
+                    @if (NodeOutputs != null)
+                    {
+                        @NodeOutputs
+                    }
+                    else
+                    {
+                        foreach (var OP in Node.GetAllOutputs())
+                        {
+                            <PortDesigner Port="OP" Value="Node.Value"/>
+                        }
+                    }
+                </div>
+            </div>
+            @NodeBodyBottom
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@code {
+
+    [Parameter] public BaseNode Node { get; set; } = null!;
+    [Parameter] public int? Width { get; set; }
+    [Parameter] public RenderFragment? NodeBody { get; set; }
+    [Parameter] public RenderFragment? NodeBodyBottom { get; set; }
+    [Parameter] public RenderFragment? NodeInputs{ get; set; }
+    [Parameter] public RenderFragment? NodeOutputs { get; set; }
+    
+    [Inject] public IJSRuntime JS { get; set; }
+
+
+    private string WidthCss => Width != null ? $"width: {Width}px;" : string.Empty;
+
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if(JS != null)
+            {
+                var dimensions = await JS.InvokeAsync<Dimensions>("GetBlockDimensions", Node.Guid);
+                Node.Size = new Blazor.Diagrams.Core.Geometry.Size(dimensions.Width, dimensions.Height);
+                Node.Refresh();
+            }
+        }
+    }
+
+    private class Dimensions
+    {
+        public double Height { get; set; } = 0;
+        public double Width { get; set; } = 0;
+    }
+}

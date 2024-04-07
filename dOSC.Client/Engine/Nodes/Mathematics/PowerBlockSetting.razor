@@ -1,0 +1,67 @@
+﻿@using System.ComponentModel.DataAnnotations;
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel;
+@using dOSC.Shared.Models.Wiresheet
+@using dOSCEngine.Components.UI
+@using dOSCEngine.Utilities;
+
+<NodePropertyEditor Setting="@Setting" OnValidSubmit="Update">
+    <Fields>
+        @if (Setting != null)
+        {
+            <hr />
+            <div class="dosc-form-item">
+                <label>Power Of: <span style="color:red;">*</span></label>
+                <ValidationMessage For="@(() => Setting.Power)" />
+                <InputNumber dataType="number" placeholder="2" @bind-Value=@Setting.Power />
+            </div>
+            
+        }
+    </Fields>
+</NodePropertyEditor>
+
+
+
+@code {
+    [CascadingParameter]
+    public BaseNode? Node { get; set; }
+    private NodeSetting? Setting;
+
+    [Parameter] public EventCallback Updated { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (Node != null)
+        {
+            Setting = new NodeSetting(Node);
+        }
+    }
+
+
+    private class NodeSetting : BaseNodeSetting
+    {
+        [Required]
+        public double Power { get; set; } = 2.0;
+        public NodeSetting(BaseNode Node)
+        {
+            Power = Node.Properties.GetProperty<double>(EntityPropertyEnum.Power);
+        }
+    }
+
+    public void Update(BaseNodeSetting Setting)
+    {
+        var UpdatedSettings = (NodeSetting)Setting;
+
+        if (Node != null)
+        {
+            Node.Properties.SetProperty(EntityPropertyEnum.Power, UpdatedSettings.Power);
+            Node.DisplayName = UpdatedSettings.DisplayName;
+        }
+
+        if (Updated.HasDelegate)
+        {
+            Updated.InvokeAsync();
+        }
+    }
+
+}

@@ -1,0 +1,14 @@
+﻿@using Microsoft.AspNetCore.Components.Web.Virtualization
+<ul class="">
+    <Virtualize Items="Apps">
+        <NavContainerItem Item="@context" IsActive="(SelectedItem == context)" OnClick="OnNavItemSelected" />
+    </Virtualize>
+    @if (Indicators != null)
+    {
+        <li class="nav-connection-container">
+            @Indicators
+        </li>
+    }
+    
+            
+</ul>

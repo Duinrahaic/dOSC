@@ -1,0 +1,56 @@
+﻿<ModalV2 @ref=Modal Title=@($"{(SelectedBaseNode != null ? SelectedBaseNode.Name : "Unknown")} Node Properties") Size="ModalV2.ModalSize.Medium">
+    <Body>
+        <CascadingValue Value="SelectedBaseNode">
+            @if (SelectedBaseNode != null)
+            {
+
+                switch (SelectedBaseNode.NodeClass)
+                {
+                    case "DelayNode":
+                        <DelayBlockSetting Updated="Updated"/>
+                        break;
+                    case "RandomNode":
+                        <RandomBlockSettings Updated="Updated" />
+                        break;
+                    case "OSCWriteNode":
+                        <OSCBlockSetting Updated="Updated" />
+                        break;
+                    case "OSCReadNode":
+                        <OSCBlockSetting Updated="Updated" />
+                        break;
+                    case "AverageNode":
+                        <AverageBlockSetting Updated="Updated" />
+                        break;
+                    case "ClampNode":
+                        <ClampBlockSettings Updated="Updated" />
+                        break;
+                    case "PowerNode":
+                        <PowerBlockSetting Updated="Updated" />
+                        break;
+                    case "SineNode":
+                        <SineBlockSettings Updated="Updated" />
+                        break;
+                    case "LogicNode":
+                        <VariableBlockSettings Updated="Updated" />
+                        break;
+                    case "NumericNode":
+                        <VariableBlockSettings Updated="Updated" />
+                        break;
+                    case "NoteNode":
+                        <NoteBlockSettings Updated="Updated" />
+                        break;
+                    default:
+                        <DefaultBlockSetting Updated="Updated" />
+                        break;
+                }
+            }
+        </CascadingValue>
+
+    </Body>
+    <Footer>
+        <button form="setting-form" inputmode="button" class="dosc-button primary"> Save </button>
+    </Footer>
+</ModalV2>
+
+
+

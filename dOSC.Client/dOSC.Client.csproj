@@ -1,0 +1,173 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
+        <BlazorEnableTimeZoneSupport>false</BlazorEnableTimeZoneSupport>
+        <BlazorWebAssemblyPreserveCollationData>false</BlazorWebAssemblyPreserveCollationData>
+        <UseBlazorWebAssembly>true</UseBlazorWebAssembly>
+        <AssemblyName>dOSC.Client</AssemblyName>
+        <RootNamespace>dOSC.Client</RootNamespace>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DebugSymbols>false</DebugSymbols>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <Optimize>true</Optimize>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\dOSC.Shared\dOSC.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Shared\_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Shared\_ValidationScriptsPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\site.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\LICENSE" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery-validation\LICENSE.md" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.min.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\LICENSE.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Properties\launchSettings.json" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Pages" />
+        <Folder Include="wwwroot\" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Properties" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.17" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.17" PrivateAssets="all" />
+        <PackageReference Include="Z.Blazor.Diagrams" Version="3.0.2" />
+    </ItemGroup>
+    <ItemGroup>
+      <AdditionalFiles Include="Components\AppBody.razor" />
+      <AdditionalFiles Include="Components\AppNav.razor" />
+      <AdditionalFiles Include="Components\Form\AutoResizingNoteArea.razor" />
+      <AdditionalFiles Include="Components\Form\SettingsPages\DOSCSettings.razor" />
+      <AdditionalFiles Include="Components\Form\SettingsPages\OSCSettings.razor" />
+      <AdditionalFiles Include="Components\Form\SettingsPages\PulsoidSettings.razor" />
+      <AdditionalFiles Include="Components\Inputs\NumericInput.razor" />
+      <AdditionalFiles Include="Components\Inputs\OSCDropdownOptions.razor" />
+      <AdditionalFiles Include="Components\Inputs\ToggleSwitch.razor" />
+      <AdditionalFiles Include="Components\Modals\EditorModal.razor" />
+      <AdditionalFiles Include="Components\Modals\ModalBase.razor" />
+      <AdditionalFiles Include="Components\Modals\ModalV2.razor" />
+      <AdditionalFiles Include="Components\Modals\SidePanelBase.razor" />
+      <AdditionalFiles Include="Components\NavContainer.razor" />
+      <AdditionalFiles Include="Components\NavContainerItem.razor" />
+      <AdditionalFiles Include="Components\UI\App\AppDetailItem.razor" />
+      <AdditionalFiles Include="Components\UI\App\AppPageNavigationComponent.razor" />
+      <AdditionalFiles Include="Components\UI\App\AppPageNavigationItem.razor" />
+      <AdditionalFiles Include="Components\UI\App\AppProfileItem.razor" />
+      <AdditionalFiles Include="Components\UI\Setting\GeneralSettingsPage.razor" />
+      <AdditionalFiles Include="Components\UI\Setting\SettingNavItemComponent.razor" />
+      <AdditionalFiles Include="Components\UI\Setting\StatusPill.razor" />
+      <AdditionalFiles Include="Components\UI\Table\ConnectorTable.razor" />
+      <AdditionalFiles Include="Components\UI\Table\SettingsTableRow.razor" />
+      <AdditionalFiles Include="Components\UI\UploadWiresheetFile.razor" />
+      <AdditionalFiles Include="Components\Wiresheet\PlayPauseButton.razor" />
+      <AdditionalFiles Include="Components\Wiresheet\UI\WiresheetToolbar.razor" />
+      <AdditionalFiles Include="Components\Wiresheet\UI\WiresheetToolbarDropdown.razor" />
+      <AdditionalFiles Include="Components\Wiresheet\UI\WiresheetToolbarDropdownBase.razor" />
+      <AdditionalFiles Include="Components\Wiresheet\UI\WiresheetToolbarDropdownDivider.razor" />
+      <AdditionalFiles Include="Components\Wiresheet\UI\WiresheetToolbarDropdownItem.razor" />
+      <AdditionalFiles Include="Components\Wiresheet\UI\WiresheetToolbarDropdownSubmenuItem.razor" />
+      <AdditionalFiles Include="Components\Wiresheet\WiresheetToolbarComponent.razor" />
+      <AdditionalFiles Include="Engine\Helper\PortValueLabel.razor" />
+      <AdditionalFiles Include="Engine\Nodes\BlockVisualizations\BlockLabel.razor" />
+      <AdditionalFiles Include="Engine\Nodes\BlockVisualizations\BlockProgressBar.razor" />
+      <AdditionalFiles Include="Engine\Nodes\BlockVisualizations\BlockQueueBar.razor" />
+      <AdditionalFiles Include="Engine\Nodes\Connectors\OSC\OSCBlockSetting.razor" />
+      <AdditionalFiles Include="Engine\Nodes\Connectors\OSC\OSCReadBlock.razor" />
+      <AdditionalFiles Include="Engine\Nodes\Connectors\OSC\OSCWriteBlock.razor" />
+      <AdditionalFiles Include="Engine\Nodes\DefaultBlock.razor" />
+      <AdditionalFiles Include="Engine\Nodes\DefaultBlockHeader.razor" />
+      <AdditionalFiles Include="Engine\Nodes\DefaultBlockSetting.razor" />
+      <AdditionalFiles Include="Engine\Nodes\Mathematics\AverageBlockSetting.razor" />
+      <AdditionalFiles Include="Engine\Nodes\Mathematics\ClampBlockSettings.razor" />
+      <AdditionalFiles Include="Engine\Nodes\Mathematics\PowerBlockSetting.razor" />
+      <AdditionalFiles Include="Engine\Nodes\Mathematics\SineBlockSettings.razor" />
+      <AdditionalFiles Include="Engine\Nodes\NodePropertyEditor.razor" />
+      <AdditionalFiles Include="Engine\Nodes\Utility\DelayBlock.razor" />
+      <AdditionalFiles Include="Engine\Nodes\Utility\DelayBlockSetting.razor" />
+      <AdditionalFiles Include="Engine\Nodes\Utility\NoteBlock.razor" />
+      <AdditionalFiles Include="Engine\Nodes\Utility\NoteBlockSettings.razor" />
+      <AdditionalFiles Include="Engine\Nodes\Utility\RandomBlock.razor" />
+      <AdditionalFiles Include="Engine\Nodes\Utility\RandomBlockSettings.razor" />
+      <AdditionalFiles Include="Engine\Nodes\Variables\LogicBlock.razor" />
+      <AdditionalFiles Include="Engine\Nodes\Variables\NumericBlock.razor" />
+      <AdditionalFiles Include="Engine\Nodes\Variables\VariableBlockSettings.razor" />
+      <AdditionalFiles Include="Engine\Ports\PortDesigner.razor" />
+    </ItemGroup>
+    <ItemGroup>
+      <Reference Include="CoreOSC">
+        <HintPath>..\dOSCEngine\Libs\CoreOSC.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.Extensions.Hosting.Abstractions">
+        <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\7.0.14\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+ </Project>

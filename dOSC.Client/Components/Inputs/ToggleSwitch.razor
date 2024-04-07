@@ -1,0 +1,15 @@
+﻿@using Blazor.Diagrams.Components.Renderers;
+
+<div class="d-flex d-inline pa-1 align-items-center">
+    <label class="switch">
+        <input @bind="Value" type="checkbox">
+        <span class="slider round"></span>
+    </label>
+    <div class="ps-2 text-center">
+        <h5 style="color:white;"> @Text </h5>
+        
+    </div>
+    <PortRenderer Class="logic" Port="this.Node.Ports[0]" />
+
+</div>
+

@@ -1,0 +1,120 @@
+﻿@using dOSC.Shared.Models.Wiresheet
+@using dOSC.Shared.Units
+@using dOSCEngine.Utilities;
+
+<NodePropertyEditor Setting="@Setting" OnValidSubmit="Update" >
+    <Fields>
+        @if(Setting != null)
+        {
+            <hr />
+
+            
+
+            if (Setting.Type == "LogicNode")
+            {
+                <div class="dosc-form-item">
+                    <label> Value: </label>
+                    <ValidationMessage For="@(() => Setting.LogicInput)" />
+                    <InputRadioGroup @bind-Value="Setting.LogicInput">
+                        <div class="dosc-form-row">
+                            <label class="dosc-form-radio">
+                                <InputRadio Value="false" />
+                                <span>False</span>
+                            </label>
+                            <label class="dosc-form-radio">
+                                <InputRadio Value="true" />
+                                <span>True</span>
+                            </label>
+                        </div>
+                    </InputRadioGroup>
+                </div>
+            }
+            else if (Setting.Type == "NumericNode")
+            {
+                <div class="dosc-form-item">
+                    <label>Value:</label>
+                    <ValidationMessage For="@(() => Setting.NumericInput)"  />
+                    <InputNumber dataType="number" placeholder="0" @bind-Value=@Setting.NumericInput />
+                </div>
+            }
+        }
+        
+
+
+    </Fields>
+</NodePropertyEditor>
+
+
+
+@code{
+    [CascadingParameter]
+    public BaseNode? Node { get; set; }
+    private NodeSetting? Setting;
+
+    [Parameter] public EventCallback Updated { get; set; }
+
+
+    protected override void OnParametersSet()
+    {
+        if (Node != null)
+        {
+            Setting = new NodeSetting(Node);
+        }
+    }
+
+
+    private class NodeSetting : BaseNodeSetting
+    {
+        public double NumericInput { get; set; }
+        public bool LogicInput { get; set; }
+        public string Type { get; set; }
+        
+        public List<TimeUnit> UnitOptions => ListUtilities.GetEnumValues<TimeUnit>();
+        public NodeSetting(BaseNode node)
+        {
+            
+            Type = node.NodeClass;
+            
+            if(Type == "LogicNode")
+            {
+                LogicInput = Convert.ToBoolean(node.Properties.GetProperty<bool>(EntityPropertyEnum.ConstantValue));
+            }
+            else if(Type == "NumericNode")
+            {
+                NumericInput = node.Properties.GetProperty<double>(EntityPropertyEnum.ConstantValue);
+            }
+
+            DisplayName = node.DisplayName;
+            Name = node.Name;
+        }
+
+
+
+    }
+
+    public void Update(BaseNodeSetting setting)
+    {
+        var updatedSettings = (NodeSetting)setting;
+
+        if (Node != null)
+        {
+            
+            if(Node.GetType().Name == "LogicNode")
+            {
+                Node.Properties.SetProperty(EntityPropertyEnum.ConstantValue,updatedSettings.LogicInput);
+            }
+            else if(Node.GetType().Name == "NumericNode")
+            {
+                Node.Properties.SetProperty(EntityPropertyEnum.ConstantValue, updatedSettings.NumericInput);
+            }
+            Node.DisplayName = updatedSettings.DisplayName;
+
+        }
+
+        if (Updated.HasDelegate)
+        {
+            Updated.InvokeAsync();
+        }
+    }
+
+}

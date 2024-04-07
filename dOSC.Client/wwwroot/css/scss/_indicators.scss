@@ -1,0 +1,26 @@
+﻿@import "_variables.scss";
+
+
+
+
+.indicator{
+  width: $led-size;
+  height: $led-size;
+  border-radius: 50%;
+}
+
+$indicator-array: success info warning error offline;
+$colors: $success $info $warning $error $offline;
+
+
+@each $indicator in $indicator-array{
+  $i: index($indicator-array, $indicator);
+  $color: nth($colors, $i);
+
+  .--#{$indicator}{
+    background: $color;
+    border: 1px solid darken($color,5%);
+    color: $color;
+  }
+
+}

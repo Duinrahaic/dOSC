@@ -1,0 +1,62 @@
+﻿@using System.ComponentModel.DataAnnotations;
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel;
+@using dOSC.Shared.Units
+@using dOSCEngine.Components.UI
+@using dOSCEngine.Engine.Nodes
+@using dOSCEngine.Utilities;
+
+<NodePropertyEditor Setting="@Setting" OnValidSubmit="Update" >
+
+</NodePropertyEditor>
+
+
+
+@code{
+    [CascadingParameter]
+    public BaseNode? Node { get; set; }
+    private NodeSetting? Setting;
+
+    [Parameter] public EventCallback Updated { get; set; }
+
+
+
+    protected override void OnParametersSet()
+    {
+        if (Node != null)
+        {
+            Setting = new NodeSetting(Node);
+        }
+    }
+
+
+    private class NodeSetting : BaseNodeSetting
+    {
+
+        public List<TimeUnit> UnitOptions => ListUtilities.GetEnumValues<TimeUnit>();
+
+        public NodeSetting(BaseNode Node)
+        {
+            DisplayName = Node.DisplayName;
+            Name = Node.Name;
+        }
+
+
+    }
+
+    public void Update(BaseNodeSetting Setting)
+    {
+        var UpdatedSettings = (NodeSetting)Setting;
+
+        if (Node != null)
+        {
+            Node.DisplayName = UpdatedSettings.DisplayName;
+        }
+
+        if (Updated.HasDelegate)
+        {
+            Updated.InvokeAsync();
+        }
+    }
+
+}
