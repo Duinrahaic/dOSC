@@ -1,0 +1,73 @@
+﻿@*@using dOSC.Component.Wiresheet.Nodes
+@implements IDisposable
+<div class="dOSC-queue-container">
+    @if (Node?.QueueSize >= 10)
+    {
+        <div class="dOSC-progress-bar-container green-indicator">
+            <div class="dOSC-progress-bar-indicator" style="width: @GetProgress()%;"></div>
+        </div>
+    }
+    else
+    {
+        for (var i = 0; i < Node?.ItemsInQueue; i++)
+        {
+            <div class="dOSC-progress-bar-container square  green-indicator">
+                <div class="dOSC-progress-bar-indicator" style="width: 100%;"></div>
+            </div>
+        }
+
+        for (var i = 0; i < Node?.QueueSize - Node?.ItemsInQueue; i++)
+        {
+            <div class="dOSC-progress-bar-container square green-indicator">
+                <div class="dOSC-progress-bar-indicator" style="width: 0;"></div>
+            </div>
+        }
+    }
+</div>
+
+<style>
+
+    .queue-container{
+        padding-top: 4px;
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 4px 4px;
+    }
+
+</style>
+
+@code {
+
+    [Parameter] public WiresheetNode Node { get; set; } = null!;
+
+
+    private double GetProgress()
+    {
+        return Convert.ToInt32(Node.ItemsInQueue / (double)Node.QueueSize * 100);
+    }
+
+    private DateTime _lastUpdate = DateTime.MinValue;
+
+    private void Update()
+    {
+        if ((DateTime.Now - _lastUpdate > GraphSettings.UpdateInterval) & (Node?.Dragging != true))
+        {
+            _lastUpdate = DateTime.Now;
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        Node.OnQueueBarUpdateRequest += Update;
+    }
+
+
+    public void Dispose()
+    {
+        Node.OnQueueBarUpdateRequest -= Update;
+    }
+
+}*@

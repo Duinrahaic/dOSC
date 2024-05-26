@@ -1,4 +1,6 @@
-﻿namespace dOSC.Drivers.OSC;
+﻿using System;
+
+namespace dOSC.Drivers.OSC;
 
 public partial class OSCService
 {

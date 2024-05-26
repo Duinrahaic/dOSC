@@ -1,32 +1,35 @@
-﻿using dOSC.Drivers.DB;
+﻿using Avalonia;
+using Avalonia.ReactiveUI;
+using dOSC.Drivers.DB;
 using dOSC.Drivers.DB.Models;
 using dOSC.Drivers.OSC;
 using dOSC.Drivers.Pulsoid;
 using dOSC.Middlewear;
 using dOSC.Shared.Utilities;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 
 namespace dOSC;
 
 public static class SetupHub
 {
-    private static WebApplication? _app;
+    private static WebApplication? app;
     public static bool IsRunning { get; private set; }
 
     public static List<string> GetUrls()
     {
-        return IsRunning ? _app?.Urls.ToList() ?? new List<string>() : new List<string>();
+        return IsRunning ? app?.Urls.ToList() ?? new List<string>() : new List<string>();
     }
 
-    public static async void Start(string[] args)
+    public static void Start(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-            { ContentRootPath = Directory.GetCurrentDirectory(), ApplicationName = "dOSC" });
-        dOSCFileSystem.CreateFolders();
+        var builder = WebApplication.CreateBuilder(args);
 
-        builder.WebHost.UseStaticWebAssets();
+         
 #if DEBUG
         var port = 5232;
 #else
@@ -35,7 +38,7 @@ public static class SetupHub
 #endif
         var url = $@"http://localhost:{port}";
 
-        builder.WebHost.UseKestrel();
+        
         builder.WebHost.ConfigureKestrel(options =>
         {
             options.ListenLocalhost(port, o => o.Protocols =
@@ -47,32 +50,39 @@ public static class SetupHub
         builder.AddLogging("dOSCHub");
 
 
-        _app = builder.Build();
+        app = builder.Build();
 
         // Setup the HTTP request pipeline.
-        if (!_app.Environment.IsDevelopment())
+        if (!app.Environment.IsDevelopment())
         {
-            _app.UseExceptionHandler("/Error");
+            app.UseExceptionHandler("/Error");
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            _app.UseHsts();
+            app.UseHsts();
         }
 
-        _app.UseWebSockets();
-        _app.UseMiddleware<WebSocketMiddleware>();
+        app.UseWebSockets();
+        app.UseMiddleware<WebSocketMiddleware>();
         IsRunning = true;
 
-        _app.Urls.Add(url);
-        if (!args.Any(x => x.Equals("--headless", StringComparison.CurrentCultureIgnoreCase)))
-            await _app.RunAsync();
-        else
-            _app.Run();
+        app.Urls.Add(url);
+        app.Start();
+        
+
+        try
+        {
+            App.RunAvaloniaAppWithHosting(args, BuildAvaloniaApp); // Builds WebView
+
+        }
+        finally
+        {
+            Task.Run(async () => await app.StopAsync()).Wait();
+        } 
     }
-
-
+    
     public static void Stop()
     {
         IsRunning = false;
-        _app?.StopAsync();
+        app?.StopAsync();
     }
 
     private static WebApplicationBuilder AddHubServices(this WebApplicationBuilder builder)
@@ -84,13 +94,14 @@ public static class SetupHub
         }
 
         builder.Services.AddScoped<dOSCDBService>();
-
+         
+        
         builder.Services.AddSingleton<OSCService>();
         builder.Services.AddSingleton<PulsoidService>();
 
         builder.Services.AddHostedService(sp => sp.GetRequiredService<OSCService>());
         builder.Services.AddHostedService(sp => sp.GetRequiredService<PulsoidService>());
-
+        
         return builder;
     }
 
@@ -102,4 +113,17 @@ public static class SetupHub
         });
         return builder;
     }
+    
+    
+
+    
+    
+    private static AppBuilder BuildAvaloniaApp(IServiceProvider serviceProvider)
+        => AppBuilder.Configure<App>()
+            .UsePlatformDetect()
+            .LogToTrace()
+            //.UseManagedSystemDialogs()
+            .UseReactiveUI();
+
+    public static AppBuilder BuildAvaloniaApp() => BuildAvaloniaApp(null!);
 }

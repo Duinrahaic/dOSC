@@ -7,7 +7,7 @@ namespace dOSC.Client.Components.Modals;
 public partial class EditorModal : IDisposable
 {
     private ModalV2? Modal;
-    private BaseNode? SelectedBaseNode;
+    private WiresheetNode? SelectedBaseNode;
     [Inject] private ServiceBundle? sb { get; set; }
 
 

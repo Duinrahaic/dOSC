@@ -1,0 +1,31 @@
+﻿@using dOSC.Component.Wiresheet.Nodes
+<div class="block-container-header">
+    @if (!Node.IconIsText)
+    {
+        <div class="block-container-header-icon @Node.Icon"></div>
+    }
+    else
+    {
+        <div class="block-container-header-icon text">@Node.Icon</div>
+    }
+    <div class="block-container-header-title"> @Node.GetNodeDisplayName()</div>
+    @if (OnSettingsClicked.HasDelegate)
+    {
+        <div class="block-container-header-setting icon-cog " @onclick="OpenSettings"></div>
+    }
+</div>
+
+@code{
+
+    [Parameter] public WiresheetNode Node { get; set; } = new();
+    [Parameter] public EventCallback<WiresheetNode> OnSettingsClicked { get; set; }
+    
+    private void OpenSettings()
+    {
+        if (OnSettingsClicked.HasDelegate)
+        {
+            OnSettingsClicked.InvokeAsync(Node);
+        }
+    }
+
+}

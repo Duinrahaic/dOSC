@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-    <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+<PropertyGroup>
+        <TargetFramework>net8.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <OutputType>WinExe</OutputType>
@@ -16,6 +16,10 @@
         <ServerGarbageCollection>false</ServerGarbageCollection>
         <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
         <UseAppHost>true</UseAppHost>
+        <LangVersion>default</LangVersion>
+        <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugSymbols>false</DebugSymbols>
@@ -29,30 +33,60 @@
         <EmbeddedResource Remove="GPUCache\**"/>
         <None Remove="DawnCache\**"/>
         <None Remove="GPUCache\**"/>
+        <Compile Update="App.axaml.cs">
+          <DependentUpon>App.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
+        <None Update="Assets\icon.ico">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <Compile Update="Desktop\Views\MainWindow.axaml.cs">
+          <DependentUpon>MainWindow.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Desktop\Views\MainWindow.axaml.cs">
+          <DependentUpon>MainWindow.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Client\Views\ClientWindow.axaml.cs">
+          <DependentUpon>MainWindow.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Clowd.Squirrel" Version="2.11.1"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.17" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.17"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.17"/>
-        <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.4" />
+        <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
 
+        <PackageReference Include="Avalonia" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.10" />
+        <TrimmableAssembly Include="Avalonia.Themes.Fluent" />
+        <TrimmableAssembly Include="Avalonia.Themes.Default" />
+        
     </ItemGroup>
     <ItemGroup>
         <Content Update="wwwroot\**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-    </ItemGroup>
-    <ItemGroup>
-        <None Update="icon.ico">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
+        <AvaloniaResource Include="Assets\**" />
+
     </ItemGroup>
 
 
     <ItemGroup>
         <Reference Include="CoreOSC">
             <HintPath>Libs\CoreOSC.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.AspNetCore">
+          <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\7.0.14\Microsoft.AspNetCore.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.AspNetCore">
+          <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\7.0.14\Microsoft.AspNetCore.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
@@ -62,11 +96,46 @@
         </Resource>
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\..\LiveSheet\LiveSheet\LiveSheet.csproj" />
       <ProjectReference Include="..\dOSC.Client\dOSC.Client.csproj" />
       <ProjectReference Include="..\dOSC.Shared\dOSC.Shared.csproj" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\dOSC.Shared\dOSC.Shared.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Component\Frame\" />
+    </ItemGroup>
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\lucide.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\lucide.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\lucide.ttf" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\lucide.woff" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\lucide.woff2" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\open-iconic.eot" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\open-iconic.otf" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\open-iconic.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\open-iconic.ttf" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\open-iconic.woff" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\VarelaRound-Regular.ttf" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\default-app-logo.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\dev-icon.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\discord-mark-blue.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\discord-mark.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\dOSC-Logo.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\github-mark-white.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\kofi-logo-white.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\logo-twitter-new-white.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\logo-twitter-old-white.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\patreon-mark-white.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\Pulsoid-Logo-500x281.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\SteamVR-Logo-500x281.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\images\VRChat-Logo-500x281.png" />
+    </ItemGroup>
+    <ItemGroup>
+      <AdditionalFiles Include="Component\Form\SettingsPages\DOSCSettings.razor" />
+      <AdditionalFiles Include="Component\Form\SettingsPages\OSCSettings.razor" />
+      <AdditionalFiles Include="Component\Form\SettingsPages\PulsoidSettings.razor" />
     </ItemGroup>
 
 </Project>

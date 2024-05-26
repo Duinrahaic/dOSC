@@ -1,4 +1,6 @@
-﻿namespace dOSC.Middlewear;
+﻿using System;
+
+namespace dOSC.Middlewear;
 
 public class Subscription
 {

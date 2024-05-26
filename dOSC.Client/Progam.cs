@@ -5,9 +5,8 @@ namespace dOSC.Client;
 public class Program
 {
     [STAThread]
-    public static async Task Main(string[] args)
+    public static void Main(string[] args)
     {
         SetupClient.Start(args);
-        await Task.CompletedTask;
     }
 }

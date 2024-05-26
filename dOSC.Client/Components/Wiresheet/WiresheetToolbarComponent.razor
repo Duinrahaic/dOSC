@@ -1,15 +1,10 @@
 ﻿@using dOSC.Client.Engine
-@using dOSC.Client.Engine.Nodes.Connectors.Activity
-@using dOSC.Client.Engine.Nodes.Connectors.OSC
-@using dOSC.Client.Engine.Nodes.Logic
-@using dOSC.Client.Engine.Nodes.Mathematics
-@using dOSC.Client.Engine.Nodes.Utility
-@using dOSC.Client.Engine.Nodes.Variables
+
 @using dOSC.Client.Services
 <WiresheetToolbar>
     <ChildContent>
         @Options
-        <WiresheetToolbarDropdown Title="Blocks">
+        @*<WiresheetToolbarDropdown Title="Blocks">
             <WiresheetToolbarDropdownSubmenuItem Title="Connectors">
                 <WiresheetToolbarDropdownSubmenuItem Title="Activity">
                     <WiresheetToolbarDropdownItem Title="Pulsoid" OnClick="() => App.Data.Diagram.Nodes.Add(new PulsoidNode(service: SB, position: App.Data.Diagram.GetCenterOfScreen()))"/>
@@ -55,19 +50,17 @@
                 <WiresheetToolbarDropdownItem Title="Numeric Switch" OnClick="(() => App.Data.Diagram.Nodes.Add(new NumericSwitchNode(position: App.Data.Diagram.GetCenterOfScreen())))"/>
                 <WiresheetToolbarDropdownItem Title="Random" OnClick="(() => App.Data.Diagram.Nodes.Add(new RandomNode(position: App.Data.Diagram.GetCenterOfScreen())))"/>
             </WiresheetToolbarDropdownSubmenuItem>
-        </WiresheetToolbarDropdown>
+        </WiresheetToolbarDropdown>*@
     </ChildContent>
 </WiresheetToolbar>
 
 
 @code {
-    [Parameter] public AppLogic App { get; set; }
+ 
 
 
     [Parameter] public RenderFragment Options { get; set; }
 
-    [Inject] public dOSCService? _dOSC { get; set; }
-    [Inject] public ServiceBundle? SB { get; set; }
-
+ 
 
 }

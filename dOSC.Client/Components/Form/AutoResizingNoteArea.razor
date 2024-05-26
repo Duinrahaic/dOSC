@@ -1,4 +1,5 @@
-﻿<textarea   rows="8"  @oninput="OnInputChanged">@Value</textarea>
+﻿@using Microsoft.JSInterop
+<textarea   rows="8"  @oninput="OnInputChanged">@Value</textarea>
 
 @code {
     [Parameter] public string Value { get; set; } = string.Empty;

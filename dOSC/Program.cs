@@ -1,13 +1,16 @@
+using System;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using dOSC.Client;
 using dOSC.Shared.Utilities;
 
 namespace dOSC;
 
-public static class Program
+public class Program
 {
     [STAThread]
-    public static async Task Main(string[] args)
+    public static void Main(string[] args)
     {
         var globalMutex = new Mutex(true, @"Local\dOSC.exe", out var mutexSuccess);
         if (!mutexSuccess)
@@ -18,18 +21,15 @@ public static class Program
         }
 
         EncryptionHelper.SetEncryptionKey(Environment.MachineName + "dOSC");
+        Debug.Print("Starting Hub...");
         SetupHub.Start(args);
-        SetupClient.Start(args);
-        // if (!args.Any(x => x.Equals("--headless", StringComparison.OrdinalIgnoreCase)))
-        // {
-        //     Application.Run(new MainWindow());
-        // }
-
+        Debug.Print("Starting Client_Window...");
+        //SetupClient.Start(args);
+ 
         while (SetupHub.IsRunning )
         {
-            await Task.Delay(1000);
+            Task.Delay(1000);
         }
         globalMutex.Close();
-        await Task.CompletedTask;
     }
 }

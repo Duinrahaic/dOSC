@@ -1,0 +1,92 @@
+﻿@page "/editor/"
+@page "/editor/{AppId:guid}"
+@using Blazor.Diagrams.Components
+@using Blazor.Diagrams.Components.Widgets
+@using dOSC.Client.Components.Modals
+
+@if (EditorAppLogic != null)
+{
+    <WiresheetToolbarComponent App="EditorAppLogic">
+        <Options>
+            <WiresheetToolbarDropdown Title="File">
+                <WiresheetToolbarDropdownItem Title="Save" OnClick="Save"/>
+                <WiresheetToolbarDropdownItem Title="Revert" OnClick="Revert"/>
+                <WiresheetToolbarDropdownItem Title="Export" OnClick="DownloadApp"/>
+                <WiresheetToolbarDropdownDivider/>
+                <WiresheetToolbarDropdownItem Title="Exit" OnClick="Exit"/>
+            </WiresheetToolbarDropdown>
+@*             
+            <WiresheetToolbarDropdown Title="Edit" >
+                <WiresheetToolbarDropdownItem Title="Undo" />
+                <WiresheetToolbarDropdownItem Title="Redo" />
+                <WiresheetToolbarDropdownItem Title="Group" />
+                <WiresheetToolbarDropdownItem Title="Ungroup" />
+                </WiresheetToolbarDropdown> 
+                <WiresheetToolbarDropdown Title="Wiresheet Controls" >
+                <WiresheetToolbarDropdownItem Title="Play/Pause" />
+            </WiresheetToolbarDropdown> 
+*@
+        </Options>
+    </WiresheetToolbarComponent>
+
+    <div class="diagram-container" oncontextmenu="return false;">
+        @if (EditorAppLogic != null)
+        {
+            <CascadingValue Value="EditorAppLogic.Data.Diagram">
+                <DiagramCanvas>
+                    <Widgets>
+                        <SelectionBoxWidget/>
+                        <GridWidget Size="30" Mode="GridMode.Point" BackgroundColor="#2e3035"/>
+                    </Widgets>
+                </DiagramCanvas>
+            </CascadingValue>
+        }
+    </div>
+}
+
+<EditorModal/>
+
+<NavigationLock OnBeforeInternalNavigation="OnLocationChanging" ConfirmExternalNavigation="ConfirmExit"/>
+
+<ModalV2 @ref="SaveModal" Title="Save Application">
+    <Body>
+    <EditForm id="SubmitForm" Model="EditorAppLogic.Data" OnValidSubmit="@SaveApp" class="dosc-form">
+        <DataAnnotationsValidator/>
+        <div class="dosc-form-item">
+            <label for="inputAppName" class=" ">name<span style="color:red;">*</span></label>
+            <ValidationMessage For="@(() => EditorAppLogic.Data.AppName)"/>
+            <InputText @bind-Value="@EditorAppLogic.Data.AppName" id="inputAppName" autocomplete="off"/>
+        </div>
+        <div class="dosc-form-item">
+            <label for="inputAppDescription" class=" ">Description</label>
+            <ValidationMessage For="@(() => EditorAppLogic.Data.AppDescription)"/>
+            <InputTextArea @bind-Value="@EditorAppLogic.Data.AppDescription" id="inputAppDescription" rows="12" autocomplete="off"/>
+        </div>
+
+    </EditForm>
+    </Body>
+    <Footer>
+        <button type="submit" form="SubmitForm" class="dosc-button dosc-button-primary">@(ConfirmExit ? "Save & Exit" : "Save")</button>
+        <button type="button" class="dosc-button dosc-button-secondary" @onclick="SaveCancel">Cancel</button>
+    </Footer>
+</ModalV2>
+
+
+<ModalV2 @ref="ExitConfirmationModal" Title="Exit" Size="ModalV2.ModalSize.Medium">
+    <Body>
+    <div class="dosc-modal-body-content-alert ">
+
+        <div class="dosc-modal-body-content-alert-icon danger icon-alert-octagon"/>
+        <div class="dosc-modal-body-content-alert-content">
+            <div class="dosc-modal-body-content-alert-content-title">Are you sure you want to leave this page?</div>
+            <div class="dosc-modal-body-content-alert-content-subtitle">Leaving this page could result in the loss of changes!</div>
+        </div>
+    </div>
+
+    </Body>
+    <Footer>
+        <button type="button" class="dosc-button dosc-button-secondary" @onclick="ExitConfirmationModal.Close">Cancel</button>
+        <button type="button" class="dosc-button dosc-button-danger" @onclick="ExitNoSave">Exit</button>
+        <button type="button" class="dosc-button dosc-button-primary" @onclick="SaveExit">Save & Exit</button>
+    </Footer>
+</ModalV2>

@@ -1,0 +1,29 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:dOSC"
+             x:Class="dOSC.App">
+    
+    <Application.DataTemplates>
+        <!--<local:ViewLocator/>-->
+    </Application.DataTemplates>
+    
+    <!--
+    <Application.Resources>
+        <TrayIcons x:Key="AppTrayIcon">
+            <TrayIcon Icon="/Assets/icon.ico" ToolTipText="dOSC">
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        ~1~ Leaving blank because I can't bind windows correctly! @1@
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
+        </TrayIcons>
+    </Application.Resources>-->
+    
+    
+    
+    
+    <Application.Styles>
+        <FluentTheme/>
+    </Application.Styles>
+</Application>

@@ -12,8 +12,7 @@ public partial class NavContainer : IDisposable
 
     [Inject] public NavigationManager? NM { get; set; }
 
-    [Inject] public dOSCService? Engine { get; set; }
-
+ 
     [Parameter] public RenderFragment? Indicators { get; set; }
 
     public void Dispose()

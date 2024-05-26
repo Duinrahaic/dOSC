@@ -1,29 +1,44 @@
-﻿using dOSC.Client.Services;
-using dOSC.Client.Services.Connectors.Hub.Activity.Pulsoid;
-using dOSC.Client.Services.Connectors.Hub.OSC;
-using dOSC.Shared.Utilities;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Serilog;
+﻿using Avalonia;
+using Avalonia.ReactiveUI;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 
 namespace dOSC.Client;
-
 public static class SetupClient
-{
-    public static async void Start(string[] args)
+{    
+    public static void Start(string[] args)
     {
-        EncryptionHelper.SetEncryptionKey(Environment.MachineName + "dOSC");
+        var appBuilder = Host.CreateApplicationBuilder(args);
+        appBuilder.Services.AddWindowsFormsBlazorWebView();
+        appBuilder.Services.AddBlazorWebViewDeveloperTools();
+        appBuilder.Services.AddServices();
+        appBuilder.Services.AddLogging("dOSCClient");
+        using var myApp = appBuilder.Build();
 
-        var builder = WebAssemblyHostBuilder.CreateDefault(args);
-        builder.RootComponents.Add<App>("#app");
-        builder.RootComponents.Add<HeadOutlet>("head::after");
-        builder.AddServices();
-        builder.AddLogging("dOSCClient");
-        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+        myApp.Start();
+        
+        try
+        {
+            BuildAvaloniaApp(myApp.Services)                
+                .StartWithClassicDesktopLifetime(args);
 
-        var app = builder.Build();
-
-        await app.RunAsync();
+        }
+        finally
+        {
+            Task.Run(async () => await myApp.StopAsync()).Wait();
+        }
     }
+    
+    
+    private static AppBuilder BuildAvaloniaApp(IServiceProvider serviceProvider)
+        => AppBuilder.Configure<dOSC.Client.Desktop.App>(() => new (serviceProvider))
+            .UsePlatformDetect()
+            .LogToTrace()
+            //.UseManagedSystemDialogs()
+            .UseReactiveUI();
+
+    public static AppBuilder BuildAvaloniaApp() => BuildAvaloniaApp(null!);
+
 }

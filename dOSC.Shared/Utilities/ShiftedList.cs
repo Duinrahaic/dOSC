@@ -20,26 +20,28 @@ public class ShiftedList<T>
         }
     }
 
-    public T this[int index]
+    public IEnumerable<T> this[Range range]
     {
         get
         {
             lock (lockObject)
             {
-                if (index < 0 || index >= internalList.Count) throw new IndexOutOfRangeException();
-                return internalList[index];
+                var (offset, length) = range.GetOffsetAndLength(internalList.Count);
+                if (offset < 0 || offset + length > internalList.Count) throw new IndexOutOfRangeException();
+                return internalList.GetRange(offset, length);
             }
         }
         set
         {
             lock (lockObject)
             {
-                if (index < 0 || index >= internalList.Count) throw new IndexOutOfRangeException();
-                internalList[index] = value;
+                var (start, length) = range.GetOffsetAndLength(internalList.Count);
+                if (start < 0 || start + length > internalList.Count) throw new ArgumentException("Invalid range.");
+                internalList.RemoveRange(start, length);
+                internalList.InsertRange(start, value);
             }
         }
     }
-
     public void Clear()
     {
         lock (lockObject)

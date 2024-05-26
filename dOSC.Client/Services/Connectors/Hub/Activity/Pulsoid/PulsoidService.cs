@@ -2,6 +2,8 @@
 using System.Text;
 using dOSC.Shared.Models.Settings;
 using dOSC.Shared.Utilities;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

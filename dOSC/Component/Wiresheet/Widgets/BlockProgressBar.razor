@@ -1,0 +1,40 @@
+﻿@*@using dOSC.Client.Engine.Nodes
+@using dOSC.Component.Wiresheet.Nodes
+@implements IDisposable
+<div class="dOSC-progress-bar-container">
+    <div class="dOSC-progress-bar-indicator" style="width: @(Node.Progress)%;" @key="Node.Progress"> </div>
+</div>
+
+
+@code {
+
+    [Parameter] public WiresheetNode Node { get; set; } = null!;
+
+    private DateTime _lastUpdate = DateTime.MinValue;
+
+    protected override bool ShouldRender()
+    {
+        return Node?.Dragging != true;
+    }
+
+    private void Update()
+    {
+        if ((DateTime.Now - _lastUpdate > WiresheetHelper.UpdateInterval) & (Node?.Dragging != true))
+        {
+            _lastUpdate = DateTime.Now;
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        Node.OnProgressBarUpdateRequest += Update;
+    }
+
+    public void Dispose()
+    {
+        Node.OnProgressBarUpdateRequest -= Update;
+    }
+
+
+}*@

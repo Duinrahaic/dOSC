@@ -1,13 +1,19 @@
-﻿using System.Net.WebSockets;
+﻿using System;
+using System.Net.WebSockets;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using dOSC.Shared.Models.Settings;
 using dOSC.Shared.Utilities;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace dOSC.Drivers.Pulsoid;
 
-public class PulsoidService : ConnectorBase, IDisposable
+public class PulsoidService : ConnectorBase, IDisposable, IHostedService
 {
     public delegate void PulsoidSubscriptionEventHandler(PulsoidReading e);
 

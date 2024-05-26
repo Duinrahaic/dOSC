@@ -1,26 +1,36 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
     <PropertyGroup>
-        <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
-        <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <ApplicationIcon>icon.ico</ApplicationIcon>
+        <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
         <AssemblyName>dOSC.Client</AssemblyName>
         <RootNamespace>dOSC.Client</RootNamespace>
-        <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
         <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <TrimMode>copyused</TrimMode>
+        <LangVersion>default</LangVersion>
+        <OutputType>WinExe</OutputType>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugSymbols>false</DebugSymbols>
+        <Prefer32bit>false</Prefer32bit>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <Optimize>true</Optimize>
+        <Prefer32bit>false</Prefer32bit>
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Blazor.Diagrams\src\Blazor.Diagrams.Algorithms\Blazor.Diagrams.Algorithms.csproj" />
+        <ProjectReference Include="..\..\Blazor.Diagrams\src\Blazor.Diagrams.Core\Blazor.Diagrams.Core.csproj" />
+        <ProjectReference Include="..\..\Blazor.Diagrams\src\Blazor.Diagrams\Blazor.Diagrams.csproj" />
+        <ProjectReference Include="..\..\LiveSheet\LiveSheet\LiveSheet.csproj" />
         <ProjectReference Include="..\dOSC.Shared\dOSC.Shared.csproj"/>
+        <AvaloniaResource Include="Assets\**" />
+
     </ItemGroup>
 
     <ItemGroup>
@@ -84,38 +94,82 @@
         <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.min.js"/>
         <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\dist\jquery.min.map"/>
         <_ContentIncludedByDefault Remove="wwwroot\lib\jquery\LICENSE.txt"/>
+        <_ContentIncludedByDefault Remove="wwwroot\images\default-app-logo.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\dev-icon.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\discord-mark-blue.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\discord-mark.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\dOSC-Logo.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\github-mark-white.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\kofi-logo-white.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\logo-twitter-new-white.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\logo-twitter-old-white.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\patreon-mark-white.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\Pulsoid-Logo-500x281.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\SteamVR-Logo-500x281.png" />
+        <_ContentIncludedByDefault Remove="wwwroot\images\VRChat-Logo-500x281.png" />
     </ItemGroup>
 
     <ItemGroup>
         <None Remove="Properties\launchSettings.json"/>
+        <None Update="Assets\icon.ico">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <ItemGroup>
+        <Folder Include="Components\Inputs\" />
         <Folder Include="Components\Wiresheet\UI\" />
-        <Folder Include="Pages"/>
+        <Folder Include="Engine\Helper\" />
+        <Folder Include="Engine\Ports\" />
+        <Folder Include="wwwroot\" />
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Properties"/>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Markdig" Version="0.36.2"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.17" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="7.0.17" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.17"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.17" PrivateAssets="all"/>
-        <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0"/>
-        <PackageReference Include="Z.Blazor.Diagrams" Version="3.0.2"/>
-        <PackageReference Include="Z.Blazor.Diagrams.Core" Version="3.0.2"/>
+
+
+        <PackageReference Include="Markdig" Version="0.37.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="8.0.4" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+        <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
+
+
+        <PackageReference Include="Avalonia" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />       
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
+        <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.10" />
+        <TrimmableAssembly Include="Avalonia.Themes.Fluent" />
+        <TrimmableAssembly Include="Avalonia.Themes.Default" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="8.0.21" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     </ItemGroup>
  
     <ItemGroup>
-        <Reference Include="Avalonia.Themes.Fluent">
-          <HintPath>..\..\..\.nuget\packages\avalonia.themes.fluent\11.0.10\lib\net6.0\Avalonia.Themes.Fluent.dll</HintPath>
-        </Reference>
         <Reference Include="CoreOSC">
             <HintPath>..\dOSCEngine\Libs\CoreOSC.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.Extensions.Hosting.Abstractions">
-            <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\7.0.14\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+        <Reference Include="Microsoft.AspNetCore">
+          <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\7.0.14\Microsoft.AspNetCore.dll</HintPath>
         </Reference>
     </ItemGroup>
+ 
+    <ItemGroup>
+      <Compile Update="App.axaml.cs">
+        <DependentUpon>App.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+ 
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Desktop\Views\MainWindow.axaml" />
+      <UpToDateCheckInput Remove="Engine\Nodes\Variables\LogicBlock.razor" />
+      <UpToDateCheckInput Remove="Engine\Nodes\Variables\NumericBlock.razor" />
+      <UpToDateCheckInput Remove="Engine\Nodes\Variables\VariableBlockSettings.razor" />
+    </ItemGroup>
+ 
+
 </Project>

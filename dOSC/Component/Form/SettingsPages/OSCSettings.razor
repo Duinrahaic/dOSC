@@ -1,0 +1,13 @@
+﻿<EditForm id="setting-form" Model="@Setting" class="dosc-form" OnValidSubmit="FormSubmitted">
+    <div class="dosc-form-item">
+        <label>Receive Port (TCP):</label>
+        <label class="subtitle">The port dOSC listens to OSC commands on</label>
+
+        <InputNumber @bind-Value="@Setting.TCPPort"/>
+    </div>
+    <div class="dosc-form-item">
+        <label>Send Port (UDP):</label>
+        <label class="subtitle">The port dOSC sends OSC commands on</label>
+        <InputNumber @bind-Value="@Setting.UDPPort"/>
+    </div>
+</EditForm>

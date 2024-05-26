@@ -1,6 +1,8 @@
-﻿namespace dOSC.Drivers.OSC;
+﻿using Microsoft.Extensions.Hosting;
 
-public partial class OSCService
+namespace dOSC.Drivers.OSC;
+
+public partial class OSCService : IHostedService
 {
     public const string Face = "/avatar/parameters/Face"; //int  in and out
     public const string Viseme = "/avatar/parameters/Viseme"; //int out

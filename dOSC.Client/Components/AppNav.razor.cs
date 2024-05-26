@@ -5,7 +5,7 @@ namespace dOSC.Client.Components;
 
 public partial class AppNav : IDisposable
 {
-    [Inject] public WebsocketClient Client { get; set; } = default!;
+    //[Inject] public WebsocketClient Client { get; set; } = default!;
     public List<NavItem> Apps { get; set; } = new();
     public ConnectionState ConnectionState { get; private set; } = ConnectionState.Unknown;
 
@@ -19,14 +19,14 @@ public partial class AppNav : IDisposable
 
     public void Dispose()
     {
-        Client.OnStateChanged -= UpdateWebsocketState;
+        //Client.OnStateChanged -= UpdateWebsocketState;
     }
 
 
     protected override void OnInitialized()
     {
-        Client.OnStateChanged += UpdateWebsocketState;
-        ConnectionState = Client.State;
+        //Client.OnStateChanged += UpdateWebsocketState;
+        //ConnectionState = Client.State;
         Apps.Add(new NavItem("Home", "oi oi-home", "/", NavItemType.Home));
         Apps.Add(new NavItem("Apps", "oi oi-code", "/apps", NavItemType.App));
         Apps.Add(new NavItem("Editor", "icon icon-pencil-ruler", "/editor", NavItemType.App));
@@ -41,7 +41,7 @@ public partial class AppNav : IDisposable
 
     private async Task ResetConnection()
     {
-        try
+        /*try
         {
             if (Client.State == ConnectionState.Open)
             {
@@ -56,6 +56,6 @@ public partial class AppNav : IDisposable
         catch
         {
             // ignored
-        }
+        }*/
     }
 }

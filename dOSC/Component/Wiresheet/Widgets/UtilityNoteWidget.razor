@@ -1,0 +1,14 @@
+﻿@using dOSC.Component.Wiresheet.Nodes.Utility
+<div id="@Node.Guid" class="block-note-container @Node.NoteColor.ToString().ToLower() @(Node.Selected ? "selected" : string.Empty)">
+    <NodeHeader Node="@Node"/>
+    <div class="block-container-body-container">
+        <div class="note-container" @key="@Node.Note">
+            @((MarkupString)Node.MarkdownContent)
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public UtilityNodeNote Node { get; set; } = new();
+    
+}

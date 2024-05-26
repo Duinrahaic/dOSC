@@ -1,4 +1,7 @@
-﻿namespace dOSC.Drivers.OSC;
+﻿using System;
+using System.Collections.Generic;
+
+namespace dOSC.Drivers.OSC;
 
 public class OSCSubscriptionEvent : EventArgs
 {

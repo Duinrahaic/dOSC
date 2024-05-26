@@ -1,5 +1,9 @@
-﻿using dOSC.Shared.Models.Settings;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using dOSC.Shared.Models.Settings;
 using dOSC.Shared.Utilities;
+using Microsoft.Extensions.Hosting;
 
 namespace dOSC.Drivers;
 

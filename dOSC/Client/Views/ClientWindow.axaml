@@ -1,0 +1,54 @@
+<Window
+    x:Class="dOSC.Client.Views.ClientWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:blazor="clr-namespace:dOSC.Client.Views;assembly=dOSC"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:dOSC.Client.ViewModels"
+    xmlns:client="clr-namespace:dOSC.Client;assembly=dOSC"
+    Title="dOSC"
+    Icon="/Assets/icon.ico"
+    Width="700"
+    Height="500"
+    MinWidth="1280"
+    MinHeight="720"
+    d:DesignHeight="1080"
+    d:DesignWidth="1920"
+    x:DataType="vm:ClientWindowViewModel"
+    CanResize="True"
+    SizeToContent="Manual"
+    mc:Ignorable="d">
+
+    <Design.DataContext>
+        <vm:ClientWindowViewModel />
+    </Design.DataContext>
+
+    <DockPanel>
+
+
+        <Grid
+            Margin="0"
+            ClipToBounds="True"
+            ShowGridLines="False">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Panel
+                Name="PanelView"
+                Grid.Row="0"
+                Background="Black">
+                <client:BlazorWebView
+                    Name="WebView"
+                    HostPage="index.html"
+                    RootComponents="{DynamicResource rootComponents}"
+                    Services="{DynamicResource services}"
+                />
+            </Panel>
+            
+        </Grid>
+    </DockPanel>
+</Window>

@@ -1,5 +1,7 @@
 ﻿using dOSC.Shared.Models.Settings;
 using dOSC.Shared.Utilities;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Timer = System.Timers.Timer;
 
 namespace dOSC.Client.Services.Connectors.Hub.OSC;

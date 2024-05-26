@@ -9,7 +9,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using dOSC.Client;
+using dOSC.Client_Window;
 
 namespace dOSC
 {
