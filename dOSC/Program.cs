@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using dOSC.Client;
 using dOSC.Shared.Utilities;
 
 namespace dOSC;

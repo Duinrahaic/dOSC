@@ -14,7 +14,7 @@ public class MathClampNode : MathNode
         AddPort(new LiveNumericPort(this, true, name: "Maximum"));
         AddPort(new LiveNumericPort(this, false, name: "Output"));
     }
-    public override string NodeName => "Average";
+    public override string NodeName => "Clamp";
     public override string Icon => "[A,B]";
     public override bool IconIsText => true;
 

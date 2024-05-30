@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using dOSC.Shared.Models.Settings;
 using dOSC.Shared.Utilities;
+using dOSC.Utilities;
 using Microsoft.Extensions.Hosting;
 
 namespace dOSC.Drivers;
@@ -58,7 +59,7 @@ public abstract class ConnectorBase : IHostedService
 
     public void UpdateSetting(SettingBase Setting)
     {
-        dOSCFileSystem.SaveSetting(Setting);
+        AppFileSystem.SaveSetting(Setting);
     }
 
     public virtual void StartService()

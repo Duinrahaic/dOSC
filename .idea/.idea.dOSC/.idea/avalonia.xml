@@ -20,7 +20,9 @@
         <entry key="dOSC/Client/Client_Window.axaml" value="dOSC/dOSC.csproj" />
         <entry key="dOSC/Client/Views/ClientWindow.axaml" value="dOSC/dOSC.csproj" />
         <entry key="dOSC/Client/Views/MainWindow.axaml" value="dOSC/dOSC.csproj" />
+        <entry key="dOSC/Client/Views/MessageBox.axaml" value="dOSC/dOSC.csproj" />
         <entry key="dOSC/Desktop/Views/MainWindow.axaml" value="dOSC/dOSC.csproj" />
+        <entry key="dOSC/ErrorApp.axaml" value="dOSC/dOSC.csproj" />
         <entry key="dOSC/MainWindow.axaml" value="dOSC/dOSC.csproj" />
         <entry key="dOSC/Views/BrowserView.axaml" value="dOSC/dOSC.csproj" />
         <entry key="dOSC/Views/MainView.axaml" value="dOSC/dOSC.csproj" />

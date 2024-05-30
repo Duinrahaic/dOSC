@@ -17,7 +17,8 @@ public class UtilityDelayNode : UtilityNode
     public int ItemsInQueue { get; private set; } = 0;
 
     private DelayAction? _activeAction = null;
-
+    public override string NodeName => "Delay Node";
+    public override string Icon => "icon-clock";
     
     public UtilityDelayNode() : base()
     {

@@ -13,7 +13,7 @@ public class MathSineNode: MathNode
 
     }
 
-    public override string NodeName => "Power";
+    public override string NodeName => "Sine";
     public override string Icon => "~";
     public override bool IconIsText => true;
     

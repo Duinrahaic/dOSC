@@ -6,7 +6,7 @@ namespace dOSC.Drivers;
 public class WiresheetService : IHostedService
 {
     
-    public List<WiresheetDiagram> Apps { get; private set; } = new();
+    public Dictionary<string,WiresheetDiagram> Apps { get; private set; } = new();
     
     public WiresheetService()
     {
@@ -15,23 +15,48 @@ public class WiresheetService : IHostedService
 
     public void AddApp(WiresheetDiagram app)
     {
-        Apps.Add(app);
+        Apps.Add(app.Guid,app);
+    }
+    
+    public void RemoveApp(WiresheetDiagram app)
+    {
+        Apps.Remove(app.Guid);
     }
     
     public List<WiresheetDiagram> GetApps()
     {
-        return Apps;
+        return Apps.Select(x=> x.Value ).ToList();
     }
-    public WiresheetDiagram? GetAppId(string guid)
+    public WiresheetDiagram? GetAppById(string guid)
     {
-        return Apps.FirstOrDefault(x => x.Guid == guid);
+        return Apps.FirstOrDefault(x => x.Key == guid).Value;
     }
-    
-    
-    
-    
-    
-    
+
+    public void UpdateApp(WiresheetDiagram diagram)
+    {
+        var app = Apps.FirstOrDefault(x => x.Key == diagram.Guid).Value;
+        if(app != null)
+        {
+            if (app.State == LiveSheetState.Loaded)
+            {
+                app.Unload();
+                app = diagram;
+                app.Load();
+            }
+            else if (app.State == LiveSheetState.Unloaded)
+            {
+                var newApp = new WiresheetDiagram();
+                newApp.LoadLiveSheetData(diagram.SerializeLiveSheet());
+                app = newApp;
+            }
+        }
+        else
+        {
+            var newApp = new WiresheetDiagram();
+            newApp.LoadLiveSheetData(diagram.SerializeLiveSheet());
+            Apps.Add(diagram.Guid, newApp);
+        }
+    }
     
     public Task StartAsync(CancellationToken cancellationToken)
     {
@@ -42,8 +67,4 @@ public class WiresheetService : IHostedService
     {
         return Task.CompletedTask;
     }
-    
-    
-    
-    
 }

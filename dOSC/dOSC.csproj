@@ -52,10 +52,16 @@
           <DependentUpon>MainWindow.axaml</DependentUpon>
           <SubType>Code</SubType>
         </Compile>
+        <Content Update="wwwroot\css\scss\main.scss">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Clowd.Squirrel" Version="2.11.1"/>
+        <PackageReference Include="Markdig" Version="0.37.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView" Version="8.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="8.0.40" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.4" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
@@ -97,7 +103,6 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\LiveSheet\LiveSheet\LiveSheet.csproj" />
-      <ProjectReference Include="..\dOSC.Client\dOSC.Client.csproj" />
       <ProjectReference Include="..\dOSC.Shared\dOSC.Shared.csproj" />
     </ItemGroup>
     <ItemGroup>
@@ -131,11 +136,54 @@
       <_ContentIncludedByDefault Remove="wwwroot\images\Pulsoid-Logo-500x281.png" />
       <_ContentIncludedByDefault Remove="wwwroot\images\SteamVR-Logo-500x281.png" />
       <_ContentIncludedByDefault Remove="wwwroot\images\VRChat-Logo-500x281.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\js\all.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\js\all.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\js\brands.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\js\brands.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\js\conflict-detection.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\js\conflict-detection.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\js\fontawesome.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\js\fontawesome.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\js\regular.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\js\regular.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\js\solid.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\js\solid.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\js\v4-shims.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\js\v4-shims.min.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\metadata\categories.yml" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\metadata\icon-families.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\metadata\icon-families.yml" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\metadata\icons.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\metadata\icons.yml" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\metadata\shims.json" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\metadata\shims.yml" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\metadata\sponsors.yml" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\sprites\brands.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\sprites\regular.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\sprites\solid.svg" />
     </ItemGroup>
     <ItemGroup>
       <AdditionalFiles Include="Component\Form\SettingsPages\DOSCSettings.razor" />
       <AdditionalFiles Include="Component\Form\SettingsPages\OSCSettings.razor" />
       <AdditionalFiles Include="Component\Form\SettingsPages\PulsoidSettings.razor" />
+      <AdditionalFiles Include="Component\UI\App\AppDetailItem.razor" />
+      <AdditionalFiles Include="Component\UI\App\AppPageNavigationComponent.razor" />
+      <AdditionalFiles Include="Component\UI\App\AppPageNavigationItem.razor" />
+      <AdditionalFiles Include="Component\UI\App\AppProfileItem.razor" />
+      <AdditionalFiles Include="Component\UI\Setting\GeneralSettingsPage.razor" />
+      <AdditionalFiles Include="Component\UI\Setting\SettingNavItemComponent.razor" />
+      <AdditionalFiles Include="Component\UI\Setting\StatusPill.razor" />
+      <AdditionalFiles Include="Component\UI\Table\ConnectorTable.razor" />
+      <AdditionalFiles Include="Component\UI\Table\SettingsTableRow.razor" />
+      <AdditionalFiles Include="Component\UI\UploadWiresheetFile.razor" />
+      <AdditionalFiles Include="Component\UI\Wiresheet\PlayPauseButton.razor" />
+      <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbar.razor" />
+      <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbarComponent.razor" />
+      <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbarDropdown.razor" />
+      <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbarDropdownBase.razor" />
+      <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbarDropdownDivider.razor" />
+      <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbarDropdownItem.razor" />
+      <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbarDropdownSubmenuItem.razor" />
     </ItemGroup>
 
 </Project>

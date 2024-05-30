@@ -1,8 +1,7 @@
 ﻿@page "/apps"
 @page "/apps/{AppId:guid}"
-@using dOSC.Client.Components.Modals
-@using dOSC.Client.Components.UI.App
-@using dOSC.Client.Components.UI
+@using dOSC.Component.Modals
+@using dOSC.Component.UI
 
 
 <div class="app-container">
@@ -28,7 +27,7 @@
     <div class="app-list">
         <div class="app-list-container">
             @{
-                foreach (var app in Apps)
+                foreach (var app in _apps)
                 {
                     <AppProfileItem App="app" OnPlayPause="Save" OnShowSettings="ShowSettings"/>
                 }
@@ -41,7 +40,7 @@
                     <i class="icon icon-plus-circle"/>
                 </div>
                 <hr/>
-                <div class="content" @onclick="() => UploadAppModal.Open()">
+                <div class="content" @onclick="() => _uploadAppModal.Open()">
                     <div class="title">
                         Upload App
                     </div>
@@ -57,14 +56,14 @@
  Modals
 *@
 
-<SidePanelBase @ref="@AppSettingsPanel" App="SelectedApp" OnUpdate="OnUpdated"/>
+<SidePanelBase @ref="@_appSettingsPanel" App="_selectedApp" OnUpdate="OnUpdated"/>
 
-<ModalV2 @ref="@UploadAppModal" Title="Upload Application">
+<ModalV2 @ref="@_uploadAppModal" Title="Upload Application">
     <Body>
     <UploadWiresheetFile DataCallback="UploadedFileCallback"/>
     </Body>
     <Footer>
-        <button type="button" disabled="@(UploadedFile == null)" class="dosc-button dosc-button-primary" @onclick="() => UploadApp()">Upload</button>
-        <button type="button" class="dosc-button dosc-button-secondary" @onclick="() => UploadAppModal.Close()">Cancel</button>
+        <button type="button" disabled="@(_uploadedFile == null)" class="dosc-button dosc-button-primary" @onclick="() => UploadApp()">Upload</button>
+        <button type="button" class="dosc-button dosc-button-secondary" @onclick="() => _uploadAppModal.Close()">Cancel</button>
     </Footer>
 </ModalV2>

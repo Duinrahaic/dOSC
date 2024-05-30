@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using dOSC.Shared.Models.Database;
 using dOSC.Shared.Utilities;
+using dOSC.Utilities;
 using Microsoft.EntityFrameworkCore;
 
 namespace dOSC.Drivers.DB.Models;
@@ -9,7 +10,7 @@ public class DBEntities : DbContext
 {
     public DBEntities()
     {
-        path = Path.Join(dOSCFileSystem.BaseDataFolder, "dosc.db");
+        path = Path.Join(AppFileSystem.BaseDataFolder, "dosc.db");
     }
 
     public virtual DbSet<Endpoints> Endpoints { get; set; }

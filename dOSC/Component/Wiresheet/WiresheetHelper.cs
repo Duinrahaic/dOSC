@@ -10,7 +10,7 @@ public static class WiresheetHelper
 {
     public static TimeSpan UpdateInterval = TimeSpan.FromMilliseconds(100);
     
-    public static void RegisterNodes(this LiveSheetDiagram diagram)
+    public static void RegisterNodes(this WiresheetDiagram diagram)
     {
         // Default
         diagram.RegisterComponent<WiresheetNode, DefaultNodeWidget>();

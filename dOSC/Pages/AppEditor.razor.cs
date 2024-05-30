@@ -1,6 +1,7 @@
-﻿using dOSC.Client.Components.Modals;
-using dOSC.Client.Engine;
+﻿using dOSC.Component.Modals;
+using dOSC.Component.Wiresheet;
 using dOSC.Drivers;
+using dOSC.Utilities;
 using LiveSheet;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -11,161 +12,127 @@ namespace dOSC.Pages;
 
 public partial class AppEditor : IDisposable
 {
-    private bool ConfirmExit;
-    private bool DataHasChanged;
-    private string? SelectedURI;
+    private bool _confirmExit = false;
+    private bool _dataHasChanged = false;
+    private string _selectedUri = string.Empty;
 
-    [Parameter] public Guid? AppId { get; set; }
+    [Parameter] public string? AppId { get; set; }
 
-    [Inject] private IJSRuntime _JS { get; set; }= default!;
-    [Inject] public WiresheetService _Engine { get; set; } = default!;
-    [Inject] public NavigationManager NM { get; set; }= default!;
+    [Inject] private IJSRuntime Js { get; set; }= default!;
+    [Inject] public WiresheetService Engine { get; set; } = default!;
+    [Inject] public NavigationManager Nm { get; set; }= default!;
 
-    private ModalV2 SaveModal { get; set; }
-    private ModalV2 ExitConfirmationModal { get; set; }
-    private ModalV2 NodeSettingsModal { get; set; }
-    private LiveSheetDiagram? EditorAppLogic { get; set; }
-    private LiveSheetDiagram? ReferencedAppLogic { get; set; }
-
-
-    public void Dispose()
+    private ModalV2 SaveModal { get; set; } = default!;
+    private ModalV2 ExitConfirmationModal { get; set; } = default!;
+    private ModalV2 NodeSettingsModal { get; set; } = default!;
+    private WiresheetDiagram EditorAppLogic { get; set; } = new();
+    private WiresheetDiagram? ReferencedAppLogic { get; set; }
+    protected override void OnInitialized()
     {
-        if (EditorAppLogic == null) return;
- 
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (AppId.HasValue)
+        EditorAppLogic.RegisterNodes();
+        ReferencedAppLogic = Engine.GetAppById(AppId ?? string.Empty);
+        if (ReferencedAppLogic != null)
         {
-            ReferencedAppLogic = _Engine.GetAppId(AppId.Value.ToString());
-            if (ReferencedAppLogic != null)
-            {
-                await ReferencedAppLogic.EditApp(true);
-                var DTO = ReferencedAppLogic.GetD();
-                EditorAppLogic = new AppLogic(DTO.DeserializeDTO(ServiceBundle), AppState.Enabled);
-            }
-            else
-            {
-                EditorAppLogic = new AppLogic(new dOSCData());
-            }
+            ReferencedAppLogic.Unload();
+            var appdata = ReferencedAppLogic.SerializeLiveSheet();
+            EditorAppLogic.LoadLiveSheetData(appdata);
         }
-        else
-        {
-            EditorAppLogic = new AppLogic(new dOSCData());
-        }
-
-        await EditorAppLogic.EditApp(true);
-        EditorAppLogic.DiagramDetectedCircularLoop += AppLogic_DiagramDetectedCircularLoop;
-        EditorAppLogic.AppDataChanged += AppLogic_AppDataChanged;
+        EditorAppLogic.Load();
     }
-
-    private void AppLogic_AppDataChanged(Guid? AppGuid, bool HasChanged)
-    {
-        DataHasChanged = HasChanged;
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    
+    protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
-            if (EditorAppLogic != null)
-                await EditorAppLogic.Load();
+        {
+            EditorAppLogic.Changed += AppChanged;
+        }
     }
 
-
-    private void AppLogic_DiagramDetectedCircularLoop(string WiresheetGuid)
+    bool _isFirstRender = true;
+    private void AppChanged()
     {
-        try
+        if(_isFirstRender)
         {
-            _JS.InvokeVoidAsync("GenerateToasterMessage", "Infinite/Circular Link Detected! Removing last link!")
-                .ConfigureAwait(false);
+            _isFirstRender = false;
+            return;
         }
-        catch
-        {
-        }
+        _dataHasChanged = true;
     }
-
-
+    
     private void Save()
     {
-        if (EditorAppLogic == null) return;
         SaveModal.Open();
-        if (ConfirmExit) NM!.NavigateTo(SelectedURI ?? "");
+        if (_confirmExit) Nm!.NavigateTo(_selectedUri ?? "");
     }
 
     private void SaveCancel()
     {
-        ConfirmExit = false;
+        _confirmExit = false;
         SaveModal.Close();
     }
 
-    private async Task SaveApp(EditContext context)
+    private void SaveApp(EditContext context)
     {
         SaveModal.Close();
-        if (EditorAppLogic == null) return;
-        if (_Engine == null) return;
-
-
-        EditorAppLogic.Data.Sync();
-        var DTO = EditorAppLogic.GetDTO();
-
-        AppLogic? NewAppLogic;
+        EditorAppLogic.UpdateSaveData();
         if (ReferencedAppLogic != null)
-            NewAppLogic = new AppLogic(DTO.DeserializeDTO(ServiceBundle), ReferencedAppLogic.AppState,
-                ReferencedAppLogic.AutomationState);
+        {
+            ReferencedAppLogic.LoadLiveSheetData(EditorAppLogic.SerializeLiveSheet());
+        }
         else
-            NewAppLogic = new AppLogic(DTO.DeserializeDTO(ServiceBundle), AppState.Enabled);
-        await NewAppLogic.EditApp(true);
-        _Engine.UpdateApp(NewAppLogic);
-
-        ReferencedAppLogic = NewAppLogic;
-        DataHasChanged = false;
+        {
+            Engine.AddApp(EditorAppLogic);
+        }
+        _dataHasChanged = false;
     }
 
     private void Revert()
     {
-        ConfirmExit = true;
-        NM!.NavigateTo("/apps/");
-        NM!.NavigateTo($"/editor/{EditorAppLogic?.AppGuid}");
+        _confirmExit = true;
+        Nm!.NavigateTo("/apps/");
+        Nm!.NavigateTo($"/editor/{EditorAppLogic?.Guid}");
     }
 
     private async Task DownloadApp()
     {
-        if (EditorAppLogic != null) await _JS.DownloadApp(EditorAppLogic.GetDTO());
+        await Js.DownloadApp(EditorAppLogic);
     }
 
 
     private void Exit()
     {
-        NM!.NavigateTo("/apps");
+        Nm!.NavigateTo("/apps");
     }
 
     public void SaveExit()
     {
         ExitConfirmationModal.Close();
         SaveModal.Open();
-        ConfirmExit = true;
+        _confirmExit = true;
     }
 
     private void ExitNoSave()
     {
-        ConfirmExit = true;
-        NM!.NavigateTo(SelectedURI ?? "");
+        _confirmExit = true;
+        Nm!.NavigateTo(_selectedUri ?? "");
     }
 
     private void OnLocationChanging(LocationChangingContext context)
     {
-        if (!ConfirmExit & DataHasChanged)
+        if (!_confirmExit & _dataHasChanged)
         {
             context.PreventNavigation();
-            SelectedURI = context.TargetLocation;
+            _selectedUri = context.TargetLocation;
             ExitConfirmationModal.Open();
         }
         else
         {
-            ReferencedAppLogic?.EditApp(false);
-            ReferencedAppLogic?.Process();
-            EditorAppLogic?.Dispose();
+            EditorAppLogic.Unload();
         }
+    }
+
+    public void Dispose()
+    {
+        EditorAppLogic.Changed -= AppChanged;
     }
 }

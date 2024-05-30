@@ -21,25 +21,5 @@
       <option name="workingDir" value="$FileDir$" />
       <envs />
     </TaskOptions>
-    <TaskOptions isEnabled="true">
-      <option name="arguments" value="-i $FileName$ -o $FileNameWithoutExtension$.min.css" />
-      <option name="checkSyntaxErrors" value="true" />
-      <option name="description" />
-      <option name="exitCodeBehavior" value="ERROR" />
-      <option name="fileExtension" value="css" />
-      <option name="immediateSync" value="true" />
-      <option name="name" value="CSSO CSS Optimizer" />
-      <option name="output" value="" />
-      <option name="outputFilters">
-        <array />
-      </option>
-      <option name="outputFromStdout" value="false" />
-      <option name="program" value="csso" />
-      <option name="runOnExternalChanges" value="true" />
-      <option name="scopeName" value="dOSC" />
-      <option name="trackOnlyRoot" value="true" />
-      <option name="workingDir" value="$FileDir$" />
-      <envs />
-    </TaskOptions>
   </component>
 </project>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CoreOSC;
 using dOSC.Shared.Models.Settings;
 using dOSC.Shared.Utilities;
+using dOSC.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Timer = System.Timers.Timer;
@@ -36,7 +37,7 @@ public partial class OSCService : ConnectorBase
 
     public override void LoadSetting()
     {
-        Setting = (dOSCFileSystem.LoadSettings() ?? new UserSettings()).OSC;
+        Setting = (AppFileSystem.LoadSettings() ?? new UserSettings()).OSC;
     }
 
     public override SettingBase GetSetting()

@@ -1,9 +1,7 @@
-﻿using dOSC.Client.Engine;
-using dOSC.Client.Services;
-using dOSC.Client.Utilities;
-using dOSC.Component.Wiresheet;
+﻿using dOSC.Component.Wiresheet;
 using dOSC.Drivers;
 using dOSC.Shared.Utilities;
+using dOSC.Utilities;
 using LiveSheet;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -13,37 +11,39 @@ namespace dOSC.Component.Modals;
 
 public partial class SidePanelBase
 {
-    private bool CloseAnimation;
+    private bool _closeAnimation;
 
-    private ModalV2? DeleteModal;
+    private ModalV2 _deleteModal = default!;
 
-    private bool Show;
+    private bool _show = false;
 
-    [Inject] private WiresheetService? Engine { get; set; }
+ 
 
-    [Inject] private IJSRuntime? JS { get; set; }
+    [Inject] private WiresheetService Engine { get; set; } = default!;
+
+    [Inject] private IJSRuntime JS { get; set; }= default!;
 
     [Parameter] public WiresheetDiagram App { get; set; }
 
     private string ReplacementImage64 { get; set; } = string.Empty;
     [Parameter] public EventCallback<WiresheetDiagram> OnUpdate { get; set; }
 
-    private byte[] ImgUpload { get; set; }
+    private byte[] ImgUpload { get; set; } = Array.Empty<byte>();
 
     public void Open()
     {
         ReplacementImage64 = "";
-        Show = true;
+        _show = true;
         StateHasChanged();
     }
 
     public async Task Close()
     {
         ReplacementImage64 = "";
-        CloseAnimation = true;
+        _closeAnimation = true;
         await Task.Delay(250);
-        Show = false;
-        CloseAnimation = false;
+        _show = false;
+        _closeAnimation = false;
     }
 
     private async Task LoadFiles(InputFileChangeEventArgs e)
@@ -73,34 +73,27 @@ public partial class SidePanelBase
     {
         if (!context.Validate())
             return;
-        if (App.Data != null)
-        {
-            if (!string.IsNullOrEmpty(ReplacementImage64)) App.SetAppIcon(ReplacementImage64);
-            App.Save();
-
-            await Close();
-            await OnUpdate.InvokeAsync(App);
-        }
+        if (!string.IsNullOrEmpty(ReplacementImage64)) App.AppIcon = ReplacementImage64;
+        
+        await Close();
+        await OnUpdate.InvokeAsync(App);
     }
 
 
     private async Task ClearAppImage()
     {
-        if (App != null)
-        {
-            App.ResetAppIcon();
-            await OnUpdate.InvokeAsync(App);
-        }
+        App.AppIcon = string.Empty;
+        await OnUpdate.InvokeAsync(App);
     }
 
-    private async Task OnDeleteApp()
+    private void OnDeleteApp()
     {
-        DeleteModal.Open();
+        _deleteModal.Open();
     }
 
     private async Task OnDeleteConfirmed()
     {
-        DeleteModal.Close();
+        _deleteModal.Close();
         await Close();
         Engine.RemoveApp(App);
         await OnUpdate.InvokeAsync(App);
@@ -109,6 +102,6 @@ public partial class SidePanelBase
 
     private async Task DownloadApp()
     {
-        if (App != null) await JS.DownloadApp(App.SerializeLiveSheet());
+        await JS.DownloadApp(App);
     }
 }

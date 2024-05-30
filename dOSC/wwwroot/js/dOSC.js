@@ -1,4 +1,20 @@
-﻿function addTooltips() {
+﻿
+$(document).keydown(function(event) {
+    // Check if Ctrl key is pressed
+    if (event.ctrlKey) {
+        // Prevent default action for Ctrl+S
+        if (event.key === 's' || event.key === 'S') {
+            event.preventDefault();
+         }
+        // Prevent default action for Ctrl+G
+        if (event.key === 'g' || event.key === 'G') {
+            event.preventDefault();
+         }
+    }
+});
+
+
+function addTooltips() {
     $('[data-toggle="tooltip"]').tooltip({
         trigger: 'hover'
     });

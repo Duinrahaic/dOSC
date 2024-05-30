@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using dOSC.Shared.Models.Settings;
 using dOSC.Shared.Utilities;
+using dOSC.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -51,7 +52,7 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
 
     public override void LoadSetting()
     {
-        Setting = (dOSCFileSystem.LoadSettings() ?? new UserSettings()).Pulsoid;
+        Setting = (AppFileSystem.LoadSettings() ?? new UserSettings()).Pulsoid;
     }
 
     public override SettingBase GetSetting()

@@ -10,7 +10,13 @@ public class WiresheetDiagram: LiveSheetDiagram
     [LiveSerialize] public string Author { get; set; } = string.Empty;
     [LiveSerialize] public string Description { get; set; } = string.Empty;
     [LiveSerialize] public string Repository { get; set; } = string.Empty;
-    
+
+    public override string DefaultName => "New App";
+
+    public WiresheetDiagram() : base(DefaultOptions)
+    {
+        
+    }
     
     public string GetCurrentIcon()
     {

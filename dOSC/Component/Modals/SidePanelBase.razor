@@ -1,7 +1,7 @@
 ﻿@using LiveSheet
-@if (Show)
+@if (_show)
 {
-    <div class="app-sidepanel-container @(CloseAnimation ? "close" : "")">
+    <div class="app-sidepanel-container @(_closeAnimation ? "close" : "")">
         <div class="sidepanel">
             <div class="content">
                 <span class="close icon icon-x" @onclick="Close"></span>
@@ -56,12 +56,12 @@
     </div>
 }
 
-<ModalV2 @ref="DeleteModal" Title="Delete App Confirmation" Size="ModalV2.ModalSize.Small">
+<ModalV2 @ref="_deleteModal" Title="Delete App Confirmation" Size="ModalV2.ModalSize.Small">
     <Body>
         <p>Are you sure you want to delete this app?</p>
     </Body>
     <Footer>
         <button type="button" class="dosc-button dosc-button-danger" data-dismiss="modal" @onclick="() => OnDeleteConfirmed()">Delete</button>
-        <button type="button" class="dosc-button dosc-button-primary" data-dismiss="modal" @onclick="() => DeleteModal.Close()">No</button>
+        <button type="button" class="dosc-button dosc-button-primary" data-dismiss="modal" @onclick="() => _deleteModal.Close()">No</button>
     </Footer>
 </ModalV2>

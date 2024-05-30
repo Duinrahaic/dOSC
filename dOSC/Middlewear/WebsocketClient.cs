@@ -4,6 +4,7 @@ using dOSC.Shared.Models.Commands;
 using dOSC.Shared.Models.Settings;
 using dOSC.Shared.Models.Websocket;
 using dOSC.Shared.Utilities;
+using dOSC.Utilities;
 
 namespace dOSC.Middlewear;
 
@@ -139,7 +140,7 @@ public class WebsocketClient : IHostedService
 
     public void LoadSetting()
     {
-        Setting = (dOSCFileSystem.LoadSettings() ?? new UserSettings()).dOSC;
+        Setting = (AppFileSystem.LoadSettings() ?? new UserSettings()).dOSC;
     }
 
     public dOSCSetting GetSetting()

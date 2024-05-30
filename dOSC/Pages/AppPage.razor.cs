@@ -1,9 +1,7 @@
-﻿using dOSC.Client.Components.Modals;
-using dOSC.Client.Engine;
-using dOSC.Client.Services;
+﻿using dOSC.Component.Modals;
+using dOSC.Component.UI.App;
+using dOSC.Component.Wiresheet;
 using dOSC.Drivers;
-using dOSC.Shared.Models.Wiresheet;
-using LiveSheet;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -14,102 +12,87 @@ public partial class AppPage
     private string ActiveTab = "All";
 
 
-    private List<LiveSheetDiagram> Apps = new();
-    private SidePanelBase AppSettingsPanel;
-    private bool HasFile;
+    private List<WiresheetDiagram> _apps = new();
+    private SidePanelBase _appSettingsPanel = default!;
+    private bool _hasFile = false ;
 
-    private List<string> NavTabs = new() { "All", "Activity", "Fun", "Tech" };
-    private LiveSheetDiagram? SelectedApp;
+    private List<AppFilterType> _navTabs = Enum.GetValues(typeof(AppFilterType)).Cast<AppFilterType>().ToList();
+    private WiresheetDiagram? _selectedApp;
 
 
     // Modals 
-    private ModalV2 UploadAppModal;
+    private ModalV2 _uploadAppModal = default!;
 
-    private dOSCDataDTO? UploadedFile;
-
+    private WiresheetDiagram? _uploadedFile = null;
+    
     [Inject] public WiresheetService Engine { get; set; } = default!;
 
-    [Inject] public IJSRuntime JS { get; set; } = default!;
+    [Inject] public IJSRuntime Js { get; set; } = default!;
 
-    [Inject] public NavigationManager NM { get; set; }  = default!;
+    [Inject] public NavigationManager Nm { get; set; }  = default!;
 
-    [Parameter] public Guid? AppId { get; set; }
+    [Parameter] public string AppId { get; set; } = string.Empty;
 
 
     protected override void OnInitialized()
     {
-        Apps = Engine?.GetApps() ?? new List<LiveSheetDiagram>();
-        SelectedApp = Apps.FirstOrDefault();
+        _apps = Engine.GetApps();
+        _selectedApp = _apps.FirstOrDefault();
     }
 
     protected override void OnParametersSet()
     {
-        if (Engine == null) return;
-        if (AppId.HasValue) SelectedApp = Engine.GetAppByID(AppId.Value);
+        if (!string.IsNullOrEmpty(AppId)) _selectedApp = Engine.GetAppById(AppId);
     }
 
 
     private void UploadApp()
     {
-        if (UploadedFile != null)
+        if (_uploadedFile != null)
         {
-            UploadAppModal.Close();
-            var ws = UploadedFile.DeserializeDTO(Engine.ServiceBundle);
-            if (ws != null)
-            {
-                var UploadedApp = new AppLogic(ws);
-                Engine.AddApp(UploadedApp);
-
-                try
-                {
-                    Engine.AddApp(UploadedApp);
-                }
-                catch
-                {
-                }
-
-                Apps = Engine.GetApps();
-                SelectedApp = Apps.FirstOrDefault();
-            }
+            _uploadAppModal.Close();
+            Engine.AddApp(_uploadedFile);
+            _apps = Engine.GetApps();
+            _selectedApp = _apps.FirstOrDefault();
         }
 
-        HasFile = false;
+        _hasFile = false;
     }
 
-    private void UploadedFileCallback(dOSCDataDTO? Upload)
+    private void UploadedFileCallback(WiresheetDiagram? upload )
     {
-        if (Upload == null)
+        if (upload == null)
         {
-            HasFile = false;
+            _hasFile = false;
         }
         else
         {
-            HasFile = true;
-            UploadedFile = Upload;
+            _hasFile = true;
+            _uploadedFile = upload;
         }
     }
 
 
     private void NewApp()
     {
-        if (NM != null) NM.NavigateTo("/editor");
+        Nm.NavigateTo("/editor");
     }
 
-    private void ShowSettings(AppLogic app)
+    private void ShowSettings(WiresheetDiagram? app)
     {
         if (app != null)
         {
-            SelectedApp = app;
-            AppSettingsPanel.Open();
+            _selectedApp = app;
+            _appSettingsPanel.Open();
         }
     }
 
-    private void Save(AppLogic app)
+    private void Save(WiresheetDiagram? app)
     {
-        if (app != null && Engine != null) Engine.UpdateApp(app);
+        if (app != null ) Engine.UpdateApp(app);
     }
 
-    private void OnUpdated(AppLogic appLogic)
+    private void OnUpdated(WiresheetDiagram? app)
     {
         StateHasChanged();
     }

@@ -1,0 +1,22 @@
+﻿<div class="dOSC-wiresheet-toolbar-item  @(Active ? "active" : string.Empty)" @onclick="HandleOnClick">
+    @if (!string.IsNullOrEmpty(Icon))
+    {
+        <i class="dOSC-wiresheet-toolbar-item-icon @Icon"></i>
+    }
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <span> @Label </span>
+    }
+</div>
+
+@code{
+    
+    [Parameter] public string Icon { get; set; } = string.Empty;
+    [Parameter] public string Label { get; set; } = string.Empty;
+    [Parameter] public EventCallback OnClick { get; set; }
+    [Parameter] public bool Active { get; set; } = false;
+    private void HandleOnClick()
+    {
+        OnClick.InvokeAsync();
+    }
+}

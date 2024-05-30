@@ -1,0 +1,24 @@
+﻿@using dOSC.Component.Wiresheet.Nodes
+<div class="wiresheet-panel-body-item" @onclick="HandleOnClick">
+    <div class="wiresheet-panel-body-item-icon  @(Node.IconIsText ? string.Empty : Node.Icon)">
+        @if (Node.IconIsText)
+        {
+            @Node.Icon
+        }
+    </div>
+    <div class="wiresheet-panel-body-item-title">
+        @Node.GetNodeDisplayName()
+    </div>
+</div>
+@code {
+    [Parameter] 
+    public WiresheetNode Node { get; set; } = new WiresheetNode();
+    
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+
+    private void HandleOnClick()
+    {
+        OnClick.InvokeAsync();  
+    }
+}

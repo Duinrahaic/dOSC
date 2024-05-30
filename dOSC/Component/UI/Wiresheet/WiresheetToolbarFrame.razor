@@ -1,0 +1,63 @@
+﻿@using dOSC.Component.Wiresheet
+@using dOSC.Component.UI.Wiresheet
+@using dOSC.Component.Wiresheet.Nodes
+<div class="dOSC-wiresheet-toolbar-container">
+    <div class="dOSC-wiresheet-toolbar-item">
+        <i class="dOSC-wiresheet-toolbar-item-icon primary app-icon oi oi-code"></i>
+    </div>
+    <div class="dOSC-wiresheet-name">
+        @if (_wiresheetNameEditMode)
+        {
+            <input type="text" autocorrect="off" autocomplete="false" maxlength="80" @bind="@_wiresheetName" @onblur="OnWiresheetNameEditEnd" @onkeydown="@(e => { if (e.Key == "Enter") OnWiresheetNameEditEnd(); })"/>
+        }
+        else
+        {
+            <span contenteditable="false" @onclick="OnWiresheetNameEdit">@Wiresheet.GetDisplayName()</span>
+        }
+    </div>
+    <WiresheetToolbarItem Icon="icon-puzzle" Label="Components" Active="@(!_componentPanelClosed)"  OnClick="ToggleComponentPanel" />
+</div>
+<WiresheetPanel Anchor="WiresheetPanelAnchor.Right" Collapsed="@_componentPanelClosed">
+    <Header>
+        <h5>Test</h5>
+    </Header>
+    <Body>
+        @foreach (var node in _nodes)
+        {
+            <WiresheetNodeItem Node="@node" OnClick="() => { }" />
+        }
+    </Body> 
+</WiresheetPanel>
+
+@code{
+
+    [Parameter] public WiresheetDiagram Wiresheet { get; set; } = new();
+    private List<WiresheetNode> _nodes = new();
+    
+    protected override void OnInitialized()
+    {
+        _nodes = WiresheetHelper.GetAllNodes();
+        base.OnInitialized();
+    }
+
+    private bool _wiresheetNameEditMode = false;
+    private string _wiresheetName = string.Empty;
+    public void OnWiresheetNameEdit()
+    {
+        _wiresheetName = Wiresheet.GetDisplayName();
+        _wiresheetNameEditMode = true;
+    }
+    
+    public void OnWiresheetNameEditEnd()
+    {
+        Wiresheet.Name = _wiresheetName;
+        _wiresheetNameEditMode = false;
+    }
+
+    private bool _componentPanelClosed = false;
+    private void ToggleComponentPanel()
+    {
+        _componentPanelClosed = !_componentPanelClosed;
+    }
+    
+}

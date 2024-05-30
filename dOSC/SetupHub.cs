@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System.Runtime.ExceptionServices;
+using Avalonia;
 using Avalonia.ReactiveUI;
 using dOSC.Drivers.DB;
 using dOSC.Drivers.DB.Models;
@@ -6,6 +7,7 @@ using dOSC.Drivers.OSC;
 using dOSC.Drivers.Pulsoid;
 using dOSC.Middlewear;
 using dOSC.Shared.Utilities;
+using dOSC.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
@@ -66,12 +68,15 @@ public static class SetupHub
 
         app.Urls.Add(url);
         app.Start();
-        
+
 
         try
         {
             App.RunAvaloniaAppWithHosting(args, BuildAvaloniaApp); // Builds WebView
-
+        }
+        catch(Exception ex)
+        {
+            ExceptionDispatchInfo.Capture(ex).Throw();
         }
         finally
         {

@@ -110,6 +110,188 @@
 }
 */
 
+.editor{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: $color-theme-3;
+    overflow: hidden;
+
+}
+.dOSC-wiresheet-toolbar-container{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: calc($z-index-ui + 1);
+    height: 30px;
+    width: 100%;
+    background-color: $color-theme-3;
+    display: flex;
+    border-bottom: 1px solid $color-theme-2;
+    box-shadow: 0 4px 2px 0 $color-shadow-07;
+    color: $color-full-white;
+    font-size: 16px;
+    flex-direction: row;
+    align-content: center;
+    justify-content: flex-start;
+  
+    .dOSC-wiresheet-toolbar-item{
+      display: flex;
+      align-content: center;
+      height: 100%;
+      user-select: none;
+      cursor: pointer;
+      align-items: center;
+      padding: 2px 13px;
+      gap: 4px;
+      .dOSC-wiresheet-toolbar-item-icon{
+        
+          text-align:  center;
+          font-size: 20px;
+          padding: 8px 4px;
+          &.primary{
+            color: $color-primary;
+            font-weight: bold;
+            font-size: 24px;
+          }
+          
+          &.secondary{
+            color: $color-secondary;
+          }
+      }
+      
+      &:hover:not(.active){
+        background-color: darken($color-theme-4, .25);
+        color: $color-grey;
+      }
+      
+      &.active{
+        background-color: darken($color-theme-4, .25);
+        color: $color-grey;
+      }
+    }  
+  
+    .dOSC-wiresheet-name
+    {
+        display: flex;
+        align-content: center;
+        height: 100%;
+        font-weight: bold;
+        flex-grow: 1;
+        position: relative;
+        border-left: 1px solid $color-theme-2;
+        border-right: 1px solid $color-theme-2;
+
+      span{
+            padding: 0 13px;
+            
+            align-self: center;
+        }
+      
+        input {
+          outline: none;
+          background-color: transparent;
+          font-size: 16px;
+          border: none;
+          color: $color-full-white;
+          width: 100%;
+          padding: 0 10px;
+          text-overflow: ellipsis;
+          transition: all 0.3s ease;
+          border-left: 3px solid $color-blurple;
+          font-weight: bold;
+          
+        }
+    }  
+}
+.wiresheet-panel{
+    position: absolute;
+    z-index: $z-index-ui;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10px 0;
+    top: 0;
+    transition: transform 120ms ease-in-out;
+    height: 100%;
+    width: 300px;
+    background: $color-theme-3;
+    border-left: 1px solid $color-theme-2;
+    padding-top: 30px;
+   flex-direction: column;
+    
+  &.right
+    {
+        right: 0;
+        box-shadow: -4px 0 2px 0 $color-shadow-07;
+
+      &.collapsed{
+          transform: translateX(100%);
+          
+        }
+    }
+    &.left{
+      box-shadow: 4px 0 2px 0 $color-shadow-07;
+
+      left: 0;
+          &.collapsed{
+          transform: translateX(-100%);
+        }
+    }
+    .wiresheet-panel-header{
+       
+    }
+  .wiresheet-panel-body{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    .wiresheet-panel-body-item{
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      background: $color-theme-4;
+      border-radius: 10px;
+      .wiresheet-panel-body-item-icon{
+        display: flex;
+        font-size: 24px;
+        color: $color-grey;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .wiresheet-panel-body-item-title{
+        font-size: 16px;
+       
+        margin-top:auto;
+        margin-bottom:auto;
+      }
+      .wiresheet-panel-body-item-title{
+        font-size: 16px;
+       
+        margin-top:auto;
+        margin-bottom:auto;
+      }
+      .wiresheet-panel-body-item-title{
+        font-size: 16px;
+        font-weight: bold;
+        color: $color-full-white;
+      }
+    }
+
+  }
+  .wiresheet-panel-footer{
+
+  }
+}
+ 
+
+
 @-webkit-keyframes error {
   0% {
     -webkit-box-shadow: 0 0 0 0 $color-error-60;
