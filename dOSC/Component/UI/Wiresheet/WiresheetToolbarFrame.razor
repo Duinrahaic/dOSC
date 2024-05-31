@@ -1,6 +1,8 @@
 ﻿@using dOSC.Component.Wiresheet
 @using dOSC.Component.UI.Wiresheet
 @using dOSC.Component.Wiresheet.Nodes
+@using System.Runtime.InteropServices
+@using LiveSheet
 <div class="dOSC-wiresheet-toolbar-container">
     <div class="dOSC-wiresheet-toolbar-item">
         <i class="dOSC-wiresheet-toolbar-item-icon primary app-icon oi oi-code"></i>
@@ -8,7 +10,10 @@
     <div class="dOSC-wiresheet-name">
         @if (_wiresheetNameEditMode)
         {
-            <input type="text" autocorrect="off" autocomplete="false" maxlength="80" @bind="@_wiresheetName" @onblur="OnWiresheetNameEditEnd" @onkeydown="@(e => { if (e.Key == "Enter") OnWiresheetNameEditEnd(); })"/>
+            
+            
+            <input @ref=@_wiresheetNameInputField style="width: @(_wiresheetName.Count() + 3)ch;" class="dOSC-wiresheet-name-input" @oninput="ResizeInput"  type="text" autocorrect="off" autocomplete="false" maxlength="80" @bind="@_wiresheetName" @onblur="OnWiresheetNameEditEnd" @onkeydown="OnWiresheetNameKeyPress"/>
+            ResizeInput();
         }
         else
         {
@@ -19,21 +24,57 @@
 </div>
 <WiresheetPanel Anchor="WiresheetPanelAnchor.Right" Collapsed="@_componentPanelClosed">
     <Header>
-        <h5>Test</h5>
+        <div class="search-bar-container">
+            <i class="search-bar-icon oi oi-magnifying-glass"></i>
+            <input class="search-bar" type="text" placeholder="Search" @bind-value="_searchText" @oninput="OnSearchChanged"/>
+        </div>
     </Header>
     <Body>
-        @foreach (var node in _nodes)
-        {
-            <WiresheetNodeItem Node="@node" OnClick="() => { }" />
-        }
+    @foreach (var category in Categories)
+    {
+        <div class="wiresheet-panel-body-group">
+            <div class="wiresheet-panel-body-group-label">@category</div>
+            @foreach (var node in FilteredNodes.Where(x=>x.Category == category).OrderBy(x=>x.NodeName))
+            {
+                <WiresheetNodeItem Node="@node" OnClick="() => { Wiresheet.AddNode(node); }"/>
+            }
+
+        </div>
+    }
+    
+
+
     </Body> 
 </WiresheetPanel>
 
 @code{
 
     [Parameter] public WiresheetDiagram Wiresheet { get; set; } = new();
+    [Inject] private IJSRuntime JS { get; set; }
     private List<WiresheetNode> _nodes = new();
+    private List<WiresheetNode> FilteredNodes => _nodes.Where(x => NodeFilter(x) == true).ToList();
     
+    private List<NodeCategory> Categories => FilteredNodes.Select(x => x.Category).Distinct().Order().ToList();
+    private ElementReference _wiresheetNameInputField;
+
+    private async Task ResizeInput()
+    {
+        await JS.InvokeVoidAsync("resizeInput", _wiresheetNameInputField);
+    }
+    
+    private string _searchText = string.Empty;
+    private void OnSearchChanged(ChangeEventArgs e)
+    {
+        _searchText = e.Value.ToString();  
+    }
+
+    private async Task OnWiresheetNameKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") OnWiresheetNameEditEnd();
+        await ResizeInput();
+
+    }
+
     protected override void OnInitialized()
     {
         _nodes = WiresheetHelper.GetAllNodes();
@@ -42,10 +83,11 @@
 
     private bool _wiresheetNameEditMode = false;
     private string _wiresheetName = string.Empty;
-    public void OnWiresheetNameEdit()
+    public async Task OnWiresheetNameEdit()
     {
         _wiresheetName = Wiresheet.GetDisplayName();
         _wiresheetNameEditMode = true;
+        StateHasChanged();
     }
     
     public void OnWiresheetNameEditEnd()
@@ -58,6 +100,15 @@
     private void ToggleComponentPanel()
     {
         _componentPanelClosed = !_componentPanelClosed;
+    }
+    
+    private bool NodeFilter(WiresheetNode node)
+    {
+        var searchText = _searchText.ToLower();
+        var searchStringParts = searchText.Split(' ');
+        bool conditionA = searchStringParts.Any(x=> node.NodeName.ToLower().Contains(x));
+        bool conditionB = searchStringParts.Any(x=> node.Category.ToString().ToLower().Contains(x));
+        return conditionA || conditionB;
     }
     
 }

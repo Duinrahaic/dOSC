@@ -11,9 +11,21 @@ $(document).keydown(function(event) {
             event.preventDefault();
          }
     }
+
+    if (event.ctrlKey==true && (event.which == '61' || event.which == '107' || event.which == '173' || event.which == '109'  || event.which == '187'  || event.which == '189'  ) ) {
+        event.preventDefault();
+    }
 });
-
-
+// Add wheel event listener to prevent Ctrl+Scroll
+document.addEventListener('wheel', function(event) {
+    if (event.ctrlKey) {
+        event.preventDefault();
+    }
+}, { passive: false });
+function resizeInput(input) {
+    input.style.width = 'auto';
+    input.style.width = (input.scrollWidth + 2) + 'px';
+}
 function addTooltips() {
     $('[data-toggle="tooltip"]').tooltip({
         trigger: 'hover'

@@ -248,3 +248,31 @@
     }
   }
 }
+
+
+.search-bar-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 8px;
+    border: 1px solid $color-theme-1;
+    background-color: $color-theme-4;
+    overflow:hidden;
+    padding: 0 4px;
+    color: white;
+    height: 34px;
+    .search-bar-icon{
+        text-align: center;
+        padding: 0 2px;
+    }
+    .search-bar{
+      flex-grow: 1;
+      background:transparent;
+      outline:none;
+      border:none;
+      color: white;
+      padding-left: 2px;
+    }
+}

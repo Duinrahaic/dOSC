@@ -14,8 +14,7 @@ public class LogicXOrNode : LogicNode
         AddPort(new LiveLogicPort(this, false, name: "Output"));
     }
     public override string NodeName => "XOR";
-    public override bool IconIsText => true;
-    public override string Icon => "^";
+    public override string Icon => "fa-solid fa-angle-up";
     public override void Process(List<EffectedNode>? effectedNodes = null)
     {
         var inA = Ports[0];

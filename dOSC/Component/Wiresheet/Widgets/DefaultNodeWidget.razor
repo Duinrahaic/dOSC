@@ -1,10 +1,10 @@
 ﻿@using dOSC.Component.Wiresheet.Nodes.Logic
 @using dOSC.Component.Wiresheet.Nodes
-<div id="@Node.Guid" class="block-note-container  @(Node.Selected ? "selected" : string.Empty)">
-    <NodeHeader Node="@Node"/>
+<div id="@Nodes.Guid" class="block-note-container  @(Nodes.Selected ? "selected" : string.Empty)">
+    <NodeWidgetHeader Node="@Nodes"/>
     <div class="block-container-body-container">
         <div class="block-container-port-container input">
-            @foreach(var port in Node.GetInputPorts())
+            @foreach(var port in Nodes.GetInputPorts())
             {
                 <PortDesigner Port="@port" class="@port.PortType.ToString()"/>
             }
@@ -13,7 +13,7 @@
     
         </div>
         <div class="block-container-port-container output">
-            @foreach(var port in Node.GetOutputPorts())
+            @foreach(var port in Nodes.GetOutputPorts())
             {
                 <PortDesigner Port="@port" class="@port.PortType.ToString()"/>
             }
@@ -22,5 +22,5 @@
 </div>
 
 @code {
-    [Parameter] public WiresheetNode Node { get; set; } = new();
+    [Parameter] public WiresheetNode Nodes { get; set; } = new();
 }
