@@ -16,7 +16,7 @@ $color-grey-white: #B9BBBE;
 $color-grey-dark: #242629;
 $color-actually-black: #000000;
 $color-purple: #b98cff;
-$color-purple-darker: #7762b2;
+$color-purple-darker: #926ef5;
 $color-purple-lighter: #cbacff;
 $color-blurple: #7289da;
 $color-blurple-lighter: #5865f2;
@@ -60,6 +60,28 @@ $color-error-0: rgba(237, 67, 55, 0);
 $color-shadow-07: rgba(00, 00, 00, 0.07);
 $color-shadow-02: rgba(00, 00, 00, 0.02);
 $color-shadow-01: rgba(00, 00, 00, 0.01);
+
+
+/*Node Colors*/
+$node-base-color: #1d1e23;
+$node-border-color: darken($node-base-color, 10%);
+
+
+
+
+
+$node-port-unknown: #e2e2e2;
+$node-port-logic: #00ae7a;
+$node-port-numeric: #7762b2;
+$node-port-string: #feb145;
+
+$node-category-logic: #00ae7a;
+$node-category-data: #ff3371;
+$node-category-utility: #0a69ff;
+$node-category-mathematics: #9472ff;
+$node-category-variables: #ee7008;
+
+$node-selected: #7289da;
 
 
 /*Input Colors*/
@@ -112,4 +134,47 @@ $z-index-top: 1000;
 @font-face {
   font-family: 'Varela Round';
   src: URL("./fonts/VarelaRound-Regular.ttf") format('truetype');
+}
+
+@mixin gradient-3d($base-color) {
+  $dark-color: darken($base-color, 20%);
+  background: linear-gradient(145deg, $base-color, $dark-color);
+}
+
+@mixin text-gradient($base-color) {
+  $light-color: lighten($base-color, 20%);
+  background: linear-gradient(to right, $base-color, $light-color);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 $color-error-60;
+  }
+
+  70% {
+    -webkit-box-shadow: 0 0 0 10px $color-error-0;
+  }
+
+  100% {
+    -webkit-box-shadow: 0 0 0 0 $color-error-0;
+  }
+}
+
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 $color-error-60;
+    box-shadow: 0 0 0 0 $color-error-60;
+  }
+
+  70% {
+    -moz-box-shadow: 0 0 0 10px $color-error-0;
+    box-shadow: 0 0 0 10px $color-error-0;
+  }
+
+  100% {
+    -moz-box-shadow: 0 0 0 0 $color-error-0;
+    box-shadow: 0 0 0 0 $color-error-0;
+  }
 }

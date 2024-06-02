@@ -1,21 +1,42 @@
 ﻿@using dOSC.Component.Wiresheet.Nodes.Logic
 @using dOSC.Component.Wiresheet.Nodes
-<div id="@Nodes.Guid" class="block-note-container  @(Nodes.Selected ? "selected" : string.Empty)">
+@using Blazor.Diagrams.Components.Renderers
+@using dOSC.Component.Wiresheet.Nodes.Utility
+@using DynamicData
+@using LiveSheet.Parts.Nodes
+@implements IDisposable
+
+<div id="@Nodes.Guid" class="node node-category-@(Nodes.Category.ToString().ToLower()) @(Nodes.HasError ? "error" : string.Empty)  @(Nodes.Selected ? "selected" : string.Empty)">
     <NodeWidgetHeader Node="@Nodes"/>
-    <div class="block-container-body-container">
-        <div class="block-container-port-container input">
+    <div class="node-body">
+        <div class="node-port-container">
             @foreach(var port in Nodes.GetInputPorts())
             {
-                <PortDesigner Port="@port" class="@port.PortType.ToString()"/>
+                <div class="node-port input">
+                    <PortRenderer Port="@port" class="@port.PortType.ToString()" />
+                    <div class="port-label">
+                        @port.Name
+                    </div>
+                </div>
             }
         </div>
-        <div class="block-container-body">
-    
+        <div class="node-content">
+            <div>Test</div>
         </div>
-        <div class="block-container-port-container output">
+        <div class="node-port-container">
             @foreach(var port in Nodes.GetOutputPorts())
             {
-                <PortDesigner Port="@port" class="@port.PortType.ToString()"/>
+                <div class="node-port output">
+                    <div class="port-label">
+                        @port.Name
+                    </div>
+                    <PortRenderer Port="@port" class="@port.PortType.ToString()">
+                        <div class="node-port-value">
+                            @Nodes.GetDisplayValue()
+                        </div>
+                    </PortRenderer>
+                    
+                </div>
             }
         </div>
     </div>
@@ -23,4 +44,17 @@
 
 @code {
     [Parameter] public WiresheetNode Nodes { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        Nodes.ErrorOccured += ErrorOccured;
+    }
+
+    private void ErrorOccured(LiveNode obj) => InvokeAsync(StateHasChanged);
+    
+    public void Dispose()
+    {
+        Nodes.ErrorOccured -= ErrorOccured;
+    }
+
 }

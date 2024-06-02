@@ -15,7 +15,4 @@ public class WiresheetNode: LiveNode
     public virtual string Icon { get; private set; } = "fa-solid fa-square";
     public virtual bool IconIsText { get; private set; } = false;
 
-  
-    public virtual string GetDisplayValue() => Value.RawValue.ToString() ?? "Unknown Value";
-    
 }

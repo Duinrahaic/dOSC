@@ -1,3 +1,4 @@
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -5,6 +6,31 @@
 @font-face {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
+}
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
 }
 @keyframes slideInFromLeft {
   0% {
@@ -148,6 +174,7 @@
     box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
   }
 }
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -156,6 +183,32 @@
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
 }
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -163,6 +216,31 @@
 @font-face {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
+}
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
 }
 @keyframes slideInFromLeft {
   0% {
@@ -388,23 +466,6 @@
   background-color: #2e3035;
 }
 
-/*
-.block {
-    border-radius: 10px;
-    padding-left: 4px;
-    overflow: visible;
-
-}
-.block.selected {
-    box-shadow: 0 0 8px 1px $color-selected;
-}
-
-.block.error {
-    border-radius: 10px;
-    box-shadow: 0 0 0 $color-error-60;
-    animation: error 2s infinite;
-}
-*/
 .editor {
   position: relative;
   width: 100%;
@@ -444,9 +505,12 @@
   text-align: center;
   font-size: 20px;
   padding: 8px 4px;
+  align-self: center;
 }
 .dOSC-wiresheet-toolbar-container .dOSC-wiresheet-toolbar-item .dOSC-wiresheet-toolbar-item-icon.primary {
-  color: #345ce7;
+  background: linear-gradient(to right, #7289da, #c3cdef);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   font-weight: bold;
   font-size: 24px;
 }
@@ -584,7 +648,7 @@
   width: 100%;
 }
 .wiresheet-panel .wiresheet-panel-body .wiresheet-panel-body-item:hover {
-  background: #7289da;
+  background: linear-gradient(145deg, #7289da, #304eb6);
   cursor: pointer;
 }
 .wiresheet-panel .wiresheet-panel-body .wiresheet-panel-body-item .wiresheet-panel-body-item-icon {
@@ -596,31 +660,6 @@
 .wiresheet-panel .wiresheet-panel-body .wiresheet-panel-body-item .wiresheet-panel-body-item-title {
   font-size: 16px;
   font-weight: bold;
-}
-@-webkit-keyframes error {
-  0% {
-    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
-  }
-  70% {
-    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
-  }
-  100% {
-    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
-  }
-}
-@keyframes error {
-  0% {
-    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
-    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
-  }
-  70% {
-    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
-    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
-  }
-  100% {
-    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
-    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
-  }
 }
 .block-context-menu {
   position: absolute;
@@ -645,6 +684,141 @@
   background: #232428;
 }
 
+.node {
+  display: flex;
+  flex-direction: column;
+  gap: 2px 2px;
+  align-items: center;
+  justify-content: flex-start;
+  background: #1d1e23;
+  border: 1px solid #060607;
+  border-radius: 8px;
+  color: #ffffff;
+}
+.node.error:not(.selected) {
+  border-radius: 10px;
+  animation: node-error 2s ease-in-out infinite;
+}
+.node.selected {
+  box-shadow: 0 0 8px 1px #7289da;
+}
+.node.node-category-logic .node-header {
+  background: linear-gradient(145deg, #00ae7a, #004832);
+}
+.node.node-category-data .node-header {
+  background: linear-gradient(145deg, #ff3371, #cc003e);
+}
+.node.node-category-utility .node-header {
+  background: linear-gradient(145deg, #0a69ff, #003fa3);
+}
+.node.node-category-mathematics .node-header {
+  background: linear-gradient(145deg, #9472ff, #470cff);
+}
+.node.node-category-variables .node-header {
+  background: linear-gradient(145deg, #ee7008, #8b4205);
+}
+.node .node-header {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 20px;
+  padding: 5px 10px;
+  flex-wrap: nowrap;
+  border-bottom: 1px solid #060607;
+  border-radius: 8px 8px 8px 0;
+}
+.node .node-header .node-header-icon {
+  font-weight: bold;
+}
+.node .node-header .node-header-title {
+  font-weight: bold;
+}
+.node .node-body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.node .node-body .node-content {
+  flex-grow: 1;
+}
+.node .node-body .node-port-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+  padding: 4px 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+.node .node-body .node-port-container .node-port {
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding: 8px;
+}
+.node .node-body .node-port-container .node-port .node-port-value {
+  position: absolute;
+  top: 0;
+  white-space: nowrap;
+}
+.node .node-body .node-port-container .node-port.input {
+  transform: translateX(-28px);
+}
+.node .node-body .node-port-container .node-port.input .node-port-value {
+  left: 0;
+  text-align: right;
+  transform: translateX(-100%) translateY(-24px);
+}
+.node .node-body .node-port-container .node-port.output {
+  transform: translateX(28px);
+}
+.node .node-body .node-port-container .node-port.output .node-port-value {
+  right: 0;
+  text-align: left;
+  transform: translateX(100%) translateY(-24px);
+}
+.node .node-body .node-port-container .node-port .diagram-port {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #e2e2e2;
+  border: solid 1px #060607;
+  cursor: pointer;
+  pointer-events: all;
+  position: relative;
+}
+.node .node-body .node-port-container .node-port .diagram-port:hover {
+  background: #c9c9c9;
+}
+.node .node-body .node-port-container .node-port .diagram-port.Logic {
+  background: #00ae7a;
+}
+.node .node-body .node-port-container .node-port .diagram-port.Logic:hover {
+  background: #007b56;
+}
+.node .node-body .node-port-container .node-port .diagram-port.Numeric {
+  background: #7762b2;
+}
+.node .node-body .node-port-container .node-port .diagram-port.Numeric:hover {
+  background: #5e4a97;
+}
+.node .node-body .node-port-container .node-port .diagram-port.String {
+  background: #feb145;
+}
+.node .node-body .node-port-container .node-port .diagram-port.String:hover {
+  background: #fe9c12;
+}
+
 .block-note-container {
   border-radius: 10px;
   overflow: visible;
@@ -654,7 +828,7 @@
   max-width: 600px;
   min-width: min-content;
   height: min-content;
-  background-color: rgba(28, 25, 25, 0.4);
+  background-color: #1c1919;
   border: solid 2px rgba(28, 25, 25, 0.2);
   user-select: none;
   font-weight: bolder;
@@ -819,7 +993,7 @@
 .block-note-container .block-container-header {
   display: flex;
   flex-direction: row;
-  gap: 0px 2px;
+  gap: 4px;
   width: 100%;
   justify-content: space-between;
   align-items: center;
@@ -865,7 +1039,7 @@
   font-size: 18px;
   padding: 2px 4px;
 }
-.block-note-container .block-container-body-container .note-container {
+.block-note-container .block-container-body-container d .note-container {
   background-color: rgba(28, 25, 25, 0.4);
   border: solid 2px rgba(28, 25, 25, 0.2);
   border-radius: 8px;
@@ -1063,7 +1237,7 @@
   background-color: #b98cff;
 }
 .block-container .block-container-body-container .block-container-body .block-container-body-ports .block-container-port-container .item .port.numeric:hover {
-  background-color: #7762b2;
+  background-color: #926ef5;
 }
 .block-container .block-container-body-container .block-container-body .block-container-body-ports .block-container-port-container .item .port.multi {
   background-color: #ffffff;
@@ -1087,6 +1261,7 @@
   background-color: #651d3a;
 }
 
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -1094,6 +1269,31 @@
 @font-face {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
+}
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
 }
 .app-page {
   width: 100%;
@@ -1427,6 +1627,7 @@
   color: #ffffff;
 }
 
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -1434,6 +1635,31 @@
 @font-face {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
+}
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
 }
 .form-override .form-label {
   text-transform: uppercase;
@@ -1508,6 +1734,7 @@ label {
   color: #949ba4;
 }
 
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -1516,6 +1743,32 @@ label {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
 }
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -1523,6 +1776,31 @@ label {
 @font-face {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
+}
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
 }
 @keyframes slideInFromLeft {
   0% {
@@ -1825,6 +2103,7 @@ label {
   text-align: center;
 }
 
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -1833,6 +2112,32 @@ label {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
 }
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -1840,6 +2145,31 @@ label {
 @font-face {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
+}
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
 }
 @keyframes slideInFromLeft {
   0% {
@@ -2080,6 +2410,7 @@ label {
   object-fit: contain;
 }
 
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -2087,6 +2418,31 @@ label {
 @font-face {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
+}
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
 }
 * {
   font-family: "Varela Round", sans-serif;
@@ -2205,6 +2561,7 @@ label {
   color: white;
 }
 
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -2213,6 +2570,32 @@ label {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
 }
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -2220,6 +2603,31 @@ label {
 @font-face {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
+}
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
 }
 .indicator {
   width: 15px;
@@ -2426,6 +2834,7 @@ label {
   color: #949ba4;
 }
 
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -2433,6 +2842,31 @@ label {
 @font-face {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
+}
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
 }
 .titlebar {
   display: flex;
@@ -2490,6 +2924,7 @@ label {
   background-color: #383d42;
 }
 
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -2498,6 +2933,32 @@ label {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
 }
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -2505,6 +2966,31 @@ label {
 @font-face {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
+}
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
 }
 @keyframes slideInFromLeft {
   0% {
@@ -3417,6 +3903,7 @@ label {
   z-index: 900;
 }
 
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -3424,6 +3911,31 @@ label {
 @font-face {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
+}
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
 }
 #red.color-block {
   background-color: #ff413f;
@@ -3665,6 +4177,7 @@ label {
   padding-left: 2px;
 }
 
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -3672,6 +4185,31 @@ label {
 @font-face {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
+}
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
 }
 table {
   border-collapse: collapse;
@@ -3734,6 +4272,7 @@ table.third-party-table tbody tr:hover {
   transition: ease-in-out 250ms;
 }
 
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -3741,6 +4280,31 @@ table.third-party-table tbody tr:hover {
 @font-face {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
+}
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
 }
 .integration.pulsoid {
   color: #ffffff;
@@ -3755,6 +4319,7 @@ table.third-party-table tbody tr:hover {
   background-color: #6441a5;
 }
 
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -3763,6 +4328,32 @@ table.third-party-table tbody tr:hover {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
 }
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -3770,6 +4361,31 @@ table.third-party-table tbody tr:hover {
 @font-face {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
+}
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
 }
 .dosc-button {
   border: none;
@@ -3827,6 +4443,7 @@ table.third-party-table tbody tr:hover {
   background-color: #007b56;
 }
 
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -3834,6 +4451,31 @@ table.third-party-table tbody tr:hover {
 @font-face {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
+}
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
 }
 .indicator {
   width: 15px;
@@ -3871,6 +4513,7 @@ table.third-party-table tbody tr:hover {
   color: #dfe1e9;
 }
 
+/*Node Colors*/
 /*Input Colors*/
 /*Font Family*/
 /*Modal*/
@@ -3878,6 +4521,31 @@ table.third-party-table tbody tr:hover {
 @font-face {
   font-family: "Varela Round";
   src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
+}
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
 }
 .app {
   background-color: #1d1e23;

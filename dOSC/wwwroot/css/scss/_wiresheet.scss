@@ -2,6 +2,8 @@
 @import "_animations.scss";
 
 
+
+
 .navbar.wiresheet-toolbar {
   background-color: $color-theme-2 !important;
   border-top-left-radius: 0.35rem;
@@ -91,25 +93,6 @@
   background-color: $color-theme-3;
 }
 
-
-/*
-.block {
-    border-radius: 10px;
-    padding-left: 4px;
-    overflow: visible;
-
-}
-.block.selected {
-    box-shadow: 0 0 8px 1px $color-selected;
-}
-
-.block.error {
-    border-radius: 10px;
-    box-shadow: 0 0 0 $color-error-60;
-    animation: error 2s infinite;
-}
-*/
-
 .editor{
     position: relative;
     width: 100%;
@@ -149,8 +132,9 @@
           text-align:  center;
           font-size: 20px;
           padding: 8px 4px;
+          align-self: center;
           &.primary{
-            color: $color-primary;
+            @include text-gradient($color-blurple);
             font-weight: bold;
             font-size: 24px;
           }
@@ -310,13 +294,10 @@
 
 
       &:hover{
-        background: $color-blurple;
+        @include gradient-3d($color-blurple);
         cursor: pointer;
-        
       }
-
-
-
+      
       .wiresheet-panel-body-item-icon{
         display: flex;
         font-size: 18px;
@@ -338,36 +319,6 @@
  
 
 
-@-webkit-keyframes error {
-  0% {
-    -webkit-box-shadow: 0 0 0 0 $color-error-60;
-  }
-
-  70% {
-    -webkit-box-shadow: 0 0 0 10px $color-error-0;
-  }
-
-  100% {
-    -webkit-box-shadow: 0 0 0 0 $color-error-0;
-  }
-}
-
-@keyframes error {
-  0% {
-    -moz-box-shadow: 0 0 0 0 $color-error-60;
-    box-shadow: 0 0 0 0 $color-error-60;
-  }
-
-  70% {
-    -moz-box-shadow: 0 0 0 10px $color-error-0;
-    box-shadow: 0 0 0 10px $color-error-0;
-  }
-
-  100% {
-    -moz-box-shadow: 0 0 0 0 $color-error-0;
-    box-shadow: 0 0 0 0 $color-error-0;
-  }
-}
 
 
 .block-context-menu {
@@ -398,6 +349,180 @@
 
 }
 
+.node
+{
+    display: flex;
+    flex-direction: column;
+    gap: 2px 2px;
+    align-items: center;
+    justify-content: flex-start;
+    background: $node-base-color;
+    border: 1px solid $node-border-color;
+    border-radius: 8px;
+    color: $color-full-white;
+  
+    &.error:not(.selected) {
+      border-radius: 10px;
+      animation: node-error 2s ease-in-out infinite;
+    }
+  
+    &.selected {
+      box-shadow: 0 0 8px 1px $node-selected;
+    }
+  
+    &.node-category-logic 
+    {
+      .node-header {
+         @include gradient-3d($node-category-logic);
+      }
+    }
+   
+  
+    &.node-category-data
+    {
+      .node-header {
+        @include gradient-3d($node-category-data);
+      }
+    }
+    &.node-category-utility
+    {
+      .node-header {
+        @include gradient-3d($node-category-utility);
+      }
+    }
+    &.node-category-mathematics
+    {
+      .node-header {
+        @include gradient-3d($node-category-mathematics);
+      }
+    }
+    &.node-category-variables
+    {
+      .node-header {
+        @include gradient-3d($node-category-variables);
+      }
+    }
+  
+  
+    .node-header {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      font-size: 20px;
+      padding: 5px 10px;
+      flex-wrap: nowrap;
+      border-bottom: 1px solid $node-border-color;
+      border-radius: 8px 8px 8px 0;
+      
+      .node-header-icon {
+        font-weight: bold;
+      }
+      .node-header-title {
+        font-weight: bold;
+      }
+
+      
+    }
+    .node-body{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      .node-content{
+        flex-grow: 1;
+      }
+
+      .node-port-container
+      {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        flex-wrap: nowrap;
+        padding: 4px 8px;
+        box-sizing: border-box;
+        font-size: 16px;
+        .node-port {
+          flex-direction: row;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 4px;
+          flex-wrap: nowrap;
+          align-items: center;
+          padding: 8px;
+          
+          .node-port-value{
+            position: absolute;
+            top: 0;
+            white-space: nowrap;
+          }
+          
+          &.input
+          {
+            transform: translateX(-28px);
+            .node-port-value{
+              left: 0;
+              text-align: right;
+              transform: translateX(-100%) translateY(-24px);
+            }
+          }
+
+          &.output
+          {
+            transform: translateX(28px);
+            .node-port-value{
+              right: 0;
+              text-align: left;
+              transform: translateX(100%) translateY(-24px);
+            }
+          }
+          
+          
+          
+          .diagram-port
+          {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: $node-port-unknown;
+            border: solid 1px $node-border-color;
+            cursor: pointer;
+            pointer-events: all;
+            position: relative;
+            &:hover
+            {
+              background: darken($node-port-unknown,  10%);
+            }
+            
+            &.Logic {
+                background: $node-port-logic;
+              &:hover {
+                background: darken($node-port-logic, 10%);
+              }
+            }
+            &.Numeric {
+                background: $node-port-numeric;
+              &:hover {
+                background: darken($node-port-numeric, 10%);
+              }
+            }
+            &.String {
+                background: $node-port-string;
+              &:hover {
+                background: darken($node-port-string, 10%);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
 
 .block-note-container {
   border-radius: 10px;
@@ -408,7 +533,7 @@
   max-width: 600px;
   min-width: min-content;
   height: min-content;
-  background-color: transparentize($color-black, .6);
+  background-color: $color-black;
   border: solid 2px transparentize($color-black, .8);
   user-select: none;
   font-weight: bolder;
@@ -680,7 +805,7 @@
   .block-container-header {
     display: flex;
     flex-direction: row;
-    gap: 0px 2px;
+    gap: 4px;
     width: 100%;
     justify-content: space-between;
     align-items: center;
@@ -720,7 +845,7 @@
       align-items: center;
       border-radius: 12px;
       padding: 10px;
-
+    
 
       &:hover {
         background: transparentize($color-black, .4)
@@ -734,7 +859,11 @@
     letter-spacing: 1px;
     font-size: 18px;
     padding: 2px 4px;
-
+    d
+    
+    
+    
+    
     .note-container {
       background-color: transparentize($color-black, .6);
       border: solid 2px transparentize($color-black, .8);

@@ -1,17 +1,17 @@
 ﻿@using dOSC.Component.Wiresheet.Nodes
-<div class="block-container-header">
+<div class="node-header">
     @if (!Node.IconIsText)
     {
-        <div class="block-container-header-icon @Node.Icon"></div>
+        <div class="node-header-icon @Node.Icon"></div>
     }
     else
     {
-        <div class="block-container-header-icon text">@Node.Icon</div>
+        <div class="node-header-icon text">@Node.Icon</div>
     }
-    <div class="block-container-header-title"> @Node.GetNodeDisplayName()</div>
+    <div class="node-header-title"> @Node.GetNodeDisplayName()</div>
     @if (OnSettingsClicked.HasDelegate)
     {
-        <div class="block-container-header-setting icon-cog " @onclick="OpenSettings"></div>
+        <div class="node-header-setting icon-cog " @onclick="OpenSettings"></div>
     }
 </div>
 

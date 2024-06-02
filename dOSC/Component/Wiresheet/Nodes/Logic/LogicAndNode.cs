@@ -1,5 +1,6 @@
 ﻿using LiteDB;
 using LiveSheet;
+using LiveSheet.Parts;
 using LiveSheet.Parts.Nodes;
 using LiveSheet.Parts.Ports;
 
@@ -20,16 +21,26 @@ public class LogicAndNode: LogicNode
     {
         var inA = Ports[0];
         var inB = Ports[1];
-        if(inA is LiveLogicPort a && inB is LiveLogicPort b && this.OkToProcess(effectedNodes))
+        if(inA is LiveLogicPort a && inB is LiveLogicPort b && OkToProcess(effectedNodes))
         {
-            BsonValue aVal = a.HasLinks() ? a.GetBsonValue() : false;
-            BsonValue bVal = b.HasLinks() ? b.GetBsonValue() : false;
+            try
+            {
+                BsonValue aVal = a.HasLinks() ? a.GetBsonValue() : false;
+                BsonValue bVal = b.HasLinks() ? b.GetBsonValue() : false;
             
-            Value = LogicOperations.AndOperation(aVal, bVal);
+                Value = LogicOperations.AndOperation(aVal, bVal);
+                ClearErrorMessage();
+            }
+            catch
+            {
+                SetErrorMessage(LiveErrorMessages.BadConfiguration);
+            }
+            
         }
         else
         {
             Value = false;
+            ClearErrorMessage();
         }
     }
 }
