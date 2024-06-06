@@ -11,10 +11,15 @@ using dOSC.Tray;
 using dOSC.Client.ViewModels;
 using dOSC.Client.Views;
 using dOSC.Drivers;
+using dOSC.Drivers.OSC;
+using dOSC.Drivers.Pulsoid;
+using dOSC.Drivers.Websocket;
 using dOSC.Middlewear;
+using dOSC.Shared.Models.Commands;
 using dOSC.Tray;
 using Application = Avalonia.Application;
 using MessageBox = System.Windows.Forms.MessageBox;
+using WebSocketManager = dOSC.Drivers.Websocket.WebSocketManager;
 
 namespace dOSC;
 
@@ -102,10 +107,27 @@ public partial class App : Application
         appBuilder.Services.AddBlazorWebViewDeveloperTools();
         
         // Services
-        appBuilder.Services.AddSingleton<WebsocketClient>();
-        appBuilder.Services.AddSingleton<WiresheetService>();
-        //appBuilder.Services.AddSingleton<dOSCService>();
+        
+        appBuilder.Services.AddSingleton<HubService>(); // Data Service 
+        appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<HubService>());
 
+        appBuilder.Services.AddSingleton<WebSocketManager>(); // Manages External Service 
+        appBuilder.Services.AddSingleton<WebSocketService>();      
+        appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<WebSocketService>());
+
+        
+        appBuilder.Services.AddSingleton<WiresheetService>(); // Manages Applications
+        appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<WiresheetService>());
+        
+        // Integrations
+        
+        appBuilder.Services.AddSingleton<PulsoidService>();
+        appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<PulsoidService>());
+
+        appBuilder.Services.AddSingleton<OSCService>();
+        appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<OSCService>());
+
+        
         using var myApp = appBuilder.Build();
         AppHost = myApp;
 

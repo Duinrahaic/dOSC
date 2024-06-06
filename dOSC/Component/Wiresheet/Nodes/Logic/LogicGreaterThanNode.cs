@@ -1,5 +1,6 @@
 ﻿using LiteDB;
 using LiveSheet;
+using LiveSheet.Parts;
 using LiveSheet.Parts.Nodes;
 using LiveSheet.Parts.Ports;
 
@@ -19,16 +20,26 @@ public class LogicGreaterThanNode: LogicNode
     {
         var inA = Ports[0];
         var inB = Ports[1];
-        if(inA is LiveNumericPort a && inB is LiveNumericPort b && this.OkToProcess(effectedNodes))
+        if (inA is LiveNumericPort a && inB is LiveNumericPort b && this.OkToProcess(effectedNodes))
         {
-            BsonValue aVal = a.HasLinks() ? a.GetBsonValue()  : new(0.0);
-            BsonValue bVal = b.HasLinks() ? b.GetBsonValue()  : new(0.0);
+            try
+            {
+                BsonValue aVal = a.HasLinks() ? a.GetBsonValue()  : new(0.0);
+                BsonValue bVal = b.HasLinks() ? b.GetBsonValue()  : new(0.0);
+
+                Value = LogicOperations.GreaterThan(aVal, bVal);
+                ClearErrorMessage();
+            }
+            catch
+            {
+                SetErrorMessage(LiveErrorMessages.BadConfiguration);
+            }
             
-            Value = LogicOperations.GreaterThan(aVal, bVal);
         }
         else
         {
             Value = false;
+            ClearErrorMessage();
         }
     }
 }

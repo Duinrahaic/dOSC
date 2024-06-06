@@ -6,5 +6,6 @@ public enum NodeCategory
     Data,
     Mathematics,
     Utility,
-    Variables
+    Variables,
+    Time
 }

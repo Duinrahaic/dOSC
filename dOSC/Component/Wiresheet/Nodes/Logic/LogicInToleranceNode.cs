@@ -1,5 +1,6 @@
 ﻿using LiteDB;
 using LiveSheet;
+using LiveSheet.Parts;
 using LiveSheet.Parts.Nodes;
 using LiveSheet.Parts.Ports;
 
@@ -23,15 +24,24 @@ public class LogicInToleranceNode: LogicNode
         var inTolerance = Ports[2];
         if(inInput is LiveNumericPort input && inTarget is LiveNumericPort target && inTolerance is LiveNumericPort tolerance && this.OkToProcess(effectedNodes))
         {
-            BsonValue inputVal = input.HasLinks() ? input.GetBsonValue() : new(0.0);
-            BsonValue targetVal = target.HasLinks() ? target.GetBsonValue() : new(0.0);
-            BsonValue toleranceVal = tolerance.HasLinks() ? tolerance.GetBsonValue() : new(1.0);
-            
-            Value = InTolerance(inputVal, targetVal, toleranceVal);
+            try
+            {
+                BsonValue inputVal = input.HasLinks() ? input.GetBsonValue() : new(0.0);
+                BsonValue targetVal = target.HasLinks() ? target.GetBsonValue() : new(0.0);
+                BsonValue toleranceVal = tolerance.HasLinks() ? tolerance.GetBsonValue() : new(1.0);
+
+                Value = InTolerance(inputVal, targetVal, toleranceVal);
+                ClearErrorMessage();
+            }
+            catch
+            {
+                SetErrorMessage(LiveErrorMessages.BadConfiguration);
+            }
         }
         else
         {
             Value = false;
+            ClearErrorMessage();
         }
     }
     

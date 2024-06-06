@@ -1,0 +1,74 @@
+﻿@using dOSC.Component.Wiresheet.Nodes.Logic
+@using dOSC.Component.Wiresheet.Nodes
+@using Blazor.Diagrams.Components.Renderers
+@using dOSC.Component.Wiresheet.Nodes.Utility
+@using DynamicData
+@using LiveSheet.Parts.Nodes
+@implements IDisposable
+
+<div id="@Node.Guid" class="node node-category-@(Node.Category.ToString().ToLower()) @(Node.HasError ? "error" : string.Empty)  @(Node.Selected ? "selected" : string.Empty)">
+    <NodeWidgetHeader Node="@Node"/>
+    <div class="node-body">
+        <div class="node-port-container inputs">
+            @foreach (var port in Node.GetInputPorts())
+            {
+                <div class="node-port input">
+                    <PortRenderer Port="@port" class="@port.PortType.ToString()"/>
+                    <div class="port-label">
+                        @port.Name
+                    </div>
+                </div>
+            }
+        </div>
+        
+        @if (ChildContent != null)
+        {
+            <div class="node-content">
+                @ChildContent
+            </div>
+        }
+
+
+        <div class="node-port-container outputs">
+            @foreach (var port in Node.GetOutputPorts())
+            {
+                <div class="node-port output">
+                    <div class="port-label">
+                        @port.Name
+                    </div>
+                    <div class="">
+                        <PortRenderer Port="@port" class="@port.PortType.ToString()"/>
+
+                        <div class="node-port-value"  @key=@Node.Value.ToString()>
+                            @Node.GetDisplayValue()
+                        </div>
+                    </div>
+
+
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public WiresheetNode Node { get; set; } = new();
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        Node.ErrorOccured += ErrorOccured;
+        Node.ValueChanged += ValueChanged;
+    }
+
+    private void ErrorOccured(LiveNode obj) => InvokeAsync(StateHasChanged);
+    private void ValueChanged(LiveNode obj) => InvokeAsync(StateHasChanged);
+    
+    public void Dispose()
+    {
+        Node.ErrorOccured -= ErrorOccured;
+        Node.ValueChanged -= ValueChanged;
+
+    }
+
+}

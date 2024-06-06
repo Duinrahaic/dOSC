@@ -1,5 +1,6 @@
 ﻿using LiteDB;
 using LiveSheet;
+using LiveSheet.Parts;
 using LiveSheet.Parts.Nodes;
 using LiveSheet.Parts.Ports;
 
@@ -25,13 +26,38 @@ public class MathPowerNode: MathNode
             && inB is LiveNumericPort b
             && this.OkToProcess(effectedNodes))
         {
-            BsonValue aVal = a.HasLinks() ? a.GetBsonValue()  : new(0.0);
-            BsonValue bVal = b.HasLinks() ? b.GetBsonValue()  : new(0.0);
-            Value = Math.Pow(aVal.AsDouble,bVal.AsDouble);
+            try
+            {
+                decimal aVal = a.HasLinks() ? a.GetBsonValue()  : new(0.0);
+                decimal bVal = b.HasLinks() ? b.GetBsonValue()  : new(0.0);
+                Value = DecimalPow(aVal,bVal);
+                ClearErrorMessage();
+            }
+            catch
+            {
+                SetErrorMessage(LiveErrorMessages.FailedToCalculate);
+            }
         }
         else
         {
             Value = NodeDefault;
+            ClearErrorMessage();
         }
+    }
+    
+    private static decimal DecimalPow(decimal baseValue, decimal exponent)
+    {
+        if (baseValue == 0 && exponent == 0)
+            throw new ArgumentException("0^0 is undefined.");
+        
+        if (baseValue < 0 && exponent % 1 != 0)
+            throw new ArgumentException("Negative base with non-integer exponent is undefined in real numbers.");
+        
+        double baseDouble = (double)baseValue;
+        double exponentDouble = (double)exponent;
+
+        // Using Math.Exp and Math.Log to calculate the power
+        double resultDouble = Math.Exp(exponentDouble * Math.Log(baseDouble));
+        return (decimal)resultDouble;
     }
 }

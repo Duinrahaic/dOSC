@@ -1,5 +1,6 @@
 ﻿using LiteDB;
 using LiveSheet;
+using LiveSheet.Parts;
 using LiveSheet.Parts.Nodes;
 using LiveSheet.Parts.Ports;
 
@@ -25,13 +26,22 @@ public class MathMultiplicationNode: MathNode
             && inB is LiveNumericPort b
             && this.OkToProcess(effectedNodes))
         {
-            BsonValue aVal = a.HasLinks() ? a.GetBsonValue()  : new(0.0);
-            BsonValue bVal = b.HasLinks() ? b.GetBsonValue()  : new(0.0);
-            Value = aVal * bVal;
+            try
+            {
+                decimal aVal = a.HasLinks() ? a.GetBsonValue()  : new(0.0);
+                decimal bVal = b.HasLinks() ? b.GetBsonValue()  : new(0.0);
+                Value = aVal * bVal;
+                ClearErrorMessage();
+            }
+            catch
+            {
+                SetErrorMessage(LiveErrorMessages.FailedToCalculate);
+            }
         }
         else
         {
             Value = NodeDefault;
+            ClearErrorMessage();
         }
     }
 }

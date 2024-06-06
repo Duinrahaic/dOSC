@@ -1,11 +1,21 @@
-﻿<div class="nav">
+﻿@using dOSC.Component.Modals
+@using dOSC.Drivers
+<div class="nav">
     <NavContainer Apps="Apps">
         <Indicators>
-            <div class="nav-connection-indicator" @onclick="ResetConnection">
-                <div class="indicator-text"> Hub </div>
-                <div class="indicator @(ConnectionClass)"></div>
-            </div>
+            <span data-toggle="tooltip" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Hub Configuration & Monitoring">
+                <div class="nav-connection-indicator" @onclick="ShowHubModal">
+                    <div class="indicator-text"> Hub </div>
+                    <div class="indicator @(Server.IsInAlarm ? "stopped" : "running")"></div>
+                </div>
+            </span>
+            <span data-toggle="tooltip" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="dOSC Settings">
+                <div class="nav-connection-indicator" @onclick="ShowHubModal">
+                    <div class="indicator-text"> Settings </div>
+                </div>
+            </span>
         </Indicators>
     </NavContainer>
 
 </div>
+<HubModal @ref="HubModal"/>

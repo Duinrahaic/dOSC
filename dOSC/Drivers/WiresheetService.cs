@@ -5,12 +5,13 @@ namespace dOSC.Drivers;
 
 public class WiresheetService : IHostedService
 {
-    
+    private readonly ILogger<WiresheetService> _logger;
     public Dictionary<string,WiresheetDiagram> Apps { get; private set; } = new();
     
-    public WiresheetService()
+    public WiresheetService(ILogger<WiresheetService> logger)
     {
-            
+        _logger = logger;
+        _logger.LogInformation("Initialized WiresheetService Service");
     }
 
     public void AddApp(WiresheetDiagram app)

@@ -10,7 +10,7 @@ namespace dOSC.Middlewear;
 
 public class WebsocketClient : IHostedService
 {
-    public delegate void DataReceiveEventHandler(dOSCCommandDTO e);
+    public delegate void DataReceiveEventHandler(Command e);
 
     public delegate void StateChangeEventHandler(ConnectionState state);
 
@@ -20,16 +20,16 @@ public class WebsocketClient : IHostedService
     private readonly ILogger<WebsocketClient> _logger;
 
     private ConnectionState _state = ConnectionState.Unknown;
-    private dOSCSetting? Setting;
+    private dOSCSetting? _setting;
 
-    private ClientWebSocket? socket;
+    private ClientWebSocket? _socket;
 
     public WebsocketClient(IServiceProvider services)
     {
         _key = EncryptionHelper.Key;
         _logger = services.GetService<ILogger<WebsocketClient>>()!;
         _logger.LogInformation("Starting dOSC Websocket Service");
-        //LoadSetting();
+        LoadSetting();
         Task.Run(async () => await ConnectAsync());
     }
 
@@ -61,10 +61,10 @@ public class WebsocketClient : IHostedService
 
     public async Task ConnectAsync()
     {
-        if (Setting == null)
+        if (_setting == null)
             return;
-        socket = new ClientWebSocket();
-        await socket.ConnectAsync(new Uri(Setting.GetHubServerUri(_key)), CancellationToken.None);
+        _socket = new ClientWebSocket();
+        await _socket.ConnectAsync(new Uri(_setting.GetHubServerUri(_key)), CancellationToken.None);
         await ReceiveMessagesAsync();
     }
 
@@ -72,7 +72,7 @@ public class WebsocketClient : IHostedService
     {
         var webSocketPayload = new List<byte>(1024 * 4);
         var tempMessage = new byte[1024 * 4];
-        while (socket?.State == WebSocketState.Open)
+        while (_socket?.State == WebSocketState.Open)
         {
             State = ConnectionState.Open;
 
@@ -83,7 +83,7 @@ public class WebsocketClient : IHostedService
 
                 do
                 {
-                    webSocketResponse = await socket.ReceiveAsync(tempMessage, CancellationToken.None);
+                    webSocketResponse = await _socket.ReceiveAsync(tempMessage, CancellationToken.None);
                     // Save bytes
                     webSocketPayload.AddRange(new ArraySegment<byte>(tempMessage, 0, webSocketResponse.Count));
                 } while (webSocketResponse.EndOfMessage == false);
@@ -96,14 +96,21 @@ public class WebsocketClient : IHostedService
 
                     if (message.Equals("disconnect", StringComparison.OrdinalIgnoreCase))
                     {
-                        await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Disconnect requested",
+                        await _socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Disconnect requested",
                             CancellationToken.None);
                     }
                     else
                     {
-                        // Deserialize the JSON message
-                        var command = webSocketPayload.ReadPacket<dOSCCommandDTO>();
-                        if (command != null) OnDataReceived?.Invoke(command);
+                        try
+                        {
+                            // Deserialize the JSON message
+                            var command = webSocketPayload.ReadPacket<Command>();
+                            if (command != null) OnDataReceived?.Invoke(command);
+                        }
+                        catch(Exception e)
+                        {
+            
+                        }
                     }
                 }
                 else if (webSocketResponse.MessageType == WebSocketMessageType.Close)
@@ -130,31 +137,31 @@ public class WebsocketClient : IHostedService
     public async Task SendAsync(string data)
     {
         var buffer = Encoding.UTF8.GetBytes(data);
-        await socket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
+        await _socket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
     }
 
-    public async Task SendAsync(dOSCCommandDTO command)
+    public async Task SendAsync(Command command)
     {
-        await socket.SendAsync(command.WritePacket(), WebSocketMessageType.Text, true, CancellationToken.None);
+        await _socket.SendAsync(command.WritePacket(), WebSocketMessageType.Text, true, CancellationToken.None);
     }
 
     public void LoadSetting()
     {
-        Setting = (AppFileSystem.LoadSettings() ?? new UserSettings()).dOSC;
+        _setting = (AppFileSystem.LoadSettings() ?? new UserSettings()).dOSC;
     }
 
     public dOSCSetting GetSetting()
     {
-        return Setting ?? new dOSCSetting();
+        return _setting ?? new dOSCSetting();
     }
 
     private void Disconnect()
     {
-        if (socket != null)
+        if (_socket != null)
         {
-            socket.Abort();
+            _socket.Abort();
             _CTS.Cancel();
-            socket = null;
+            _socket = null;
         }
     }
 

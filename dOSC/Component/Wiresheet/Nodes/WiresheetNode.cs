@@ -14,5 +14,6 @@ public class WiresheetNode: LiveNode
     public virtual NodeCategory Category { get; private set; } = Nodes.NodeCategory.Data;
     public virtual string Icon { get; private set; } = "fa-solid fa-square";
     public virtual bool IconIsText { get; private set; } = false;
-
+    
+    public virtual bool IsWritable => false;
 }

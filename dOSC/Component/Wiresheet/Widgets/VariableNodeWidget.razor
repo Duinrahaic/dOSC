@@ -1,0 +1,12 @@
+﻿@using dOSC.Component.Wiresheet.Widgets.Parts
+@using dOSC.Component.Wiresheet.Nodes
+@using Blazor.Diagrams.Components.Renderers
+
+<NodeWidgetFrame Node=@Nodes>
+    <NodeWidgetInputField Node=@Nodes/>
+</NodeWidgetFrame>
+
+@code 
+{
+    [Parameter] public WiresheetNode Nodes { get; set; } = new();
+}

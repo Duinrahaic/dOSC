@@ -1,0 +1,83 @@
+﻿@using dOSC.Component.Wiresheet.Nodes
+<div class="node-header">
+    @if (!Node.IconIsText)
+    {
+        <div class="node-header-icon @Node.Icon"></div>
+    }
+    else
+    {
+        <div class="node-header-icon text">@Node.Icon</div>
+    }
+    @if (_editNodeName)
+    {
+        <input @ref=@_nameInputField autofocus="true" style="width: @(_nodeName.Count() + 3)ch;"  class="node-header-title-input" @oninput="ResizeInput"  
+               type="text" autocorrect="off" autocomplete="false" maxlength="80" @bind="@_nodeName" @onblur="OnNameEditEnd" @onkeydown="OnNameKeyPress"/>
+    }
+    else
+    {
+        <div class="node-header-title" contenteditable="false" @ondblclick="OnNameEditStart"> @Node.GetDisplayName() </div>
+
+    }
+    
+    
+    @if (OnSettingsClicked.HasDelegate)
+    {
+        <div class="node-header-setting icon-cog " @onclick="OpenSettings"></div>
+    }
+</div>
+
+@code
+{
+
+    [Parameter] public WiresheetNode Node { get; set; } = new();
+    [Parameter] public EventCallback<WiresheetNode> OnSettingsClicked { get; set; }
+    [Inject] private IJSRuntime JS { get; set; }
+    private void OpenSettings()
+    {
+        if (OnSettingsClicked.HasDelegate)
+        {
+            OnSettingsClicked.InvokeAsync(Node);
+        }
+    }
+    
+    private bool _editNodeName = false;
+    private string _nodeName = string.Empty;
+    private ElementReference _nameInputField;
+    
+    public async Task OnNameEditStart()
+    {
+        _nodeName = Node.GetDisplayName();
+        _editNodeName = true;
+        StateHasChanged();
+    }
+    
+    public void OnNameEditEnd()
+    {
+        Node.NodeAlias = _nodeName;
+        _editNodeName = false;
+    }
+    
+    private async Task OnNameKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") OnNameEditEnd();
+        await ResizeInput();
+
+    }
+    
+    private async Task ResizeInput()
+    {
+        await JS.InvokeVoidAsync("resizeInput", _nameInputField);
+    }
+    
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender || _editNodeName)
+        {
+            if (_nameInputField.Context != null)
+            {
+                await _nameInputField.FocusAsync();
+            }
+        }
+    }
+}

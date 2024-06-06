@@ -1,6 +1,7 @@
 ﻿using dOSC.Component.Wiresheet.Nodes.Logic;
 using LiteDB;
 using LiveSheet;
+using LiveSheet.Parts;
 using LiveSheet.Parts.Nodes;
 using LiveSheet.Parts.Ports;
 
@@ -21,14 +22,25 @@ public class MathAbsoluteNode : MathNode
     public override void Process(List<EffectedNode>? effectedNodes = null)
     {
         var inA = Ports[0];
-         if (inA is LiveNumericPort a && this.OkToProcess(effectedNodes))
+        if (inA is LiveNumericPort a && this.OkToProcess(effectedNodes))
         {
-            BsonValue aVal = a.HasLinks() ? a.GetBsonValue()  : new(0.0);
-            Value = Math.Abs(aVal.AsDouble);
+            
+            try
+            {
+                BsonValue aVal = a.HasLinks() ? a.GetBsonValue()  : new(0.0);
+                Value = Math.Abs(aVal.AsDecimal);
+                ClearErrorMessage();
+            }
+            catch
+            {
+                SetErrorMessage(LiveErrorMessages.FailedToCalculate);
+            }
+            
         }
         else
         {
             Value = NodeDefault;
+            ClearErrorMessage();
         }
     }
 }

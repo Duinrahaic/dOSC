@@ -22,7 +22,7 @@ public partial class WebSocketMiddleware : IDisposable
         _authKey = EncryptionHelper.Key;
         _next = next;
         _serviceProvider = serviceProvider;
-        _heartbeatTimer = new Timer(1000);
+        _heartbeatTimer = new Timer(1000 * 10);
         _heartbeatTimer.AutoReset = true;
         _heartbeatTimer.Elapsed += Heartbeat;
         _heartbeatTimer.Start();

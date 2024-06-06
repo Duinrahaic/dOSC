@@ -5,6 +5,15 @@
   width: $led-size;
   height: $led-size;
   border-radius: 50%;
+  
+  &.running {
+    background: $success;
+  }
+  &.stopped {
+    background: $error;
+  }
+  
+  
 }
 
 $indicator-array: success info warning error offline;

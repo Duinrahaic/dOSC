@@ -1,5 +1,6 @@
 ﻿using LiteDB;
 using LiveSheet;
+using LiveSheet.Parts;
 using LiveSheet.Parts.Nodes;
 using LiveSheet.Parts.Ports;
 
@@ -24,23 +25,32 @@ public class MathAdditionNode : MathNode
         var inputPorts = this.GetInputPorts().Where(x=>x is LiveNumericPort).ToList();
         if (inputPorts.Any() && this.OkToProcess(effectedNodes))
         {
-            double sum = 0.0;
-            foreach (var port in inputPorts)
+            try
             {
-                if (port is LiveNumericPort numericPort)
+                decimal sum = 0;
+                foreach (var port in inputPorts)
                 {
-                    BsonValue val = numericPort.HasLinks() ? numericPort.GetBsonValue() : new(0.0);
-                    if (val != BsonValue.Null)
+                    if (port is LiveNumericPort numericPort)
                     {
-                        sum += val.AsDouble;
+                        BsonValue val = numericPort.HasLinks() ? numericPort.GetBsonValue() : new(0.0);
+                        if (val != BsonValue.Null)
+                        {
+                            sum += val.AsDecimal;
+                        }
                     }
                 }
+                Value = sum;
+                ClearErrorMessage();
             }
-            Value = sum;
+            catch
+            {
+                SetErrorMessage(LiveErrorMessages.FailedToCalculate);
+            }
         }
         else
         {
             Value = NodeDefault;
+            ClearErrorMessage();
         }
     }
 }

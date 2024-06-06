@@ -74,10 +74,12 @@ $node-port-unknown: #e2e2e2;
 $node-port-logic: #00ae7a;
 $node-port-numeric: #7762b2;
 $node-port-string: #feb145;
+$node-port-time: #4564fe;
 
 $node-category-logic: #00ae7a;
 $node-category-data: #ff3371;
-$node-category-utility: #0a69ff;
+$node-category-time: #0a69ff;
+$node-category-utility: #ecce22;
 $node-category-mathematics: #9472ff;
 $node-category-variables: #ee7008;
 
@@ -114,6 +116,7 @@ $warning: #ffc400;
 $info: #4c84ff;
 $error: #fd2f51;
 $offline: #dfe1e9;
+$debug: #9b9b9b; 
 
 
 /*Font Family*/

@@ -1,8 +1,11 @@
-﻿using dOSC.Component.Modals;
+﻿using Blazor.Diagrams.Core;
+using Blazor.Diagrams.Core.Models.Base;
+using dOSC.Component.Modals;
 using dOSC.Component.Wiresheet;
 using dOSC.Drivers;
 using dOSC.Utilities;
 using LiveSheet;
+using LiveSheet.Parts.Nodes;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
@@ -38,7 +41,17 @@ public partial class AppEditor : IDisposable
             EditorAppLogic.LoadLiveSheetData(appdata);
         }
         EditorAppLogic.Load();
+        EditorAppLogic.SelectionChanged += SelectionChanged;
     }
+
+    private void SelectionChanged(SelectableModel obj)
+    {
+        if (obj is LiveNode node)
+        {   
+            EditorAppLogic.SendToFront(obj);
+        }
+    }
+
     
     protected override void OnAfterRender(bool firstRender)
     {
@@ -134,5 +147,7 @@ public partial class AppEditor : IDisposable
     public void Dispose()
     {
         EditorAppLogic.Changed -= AppChanged;
+        EditorAppLogic.SelectionChanged -= SelectionChanged;
+
     }
 }

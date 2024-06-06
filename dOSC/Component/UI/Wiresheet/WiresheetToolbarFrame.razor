@@ -12,12 +12,12 @@
         {
             
             
-            <input @ref=@_wiresheetNameInputField style="width: @(_wiresheetName.Count() + 3)ch;" class="dOSC-wiresheet-name-input" @oninput="ResizeInput"  type="text" autocorrect="off" autocomplete="false" maxlength="80" @bind="@_wiresheetName" @onblur="OnWiresheetNameEditEnd" @onkeydown="OnWiresheetNameKeyPress"/>
+            <input @ref=@_wiresheetNameInputField autofocus="true" style="width: @(_wiresheetName.Count() + 3)ch;" class="dOSC-wiresheet-name-input" @oninput="ResizeInput"  type="text" autocorrect="off" autocomplete="false" maxlength="80" @bind="@_wiresheetName" @onblur="OnWiresheetNameEditEnd" @onkeydown="OnWiresheetNameKeyPress"/>
             ResizeInput();
         }
         else
         {
-            <span contenteditable="false" @onclick="OnWiresheetNameEdit">@Wiresheet.GetDisplayName()</span>
+            <span contenteditable="false" @ondblclick="OnWiresheetNameEdit">@Wiresheet.GetDisplayName()</span>
         }
     </div>
     <WiresheetToolbarItem Icon="icon-puzzle" Label="Components" Active="@(!_componentPanelClosed)"  OnClick="ToggleComponentPanel" />
@@ -30,7 +30,7 @@
         </div>
     </Header>
     <Body>
-    @foreach (var category in Categories)
+    @foreach (var category in Categories.OrderBy(x=>x.ToString()))
     {
         <div class="wiresheet-panel-body-group">
             <div class="wiresheet-panel-body-group-label">@category</div>
@@ -111,4 +111,14 @@
         return conditionA || conditionB;
     }
     
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender || _wiresheetNameEditMode)
+        {
+            if (_wiresheetNameInputField.Context != null)
+            {
+                await _wiresheetNameInputField.FocusAsync();
+            }
+        }
+    }
 }

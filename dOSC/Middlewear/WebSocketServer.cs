@@ -12,7 +12,7 @@ namespace dOSC.Middlewear;
 
 public class WebSocketServer
 {
-    public delegate void DataReceiveEventHandler(dOSCCommandDTO e);
+    public delegate void DataReceiveEventHandler(Command e);
 
     private static DataReceiveEventHandler? _dataReceivedHandler;
 
@@ -73,7 +73,7 @@ public class WebSocketServer
                     else
                     {
                         // Deserialize the JSON message
-                        var command = webSocketPayload.ReadPacket<dOSCCommandDTO>();
+                        var command = webSocketPayload.ReadPacket<Command>();
                         if (command != null) _dataReceivedHandler?.Invoke(command);
                     }
                 }
@@ -109,7 +109,7 @@ public class WebSocketServer
             }
     }
 
-    public static async Task Broadcast(dOSCCommandDTO apiDataObject)
+    public static async Task Broadcast(Command apiDataObject)
     {
         foreach (var socket in _sessions.Keys)
             if (socket.State == WebSocketState.Open)
@@ -118,7 +118,7 @@ public class WebSocketServer
     }
 
 
-    public static async Task SendAsync(WebSocket socket, dOSCCommandDTO apiDataObject)
+    public static async Task SendAsync(WebSocket socket, Command apiDataObject)
     {
         if (socket.State == WebSocketState.Open)
             await socket.SendAsync(apiDataObject.WritePacket(), WebSocketMessageType.Text, true,

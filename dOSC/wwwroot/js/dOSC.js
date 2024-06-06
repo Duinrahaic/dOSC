@@ -23,8 +23,8 @@ document.addEventListener('wheel', function(event) {
     }
 }, { passive: false });
 function resizeInput(input) {
-    input.style.width = 'auto';
-    input.style.width = (input.scrollWidth + 2) + 'px';
+    const textLength = input.value.length + 3;
+    input.style.width = textLength  +  'ch' ;
 }
 function addTooltips() {
     $('[data-toggle="tooltip"]').tooltip({

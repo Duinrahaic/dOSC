@@ -1,5 +1,6 @@
 ﻿using LiteDB;
 using LiveSheet;
+using LiveSheet.Parts;
 using LiveSheet.Parts.Nodes;
 using LiveSheet.Parts.Ports;
 
@@ -25,17 +26,26 @@ public class MathDivisionNode: MathNode
             && denominatorPort is LiveNumericPort denominator
             && this.OkToProcess(effectedNodes))
         {
-            BsonValue numeratorVal = numerator.HasLinks() ? numerator.GetBsonValue()  : new(0.0);
-            BsonValue denominatorVal = denominator.HasLinks() ? denominator.GetBsonValue()  : new(1);
-            if(denominatorVal == BsonValue.Null && denominatorVal.AsDouble == 0.0)
+            try
             {
-                denominatorVal = 1.0;
+                decimal numeratorVal = numerator.HasLinks() ? numerator.GetBsonValue()  : new(0.0);
+                decimal denominatorVal = denominator.HasLinks() ? denominator.GetBsonValue()  : new(1);
+                if(denominatorVal == BsonValue.Null && denominatorVal == 0)
+                {
+                    denominatorVal = 1;
+                }
+                Value = numeratorVal / denominatorVal;
+                ClearErrorMessage();
             }
-            Value = numeratorVal / denominatorVal;
+            catch
+            {
+                SetErrorMessage(LiveErrorMessages.FailedToCalculate);
+            }
         }
         else
         {
             Value = NodeDefault;
+            ClearErrorMessage();
         }
     }
 }

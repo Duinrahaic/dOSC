@@ -1,5 +1,6 @@
 ﻿using LiteDB;
 using LiveSheet;
+using LiveSheet.Parts;
 using LiveSheet.Parts.Nodes;
 using LiveSheet.Parts.Ports;
 
@@ -25,30 +26,39 @@ public class MathClampNode : MathNode
         var maxPort = Ports[2];
         if (inputPort is LiveNumericPort input && minPort is LiveNumericPort min && maxPort is LiveNumericPort max && this.OkToProcess(effectedNodes))
         {
-            BsonValue inputVal = input.HasLinks() ? input.GetBsonValue()  : new(0.0);
-            BsonValue minVal = min.HasLinks() ? min.GetBsonValue()  : BsonValue.Null;
-            BsonValue maxVal = max.HasLinks() ? max.GetBsonValue()  : BsonValue.Null;
-            if(minVal == BsonValue.Null && maxVal == BsonValue.Null)
+            try
             {
-                Value = inputVal;
+                decimal inputVal = input.HasLinks() ? input.GetBsonValue()  : new(0.0);
+                decimal minVal = min.HasLinks() ? min.GetBsonValue()  : BsonValue.Null;
+                decimal maxVal = max.HasLinks() ? max.GetBsonValue()  : BsonValue.Null;
+                if(minVal == BsonValue.Null && maxVal == BsonValue.Null)
+                {
+                    Value = inputVal;
+                }
+                else if(minVal == BsonValue.Null)
+                {
+                    Value = inputVal > maxVal ? maxVal : inputVal;
+                }
+                else if(maxVal == BsonValue.Null)
+                {
+                    Value = inputVal < minVal ? minVal : inputVal;
+                }
+                else
+                {
+                    var temp  = inputVal < minVal ? minVal : inputVal;
+                    Value = temp > maxVal ? maxVal : temp;
+                }
+                ClearErrorMessage();
             }
-            else if(minVal == BsonValue.Null)
+            catch
             {
-                Value = inputVal > maxVal ? maxVal : inputVal;
-            }
-            else if(maxVal == BsonValue.Null)
-            {
-                Value = inputVal < minVal ? minVal : inputVal;
-            }
-            else
-            {
-                var temp  = inputVal < minVal ? minVal : inputVal;
-                Value = temp > maxVal ? maxVal : temp;
+                SetErrorMessage(LiveErrorMessages.FailedToCalculate);
             }
         }
         else
         {
             Value = NodeDefault;
+            ClearErrorMessage();
         }
     }
 }

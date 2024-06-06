@@ -1,5 +1,6 @@
 ﻿using LiteDB;
 using LiveSheet;
+using LiveSheet.Parts;
 using LiveSheet.Parts.Nodes;
 using LiveSheet.Parts.Ports;
 
@@ -18,15 +19,25 @@ public class LogicNotNode: LogicNode
     public override void Process(List<EffectedNode>? effectedNodes = null)
     {
         var inA = Ports[0];
-        if(inA is LiveLogicPort a && this.OkToProcess(effectedNodes))
+        if(inA is LiveLogicPort a && OkToProcess(effectedNodes))
         {
-            BsonValue aVal = a.HasLinks() ? a.GetBsonValue() : false;
+            try
+            {
+                BsonValue aVal = a.HasLinks() ? a.GetBsonValue() : false;
             
-            Value = LogicOperations.NotOperation(aVal);
+                Value = LogicOperations.NotOperation(aVal);
+                ClearErrorMessage();
+            }
+            catch
+            {
+                SetErrorMessage(LiveErrorMessages.BadConfiguration);
+            }
+            
         }
         else
         {
             Value = false;
+            ClearErrorMessage();
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace dOSC.Component.Wiresheet.Nodes;
 
-public class LogicNode: WiresheetNode
+public abstract class LogicNode: WiresheetNode
 {
     public LogicNode() : base()
     {

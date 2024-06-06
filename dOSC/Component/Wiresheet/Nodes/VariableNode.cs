@@ -1,12 +1,12 @@
-﻿using LiveSheet.Parts.Serialization;
+﻿using dOSC.Component.Wiresheet.Nodes.Variables;
+using LiveSheet.Parts.Serialization;
 
 namespace dOSC.Component.Wiresheet.Nodes;
 
-public class VariableNode: WiresheetNode
+public abstract class VariableNode: WiresheetNode
 {
     public VariableNode() : base()
     {
-        this.SilentSetValue(0.0);
     }
     
     public override string NodeName => "Variable Node";
@@ -14,4 +14,8 @@ public class VariableNode: WiresheetNode
     
     [LiveSerialize]
     public bool ExposeToInterface { get; set; } = false;
+
+    public virtual string InputFieldType => "Text";
+    
+    public virtual int GetMinimumLabelSize() => Value.ToString().Length;
 }

@@ -24,7 +24,7 @@
     overflow-y: auto;
     z-index: 100;
     min-width: 80px;
-    padding: 16px 0 16px 0;
+    padding: 16px 0 0 0;
     height: 100%;
 
     ul {
@@ -36,7 +36,7 @@
       list-style: none;
       padding-left: 0;
       height: 100%;
-
+      margin-bottom: 0;
 
       li {
         height: 80px;
@@ -53,8 +53,10 @@
           cursor: unset;
           align-items: center;
           justify-content: space-around;
-          padding: 0 2px;
-
+          width: 100%;
+          span{
+            width: 100%;
+          }
 
           .nav-connection-indicator {
 
@@ -62,11 +64,22 @@
             flex-direction: row;
             align-items: center;
             justify-content: space-evenly;
-            gap: 8px;
+            gap: 4px;
+            width: 100%;
+            cursor: pointer;
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+            padding: 2px;
 
             .indicator-text {
               user-select: none;
             }
+            &:hover{
+              background: $color-theme-3;
+            }
+            
+            
+            
           }
 
 
@@ -75,7 +88,6 @@
 
         &:nth-last-child(-n+2) {
           margin-top: auto;
-          height: 20px;
 
         }
 
@@ -114,7 +126,7 @@
             background: $color-theme-3;
 
             .app-icon-container {
-              background: $color-blurple;
+              @include gradient-3d($color-blurple);
             }
           }
 

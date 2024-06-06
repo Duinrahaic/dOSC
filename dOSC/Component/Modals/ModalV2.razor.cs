@@ -29,6 +29,7 @@ public partial class ModalV2
 
     [Parameter] public EventCallback OnClose { get; set; }
 
+    [Parameter] public string Style { get; set; } = string.Empty;
 
     private string GetSize()
     {
@@ -50,6 +51,7 @@ public partial class ModalV2
     public void Open()
     {
         Show = true;
+        StateHasChanged();
     }
 
     public void Close()

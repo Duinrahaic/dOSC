@@ -1,90 +1,6 @@
 ﻿@import "_variables.scss";
 @import "_animations.scss";
 
-
-
-
-.navbar.wiresheet-toolbar {
-  background-color: $color-theme-2 !important;
-  border-top-left-radius: 0.35rem;
-  border-left: $color-wiresheet-toolbar 1px solid;
-  border-top: $color-wiresheet-toolbar 1px solid;
-  border-bottom: $color-wiresheet-toolbar 1px solid;
-  padding: 0;
-}
-
-.navbar.wiresheet-toolbar .icon {
-  color: $color-blurple;
-  font-size: 36px;
-  align-self: center;
-}
-
-.navbar.wiresheet-toolbar .navbar-nav {
-  gap: 0;
-}
-
-.navbar.wiresheet-toolbar .navbar-nav .nav-item a {
-  border-radius: 0;
-  color: $color-titlebar-textcolor;
-  font-weight: 400;
-}
-
-.navbar.wiresheet-toolbar .navbar-nav .nav-item a:hover {
-  background-color: $color-theme-3;
-  color: $color-titlebar-textcolor;
-}
-
-.navbar.wiresheet-toolbar .navbar-nav .nav-item.dropdown .dropdown-menu {
-  background-color: $color-theme-2;
-  color: $color-titlebar-textcolor;
-  border: $color-wiresheet-toolbar 1px solid;
-}
-
-
-.navbar.wiresheet-toolbar .navbar-nav .nav-item.dropdown:hover > .dropdown-menu {
-  display: none !important;
-}
-
-.navbar.wiresheet-toolbar .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item.active, .dropdown-item:hover, .dropdown-item:focus {
-  background-color: $color-theme-3;
-}
-
-.navbar.wiresheet-toolbar .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item.active, .dropdown-item.show {
-  background-color: $color-theme-3;
-}
-
-
-.navbar.wiresheet-toolbar .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-divider {
-  border-top: $color-wiresheet-toolbar 1px solid;
-}
-
-
-.navbar.wiresheet-toolbar .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-item .pointer {
-  color: $color-titlebar-textcolor;
-  font-size: small;
-  font-stretch: condensed;
-  align-self: center;
-}
-
-
-.navbar.wiresheet-toolbar .navbar-nav .nav-item.dropdown:hover > .dropdown-menu {
-  display: block !important;
-
-}
-
-.navbar.wiresheet-toolbar .navbar-nav .nav-item.dropdown-submenu:hover > .dropdown-menu {
-  display: block !important;
-  left: 100%;
-  margin-top: -37px;
-
-}
-
-.navbar.wiresheet-toolbar .navbar-nav .nav-item .dropdown-submenu:hover > .dropdown-menu {
-  display: block !important;
-  left: 100%;
-  margin-top: -37px;
-}
-
 /* Wiresheet */
 
 .diagram-container {
@@ -187,11 +103,12 @@
           border: none;
           color: $color-full-white;
           padding: 0 12px;
-          margin: 2px 0;
+          margin: 2px;
           text-overflow: ellipsis;
-          transition: all 0.3s ease;
           font-weight: bold;
           border-raius: 12px;
+          min-width: 3ch;
+          text-align: left;
         }
     }  
 }
@@ -402,7 +319,12 @@
         @include gradient-3d($node-category-variables);
       }
     }
-  
+  &.node-category-time
+  {
+    .node-header {
+      @include gradient-3d($node-category-time);
+    }
+  }
   
     .node-header {
       display: flex;
@@ -422,8 +344,27 @@
       }
       .node-header-title {
         font-weight: bold;
+        padding: 2px 8px;
+        border-radius: 8px;
+        white-space: nowrap;
+        &:hover {
+          background-color: transparentize(black, .6);
+          cursor: pointer;
+        }
+        
       }
-
+      .node-header-title-input{
+        outline: none;
+        border: none;
+        padding: 2px 8px;
+        border-radius: 8px;
+        background-color: transparentize(black, .6);
+        color: white;
+        font-weight: bold;
+        text-align:left;
+        min-width: 5ch;
+        white-space: nowrap;
+       }
       
     }
     .node-body{
@@ -434,6 +375,9 @@
       width: 100%;
       .node-content{
         flex-grow: 1;
+        justify-content: center;
+        align-items: center;
+        display: flex;
       }
 
       .node-port-container
@@ -441,11 +385,21 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        flex-grow: 1;
         gap: 4px;
         flex-wrap: nowrap;
         padding: 4px 8px;
         box-sizing: border-box;
         font-size: 16px;
+        min-width: 12px;
+        width: auto;
+        &.inputs {
+          align-items: start;
+        }
+        &.outputs {
+          align-items: end;
+        }
+        
         .node-port {
           flex-direction: row;
           display: flex;
@@ -460,6 +414,9 @@
             position: absolute;
             top: 0;
             white-space: nowrap;
+            user-select: none;
+            pointer-events: none;
+            
           }
           
           &.input
@@ -486,8 +443,8 @@
           
           .diagram-port
           {
-            width: 12px;
-            height: 12px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             background: $node-port-unknown;
             border: solid 1px $node-border-color;
@@ -515,6 +472,12 @@
                 background: $node-port-string;
               &:hover {
                 background: darken($node-port-string, 10%);
+              }
+            }
+            &.Time {
+                background: $node-port-time;
+              &:hover {
+                background: darken($node-port-time, 10%);
               }
             }
           }

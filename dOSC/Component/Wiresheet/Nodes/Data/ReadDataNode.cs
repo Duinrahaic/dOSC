@@ -3,7 +3,7 @@ using LiveSheet.Parts.Serialization;
 
 namespace dOSC.Component.Wiresheet.Nodes.Data;
 
-public class ReadDataNode: WiresheetNode
+public class ReadDataNode: DataNode
 {
     public ReadDataNode() : base()
     {

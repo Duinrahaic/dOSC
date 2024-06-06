@@ -18,17 +18,8 @@ public class Program
             globalMutex.Close();
             return;
         }
-
         EncryptionHelper.SetEncryptionKey(Environment.MachineName + "dOSC");
-        Debug.Print("Starting Hub...");
         SetupHub.Start(args);
-        Debug.Print("Starting Client_Window...");
-        //SetupClient.Start(args);
- 
-        while (SetupHub.IsRunning )
-        {
-            Task.Delay(1000);
-        }
         globalMutex.Close();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace dOSC.Component.Wiresheet.Nodes;
 
-public class MathNode: WiresheetNode
+public abstract class MathNode: WiresheetNode
 {
     public MathNode() : base()
     {

@@ -1,5 +1,6 @@
 ﻿using LiteDB;
 using LiveSheet;
+using LiveSheet.Parts;
 using LiveSheet.Parts.Nodes;
 using LiveSheet.Parts.Ports;
 
@@ -22,12 +23,22 @@ public class MathSquareRootNode: MathNode
         if (inA is LiveNumericPort a
             && this.OkToProcess(effectedNodes))
         {
-            BsonValue aVal = a.HasLinks() ? a.GetBsonValue()  : new(0.0);
-            Value = Math.Sqrt(aVal.AsDouble);
+            try
+            {
+                BsonValue aVal = a.HasLinks() ? a.GetBsonValue()  : new(0.0);
+                Value = (decimal) Math.Sqrt(aVal.AsDouble);
+                ClearErrorMessage();
+            }
+            catch
+            {
+                SetErrorMessage(LiveErrorMessages.FailedToCalculate);
+            }
         }
         else
         {
             Value = NodeDefault;
+            ClearErrorMessage();
         }
+        
     }
 }

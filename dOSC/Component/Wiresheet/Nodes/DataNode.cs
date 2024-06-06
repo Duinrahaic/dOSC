@@ -4,7 +4,7 @@ using LiveSheet.Parts.Serialization;
 
 namespace dOSC.Component.Wiresheet.Nodes;
 
-public class DataNode: WiresheetNode
+public abstract class DataNode: WiresheetNode
 {
     public DataNode() : base()
     {

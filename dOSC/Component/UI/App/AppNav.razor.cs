@@ -1,61 +1,45 @@
-﻿using dOSC.Shared.Models.Websocket;
+﻿using System.Runtime.InteropServices;
+using dOSC.Middlewear;
+using dOSC.Shared.Models.Websocket;
+using dOSC.Component.Modals;
+using dOSC.Drivers;
+using dOSC.Drivers.Websocket;
 using Microsoft.AspNetCore.Components;
 
 namespace dOSC.Component.UI.App;
 
 public partial class AppNav : IDisposable
 {
-    //[Inject] public WebsocketClient Client { get; set; } = default!;
+    [Inject] private HubService Server { get; set; }
     public List<NavItem> Apps { get; set; } = new();
-    public ConnectionState ConnectionState { get; private set; } = ConnectionState.Unknown;
-
-    public string ConnectionClass => ConnectionState switch
-    {
-        ConnectionState.Closed => "--error",
-        ConnectionState.Reconnecting => "--warning",
-        ConnectionState.Open => "--success",
-        _ => "--offline"
-    };
+    
+    private HubModal HubModal { get; set; }
+    private bool _alarming = false;
 
     public void Dispose()
     {
-        //Client.OnStateChanged -= UpdateWebsocketState;
+        Server.OnAlarmStateChanged -= AlarmStateUpdated;
     }
 
 
     protected override void OnInitialized()
     {
-        //Client.OnStateChanged += UpdateWebsocketState;
-        //ConnectionState = Client.State;
+        Server.OnAlarmStateChanged += AlarmStateUpdated;
+        _alarming = Server.IsInAlarm;
         Apps.Add(new NavItem("Home", "oi oi-home", "/", NavItemType.Home));
         Apps.Add(new NavItem("Apps", "oi oi-code", "/apps", NavItemType.App));
         Apps.Add(new NavItem("Editor", "icon icon-pencil-ruler", "/editor", NavItemType.App));
-        Apps.Add(new NavItem("Settings", "oi oi-cog", "/settings", NavItemType.Settings));
+        //Apps.Add(new NavItem("Settings", "oi oi-cog", "/settings", NavItemType.Settings));
     }
 
-    private void UpdateWebsocketState(ConnectionState state)
+    private void AlarmStateUpdated(bool inAlarm)
     {
-        ConnectionState = state;
+        _alarming = inAlarm;
         InvokeAsync(StateHasChanged);
     }
-
-    private async Task ResetConnection()
+    
+    private void ShowHubModal()
     {
-        /*try
-        {
-            if (Client.State == ConnectionState.Open)
-            {
-                await Client.SendAsync("disconnect");
-            }
-            else
-            {
-                await Client.ConnectAsync();
-            }
-
-        }
-        catch
-        {
-            // ignored
-        }*/
+        HubModal.Show();
     }
 }

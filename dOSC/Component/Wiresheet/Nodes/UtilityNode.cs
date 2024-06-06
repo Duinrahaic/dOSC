@@ -1,6 +1,6 @@
 ﻿namespace dOSC.Component.Wiresheet.Nodes;
 
-public class UtilityNode: WiresheetNode
+public abstract class UtilityNode: WiresheetNode
 {
     public UtilityNode() : base()
     {

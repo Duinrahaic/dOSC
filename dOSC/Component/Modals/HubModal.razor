@@ -1,0 +1,115 @@
+﻿@using dOSC.Middlewear
+@using dOSC.Shared.Models.Commands
+@using dOSC.Shared.Utilities
+@using dOSC.Drivers
+@implements IDisposable
+<ModalV2 @ref="Modal" Title="Hub Communication"  Size="ModalV2.ModalSize.Large">
+    <Body>
+    <div class="hub-log-container">
+        <div class="hub-log-header">
+            <div class="hub-log-header-title">Logs</div>
+            <div class="hub-log-action-group">
+                <div class="hub-log-header-action" @onclick="TogglePause">
+                    <div class="hub-log-header-action-icon @(_paused ? "icon-pause" : "icon-play")"></div>
+                    <div class="hub-log-header-action-text">@(_paused ? "Paused" : "Listening")</div>
+                </div>
+                <div class="hub-log-header-action" @onclick="ClearLogs">
+                    <div class="hub-log-header-action-icon icon-trash"></div>
+                    <div class="hub-log-header-action-text">Clear</div>
+                </div>
+                <div class="hub-log-header-action">
+                    <div class="hub-log-header-action-icon icon-download"></div>
+                    <div class="hub-log-header-action-text">Export</div>
+                </div>
+            </div>
+        </div>  
+        <div id="hub-log">
+            <table>
+              <thead>
+                <tr>
+                  <th>Level</th>
+                  <th>Timestamp</th>
+                  <th>Origin</th>
+                  <th>Message</th>
+                </tr>
+              </thead>
+              <tbody>
+                <Virtualize Items="FilteredLogs" Context="log">
+                  <tr>
+                    <td><div class="hub-log-item-severity @log.Level.ToString().ToLower()"> @log.Level.ToString() </div></td>
+                    <td>@log.TimeStamp</td>
+                    <td>@log.Origin</td>
+                    <td>@log.Message</td>
+                  </tr>
+                </Virtualize>
+              </tbody>
+            </table>
+        </div>
+    </div>
+    </Body>
+</ModalV2>
+
+@code
+{
+    [Inject] private HubService Hub { get; set; }
+    private ModalV2 Modal { get; set; }
+    private Queue<Log> HubLogs { get; set; } = new();
+    
+    private List<Log> FilteredLogs => HubLogs.ToList();
+    private void ClearLogs() => HubLogs.Clear();
+    private bool _paused = false;
+    private void TogglePause() => _paused = !_paused;
+    private void ToggleAutoScroll() => _autoScroll = !_autoScroll;
+    private int _maxQueueSize = 1000;
+    private bool _autoScroll = true;
+    
+    private ElementReference _hubLogContainer;
+        
+    
+ 
+
+    
+    protected override void OnInitialized()
+    {
+        HubLogs = new Queue<Log>(_maxQueueSize);
+        HubLogs = Hub.GetLogs();
+        Hub.LogReceived += OnLogReceived;
+    }
+
+    private void OnLogReceived(Log log)
+    {
+        AddLog(log);
+        if(!_paused)
+            InvokeAsync(StateHasChanged);
+    }
+    
+    private void AddLog(Log log)
+    {
+        HubLogs.Enqueue(log);
+        if(HubLogs.Count > _maxQueueSize)
+            HubLogs.Dequeue();
+    }
+    
+    
+    
+    
+    public void Dispose()
+    {
+        Hub.LogReceived -= OnLogReceived;
+    }
+    
+    public void Show()
+    {
+        Modal.Open();
+
+        _paused = false;
+        StateHasChanged();
+    }
+    
+    public void Hide()
+    {
+        Modal.Close();
+        _paused = true;
+    }
+    
+}

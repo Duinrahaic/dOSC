@@ -9,19 +9,19 @@ public partial class NavContainer : IDisposable
 
     [Parameter] public NavItem? SelectedItem { get; set; }
 
-    [Inject] public NavigationManager? NM { get; set; }
+    [Inject] private NavigationManager Nm { get; set; } 
 
  
     [Parameter] public RenderFragment? Indicators { get; set; }
 
     public void Dispose()
     {
-        NM!.LocationChanged -= NavContainer_LocationChanged;
+        Nm!.LocationChanged -= NavContainer_LocationChanged;
     }
 
     protected override void OnInitialized()
     {
-        NM!.LocationChanged += NavContainer_LocationChanged;
+        Nm!.LocationChanged += NavContainer_LocationChanged;
     }
 
     private void NavContainer_LocationChanged(object? sender, LocationChangedEventArgs e)
@@ -36,7 +36,7 @@ public partial class NavContainer : IDisposable
 
     private void Update()
     {
-        var route = NM.Uri.Replace(NM.BaseUri, "");
+        var route = Nm.Uri.Replace(Nm.BaseUri, "");
         if (route.ToLower().StartsWith("apps"))
             SelectedItem = Apps.FirstOrDefault(x => x.Name.ToLower() == "apps");
         else if (route.ToLower().StartsWith("settings"))
@@ -54,6 +54,6 @@ public partial class NavContainer : IDisposable
         if (SelectedItem?.Name == item.Name)
             return;
         Update();
-        NM!.NavigateTo($"{item.Navigation}");
+        Nm!.NavigateTo($"{item.Navigation}");
     }
 }

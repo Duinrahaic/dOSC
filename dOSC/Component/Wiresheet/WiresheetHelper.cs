@@ -9,42 +9,44 @@ namespace dOSC.Component.Wiresheet;
 public static class WiresheetHelper
 {
     public static TimeSpan UpdateInterval = TimeSpan.FromMilliseconds(100);
-    
     public static void RegisterNodes(this WiresheetDiagram diagram)
     {
+        // Specific
+        diagram.RegisterComponent<UtilityNodeNote, UtilityNoteWidget>();
+        diagram.RegisterComponent<VariableNode, VariableNodeWidget>();
         // Default
         diagram.RegisterComponent<WiresheetNode, DefaultNodeWidget>();
         
-        // Specific
-        diagram.RegisterComponent<UtilityNodeNote, UtilityNoteWidget>();
-        
     }
-    
-    private static List<string> NodeNameSpaces = new()
+    private static string _rootNamespace = "dOSC.Component.Wiresheet.Nodes";
+    private static List<Type> GetNodeNamespaces()
     {
-        "dOSC.Component.Wiresheet.Nodes.Data",
-        "dOSC.Component.Wiresheet.Nodes.Utility",
-        "dOSC.Component.Wiresheet.Nodes.Variables",
-        "dOSC.Component.Wiresheet.Nodes.Mathematics",
-        "dOSC.Component.Wiresheet.Nodes.Logic",
-    };
-
+        List<Type> nodeTypes = new();
+        Assembly assembly = Assembly.GetExecutingAssembly();
+        var types = assembly.GetTypes();
+        var filteredTypes = (types.Where(t => t.Namespace.StartsWith(_rootNamespace) && !t.Namespace.Equals(_rootNamespace)).ToList() ?? new List<Type>());
+        foreach (Type type in filteredTypes ?? new List<Type>())
+        {
+            if (!type.IsAbstract)
+            {
+                nodeTypes.Add(type);
+            }
+        }
+        return nodeTypes;
+    }
     public static List<WiresheetNode> GetAllNodes()
     {
         List<WiresheetNode> nodes = new();  
         Assembly assembly = Assembly.GetExecutingAssembly();
         Type targetType = typeof(WiresheetNode);
-        
-        foreach (string ns in NodeNameSpaces)
+        var acceptedNamespaces = GetNodeNamespaces();
+        foreach (Type type in acceptedNamespaces)
         {
-            foreach (Type type in assembly.GetTypes())
+            if (targetType.IsAssignableFrom(type) && !type.IsAbstract && !type.Namespace.Equals(_rootNamespace))
             {
-                if (type.Namespace == ns && targetType.IsAssignableFrom(type))
+                if (Activator.CreateInstance(type) is WiresheetNode node)
                 {
-                    if (Activator.CreateInstance(type) is WiresheetNode node)
-                    {
-                        nodes.Add(node);
-                    }
+                    nodes.Add(node);
                 }
             }
         }

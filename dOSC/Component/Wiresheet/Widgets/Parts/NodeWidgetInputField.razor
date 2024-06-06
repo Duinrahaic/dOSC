@@ -1,0 +1,228 @@
+﻿@using dOSC.Component.Wiresheet.Nodes.Variables
+@using dOSC.Component.Wiresheet.Nodes
+
+    @if (Node is VariableLogicNode logicNode)
+    {
+        <div class="switch-input" >
+            <div class="switch-input-container" @onclick="ToggleBooleanValue" @onpointerdown:stopPropagation @onpointerup:stopPropagation @onpointermove:stopPropagation>
+                <div class="switch-input-slider" style="width: @(logicNode.Value ? "100%" : "0%")">
+                    <div class="switch-input-slider-handle"></div>
+                </div>
+            </div>
+            @if (_editLabel)
+            {
+                <input  @onpointerdown:stopPropagation @onpointerup:stopPropagation @onpointermove:stopPropagation 
+                    @ref=@_inputField style="width: @( Math.Max(_labelName.Count() + 3, logicNode.GetMinimumLabelSize())+ 3)ch;"  
+                       class="switch-input-label-input" @oninput="ResizeInput"  type="text" autocorrect="off" autocomplete="false" maxlength="80" 
+                       @bind="@_labelName" @onblur="OnLabelEditEnd" @onkeydown="OnLabelKeyPress"/>
+            }
+            else
+            {
+                <div class="switch-input-label" style="width: @(logicNode.GetMinimumLabelSize())ch"  @ondblclick="OnLabelEditStart" >
+                    @logicNode.GetDisplayValue()
+                </div>
+            }
+            
+        </div>
+    }
+    
+    @if (Node is VariableNumericNode numericNode)
+    {
+        <div class="numeric-input"   @onpointerdown:stopPropagation @onpointerup:stopPropagation @onpointermove:stopPropagation>
+            <div class="numeric-input-container">
+                <div class="numeric-input-button decrement" @onclick="DecrementValue">-</div>
+                <input @onpointerdown:stopPropagation @onpointerup:stopPropagation @onpointermove:stopPropagation
+                    @ref=@_inputField style="width: @( numericNode.GetMinimumLabelSize() + 5)ch;"  
+                                   class="numeric-input-input" @oninput="ResizeInput" type="number" min="@numericNode.MinValue" max="@numericNode.MaxValue" step="@numericNode.Step" @bind="@NumericValue" />
+                <div class="numeric-input-button increment" @onclick="IncrementValue" >+</div>
+            </div>
+        </div>
+    }
+    
+    @if(Node is VariableTimeNode timeNode)
+    {
+        <div class="time-input">
+        	<input   @onpointerdown:stopPropagation @onpointerup:stopPropagation @onpointermove:stopPropagation type="date" id="date" @bind="@DateValue"/>
+        	<span></span>
+            <input   @onpointerdown:stopPropagation @onpointerup:stopPropagation @onpointermove:stopPropagation type="time" id="time" @bind="@TimeValue"/>
+        </div>
+    }
+
+
+
+
+
+
+
+@code 
+{
+    [Parameter] public WiresheetNode Node { get; set; } = new();
+    [Inject] private IJSRuntime JS { get; set; }
+
+#region Time
+
+    public DateTime DateValue
+    {
+        get
+        {
+            if (Node is VariableTimeNode timeNode)
+            {
+                return timeNode.GetDateTimeValue();
+                StateHasChanged();
+            }
+            return DateTime.Now;
+        }
+        set
+        {
+            if (Node is VariableTimeNode timeNode)
+            {
+                DateTime time = timeNode.GetDateTimeValue();
+                DateTime date = new DateTime(value.Year, value.Month, value.Day, time.Hour, time.Minute, time.Second);
+                timeNode.SetDateTimeValue(date);
+                StateHasChanged();
+            }
+        }
+    }
+
+
+    public DateTime TimeValue
+    {
+        get
+        {
+            if (Node is VariableTimeNode timeNode)
+            {
+                return timeNode.GetDateTimeValue();
+                StateHasChanged();
+            }
+            return DateTime.Now;
+        }
+        set
+        {
+            if (Node is VariableTimeNode timeNode)
+            {
+                DateTime date = timeNode.GetDateTimeValue();
+                DateTime time = new DateTime(date.Year, date.Month, date.Day, value.Hour, value.Minute, value.Second);
+                timeNode.SetDateTimeValue(time);
+                StateHasChanged();
+            }
+        }
+    }
+
+#endregion
+
+#region Logic
+
+    private void ToggleBooleanValue()
+    {
+        if (Node is VariableLogicNode logicNode)
+        {
+            logicNode.Value = !logicNode.Value;
+            StateHasChanged();  
+        }
+    }
+
+#endregion
+    
+#region Numeric
+    
+    private decimal NumericValue
+    {
+        get
+        {
+            var val =(Node as VariableNumericNode)?.Value.AsDecimal ?? 0;
+            return val;
+        }
+        set
+        {
+            if (Node is VariableNumericNode numericNode)
+            {
+                if(numericNode.MinValue > value)
+                    value = numericNode.MinValue;
+                if(numericNode.MaxValue < value)
+                    value = numericNode.MaxValue;
+                numericNode.Value = value;
+                StateHasChanged();  
+            }
+        }
+    }
+
+    public void DecrementValue()
+    {
+        if (Node is VariableNumericNode numericNode)
+        {
+            NumericValue -= numericNode.Step;
+        }
+    }
+    public void IncrementValue()
+    {
+        if (Node is VariableNumericNode numericNode)
+        {
+            NumericValue += numericNode.Step;
+        }
+    }
+    
+#endregion
+
+#region Label Editing
+    private bool _editLabel = false;
+    private string _labelName = string.Empty;
+    private ElementReference _inputField;
+    
+    public async Task OnLabelEditStart()
+    {
+        if(Node is VariableLogicNode logicNode)
+        {
+            _labelName = logicNode.GetDisplayValue();
+            StateHasChanged();  
+        }
+        
+        
+        _editLabel = true;
+        StateHasChanged();
+    }
+    
+    public void OnLabelEditEnd()
+    {
+        if(Node is VariableLogicNode logicNode)
+        {
+            if (logicNode.Value.AsBoolean)
+            {
+                logicNode.TrueText = _labelName;
+            }
+            else
+            {
+                logicNode.FalseText = _labelName;
+            }
+            StateHasChanged();  
+        }
+        _editLabel = false;
+    }
+    
+    private async Task OnLabelKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") OnLabelEditEnd();
+        await ResizeInput();
+    }
+    
+    
+    
+    
+    private async Task ResizeInput()
+    {
+        await JS.InvokeVoidAsync("resizeInput", _inputField);
+    }
+    
+#endregion
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender || _editLabel)
+        {
+            if (_inputField.Context != null && Node is VariableLogicNode)
+            {
+                await _inputField.FocusAsync();
+            }
+        }
+    }
+    
+}
