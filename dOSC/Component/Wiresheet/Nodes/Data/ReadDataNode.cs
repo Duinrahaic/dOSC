@@ -7,7 +7,7 @@ public class ReadDataNode: DataNode
 {
     public ReadDataNode() : base()
     {
-        AddPort(new LiveLogicPort(this, false));
+        
     }
     public override string NodeName => "Read Data";
     public override string Icon => "fa-solid fa-arrow-right-from-bracket";

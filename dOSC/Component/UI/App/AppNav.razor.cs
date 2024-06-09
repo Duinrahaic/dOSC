@@ -1,5 +1,4 @@
 ﻿using System.Runtime.InteropServices;
-using dOSC.Middlewear;
 using dOSC.Shared.Models.Websocket;
 using dOSC.Component.Modals;
 using dOSC.Drivers;

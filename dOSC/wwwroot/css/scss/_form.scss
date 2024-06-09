@@ -276,3 +276,56 @@
       padding-left: 2px;
     }
 }
+
+
+$dropdown-width: 200px;
+$dropdown-border: 1px solid #ccc;
+$dropdown-bg: #fff;
+$hover-bg: #f0f0f0;
+
+.dropdown-container {
+  width: $dropdown-width;
+  position: relative;
+
+  .dropdown-header {
+    padding: 10px;
+    border: $dropdown-border;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .dropdown-placeholder {
+      color: #999;
+    }
+
+    .dropdown-selected {
+      color: #000;
+    }
+
+    .dropdown-arrow {
+      font-size: 12px;
+    }
+  }
+
+  .dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: $dropdown-border;
+    background-color: $dropdown-bg;
+    z-index: 1000;
+    max-height: 400px;
+    overflow-y: auto;
+
+    .dropdown-item {
+      padding: 10px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $hover-bg;
+      }
+    }
+  }
+}

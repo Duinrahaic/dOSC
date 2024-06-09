@@ -1,0 +1,46 @@
+﻿
+<div class="dropdown-container">
+    <div class="dropdown-header" @onclick="ToggleDropdown">
+        @if (string.IsNullOrEmpty(selectedItem))
+        {
+            <span class="dropdown-placeholder">Select an item...</span>
+        }
+        else
+        {
+            <span class="dropdown-selected">@selectedItem</span>
+        }
+        <span class="dropdown-arrow">@((isDropdownOpen) ? "▲" : "▼")</span>
+    </div>
+
+    @if (isDropdownOpen)
+    {
+        <div class="dropdown-list" @onwheel:preventDefault @onwheel:stopPropagation>
+            @foreach (var item in items)
+            {
+                <div class="dropdown-item" @onclick="() => SelectItem(item)">
+                    @item
+                </div>
+            }
+        </div>
+    }
+</div>
+
+
+@code {
+    private bool isDropdownOpen = false;
+    private string selectedItem;
+    
+    
+    private List<string> items = new List<string> { "Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3" };
+
+    private void ToggleDropdown()
+    {
+        isDropdownOpen = !isDropdownOpen;
+    }
+
+    private void SelectItem(string item)
+    {
+        selectedItem = item;
+        isDropdownOpen = false;
+    }
+}

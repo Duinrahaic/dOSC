@@ -1,4 +1,4 @@
-﻿using dOSC.Shared.Utilities;
+﻿using dOSC.Utilities;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace dOSC.Drivers.DB;

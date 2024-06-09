@@ -1,4 +1,4 @@
-﻿using dOSC.Shared.Utilities;
+﻿using dOSC.Utilities;
 using LiteDB;
 
 namespace dOSC.Component.Wiresheet.Nodes.Utility;

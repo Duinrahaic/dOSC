@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System.Diagnostics;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Platform;
 using Avalonia.Interactivity;
@@ -143,9 +144,10 @@ public class BlazorWebView: NativeControlHost
         {
             _blazorWebView = new()
             {
-                HostPage = _hostPage,
+                HostPage = Path.Combine(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName), "wwwroot\\index.html"),
                 Services = _serviceProvider,
             };
+            
             _blazorWebView.WebView.ZoomFactor = Math.Clamp(_zoomFactor, 0.1, 4.0);
 
             foreach(var component in _rootComponents)

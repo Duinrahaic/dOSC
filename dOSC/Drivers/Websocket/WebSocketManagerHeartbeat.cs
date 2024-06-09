@@ -1,7 +1,7 @@
 ﻿using System.Net.WebSockets;
 using System.Text;
-using dOSC.Shared.Models.Commands;
-using LogLevel = dOSC.Shared.Models.Commands.LogLevel;
+using dOSC.Client.Models.Commands;
+using LogLevel = dOSC.Client.Models.Commands.LogLevel;
 
 namespace dOSC.Drivers.Websocket;
 

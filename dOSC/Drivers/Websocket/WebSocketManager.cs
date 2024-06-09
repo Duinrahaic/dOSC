@@ -1,8 +1,8 @@
 ﻿using System.Collections.Concurrent;
 using System.Net.WebSockets;
 using System.Text;
-using dOSC.Middlewear;
-using dOSC.Shared.Models.Commands;
+using dOSC.Client.Models.Websocket;
+using dOSC.Client.Models.Commands;
 
 namespace dOSC.Drivers.Websocket;
 

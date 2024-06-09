@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
-using dOSC.Shared.Models.Commands;
-using LogLevel = dOSC.Shared.Models.Commands.LogLevel;
+using dOSC.Client.Models.Commands;
+using LogLevel = dOSC.Client.Models.Commands.LogLevel;
 
 namespace dOSC.Drivers;
 
@@ -14,12 +14,12 @@ public partial class HubService
         bool success = _endpoints.Add(e);
         if (success)
         {
-            log.Message = $"Registered Endpoint: {e.Name} for {e.Owner} ";
+            log.Message = $"Registered ConfigEndpoint: {e.Name} for {e.Owner} ";
             log.Level = LogLevel.Info;
         }
         else
         {
-            log.Message = $"Unable to register Endpoint: {e.Name} for {e.Owner} ";
+            log.Message = $"Unable to register ConfigEndpoint: {e.Name} for {e.Owner} ";
             log.Level = LogLevel.Warning;
         }
         Log(log);
@@ -31,12 +31,12 @@ public partial class HubService
         bool success = _endpoints.Remove(e);
         if (success)
         {
-            log.Message = $"{e.Owner} unregistered Endpoint: {e.Name}";
+            log.Message = $"{e.Owner} unregistered ConfigEndpoint: {e.Name}";
             log.Level = LogLevel.Info;
         }
         else
         {
-            log.Message = $"Unable to unregister Endpoint: {e.Name} for {e.Owner}";
+            log.Message = $"Unable to unregister ConfigEndpoint: {e.Name} for {e.Owner}";
             log.Level = LogLevel.Warning;
         }
         Log(log);
@@ -50,24 +50,51 @@ public partial class HubService
         if(IsRegistered(e))
         {
             var endpoint = _endpoints.First(ep => ep.Equals(e));
-            endpoint.UpdateValue(e.Value);
-            log.Message = $"{e.Owner} Updated Endpoint: {e.Name} {e.Value} for {e.Owner}";
-            log.Level = LogLevel.Info;
-            success = true;
         }
         else
         {
-            log.Message = $"Endpoint {e.Name} for {e.Owner} does not exist to update";
+            log.Message = $"ConfigEndpoint {e.Name} for {e.Owner} does not exist to update";
             log.Level = LogLevel.Warning;
             success = false;
         }
         Log(log);
         return success;
     }
+    
+    public bool UpdateEndpointValue(DataEndpointValue value)
+    {
+        var log = EndpointLog;
+        bool success = false;
+        var endpoint = _endpoints.FirstOrDefault(e => e.Name == value.Name && e.Owner == value.Owner);
+        if(endpoint != null)
+        {
+            if(endpoint.Type != value.Type)
+            {
+                log.Message = $"ConfigEndpoint {value.Name} for {value.Owner} has different type than the value provided";
+                log.Level = LogLevel.Warning;
+                Log(log);
+                return false;
+            }
+            
+            
+            success = true;
+            log.Message = $"Updated ConfigEndpoint {endpoint.Name} for {endpoint.Owner} with value {value.Value}";
+            log.Level = LogLevel.Info;
+        }
+        else
+        {
+            log.Message = $"ConfigEndpoint {value.Name} for {value.Owner} does not exist to update";
+            log.Level = LogLevel.Warning;
+            success = false;
+        }
+        Log(log);
+        return success;
+    }
+    
 
     private static Log EndpointLog => new()
     {
-        Origin ="Hub:Endpoint Service",
+        Origin ="Hub:ConfigEndpoint Service",
         TimeStamp = DateTime.Now.ToString(CultureInfo.CurrentCulture)
     };
     

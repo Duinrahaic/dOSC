@@ -1,13 +1,11 @@
-﻿@using dOSC.Middlewear
-@using dOSC.Shared.Models.Commands
-@using dOSC.Shared.Utilities
+﻿@using dOSC.Client.Models.Commands
 @using dOSC.Drivers
 @implements IDisposable
 <ModalV2 @ref="Modal" Title="Hub Communication"  Size="ModalV2.ModalSize.Large">
     <Body>
     <div class="hub-log-container">
         <div class="hub-log-header">
-            <div class="hub-log-header-title">Logs</div>
+            <div class="hub-log-header-title">Logs (@Hub.GetLogCount() / @Hub.GetMaxLogHistory())</div>
             <div class="hub-log-action-group">
                 <div class="hub-log-header-action" @onclick="TogglePause">
                     <div class="hub-log-header-action-icon @(_paused ? "icon-pause" : "icon-play")"></div>
@@ -53,45 +51,24 @@
 {
     [Inject] private HubService Hub { get; set; }
     private ModalV2 Modal { get; set; }
-    private Queue<Log> HubLogs { get; set; } = new();
     
-    private List<Log> FilteredLogs => HubLogs.ToList();
-    private void ClearLogs() => HubLogs.Clear();
+    private List<Log> FilteredLogs => Hub.GetLogs().ToList();
+    private void ClearLogs() => Hub.ClearLogs();
     private bool _paused = false;
     private void TogglePause() => _paused = !_paused;
-    private void ToggleAutoScroll() => _autoScroll = !_autoScroll;
-    private int _maxQueueSize = 1000;
-    private bool _autoScroll = true;
     
     private ElementReference _hubLogContainer;
-        
-    
- 
-
     
     protected override void OnInitialized()
     {
-        HubLogs = new Queue<Log>(_maxQueueSize);
-        HubLogs = Hub.GetLogs();
         Hub.LogReceived += OnLogReceived;
     }
 
     private void OnLogReceived(Log log)
     {
-        AddLog(log);
         if(!_paused)
             InvokeAsync(StateHasChanged);
     }
-    
-    private void AddLog(Log log)
-    {
-        HubLogs.Enqueue(log);
-        if(HubLogs.Count > _maxQueueSize)
-            HubLogs.Dequeue();
-    }
-    
-    
-    
     
     public void Dispose()
     {

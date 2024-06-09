@@ -1,6 +1,6 @@
 ﻿using System.Net.WebSockets;
-using dOSC.Middlewear;
-using dOSC.Shared.Models.Commands;
+using dOSC.Client.Models.Websocket;
+using dOSC.Client.Models.Commands;
 
 namespace dOSC.Drivers.Websocket;
 

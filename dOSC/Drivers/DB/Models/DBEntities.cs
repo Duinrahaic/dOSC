@@ -1,6 +1,4 @@
 ﻿using System.IO;
-using dOSC.Shared.Models.Database;
-using dOSC.Shared.Utilities;
 using dOSC.Utilities;
 using Microsoft.EntityFrameworkCore;
 

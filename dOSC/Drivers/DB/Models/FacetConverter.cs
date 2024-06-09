@@ -1,5 +1,4 @@
-﻿using dOSC.Shared.Models.Endpoint;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Newtonsoft.Json;
 
 namespace dOSC.Drivers.DB.Models;

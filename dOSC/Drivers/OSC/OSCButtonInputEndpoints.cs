@@ -1,32 +1,128 @@
-﻿namespace dOSC.Drivers.OSC;
+﻿using dOSC.Attributes;
+using dOSC.Client.Models.Commands;
+
+namespace dOSC.Drivers.OSC;
 
 public partial class OSCService
 {
-    // These are all ints
-    public const string MoveForward = "/input/MoveForward";
-    public const string MoveBackward = "/input/MoveBackward";
-    public const string MoveLeft = "/input/MoveLeft";
-    public const string MoveRight = "/input/MoveRight";
-    public const string LookLeft = "/input/LookLeft";
-    public const string LookRight = "/input/LookRight";
-    public const string LookDown = "/input/LookDown";
-    public const string LookUp = "/input/LookUp";
-    public const string Jump = "/input/Jump";
-    public const string Run = "/input/Run";
-    public const string Back = "/input/Back";
-    public const string Menu = "/input/Menu";
-    public const string ComfortLeft = "/input/ComfortLeft";
-    public const string ComfortRight = "/input/ComfortRight";
-    public const string DropRight = "/input/DropRight";
-    public const string UseRight = "/input/UseRight";
-    public const string GrabRight = "/input/GrabRight";
-    public const string DropLeft = "/input/DropLeft";
-    public const string UseLeft = "/input/UseLeft";
-    public const string GrabLeft = "/input/GrabLeft";
-    public const string PanicButton = "/input/PanicButton";
-    public const string QuickMenuToggleLeft = "/input/QuickMenuToggleLeft";
-    public const string QuickMenuToggleRight = "/input/QuickMenuToggleRight";
-    public const string ToggleSitStand = "/input/ToggleSitStand";
-    public const string AFKToggle = "/input/AFKToggle";
-    public const string Voice = "/input/Voice";
+  
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/MoveForward", Alias = "Move Forward", Description = "Move Forward", 
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool MoveForward { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/MoveBackward", Alias = "Move Backward", Description = "Move Backward", 
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool MoveBackward { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/MoveLeft", Alias = "Move Left", Description = "Move Left", 
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool MoveLeft { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/MoveRight", Alias = "Move Right", Description = "Move Right", 
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool MoveRight { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/LookRight", Alias = "Look Right", Description = "Look Right", 
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool LookRight { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/LookDown", Alias = "Look Down", Description = "Look Down", 
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool LookDown { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/LookUp", Alias = "Look Up", Description = "Look Up", 
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool LookUp { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/Jump", Alias = "Jump", Description = "Jump if the world supports it.", 
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool Jump { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/Run", Alias = "Run", Description = "Walk faster if the world supports it.", 
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool Run { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/ComfortLeft", Alias = "Snap-Turn Left", Description = " Snap-Turn to the Left - VR Only.",
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool ComfortLeft { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/ComfortRight", Alias = "Snap-Turn Right", Description = " Snap-Turn to the right - VR Only.",
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool ComfortRight { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/DropRight", Alias = "Drop Right", Description = "Drop the item held in your Right hand - VR Only.",
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool DropRight { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/UseRight", Alias = "Use Right", Description = "Use the item highlighted by your Right hand - VR Only.",
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool UseRight { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/GrabRight", Alias = "Grab Right", Description = "Grab the item highlighted by your Right hand - VR Only.",
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool GrabRight { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/DropLeft", Alias = "Drop Left", Description = "Drop the item held in your left hand - VR Only.",
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool DropLeft { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/UseLeft", Alias = "Use Left", Description = "Use the item highlighted by your left hand - VR Only.",
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool UseLeft { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/GrabLeft", Alias = "Grab Left", Description = "Grab the item highlighted by your left hand - VR Only.",
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool GrabLeft { get; set; } = false;
+  
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/PanicButton", Alias = "Panic Mode", Description = "Enables or disables panic mode for the user",
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool PanicButton { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/Menu", Alias = "Toggle Menu", Description = "Toggles the menu on or off",
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool Menu { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/QuickMenuToggleLeft", Alias = "Toggle Left Quick Menu ", Description = "Toggles the quick menu on the left hand",
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool QuickMenuToggleLeft { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/QuickMenuToggleRight", Alias = "Toggle Right Quick Menu", Description = "Toggles the quick menu on the right hand",
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool QuickMenuToggleRight { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/ToggleSitStand", Alias = "Crouch", Description = "Toggles users crouch on or off",
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool ToggleSitStand { get; set; } = false;
+    
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/AFKToggle", Alias = "AFK Toggle", Description = "Toggles users AFK Mode on or off",
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool AFKToggle { get; set; } = false;
+
+    [ConfigLogicEndpoint(Owner = "VRChat - Buttons", Name = "/input/Voice", Alias = "Voice", Description = "Toggles users voice on or off",
+        Permissions = Permissions.WriteOnly,
+        DefaultValue = false, TrueLabel = "Press", FalseLabel = "Release")]
+    public bool Voice { get; set; } = false;
 }

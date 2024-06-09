@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using dOSC.Shared.Utilities;
+using dOSC.Utilities;
 
 namespace dOSC;
 
@@ -18,8 +18,9 @@ public class Program
             globalMutex.Close();
             return;
         }
+        
         EncryptionHelper.SetEncryptionKey(Environment.MachineName + "dOSC");
-        SetupHub.Start(args);
+        SetupClient.Start(args);
         globalMutex.Close();
     }
 }

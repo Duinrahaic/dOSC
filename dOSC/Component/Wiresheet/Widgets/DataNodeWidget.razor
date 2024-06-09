@@ -1,0 +1,23 @@
+﻿@using dOSC.Component.Wiresheet.Widgets.Parts
+@using dOSC.Component.Wiresheet.Nodes
+@using dOSC.Component.Form
+@using Blazor.Diagrams.Components.Renderers
+
+<NodeWidgetFrame Node=@Nodes>
+    <DropDown/> 
+</NodeWidgetFrame>
+
+@code 
+{
+    [Parameter] public WiresheetNode Nodes { get; set; } = new();
+    
+    private List<string> dropdownItems = new List<string> { "Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3" };
+    private string selectedValue;
+
+    private void OnSelectedValueChange(ChangeEventArgs e)
+    {
+        selectedValue = e.Value.ToString();
+    }
+    
+    
+}

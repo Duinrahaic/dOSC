@@ -14,6 +14,8 @@ public static class WiresheetHelper
         // Specific
         diagram.RegisterComponent<UtilityNodeNote, UtilityNoteWidget>();
         diagram.RegisterComponent<VariableNode, VariableNodeWidget>();
+        diagram.RegisterComponent<DataNode, DataNodeWidget>();
+
         // Default
         diagram.RegisterComponent<WiresheetNode, DefaultNodeWidget>();
         

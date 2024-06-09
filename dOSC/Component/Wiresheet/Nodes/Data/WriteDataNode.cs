@@ -6,7 +6,6 @@ public class WriteDataNode : DataNode
 {
     public WriteDataNode() : base()
     {
-        AddPort(new LiveLogicPort(this, true));
     }
     
     public override string NodeName => "Write Data";

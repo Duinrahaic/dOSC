@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using dOSC.Attributes;
 using dOSC.Shared.Models.Settings;
-using dOSC.Shared.Utilities;
+using dOSC.Utilities;
 using dOSC.Utilities;
 using Microsoft.Extensions.Hosting;
 
@@ -18,6 +19,20 @@ public abstract class ConnectorBase : IHostedService
     public virtual string IconRef => string.Empty;
     public virtual string Description => string.Empty;
 
+    internal readonly HubService HubService;
+    
+    public ConnectorBase(IServiceProvider services)
+    {
+        HubService = services.GetService<HubService>();
+
+        var endpoints = EndpointHelper.GetEndpoints(this);
+        foreach (var endpoint in endpoints)
+        {
+            HubService.RegisterEndpoint(endpoint);
+        }
+    }
+    
+    
     public bool Running
     {
         get => _running;
@@ -41,7 +56,7 @@ public abstract class ConnectorBase : IHostedService
 
     public event ServiceStateChangedHandler? OnServiceStateChanged;
 
-    public bool isRunning()
+    public bool IsRunning()
     {
         return _running;
     }
@@ -57,9 +72,9 @@ public abstract class ConnectorBase : IHostedService
         throw new NotImplementedException();
     }
 
-    public void UpdateSetting(SettingBase Setting)
+    public void UpdateSetting(SettingBase setting)
     {
-        AppFileSystem.SaveSetting(Setting);
+        AppFileSystem.SaveSetting(setting);
     }
 
     public virtual void StartService()

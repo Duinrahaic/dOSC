@@ -1,4 +1,4 @@
-﻿using dOSC.Shared.Utilities;
+﻿using dOSC.Utilities;
 using LiveSheet;
 using LiveSheet.Parts.Serialization;
 

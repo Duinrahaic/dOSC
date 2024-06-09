@@ -1,4 +1,4 @@
-﻿using dOSC.Shared.Models.Commands;
+﻿using dOSC.Client.Models.Commands;
 
 namespace dOSC.Drivers;
 
@@ -29,6 +29,7 @@ public partial class HubService: BackgroundService
     {
         _logger = logger;
         _logger.LogInformation("Initialized HubService Service");
+        
     }
 
 

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <LangVersion>default</LangVersion>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <PackageId>dOSC.Client</PackageId>
+
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="Serilog" Version="3.1.1"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Client\"/>
+    </ItemGroup>
+
+
+</Project>

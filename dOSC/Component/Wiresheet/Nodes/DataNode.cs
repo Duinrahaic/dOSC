@@ -1,4 +1,4 @@
-﻿using dOSC.Component.Wiresheet.Nodes.Data;
+﻿using dOSC.Client.Models.Commands;
 using LiveSheet.Parts.Ports;
 using LiveSheet.Parts.Serialization;
 
@@ -6,6 +6,9 @@ namespace dOSC.Component.Wiresheet.Nodes;
 
 public abstract class DataNode: WiresheetNode
 {
+    public delegate void EndpointChanged(DataEndpoint newEndpoint);
+    public event EndpointChanged? OnEndpointChanged;
+    
     public DataNode() : base()
     {
         this.SilentSetValue(0.0);
@@ -14,8 +17,28 @@ public abstract class DataNode: WiresheetNode
     public override string NodeName => "Data Node";
     public override NodeCategory Category => NodeCategory.Data;
     
-    [LiveSerialize] public string Source { get; set; } = "";
-    [LiveSerialize] public string Address { get; set; } = "";
-    [LiveSerialize] public PortType PortType { get; set; } = PortType.Logic;
-    [LiveSerialize] public DataType DataType { get; set; } = DataType.Boolean;
+    private DataEndpoint _endpoint = new();
+    
+    [LiveSerialize] public DataEndpoint? EndPoint { 
+        get => _endpoint;
+        set
+        {
+            if(value != null)
+            {
+                SetEndpoint(value);
+            }
+            
+            
+            
+        }
+    }
+    
+    protected void SetEndpoint(DataEndpoint endpoint)
+    {
+        _endpoint = endpoint;
+        OnEndpointChanged?.Invoke(endpoint);
+    }
+    
+    
+    
 }

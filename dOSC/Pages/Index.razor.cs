@@ -1,4 +1,4 @@
-﻿using dOSC.Shared.Utilities;
+﻿using dOSC.Utilities;
 
 namespace dOSC.Pages;
 

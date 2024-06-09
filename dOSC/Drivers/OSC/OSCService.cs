@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using CoreOSC;
 using dOSC.Shared.Models.Settings;
-using dOSC.Shared.Utilities;
 using dOSC.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -22,9 +21,11 @@ public partial class OSCService : ConnectorBase
     private readonly int _udpPort = 9001;
 
     private readonly HashSet<string> DiscoveredParameters = new();
+    
+    
     private OSCSetting Setting;
 
-    public OSCService(IServiceProvider services)
+    public OSCService(IServiceProvider services):base(services)
     {
         _logger = services.GetService<ILogger<OSCService>>()!;
         _logger.LogInformation("Initialized OSCService");
@@ -47,7 +48,7 @@ public partial class OSCService : ConnectorBase
 
     public override void StartService()
     {
-        if (!isRunning())
+        if (!IsRunning())
         {
             var tcpPort = _tcpPort;
             var udpPort = _udpPort;
@@ -84,7 +85,7 @@ public partial class OSCService : ConnectorBase
             _sender.Close();
         if (_receiver != null)
             _receiver.Close();
-        if (isRunning())
+        if (IsRunning())
             Running = false;
         _logger.LogInformation("OSCService stopped");
     }

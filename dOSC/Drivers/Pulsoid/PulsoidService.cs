@@ -3,9 +3,9 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using dOSC.Shared.Models.Commands;
+using dOSC.Attributes;
+using dOSC.Client.Models.Commands;
 using dOSC.Shared.Models.Settings;
-using dOSC.Shared.Utilities;
 using dOSC.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,18 +17,21 @@ namespace dOSC.Drivers.Pulsoid;
 
 public class PulsoidService : ConnectorBase, IDisposable, IHostedService
 {
-    public delegate void PulsoidSubscriptionEventHandler(PulsoidReading e);
+   
+    private const string Url = @"wss://dev.pulsoid.net/api/v1/data/real_time";
+    private const string Scope = "data:heart_rate:read";
 
-    private const int ReceiveBufferSize = 256;
-    private const string _url = @"wss://dev.pulsoid.net/api/v1/data/real_time";
-    private const string _scope = "data:heart_rate:read";
+    public override string ServiceName => "Pulsoid";
+    public override string IconRef => @"_content/dOSCEngine/images/Pulsoid-Logo-500x281.png";
+    public override string Description => "A real time heart rate for streaming";
+    private Uri Uri => new($"{Url}?access_token={Setting.AccessToken}");
 
+    
     private ClientWebSocket? _client;
-    private readonly CancellationTokenSource _CTS = new();
+    private readonly CancellationTokenSource _cts = new();
     private readonly ILogger<PulsoidService> _logger;
-    private PulsoidSetting? Setting;
+    private PulsoidSetting? Setting ;
 
-    private readonly HubService _hubService;
     
     
     private void UpdateSetting(PulsoidSetting setting)
@@ -37,32 +40,27 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
         settings.Pulsoid = setting;
         AppFileSystem.SaveSettings(settings);
     }
-    
 
-    public PulsoidService(IServiceProvider services)
+    public PulsoidService(IServiceProvider services):base(services)
     {
         _logger = services.GetService<ILogger<PulsoidService>>()!;
-        _hubService = services.GetService<HubService>();
         _logger.LogInformation("Initialized Pulsoid Service");
         LoadSetting();
-        _hubService.RegisterEndpoint(GetStatusEndpoint());
-        _hubService.RegisterEndpoint(GetHeartRateEndpoint());
+        
+
+        
+        
         if (Setting != null)
             StartService();
         
     }
 
-    public override string ServiceName => "Pulsoid";
-    public override string IconRef => @"_content/dOSCEngine/images/Pulsoid-Logo-500x281.png";
-    public override string Description => "A real time heart rate for streaming";
-    private Uri _URI => new($"{_url}?access_token={Setting.AccessToken}");
-
+  
     public void Dispose()
     {
         Disconnect();
     }
 
-    public event PulsoidSubscriptionEventHandler? OnPulsoidMessageReceived;
 
     public override void LoadSetting()
     {
@@ -104,40 +102,50 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
         Name = "Heart Rate",
         Description = "Real time heart rate data",
         Type = DataType.Numeric,
-        Permission = Permissions.ReadOnly,
+        Permissions = Permissions.ReadOnly,
         Labels = new NumericDataLabels
         {
             Unit = "bpm",
         },
-        Value = "0"
+        DefaultValue = "0"
     };
     public void UpdateHeartRateEndpoint(decimal value)
     {
-        var endpoint = GetHeartRateEndpoint();
-        endpoint.UpdateValue(value);
-        _hubService.UpdateEndpoint(endpoint);
+        var ev = GetHeartRateEndpoint().ToDataEndpointValue();
+        ev.UpdateValue(value);
+        HubService.UpdateEndpointValue(ev);
     }
 
+    [ConfigLogicEndpoint(Owner = "Pulsoid", Name = "Status", Description = "Pulsoid Connection Status", Permissions = Permissions.ReadOnly, 
+        DefaultValue = false, TrueLabel = "Connected", FalseLabel = "Disconnected")] 
+    public bool Status { get; set; } = false;
+    
+    [ConfigNumericEndpoint(Owner = "Pulsoid", Name = "Heart Rate", Description = "Real time heart rate data", Unit = "bpm", Permissions = Permissions.ReadOnly)]
+    public decimal HeartRate { get; set; } = 0;
+    
+    
+    
+    
     private static DataEndpoint GetStatusEndpoint() => new DataEndpoint
     {
         Owner = "Pulsoid",
         Name = "Status",
         Description = "Pulsoid connection status",
         Type = DataType.Logic,
-        Permission = Permissions.ReadOnly,
+        Permissions = Permissions.ReadOnly,
         Labels = new LogicDataLabels
         {
             TrueLabel = "Connected",
             FalseLabel = "Disconnected"
         },
-        Value = "False"
+        DefaultValue = "False"
     };
 
     public void UpdateStatusEndpoint(bool state)
     {
-        var endpoint = GetStatusEndpoint();
-        endpoint.UpdateValue(state);
-        _hubService.UpdateEndpoint(endpoint);
+        var ev = GetStatusEndpoint().ToDataEndpointValue();
+        ev.UpdateValue(state);
+        HubService.UpdateEndpointValue(ev);
     }
     
     
@@ -147,9 +155,9 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
             _client.Dispose();
         _client = new ClientWebSocket();
 
-        await _client.ConnectAsync(_URI, _CTS.Token);
+        await _client.ConnectAsync(Uri, _cts.Token);
 
-        var buffer = new byte[ReceiveBufferSize];
+        var buffer = new byte[256];
         UpdateStatusEndpoint(true);
 
         if (_client.State == WebSocketState.Open) await SendMessage();
@@ -158,11 +166,11 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
 
             try
             {
-                var result = await _client.ReceiveAsync(new ArraySegment<byte>(buffer), _CTS.Token);
+                var result = await _client.ReceiveAsync(new ArraySegment<byte>(buffer), _cts.Token);
                 if (result.MessageType == WebSocketMessageType.Close)
                 {
                     _logger.LogDebug("Pulsoid closed websocket ... disconnecting");
-                    await _client.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, _CTS.Token);
+                    await _client.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, _cts.Token);
                     Disconnect();
                 }
                 else
@@ -181,9 +189,9 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
     private async Task SendMessage()
     {
         if (_client == null) return;
-        var bytes = new byte[_scope.Length * sizeof(char)];
-        Buffer.BlockCopy(_scope.ToCharArray(), 0, bytes, 0, bytes.Length);
-        await _client.SendAsync(bytes, WebSocketMessageType.Text, true, _CTS.Token);
+        var bytes = new byte[Scope.Length * sizeof(char)];
+        Buffer.BlockCopy(Scope.ToCharArray(), 0, bytes, 0, bytes.Length);
+        await _client.SendAsync(bytes, WebSocketMessageType.Text, true, _cts.Token);
     }
 
     private void HandleMessage(byte[] buffer, int count)
@@ -196,7 +204,6 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
             result = JsonConvert.DeserializeObject<PulsoidReading>(jobject.ToString());
             if (result != null)
             {
-                OnPulsoidMessageReceived?.Invoke(result);
                 UpdateHeartRateEndpoint(result.Data.HeartRate);
                 _logger.LogDebug($"Pulsoid Sent: {result.Data.HeartRate} bpm");
             }
@@ -209,7 +216,7 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
         if (_client != null)
         {
             _client.Abort();
-            _CTS.Cancel();
+            _cts.Cancel();
             _client = null;
             Setting.IsEnabled = false;
             UpdateSetting(Setting);

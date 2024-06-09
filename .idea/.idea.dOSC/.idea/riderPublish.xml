@@ -4,6 +4,7 @@
     <option name="locations">
       <list>
         <option value="$PROJECT_DIR$/dOSC/bin/publish" />
+        <option value="$PROJECT_DIR$/dOSC/bin/Release/net7.0/win-x64/publish" />
       </list>
     </option>
   </component>

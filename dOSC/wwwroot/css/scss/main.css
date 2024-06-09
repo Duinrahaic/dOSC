@@ -1969,7 +1969,8 @@ label {
   width: 800px;
 }
 .dosc-modal.dosc-modal-large .dosc-modal-container .dosc-modal-content {
-  width: 1000px;
+  min-width: 1000px;
+  max-width: 95vw;
 }
 .dosc-modal.dosc-modal-full .dosc-modal-container .dosc-modal-content {
   width: 100vw;
@@ -4317,6 +4318,46 @@ label {
   border: none;
   color: white;
   padding-left: 2px;
+}
+
+.dropdown-container {
+  width: 200px;
+  position: relative;
+}
+.dropdown-container .dropdown-header {
+  padding: 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dropdown-container .dropdown-header .dropdown-placeholder {
+  color: #999;
+}
+.dropdown-container .dropdown-header .dropdown-selected {
+  color: #000;
+}
+.dropdown-container .dropdown-header .dropdown-arrow {
+  font-size: 12px;
+}
+.dropdown-container .dropdown-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  z-index: 1000;
+  max-height: 400px;
+  overflow-y: auto;
+}
+.dropdown-container .dropdown-list .dropdown-item {
+  padding: 10px;
+  cursor: pointer;
+}
+.dropdown-container .dropdown-list .dropdown-item:hover {
+  background-color: #f0f0f0;
 }
 
 /*Node Colors*/

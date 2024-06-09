@@ -1,6 +1,4 @@
-﻿using dOSC.Shared.Utilities;
-
-namespace dOSC.Utilities;
+﻿namespace dOSC.Utilities;
 
 public static class LogPool
 {

@@ -1,5 +1,5 @@
 ﻿using dOSC.Shared.Models.Settings;
-using dOSC.Shared.Utilities;
+using dOSC.Utilities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 

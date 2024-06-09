@@ -1,4 +1,4 @@
-﻿using dOSC.Shared.Models.Commands;
+﻿using dOSC.Client.Models.Commands;
 
 namespace dOSC.Drivers;
 
@@ -20,6 +20,7 @@ public partial class HubService
     }
     
     public Queue<Log> GetLogs() => _logQueue;
+    public void ClearLogs() => _logQueue.Clear();
     public uint GetLogCount() => (uint)_logQueue.Count;
     public uint GetMaxLogHistory() => _config.MaxLogHistory;
 }

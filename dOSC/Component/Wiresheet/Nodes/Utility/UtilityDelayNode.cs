@@ -1,5 +1,5 @@
-﻿using dOSC.Shared.Units;
-using dOSC.Shared.Utilities;
+﻿using dOSC.Units;
+using dOSC.Utilities;
 using LiveSheet.Parts.Ports;
 using LiveSheet.Parts.Serialization;
 

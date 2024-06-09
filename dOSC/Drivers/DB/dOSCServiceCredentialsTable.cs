@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using dOSC.Drivers.DB.Models;
-using dOSC.Shared.Models.Database;
 
 namespace dOSC.Drivers.DB;
 
