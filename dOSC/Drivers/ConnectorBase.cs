@@ -92,4 +92,29 @@ public abstract class ConnectorBase : IHostedService
         StopService();
         StartService();
     }
+
+    protected void UpdateEndpointValue(string name, object value)
+    {
+        var endpoint = EndpointHelper.GetEndpoint(this, name);
+        if (endpoint != null)
+        {
+            var ev = endpoint.ToDataEndpointValue();
+            if (value is Boolean bv)
+            {
+                ev.UpdateValue(bv);
+                HubService.UpdateEndpointValue(ev);
+            }
+            else if (value is String sv)
+            {
+                ev.UpdateValue(sv);
+                HubService.UpdateEndpointValue(ev);
+            }
+            else if (value is decimal dv)
+            {
+                ev.UpdateValue(dv);
+                HubService.UpdateEndpointValue(ev);
+            }
+        }
+    }
+    
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using Serilog.Events;
 
 namespace dOSC.Client.Models.Commands;
 
@@ -52,23 +51,5 @@ public class Log : Data
     public override string ToString()
     {
         return $"[{TimeStamp}] {Origin} {Level}: {Message}";
-    }
-
-    public static Log FromLogEvent(LogEvent logEvent)
-    {
-        return new Log(logEvent.Timestamp.ToString(), logEvent.Properties["Origin"].ToString()
-            , GetLogLevel(logEvent.Level), logEvent.MessageTemplate.Text);
-    }
-
-    private static LogLevel GetLogLevel(LogEventLevel logEventLevel)
-    {
-        return logEventLevel switch
-        {
-            LogEventLevel.Debug => LogLevel.Debug,
-            LogEventLevel.Information => LogLevel.Info,
-            LogEventLevel.Warning => LogLevel.Warning,
-            LogEventLevel.Error => LogLevel.Error,
-            _ => LogLevel.Info
-        };
     }
 }

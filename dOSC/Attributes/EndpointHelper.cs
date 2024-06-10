@@ -52,4 +52,11 @@ public static class EndpointHelper
         
         return endpoints;
     }
+
+    public static DataEndpoint? GetEndpoint(object obj, string name)
+    {
+        var endpoints = GetEndpoints(obj);
+        return endpoints.FirstOrDefault(x => x.Name == name);
+    }
+        
 }

@@ -71,6 +71,8 @@
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.10" />
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
         <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.10" />
+        <PackageReference Include="Serilog.Sinks.Async" Version="2.0.0" />
+        <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
         <TrimmableAssembly Include="Avalonia.Themes.Fluent" />
         <TrimmableAssembly Include="Avalonia.Themes.Default" />
         
@@ -104,9 +106,6 @@
     <ItemGroup>
       <ProjectReference Include="..\..\LiveSheet\LiveSheet\LiveSheet.csproj" />
       <ProjectReference Include="..\dOSC.Client\dOSC.Client.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\dOSC.Shared\dOSC.Shared.csproj" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Component\Frame\" />

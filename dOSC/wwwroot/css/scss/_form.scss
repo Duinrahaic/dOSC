@@ -283,26 +283,26 @@ $dropdown-border: 1px solid #ccc;
 $dropdown-bg: #fff;
 $hover-bg: #f0f0f0;
 
-.dropdown-container {
-  width: $dropdown-width;
+.dropdown-container {  
+  width: max-content;
   position: relative;
 
   .dropdown-header {
     padding: 10px;
-    border: $dropdown-border;
-    cursor: pointer;
+    border: $node-border-color 1px solid;
+    cursor: pointer; 
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    .dropdown-placeholder {
-      color: #999;
+    .dropdown-placeholder { 
+      color: $color-full-white; 
     }
 
-    .dropdown-selected {
-      color: #000;
+    .dropdown-selected { 
+      color: $color-selected;
     }
-
+  
     .dropdown-arrow {
       font-size: 12px;
     }
@@ -313,8 +313,8 @@ $hover-bg: #f0f0f0;
     top: 100%;
     left: 0;
     right: 0;
-    border: $dropdown-border;
-    background-color: $dropdown-bg;
+    border: $node-border-color;
+    background-color: $node-base-color;
     z-index: 1000;
     max-height: 400px;
     overflow-y: auto;
@@ -324,7 +324,7 @@ $hover-bg: #f0f0f0;
       cursor: pointer;
 
       &:hover {
-        background-color: $hover-bg;
+        background-color: grey; 
       }
     }
   }

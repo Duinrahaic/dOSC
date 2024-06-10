@@ -18,7 +18,7 @@ public class Program
             globalMutex.Close();
             return;
         }
-        
+        AppFileSystem.CreateFolders();
         EncryptionHelper.SetEncryptionKey(Environment.MachineName + "dOSC");
         SetupClient.Start(args);
         globalMutex.Close();
