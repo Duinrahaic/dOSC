@@ -1,0 +1,21 @@
+﻿<div class="settings-content-item settings-content-panel-options-group">
+    <div class="settings-content-panel-options-group-header">
+        <div class="settings-content-panel-options-group-header-title"> @Title </div>
+        @if (!string.IsNullOrEmpty(Subtitle))
+        {
+            <div class="settings-content-panel-options-group-header-subtitle"> <i>@Subtitle</i> </div>
+        }
+    </div>
+    <div class="settings-content-panel-options-group-body">
+        @ChildContent
+    </div>
+</div>
+
+@code{
+
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public string Subtitle { get; set; } = string.Empty;
+    [Parameter] public string Icon { get; set; } = string.Empty;
+    [Parameter] public RenderFragment ChildContent { get; set; }    
+
+}

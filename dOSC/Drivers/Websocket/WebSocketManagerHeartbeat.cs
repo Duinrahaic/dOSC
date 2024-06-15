@@ -12,9 +12,9 @@ public partial class WebSocketManager
         var heartbeatInterval = TimeSpan.FromSeconds(5);
         var buffer = Encoding.UTF8.GetBytes("ping");
 
-        string origin = "Hub";
+        string origin = "Websocket";
         string target = "All Clients";
-        string message = "Hub Heartbeat at " + DateTime.Now.ToString("HH:mm:ss");
+        string message = "Websocket Heartbeat at " + DateTime.Now.ToString("HH:mm:ss");
         var data = new Log(DateTime.Now.ToString(), origin, LogLevel.Info, message); 
         Command heartbeat = new(origin, target, "Heartbeat", "Log", data:data);
         

@@ -1,0 +1,42 @@
+﻿<h3>CreditsSetting</h3>
+
+@code {
+    
+}@using System.Reflection
+@using System.Runtime.InteropServices
+@using dOSC.Drivers
+@using dOSC.Drivers.Websocket
+@using dOSC.Utilities
+@using dOSC.Component.UI.Form
+@using dOSC.Component.UI.Setting.Parts
+@implements IDisposable
+<SettingsPanel>
+    <div class="credits-container">
+        <div class="credits-header-image-container">
+            <image src="images/dev-icon.png" class="credits-logo" />
+        </div>
+        <div class="credits-header-text-container">
+            <div class="credits-header-text"> Wiresheet </div>
+            <div class="credits-header-text"> Version @Assembly.GetEntryAssembly().GetName().Version.ToString() </div>
+        </div>
+    </div>
+    <SettingsPanelGroup Title=@($"Packages Used")  >
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Version </div>
+            <div class="settings-content-panel-options-group-body-item-value"> @Assembly.GetEntryAssembly().GetName().Version.ToString() </div>
+        </div>
+    </SettingsPanelGroup>
+ 
+</SettingsPanel>
+
+@code{
+
+
+
+    
+    public void Dispose()
+    {
+
+    }
+
+}

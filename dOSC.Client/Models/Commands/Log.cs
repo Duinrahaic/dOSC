@@ -5,6 +5,8 @@ namespace dOSC.Client.Models.Commands;
 
 public class Log : Data
 {
+    
+    
     public Log()
     {
     }
@@ -40,7 +42,7 @@ public class Log : Data
         Message = message;
         Details = string.Empty;
     }
-
+    
     public override CommandType Type { get; set; } = CommandType.Log;
     public string TimeStamp { get; set; } = DateTime.Now.ToString(CultureInfo.CurrentCulture);
     public string Origin { get; set; }
@@ -51,5 +53,10 @@ public class Log : Data
     public override string ToString()
     {
         return $"[{TimeStamp}] {Origin} {Level}: {Message}";
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return base.Equals(obj);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreOSC;
-using dOSC.Shared.Models.Settings;
+using dOSC.Drivers.Settings;
 using dOSC.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using dOSC.Client.Models.Commands;
 using dOSC.Client.Models.Websocket;
-using dOSC.Shared.Models.Settings;
 using dOSC.Shared.Models.Websocket;
 
 namespace dOSC.Client;
@@ -14,15 +13,15 @@ namespace dOSC.Client;
 public class dOSCWebsocketClient
 {
     public delegate void DataReceiveEventHandler(Command e);
+    public event DataReceiveEventHandler? OnDataReceived;
 
     public delegate void StateChangeEventHandler(ConnectionState state);
-
+    public event StateChangeEventHandler? OnStateChanged;
     private readonly CancellationTokenSource _CTS = new();
 
     private readonly string _identity = string.Empty;
     private readonly string _key;
     private readonly int _port = 5880;
-    private dOSCSetting? _setting;
 
     private ClientWebSocket? _socket;
 
@@ -54,13 +53,10 @@ public class dOSCWebsocketClient
         return $"ws://localhost:{_port} /ws?apiKey={_key}&?identity={_identity}";
     }
 
-    public event DataReceiveEventHandler? OnDataReceived;
-    public event StateChangeEventHandler? OnStateChanged;
+
 
     public async Task ConnectAsync()
     {
-        if (_setting == null)
-            return;
         _socket = new ClientWebSocket();
         await _socket.ConnectAsync(new Uri(GetConnectionString()), CancellationToken.None);
         await ReceiveMessagesAsync();
@@ -137,11 +133,6 @@ public class dOSCWebsocketClient
     public async Task SendAsync(Command command)
     {
         await _socket.SendAsync(command.WritePacket(), WebSocketMessageType.Text, true, CancellationToken.None);
-    }
-
-    public dOSCSetting GetSetting()
-    {
-        return _setting ?? new dOSCSetting();
     }
 
     private void Disconnect()

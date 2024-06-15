@@ -1,6 +1,7 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using dOSC.Component.Wiresheet;
-using dOSC.Shared.Models.Settings;
+using dOSC.Drivers.Settings;
 using LiveSheet;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -40,6 +41,11 @@ public static class AppFileSystem
         if (!Directory.Exists(SettingsFolder)) Directory.CreateDirectory(SettingsFolder);
         if (!Directory.Exists(WiresheetFolder)) Directory.CreateDirectory(WiresheetFolder);
     }
+    
+    public static void OpenFolder(string folder)
+    {
+        Process.Start("explorer.exe",folder);
+    }
 
     public static void SaveSettings(UserSettings settings)
     {
@@ -50,26 +56,31 @@ public static class AppFileSystem
     public static void SaveSetting(SettingBase setting)
     {
         var settings = LoadSettings() ?? new UserSettings();
-        switch (setting.SettingType)
+        switch (setting)
         {
-            case SettingType.Pulsoid:
-                settings.Pulsoid = (PulsoidSetting)setting;
+            case PulsoidSetting pulsoidSetting:
+                settings.Pulsoid = pulsoidSetting;
                 break;
-            case SettingType.OSC:
-                settings.OSC = (OSCSetting)setting;
+            case OSCSetting oscSetting:
+                settings.OSC = oscSetting;
                 break;
-            case SettingType.dOSC:
-                settings.dOSC = (dOSCSetting)setting;
+            case WiresheetSetting wiresheetSetting:
+                settings.Wiresheet = wiresheetSetting;
+                break;
+            case WebsocketSetting websocketSetting:
+                settings.Websocket = websocketSetting;
                 break;
         }
-
         SaveSettings(settings);
     }
 
     public static UserSettings? LoadSettings()
     {
-        // if file does not exist make one
-        if (!File.Exists(Path.Combine(SettingsFolder, "settings.json"))) SaveSettings(new UserSettings());
+        if (!File.Exists(Path.Combine(SettingsFolder, "settings.json")))
+        {
+            SaveSettings(new UserSettings());
+        }
+
         var json = File.ReadAllText(Path.Combine(SettingsFolder, "settings.json"));
         return JsonConvert.DeserializeObject<UserSettings>(json);
     }

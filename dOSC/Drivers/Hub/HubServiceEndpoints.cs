@@ -6,8 +6,18 @@ namespace dOSC.Drivers;
 
 public partial class HubService
 {
+    public delegate void EndpointUpdated(DataEndpoint endpoint);
+
+    public EndpointUpdated? OnEndpointUpdate;
+    public delegate void EndpointValueUpdated(DataEndpoint endpoint, DataEndpointValue value);
+
+    public EndpointValueUpdated? OnEndpointValueUpdate;
+    
     private HashSet<DataEndpoint> _endpoints = new();
 
+    public int GetEndpointCount() => _endpoints.Count;
+    public int GetEndpointSourcesCount() => _endpoints.Select(e => e.Owner).Distinct().Count();
+    public void ClearEndpoints() => _endpoints.Clear();
     public bool RegisterEndpoint(DataEndpoint e)
     {
         var log = EndpointLog;
@@ -16,6 +26,7 @@ public partial class HubService
         {
             log.Message = $"Registered ConfigEndpoint: {e.Name} for {e.Owner} ";
             log.Level = LogLevel.Info;
+            OnEndpointUpdate?.Invoke(e);
         }
         else
         {
@@ -31,6 +42,7 @@ public partial class HubService
         bool success = _endpoints.Remove(e);
         if (success)
         {
+            OnEndpointUpdate?.Invoke(e);
             log.Message = $"{e.Owner} unregistered ConfigEndpoint: {e.Name}";
             log.Level = LogLevel.Info;
         }
@@ -80,15 +92,18 @@ public partial class HubService
             success = true;
             log.Message = $"Updated ConfigEndpoint {endpoint.Name} for {endpoint.Owner} with value {value.Value}";
             log.Level = LogLevel.Info;
+            Log(log);
+            OnEndpointValueUpdate?.Invoke(endpoint, value);
+            return success;
         }
         else
         {
             log.Message = $"ConfigEndpoint {value.Name} for {value.Owner} does not exist to update";
             log.Level = LogLevel.Warning;
             success = false;
+            Log(log);
+            return success;
         }
-        Log(log);
-        return success;
     }
     
 

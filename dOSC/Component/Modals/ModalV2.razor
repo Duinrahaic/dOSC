@@ -4,6 +4,10 @@
         <div class="dosc-modal-container">
             <div class="dosc-modal-content">
                 <div class="dosc-modal-header">
+                    @if (!string.IsNullOrWhiteSpace(Icon))
+                    {
+                        <div class="dosc-modal-header-icon @(Icon)"></div>
+                    }
                     <div class="dosc-modal-header-title">@Title</div>
                     <div class="dosc-modal-header-close icon-x" @onclick="Close"/>
                 </div>

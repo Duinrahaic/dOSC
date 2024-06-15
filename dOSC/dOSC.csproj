@@ -108,9 +108,6 @@
       <ProjectReference Include="..\dOSC.Client\dOSC.Client.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Component\Frame\" />
-    </ItemGroup>
-    <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\css\fonts\lucide.css" />
       <_ContentIncludedByDefault Remove="wwwroot\css\fonts\lucide.svg" />
       <_ContentIncludedByDefault Remove="wwwroot\css\fonts\lucide.ttf" />
@@ -160,18 +157,18 @@
       <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\sprites\brands.svg" />
       <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\sprites\regular.svg" />
       <_ContentIncludedByDefault Remove="wwwroot\css\fonts\font-awesome\sprites\solid.svg" />
+      <_ContentIncludedByDefault Remove="Component\Form\SettingsPages\DOSCSettings.razor" />
+      <_ContentIncludedByDefault Remove="Component\Form\SettingsPages\OSCSettings.razor" />
+      <_ContentIncludedByDefault Remove="Component\Form\SettingsPages\PulsoidSettings.razor" />
+      <_ContentIncludedByDefault Remove="Component\Form\DropDown.razor" />
+      <_ContentIncludedByDefault Remove="Component\Form\ToggleSwitch.razor" />
     </ItemGroup>
     <ItemGroup>
-      <AdditionalFiles Include="Component\Form\SettingsPages\DOSCSettings.razor" />
-      <AdditionalFiles Include="Component\Form\SettingsPages\OSCSettings.razor" />
-      <AdditionalFiles Include="Component\Form\SettingsPages\PulsoidSettings.razor" />
       <AdditionalFiles Include="Component\UI\App\AppDetailItem.razor" />
       <AdditionalFiles Include="Component\UI\App\AppPageNavigationComponent.razor" />
       <AdditionalFiles Include="Component\UI\App\AppPageNavigationItem.razor" />
       <AdditionalFiles Include="Component\UI\App\AppProfileItem.razor" />
-      <AdditionalFiles Include="Component\UI\Setting\GeneralSettingsPage.razor" />
-      <AdditionalFiles Include="Component\UI\Setting\SettingNavItemComponent.razor" />
-      <AdditionalFiles Include="Component\UI\Setting\StatusPill.razor" />
+      <AdditionalFiles Include="Component\UI\Form\DropDown.razor" />
       <AdditionalFiles Include="Component\UI\Table\ConnectorTable.razor" />
       <AdditionalFiles Include="Component\UI\Table\SettingsTableRow.razor" />
       <AdditionalFiles Include="Component\UI\UploadWiresheetFile.razor" />

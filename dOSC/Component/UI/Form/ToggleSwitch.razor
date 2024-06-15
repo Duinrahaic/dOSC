@@ -1,0 +1,33 @@
+﻿<div class="switch-input @(LabelLeft ? "labelLeft" : "") @(Small ? "small" : "")" >
+    <div class="switch-input-container" @onclick="OnClick" >
+        <div class="switch-input-slider" style="width: @(Value ? "100%" : "0%")">
+            <div class="switch-input-slider-handle"></div>
+        </div>
+    </div>
+    <div class="switch-input-label noedit" style="width: @(GetMinimumLabelSize())ch; font-size: 16px;"  >
+        @GetLabel()
+    </div>
+    
+</div>
+
+@code
+{
+
+    [Parameter] public bool Value { get; set; }
+    [Parameter] public EventCallback<bool> ValueChanged { get; set; }
+    [Parameter] public string TrueLabel { get; set; } = "True";
+    [Parameter] public string FalseLabel { get; set; } = "False";
+    [Parameter] public bool Small { get; set; } = false;
+    [Parameter] public bool LabelLeft { get; set; } = false;
+    
+    private void OnClick() => ValueChanged.InvokeAsync(!Value);
+    
+    private string GetLabel() => Value ? TrueLabel : FalseLabel;
+    
+    private int GetMinimumLabelSize()
+    {
+        List<string> labels = new List<string> { TrueLabel,FalseLabel };
+        var size = labels.Max(x => x.Length);
+        return size;
+    }
+}

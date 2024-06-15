@@ -1,9 +1,10 @@
-﻿namespace dOSC.Shared.Models.Settings;
+﻿namespace dOSC.Drivers.Settings;
 
 public enum SettingType
 {
     Unknown,
-    dOSC,
+    Wiresheet,
+    Websocket,
     OSC,
     Pulsoid,
     XSOverlay

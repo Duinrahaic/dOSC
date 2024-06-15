@@ -13,6 +13,7 @@ public partial class AppNav : IDisposable
     public List<NavItem> Apps { get; set; } = new();
     
     private HubModal HubModal { get; set; }
+    private SettingsModal SettingsModal { get; set; }
     private bool _alarming = false;
 
     public void Dispose()
@@ -25,7 +26,7 @@ public partial class AppNav : IDisposable
     {
         Server.OnAlarmStateChanged += AlarmStateUpdated;
         _alarming = Server.IsInAlarm;
-        Apps.Add(new NavItem("Home", "oi oi-home", "/", NavItemType.Home));
+        //Apps.Add(new NavItem("Home", "oi oi-home", "/", NavItemType.Home));
         Apps.Add(new NavItem("Apps", "oi oi-code", "/apps", NavItemType.App));
         Apps.Add(new NavItem("Editor", "icon icon-pencil-ruler", "/editor", NavItemType.App));
         //Apps.Add(new NavItem("Settings", "oi oi-cog", "/settings", NavItemType.Settings));
@@ -36,9 +37,7 @@ public partial class AppNav : IDisposable
         _alarming = inAlarm;
         InvokeAsync(StateHasChanged);
     }
-    
-    private void ShowHubModal()
-    {
-        HubModal.Show();
-    }
+
+    private void ShowHubModal() => HubModal.Show();
+    private void ShowSettingsModal() => SettingsModal.Show();
 }

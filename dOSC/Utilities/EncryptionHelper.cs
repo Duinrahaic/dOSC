@@ -59,6 +59,19 @@ public class EncryptionHelper
         return streamReader.ReadToEnd();
     }
 
+    public static string GenerateApiKey()
+    {
+        var key = new byte[32];
+        using var rng = new RNGCryptoServiceProvider();
+        rng.GetBytes(key);
+        string apiKey = Convert.ToBase64String(key)
+            .Replace('+', '-') // Convert '+' to '-'
+            .Replace('/', '_') // Convert '/' to '_'
+            .TrimEnd('=');     // Remove padding characters '='
+        return apiKey;
+    }
+    
+    
     public static void SetEncryptionKey(string key)
     {
         Key = key;

@@ -14,16 +14,23 @@
 
     @if (isDropdownOpen)
     {
+        
+        
+        
         <div class="dropdown-list" @onwheel:preventDefault @onwheel:stopPropagation>
-            <div class="dropdown-item dropdown-sticky">
+           
+            <div class="dropdown-item-search">
                 <input type="search"/>
             </div>
-            @foreach (var item in items)
-            {
-                <div class="dropdown-item" @onclick="() => SelectItem(item)">
-                    @item
-                </div>
-            }
+            <div class="dropdown-list-container">
+                
+                @foreach (var item in items)
+                {
+                    <div class="dropdown-item" @onclick="() => SelectItem(item)">
+                        @item
+                    </div>
+                }
+            </div>
         </div>
     }
 </div>

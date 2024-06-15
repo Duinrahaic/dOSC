@@ -1,0 +1,7 @@
+﻿<div class="settings-content-options">
+    @ChildContent
+</div>
+@code {
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}

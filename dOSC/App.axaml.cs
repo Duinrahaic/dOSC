@@ -103,8 +103,9 @@ public partial class App : Application
         var appBuilder = Host.CreateApplicationBuilder(args);
         appBuilder.Logging.AddDebug();
         appBuilder.Services.AddWindowsFormsBlazorWebView();
+        #if DEBUG
         appBuilder.Services.AddBlazorWebViewDeveloperTools();
-        
+        #endif 
         // Services
         
         appBuilder.Services.AddSingleton<HubService>(); // Data Service 
@@ -140,7 +141,7 @@ public partial class App : Application
         }
         catch(Exception ex)
         {
-            var result = MessageBox.Show( ex.ToString(), "dOSC Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);            
+            var result = MessageBox.Show( ex.ToString(), "Wiresheet Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);            
             Environment.Exit(0);
             
         }

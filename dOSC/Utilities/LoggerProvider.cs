@@ -11,7 +11,7 @@ public static class LoggerProvider
 
     public static LoggerConfiguration Configuration => new LoggerConfiguration()
         .WriteTo.Async(writeTo => writeTo.File(
-            Path.Combine(AppFileSystem.LogFolder, "dOSC"),
+            Path.Combine(AppFileSystem.LogFolder, "Wiresheet"),
             outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss}[{Level}][Origin] {Message}{NewLine}{Exception}",
             rollingInterval: RollingInterval.Day,
             retainedFileCountLimit: 7,

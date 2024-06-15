@@ -1,0 +1,36 @@
+﻿@using System.Reflection
+@using System.Runtime.InteropServices
+@using dOSC.Drivers
+@using dOSC.Drivers.Websocket
+@using dOSC.Utilities
+@using dOSC.Component.UI.Form
+@using dOSC.Component.UI.Setting.Parts
+@implements IDisposable
+<SettingsPanel>
+    <SettingsPanelGroup Title=@($"OSC ")  >
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Version </div>
+            <div class="settings-content-panel-options-group-body-item-value"> @Assembly.GetEntryAssembly().GetName().Version.ToString() </div>
+        </div>
+ 
+    </SettingsPanelGroup>
+    <SettingsPanelGroup Title=@($"Pulsoid ")  >
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Version </div>
+            <div class="settings-content-panel-options-group-body-item-value"> @Assembly.GetEntryAssembly().GetName().Version.ToString() </div>
+        </div>
+ 
+    </SettingsPanelGroup>
+</SettingsPanel>
+
+@code{
+
+
+
+    
+    public void Dispose()
+    {
+
+    }
+
+}

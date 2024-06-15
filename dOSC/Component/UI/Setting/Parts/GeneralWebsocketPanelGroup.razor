@@ -1,0 +1,85 @@
+﻿@using dOSC.Utilities
+@using dOSC.Drivers.Websocket
+@using dOSC.Component.UI.Form
+
+@implements IDisposable
+
+ <SettingsPanelGroup Title="External Access" Subtitle="Enables 3rd-party applications the ability to connect and communicate to the hub.">
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Websocket Websocket Status </div>
+            <div class="settings-content-panel-options-group-body-item-value"> 
+                <div class="status-indicator @(Websocket.IsRunning ? "status-indicator-running" : "status-indicator-stopped")"> @(Websocket.IsRunning ? "Running" : "Stopped") </div>
+            </div>
+        </div>
+
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Websocket Port </div>
+            <div class="settings-content-panel-options-group-body-item-value"> <input @bind="Websocket.Port" placeholder="@WebSocketService.GetDefaultPort()" type="number" min="49152" max="65535" step="1"/> </div>
+        </div>
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Enable External Access </div>
+            <div class="settings-content-panel-options-group-body-item-value"> <ToggleSwitch LabelLeft Small TrueLabel="Enable" FalseLabel="Disable"  @bind-Value="@Websocket.Enabled" /> </div>
+        </div>
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Connected Clients </div>
+            <div class="settings-content-panel-options-group-body-item-value"> @Websocket.ActiveConnections Clients </div>
+        </div>
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> API Key </div>
+            <div class="settings-content-panel-options-group-body-item-value"> <button @onmouseout="OnGenerateKeyMouseLeave" @onclick="GenerateKey"> @RegenKeyKeyText </button> </div>
+            <div class="settings-content-panel-options-group-body-item-value"> <button @onmouseout="OnCopyKeyMouseLeave" @onclick="CopyKey"> @CopyKeyText </button> </div>
+        </div>
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Documentaton <span class="icon-external-link"></span></div>
+            <div class="settings-content-panel-options-group-body-item-value"> <button class=""> Open </button> </div>
+        </div>
+    </SettingsPanelGroup>
+@code {
+    [Inject]
+    private WebSocketService Websocket { get; set; }
+    [Inject]
+    private IJSRuntime Js { get; set; }
+    
+    private string CopyKeyText => _copyKeyClicked ? "Copied!" : "Copy Key";
+    private bool _copyKeyClicked = false;
+    
+    private string RegenKeyKeyText => _regenKeyClicked ? "New Key Created!" : "Generate New Key";
+    private bool _regenKeyClicked = false;
+    
+    protected override void OnInitialized()
+    {
+        Websocket.OnStateChanged += OnStateChange;
+        Websocket.OnConnectionCountChanged += OnConnectionCountChanged;
+    }
+    
+    private async Task CopyKey()
+    {
+        _copyKeyClicked = true;
+        await Js.InvokeVoidAsync("copyTextWithAnimation", Websocket.Key);
+    }
+    private void OnCopyKeyMouseLeave() => _copyKeyClicked = false;
+    
+    private async Task GenerateKey()
+    {
+        _regenKeyClicked = true;
+        Websocket.Key = EncryptionHelper.GenerateApiKey();
+    }
+    private void OnGenerateKeyMouseLeave() => _regenKeyClicked = false;
+
+    private void OnStateChange(bool running)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+    
+    private void OnConnectionCountChanged(int count)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+    
+    public void Dispose()
+    {
+        Websocket.OnStateChanged -= OnStateChange;
+        Websocket.OnConnectionCountChanged -= OnConnectionCountChanged;
+
+    }
+}

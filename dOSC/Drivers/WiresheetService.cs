@@ -13,6 +13,15 @@ public class WiresheetService : IHostedService
         _logger = logger;
         _logger.LogInformation("Initialized WiresheetService Service");
     }
+    
+    public int GetAppCount() => Apps.Count;
+    public int GetLoadedAppCount() => Apps.Count(x=> x.Value.State == LiveSheetState.Loaded);
+    
+    public void ClearApps()
+    {
+        Apps.Clear();
+    }
+    
 
     public void AddApp(WiresheetDiagram app)
     {

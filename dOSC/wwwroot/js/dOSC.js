@@ -73,3 +73,22 @@ function textAreaAdjust(element) {
     element.style.height = "1px";
     element.style.height = (25 + element.scrollHeight) + "px";
 }
+
+
+function scrollToBottom (element){
+    const $element = $(element);
+
+    if ($element.length === 0) {
+        console.error('Element not found.');
+        return;
+    }
+
+    $element.scrollTop($element.prop("scrollHeight"));
+};
+
+
+function copyTextWithAnimation(text) {
+    // Copy text to clipboard
+    navigator.clipboard.writeText(text);
+}
+

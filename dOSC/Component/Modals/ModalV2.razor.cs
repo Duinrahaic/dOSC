@@ -18,6 +18,7 @@ public partial class ModalV2
     private bool Show = false;
 
     [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public string Icon { get; set; } = string.Empty;
 
     [Parameter] public RenderFragment Body { get; set; }
 

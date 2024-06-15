@@ -1,0 +1,69 @@
+﻿@using System.Reflection
+@using System.Runtime.InteropServices
+@using dOSC.Drivers
+@using dOSC.Drivers.Websocket
+@using dOSC.Utilities
+@using dOSC.Component.UI.Form
+@using dOSC.Component.UI.Setting.Parts
+@implements IDisposable
+<SettingsPanel>
+    <SettingsPanelGroup Title=@($"dOSC ")>
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Version </div>
+            <div class="settings-content-panel-options-group-body-item-value"> @Assembly.GetEntryAssembly().GetName().Version.ToString() </div>
+        </div>
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Open Configuration Location <span class="icon-external-link"></span>  </div>
+            <div class="settings-content-panel-options-group-body-item-value"> <button @onclick="(() => AppFileSystem.OpenFolder(AppFileSystem.SettingsFolder))"> Open </button> </div>
+        </div>
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Open Apps Storage Location <span class="icon-external-link"></span> </div>
+            <div class="settings-content-panel-options-group-body-item-value"> <button @onclick="(() => AppFileSystem.OpenFolder(AppFileSystem.WiresheetFolder))"> Open </button> </div>
+        </div>
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Open Logs Location <span class="icon-external-link"></span> </div>
+            <div class="settings-content-panel-options-group-body-item-value"> <button @onclick="(() => AppFileSystem.OpenFolder(AppFileSystem.LogFolder))"> Open </button> </div>
+        </div>
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Clear Configuration & Data </div>
+            <div class="settings-content-panel-options-group-body-item-value"> <button class="danger"> Clear </button> </div>
+        </div>
+    </SettingsPanelGroup>
+    
+
+    
+    <GeneralAppPanelGroup/>
+    <GeneralHubPanelGroup/>
+    <GeneralWebsocketPanelGroup/>
+   
+    <SettingsPanelGroup Title="Wiresheet Settings" Subtitle="Reloading the wiresheet may be necessary to apply some settings.">
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Node Movement Type </div>
+            <div class="settings-content-panel-options-group-body-item-value"> Free </div>
+        </div>
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Port Size </div>
+            <div class="settings-content-panel-options-group-body-item-value"> 12 </div>
+        </div>
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Port Snap Distance </div>
+            <div class="settings-content-panel-options-group-body-item-value"> 12 </div>
+        </div>
+        <div class="settings-content-panel-options-group-body-item">
+            <div class="settings-content-panel-options-group-body-item-label"> Grid Display Type </div>
+            <div class="settings-content-panel-options-group-body-item-value"> Point </div>
+        </div>
+    </SettingsPanelGroup>
+</SettingsPanel>
+
+@code{
+
+
+
+    
+    public void Dispose()
+    {
+
+    }
+
+}

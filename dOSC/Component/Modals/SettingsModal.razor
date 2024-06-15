@@ -1,0 +1,87 @@
+﻿@using dOSC.Client.Models.Commands
+@using dOSC.Drivers
+@using dOSC.Component.UI.Setting
+@implements IDisposable
+<ModalV2 @ref="Modal" Title="Wiresheet Settings"  Size="ModalV2.ModalSize.Large" Icon="icon-cog">
+    <Body>
+        <div class="settings-container">
+            <div class="settings-container-panel settings-nav">
+                <Virtualize Items="@_settingsItems" >
+                    <div class="settings-nav-item @(context.Category == _selectedCategory ? "active" : string.Empty)" @onclick="(()=> OnCategoryClicked(context.Category) )"> @context.Name </div>
+                </Virtualize>
+            </div>
+            <div class="settings-container-panel settings-content">
+                @switch (_selectedCategory)
+                {
+                    case SettingsCategory.General:
+                        <GeneralSettings />
+                        break;
+                    case SettingsCategory.Integrations:
+                        <IntegrationsSettings />
+                        break;
+                    case SettingsCategory.Data:
+                        <ThemeSettings />
+                        break;
+                    case SettingsCategory.CreditsAndMentions:
+                        <CreditsSetting/>
+                        break;
+                    default:
+                        break;
+                }
+            </div>
+        </div>
+    </Body>
+</ModalV2>
+
+@code
+{
+    private ModalV2 Modal { get; set; }
+
+    
+    
+    
+    public async void Show()
+    {
+        _selectedCategory = SettingsCategory.General;
+        Modal.Open();
+    }
+
+    public void Hide()
+    {
+        Modal.Close();
+    }
+
+    public void Dispose()
+    {
+        
+    }
+    
+    private SettingsCategory _selectedCategory = SettingsCategory.General;
+    
+    private void OnCategoryClicked(SettingsCategory category)
+    {
+        _selectedCategory = category;
+    }
+    
+    private List<SettingsItem> _settingsItems = new()
+    {
+        new SettingsItem { Category = SettingsCategory.General, Name = "General" },
+        new SettingsItem { Category = SettingsCategory.Integrations, Name = "Integrations" },
+        new SettingsItem { Category = SettingsCategory.Data, Name = "Data" },
+        new SettingsItem { Category = SettingsCategory.CreditsAndMentions, Name = "Credits & Mentions" }
+    };
+    
+    private enum SettingsCategory
+    {
+        General,
+        Integrations,
+        Data,
+        CreditsAndMentions
+    }
+
+    private class SettingsItem
+    {
+        public SettingsCategory Category { get; set; } 
+        public string Name { get; set; }
+    }
+}

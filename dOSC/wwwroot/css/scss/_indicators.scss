@@ -31,3 +31,13 @@ $colors: $success $info $warning $error $offline;
   }
 
 }
+
+.status-indicator 
+{
+  &.status-indicator-running{
+    color: $success;
+  }
+  &.status-indicator-stopped{
+      color: $error;
+  }
+}

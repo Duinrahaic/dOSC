@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using dOSC.Attributes;
 using dOSC.Client.Models.Commands;
-using dOSC.Shared.Models.Settings;
+using dOSC.Drivers.Settings;
 using dOSC.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,13 +24,13 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
     public override string ServiceName => "Pulsoid";
     public override string IconRef => @"_content/dOSCEngine/images/Pulsoid-Logo-500x281.png";
     public override string Description => "A real time heart rate for streaming";
-    private Uri Uri => new($"{Url}?access_token={Setting.AccessToken}");
+    private Uri Uri => new($"{Url}?access_token={_setting.AccessToken}");
 
     
     private ClientWebSocket? _client;
     private readonly CancellationTokenSource _cts = new();
     private readonly ILogger<PulsoidService> _logger;
-    private PulsoidSetting? Setting ;
+    private PulsoidSetting? _setting ;
 
     
     
@@ -50,7 +50,7 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
 
         
         
-        if (Setting != null)
+        if (_setting != null)
             StartService();
         
     }
@@ -64,35 +64,34 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
 
     public override void LoadSetting()
     {
-        Setting = (AppFileSystem.LoadSettings() ?? new UserSettings()).Pulsoid;
+        _setting = (AppFileSystem.LoadSettings() ?? new UserSettings()).Pulsoid;
     }
 
     public override SettingBase GetSetting()
     {
-        return Setting ?? new PulsoidSetting();
+        return _setting ?? new PulsoidSetting();
     }
 
 
     public override void StartService()
     {
-        if (Setting != null)
-            if (Setting.IsConfigured)
-            {
-                Task.Run(() => Connect());
-                Setting.IsEnabled = true;
-                Running = true;
-                UpdateSetting(Setting);
-            }
+        if (_setting != null)
+        {
+            Task.Run(() => Connect());
+            _setting.Enabled = true;
+            Running = true;
+            UpdateSetting(_setting);
+        }
     }
 
     public override void StopService()
     {
-        if (Setting != null)
+        if (_setting != null)
         {
             Disconnect();
-            Setting.IsEnabled = false;
+            _setting.Enabled = false;
             Running = false;
-            UpdateSetting(Setting);
+            UpdateSetting(_setting);
         }
     }
 
@@ -180,21 +179,26 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
         await _client.SendAsync(bytes, WebSocketMessageType.Text, true, _cts.Token);
     }
 
+    private object _lock = new();
     private void HandleMessage(byte[] buffer, int count)
     {
-        var json = Encoding.Default.GetString(buffer, 0, count);
-        var jobject = JObject.Parse(json);
-        PulsoidReading? result = null;
-        try
+        lock (_lock)
         {
-            result = JsonConvert.DeserializeObject<PulsoidReading>(jobject.ToString());
-            if (result != null)
+            var json = Encoding.Default.GetString(buffer, 0, count);
+            var jobject = JObject.Parse(json);
+            PulsoidReading? result = null;
+            try
             {
-                HeartRate = result.Data.HeartRate;
-                _logger.LogDebug($"Pulsoid Sent: {result.Data.HeartRate} bpm");
+                result = JsonConvert.DeserializeObject<PulsoidReading>(jobject.ToString());
+                if (result != null)
+                {
+                    HeartRate = result.Data.HeartRate;
+                    _logger.LogDebug($"Pulsoid Sent: {result.Data.HeartRate} bpm");
+                }
             }
+            catch { }
         }
-        catch { }
+        
     }
 
     private void Disconnect()
@@ -204,8 +208,8 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
             _client.Abort();
             _cts.Cancel();
             _client = null;
-            Setting.IsEnabled = false;
-            UpdateSetting(Setting);
+            _setting.Enabled = false;
+            UpdateSetting(_setting);
         }
     }
 }

@@ -44,7 +44,7 @@ public partial class NavContainer : IDisposable
         else if (route.ToLower().StartsWith("editor"))
             SelectedItem = Apps.FirstOrDefault(x => x.Name.ToLower() == "editor");
         else
-            SelectedItem = Apps.FirstOrDefault();
+            SelectedItem = null;
         StateHasChanged();
     }
 

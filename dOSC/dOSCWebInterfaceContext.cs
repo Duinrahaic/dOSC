@@ -9,7 +9,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using dOSC.Client_Window;
+using Wiresheet.Client_Window;
 
 namespace dOSC
 {
@@ -35,7 +35,7 @@ namespace dOSC
                 Icon = icon,
                 ContextMenuStrip = new ContextMenuStrip(),
                 Visible = true,
-                Text = "dOSC",
+                Text = "Wiresheet",
             };
 
 

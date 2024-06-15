@@ -9,6 +9,18 @@
   flex-wrap: nowrap;
   cursor: default;
   gap: 12px;
+  &.labelLeft {
+	flex-direction: row-reverse;
+	.switch-input-label{
+	  text-align: right;
+	}
+  }
+  
+  &.small{
+	.switch-input-container{
+	  transform: scale(.8);
+	}
+  }
   .switch-input-container {
 	position: relative;
 	display: inline-flex;
@@ -22,7 +34,9 @@
 	border-radius: 14px;
 	cursor:pointer;
 	box-shadow: inset 0 4px 6px rgba(0,0,0,0.4), inset 0 -4px 6px rgba(0,0,0,0.4);
-
+	
+	
+	
 	&:hover{
 	  .switch-input-slider
 	  {
@@ -64,12 +78,14 @@
 	}
   }
   .switch-input-label{
-	padding: 0 4px;
 	min-width: 5ch;
 	border-radius: 8px;
 	padding: 2px 8px;
-
-	&:hover{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	&:hover:not(&.noedit){
 	  background-color: transparentize(black, .6);
 	  cursor: pointer;
 	}

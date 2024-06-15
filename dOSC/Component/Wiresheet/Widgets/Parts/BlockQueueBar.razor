@@ -1,25 +1,25 @@
-﻿@*@using dOSC.Component.Wiresheet.Node
+﻿@*@using Wiresheet.Component.Wiresheet.Node
 @implements IDisposable
-<div class="dOSC-queue-container">
+<div class="Wiresheet-queue-container">
     @if (Node?.QueueSize >= 10)
     {
-        <div class="dOSC-progress-bar-container green-indicator">
-            <div class="dOSC-progress-bar-indicator" style="width: @GetProgress()%;"></div>
+        <div class="Wiresheet-progress-bar-container green-indicator">
+            <div class="Wiresheet-progress-bar-indicator" style="width: @GetProgress()%;"></div>
         </div>
     }
     else
     {
         for (var i = 0; i < Node?.ItemsInQueue; i++)
         {
-            <div class="dOSC-progress-bar-container square  green-indicator">
-                <div class="dOSC-progress-bar-indicator" style="width: 100%;"></div>
+            <div class="Wiresheet-progress-bar-container square  green-indicator">
+                <div class="Wiresheet-progress-bar-indicator" style="width: 100%;"></div>
             </div>
         }
 
         for (var i = 0; i < Node?.QueueSize - Node?.ItemsInQueue; i++)
         {
-            <div class="dOSC-progress-bar-container square green-indicator">
-                <div class="dOSC-progress-bar-indicator" style="width: 0;"></div>
+            <div class="Wiresheet-progress-bar-container square green-indicator">
+                <div class="Wiresheet-progress-bar-indicator" style="width: 0;"></div>
             </div>
         }
     }

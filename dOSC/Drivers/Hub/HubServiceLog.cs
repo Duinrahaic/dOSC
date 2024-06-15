@@ -11,6 +11,8 @@ public partial class HubService
     private Queue<Log> _logQueue = new();
     public void Log(Log log)
     {
+        if(_logQueue.Any(x=> x.Equals(log)))
+            return;
         _logQueue.Enqueue(log);
         while(_logQueue.Count > _config.MaxLogHistory)
         {

@@ -1,11 +1,14 @@
 ﻿@using dOSC.Client.Models.Commands
 @using dOSC.Drivers
 @implements IDisposable
-<ModalV2 @ref="Modal" Title="Hub Communication"  Size="ModalV2.ModalSize.Large">
+<ModalV2 @ref="Modal" Title="Hub Communications"  Size="ModalV2.ModalSize.Full" Icon="icon-satellite-dish" OnClose="Dispose">
     <Body>
     <div class="hub-log-container">
         <div class="hub-log-header">
-            <div class="hub-log-header-title">Logs (@Hub.GetLogCount() / @Hub.GetMaxLogHistory())</div>
+            <div class="hub-log-header-title">  <div class=" filter-icon @(!string.IsNullOrEmpty(_logFilter) ? "icon-filter" : "icon-filter-filled") "></div>   Logs ( <div class="logsize">@FilteredLogs.Count()</div>  / @Hub.GetMaxLogHistory() )</div>
+            <div class="hub-log-header-search">
+                <input type="text" class="hub-log-header-search-input" placeholder="Search" @oninput="@HandleLogInput"   />
+            </div>
             <div class="hub-log-action-group">
                 <div class="hub-log-header-action" @onclick="TogglePause">
                     <div class="hub-log-header-action-icon @(_paused ? "icon-pause" : "icon-play")"></div>
@@ -15,33 +18,32 @@
                     <div class="hub-log-header-action-icon icon-trash"></div>
                     <div class="hub-log-header-action-text">Clear</div>
                 </div>
-                <div class="hub-log-header-action">
-                    <div class="hub-log-header-action-icon icon-download"></div>
-                    <div class="hub-log-header-action-text">Export</div>
-                </div>
             </div>
         </div>  
-        <div id="hub-log">
+        <div id="hub-log" @ref=@_hubLogContainer @onwheel="OnScroll">
             <table>
-              <thead>
+                <thead>
                 <tr>
-                  <th>Level</th>
-                  <th>Timestamp</th>
-                  <th>Origin</th>
-                  <th>Message</th>
+                    <th>Level</th>
+                    <th>Timestamp</th>
+                    <th>Origin</th>
+                    <th>Message</th>
                 </tr>
-              </thead>
-              <tbody>
+                </thead>
+                <tbody>
                 <Virtualize Items="FilteredLogs" Context="log">
-                  <tr>
-                    <td><div class="hub-log-item-severity @log.Level.ToString().ToLower()"> @log.Level.ToString() </div></td>
-                    <td>@log.TimeStamp</td>
-                    <td>@log.Origin</td>
-                    <td>@log.Message</td>
-                  </tr>
+                    <tr>
+                        <td><div class="hub-log-item-severity @log.Level.ToString().ToLower()"> @log.Level.ToString() </div></td>
+                        <td>@log.TimeStamp</td>
+                        <td>@log.Origin</td>
+                        <td>@log.Message</td>
+                    </tr>
                 </Virtualize>
-              </tbody>
+                </tbody>
             </table>
+        </div>
+        <div class="hub-log-floating-button @(_autoScroll ? string.Empty: "active" )" @onclick="ToggleAutoScroll">
+           <span class="icon-arrow-big-down-dash"></span>  Auto-Scroll
         </div>
     </div>
     </Body>
@@ -50,43 +52,139 @@
 @code
 {
     [Inject] private HubService Hub { get; set; }
+    [Inject] private IJSRuntime JS { get; set; }
     private ModalV2 Modal { get; set; }
+
+    private Queue<Log> _logs = new();
+
+    private List<Log> GetFilteredLogs()
+    {
+        try
+        {
+            lock (_logs)
+            {
+                return new(_logs.ToList().Where(LogFilter));
+            }
+        }catch 
+        {
+            return new List<Log>();
+        }
+        
+    }
+    private List<Log> FilteredLogs => GetFilteredLogs();
     
-    private List<Log> FilteredLogs => Hub.GetLogs().ToList();
-    private void ClearLogs() => Hub.ClearLogs();
     private bool _paused = false;
-    private void TogglePause() => _paused = !_paused;
+    private string _logFilter = string.Empty;
+    private bool _autoScroll = true;
     
     private ElementReference _hubLogContainer;
-    
-    protected override void OnInitialized()
+    private string UniqueId { get; } = $"hub-log-{Guid.NewGuid()}";
+    private void HandleLogInput(ChangeEventArgs e)
     {
-        Hub.LogReceived += OnLogReceived;
+        _logFilter = e.Value.ToString();
+    }
+    
+    private async void ToggleAutoScroll()
+    {
+        _autoScroll = !_autoScroll;
+    }
+    
+    private void FilterLogs()
+    {
+        _logs = new Queue<Log>(_logs.Where(LogFilter));
+    }
+    
+    private void Log(Log log)
+    {
+        _logs.Enqueue(Copy(log));
+        while (_logs.Count > Hub.GetMaxLogHistory())
+        {
+            while (_logs.TryDequeue(out _)){}
+        }
+        InvokeAsync(StateHasChanged);
     }
 
-    private void OnLogReceived(Log log)
+    private bool LogFilter(Log log)
     {
-        if(!_paused)
-            InvokeAsync(StateHasChanged);
+        var items = _logFilter.Split(' ');
+        return items.All(x => log.Message.Contains(x, StringComparison.OrdinalIgnoreCase) || log.Origin.Contains(x, StringComparison.OrdinalIgnoreCase) || log.Level.ToString().Contains(x, StringComparison.OrdinalIgnoreCase));
+    }
+    
+    private void TogglePause()
+    {
+        if (_paused)
+        {
+            SyncLogs();
+            _paused = false;
+        }
+        else
+        {
+            _paused = true;
+        }
+        StateHasChanged();
+    }
+
+    private void SyncLogs()
+    {
+        _logs.Clear();
+        Hub.GetLogs().ToList().ForEach(x => Log(Copy(x)));
+    }
+    
+    private void ClearLogs()
+    {
+        _logs.Clear();
+    }
+
+    private Log Copy(Log log)
+    {
+        return new()
+        {
+            Level = log.Level,
+            Message = log.Message,
+            Origin = log.Origin,
+            TimeStamp = log.TimeStamp,
+            Details = log.Details,
+            Type = log.Type
+        };
+    }
+
+    private async Task OnScroll()
+    {
+        _autoScroll = false;
+        StateHasChanged();
+    } 
+    
+    private async void OnLogReceived(Log log)
+    {
+        if (_paused) return;
+        Log(log);
     }
     
     public void Dispose()
     {
+        ClearLogs();
+        Hub.LogReceived -= OnLogReceived;
+        _paused = true;
+        _autoScroll = false;
         Hub.LogReceived -= OnLogReceived;
     }
     
-    public void Show()
+    public async void Show()
     {
         Modal.Open();
-
         _paused = false;
-        StateHasChanged();
+        _autoScroll = true;
+        SyncLogs();
+        Hub.LogReceived += OnLogReceived;
     }
+
+    public void Hide() => Modal.Close();
     
-    public void Hide()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        Modal.Close();
-        _paused = true;
+        if (_autoScroll)
+        {
+            await JS.InvokeVoidAsync("scrollToBottom", _hubLogContainer);
+        }
     }
-    
 }

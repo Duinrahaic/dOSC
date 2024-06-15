@@ -1,0 +1,69 @@
+﻿@using dOSC.Component.UI.Form
+@using dOSC.Component.UI.Setting
+@using dOSC.Drivers
+@using dOSC.Client.Models.Commands
+@implements IDisposable
+
+<SettingsPanelGroup Title="Data Hub" Subtitle="The data layer for communication between Wiresheet and Apps">
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Data Sources </div>
+        <div class="settings-content-panel-options-group-body-item-value"> @Hub.GetEndpointSourcesCount() </div>
+    </div>
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Endpoints </div>
+        <div class="settings-content-panel-options-group-body-item-value"> @Hub.GetEndpointCount() </div>
+    </div>
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Clear Data </div>
+        <div class="settings-content-panel-options-group-body-item-value"> <button class="danger" @onmouseleave="ResetClickCount" @onclick="Click"> @GetClickMessage() </button> </div>
+    </div>
+</SettingsPanelGroup>
+@code {
+
+    [Inject]
+    private HubService Hub { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Hub.OnEndpointUpdate += OnEndpointUpdated;
+    }
+
+    private void OnEndpointUpdated(DataEndpoint endpoint)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+    
+    public void Dispose()
+    {
+        Hub.OnEndpointUpdate -= OnEndpointUpdated;
+    }
+    
+    private int _clickCount = 0;
+    private void Click()
+    {
+        _clickCount++;
+        if(_clickCount == 2)
+        {
+            Hub.ClearEndpoints();
+        }
+    }
+    private string GetClickMessage()
+    {
+        if(_clickCount == 1)
+        {
+            return "Are you sure?";
+        }
+        
+        else if(_clickCount >= 2)
+        {
+            return "Cleared!"; 
+        }
+        
+        return "Clear";
+    }
+    private void ResetClickCount()
+    {
+        _clickCount = 0; 
+    }
+
+}

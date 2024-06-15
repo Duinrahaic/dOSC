@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using dOSC.Attributes;
-using dOSC.Shared.Models.Settings;
+using dOSC.Drivers.Settings;
 using dOSC.Utilities;
 using dOSC.Utilities;
 using Microsoft.Extensions.Hosting;

@@ -11,7 +11,7 @@ public class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        var globalMutex = new Mutex(true, @"Local\dOSC.exe", out var mutexSuccess);
+        var globalMutex = new Mutex(true, @"Local\Wiresheet.exe", out var mutexSuccess);
         if (!mutexSuccess)
         {
             Debug.Print("App is already running. Quitting...");
@@ -19,7 +19,7 @@ public class Program
             return;
         }
         AppFileSystem.CreateFolders();
-        EncryptionHelper.SetEncryptionKey(Environment.MachineName + "dOSC");
+        EncryptionHelper.SetEncryptionKey(Environment.MachineName + "Wiresheet");
         SetupClient.Start(args);
         globalMutex.Close();
     }

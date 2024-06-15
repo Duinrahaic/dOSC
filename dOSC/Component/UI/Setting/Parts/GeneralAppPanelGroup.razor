@@ -1,0 +1,74 @@
+﻿@using dOSC.Component.UI.Form
+@using dOSC.Component.UI.Setting
+@using dOSC.Drivers
+@using dOSC.Client.Models.Commands
+@implements IDisposable
+
+<SettingsPanelGroup Title=@($"Apps Service")>
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Applications </div>
+        <div class="settings-content-panel-options-group-body-item-value"> @WS.GetAppCount() </div>
+    </div>
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Applications running </div>
+        <div class="settings-content-panel-options-group-body-item-value"> @WS.GetLoadedAppCount() </div>
+    </div>
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Automatically start apps on startup </div>
+        <div class="settings-content-panel-options-group-body-item-value"> 4 </div>
+    </div>
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Reload Apps </div>
+        <div class="settings-content-panel-options-group-body-item-value"> <button class=""> Reload Apps </button> </div>
+    </div>
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Clear Apps </div>
+        <div class="settings-content-panel-options-group-body-item-value"> <button class="danger" @onmouseleave="ResetClickCount" @onclick="Click"> @GetClickMessage() </button> </div>
+    </div>
+</SettingsPanelGroup>
+@code {
+
+    [Inject]
+    private WiresheetService WS { get; set; }
+
+    protected override void OnInitialized()
+    {
+        
+    }
+    
+    private int _clickCount = 0;
+    private void Click()
+    {
+        _clickCount++;
+        if(_clickCount == 2)
+        {
+            WS.ClearApps();
+        }
+    }
+    private string GetClickMessage()
+    {
+        if(_clickCount == 1)
+        {
+            return "Are you sure?";
+        }
+        
+        else if(_clickCount >= 2)
+        {
+            return "Cleared!"; 
+        }
+        
+        return "Clear";
+    }
+    private void ResetClickCount()
+    {
+        _clickCount = 0; 
+    }
+
+    
+    public void Dispose()
+    {
+    }
+    
+   
+
+}
