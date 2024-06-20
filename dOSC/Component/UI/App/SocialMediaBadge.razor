@@ -1,0 +1,20 @@
+﻿@using dOSC.Utilities
+<div class="social-media-circle @(Large ? "large" : "")" @onclick="Open">
+    <img src="@ImageUri"/>
+    <div class="social-media-circle-text">
+        @Label
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Uri { get; set; } = string.Empty;
+    [Parameter] public string ImageUri { get; set; } = string.Empty;
+    [Parameter] public string Label { get; set; } = string.Empty;
+    [Parameter] public bool Large { get; set; } = false;
+    private void Open()
+    {
+        if (string.IsNullOrEmpty(Uri))
+            return;
+        WebUtilities.OpenUrl(@Uri);
+    }
+}

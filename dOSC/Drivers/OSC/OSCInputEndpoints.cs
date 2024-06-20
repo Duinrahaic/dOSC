@@ -1,6 +1,6 @@
 ﻿namespace dOSC.Drivers.OSC;
 
-public partial class OSCService
+public partial class OscService
 {
     public const string Vertical = "/input/Vertical";
     public const string Horizontal = "/input/Horizontal";

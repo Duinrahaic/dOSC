@@ -1,9 +1,17 @@
 ﻿<div class="settings-content-item settings-content-panel-options-group">
     <div class="settings-content-panel-options-group-header">
-        <div class="settings-content-panel-options-group-header-title"> @Title </div>
-        @if (!string.IsNullOrEmpty(Subtitle))
+        <div class="settings-content-panel-options-group-header-text">
+            <div class="settings-content-panel-options-group-header-title"> @Title </div>
+            @if (!string.IsNullOrEmpty(Subtitle))
+            {
+                <div class="settings-content-panel-options-group-header-subtitle"> <i>@Subtitle</i> </div>
+            }
+        </div>
+        @if (!string.IsNullOrEmpty(@Icon))
         {
-            <div class="settings-content-panel-options-group-header-subtitle"> <i>@Subtitle</i> </div>
+            <div class="settings-content-panel-options-group-header-icon">
+                <img src="@Icon"/>
+            </div>
         }
     </div>
     <div class="settings-content-panel-options-group-body">

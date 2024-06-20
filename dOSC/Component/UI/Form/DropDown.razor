@@ -1,18 +1,28 @@
 ﻿
-<div class="dropdown-container">
+<div class="dropdown-container"  @ref="dropdownRef">
     <div class="dropdown-header" @onclick="ToggleDropdown">
-        @if (string.IsNullOrEmpty(selectedItem))
+        @if (!Items.Any())
         {
-            <span class="dropdown-placeholder">Select an item...</span>
+            <span class="dropdown-placeholder">No items to select</span>
         }
         else
         {
-            <span class="dropdown-selected">@selectedItem</span>
+            @if (string.IsNullOrEmpty(SelectedItem))
+            {
+                <span class="dropdown-placeholder">Select an item...</span>
+            }
+            else
+            {
+                <span class="dropdown-selected">@SelectedItem</span>
+            }
+            @if (Items.Any())
+            {
+                <span class="dropdown-arrow">@((_isDropdownOpen) ? "▲" : "▼")</span>
+            }
         }
-        <span class="dropdown-arrow">@((isDropdownOpen) ? "▲" : "▼")</span>
     </div>
 
-    @if (isDropdownOpen)
+    @if (_isDropdownOpen && Items.Any())
     {
         
         
@@ -20,11 +30,11 @@
         <div class="dropdown-list" @onwheel:preventDefault @onwheel:stopPropagation>
            
             <div class="dropdown-item-search">
-                <input type="search"/>
+                <input type="search" @bind="@SearchPhrase" placeholder="Search" @oninput="SearchItems" />
             </div>
             <div class="dropdown-list-container">
                 
-                @foreach (var item in items)
+                @foreach (var item in Items.Where(x => Filter(x)))
                 {
                     <div class="dropdown-item" @onclick="() => SelectItem(item)">
                         @item
@@ -37,20 +47,67 @@
 
 
 @code {
-    private bool isDropdownOpen = false;
-    private string selectedItem;
+    private bool _isDropdownOpen = false;
     
-    
-    private List<string> items = new List<string> { "Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3" };
+    [Parameter]
+    public List<string> Items { get; set; } = new List<string>();
 
+    [Parameter] public string SelectedItem { get; set; } = string.Empty;
+    [Parameter] public EventCallback<string> SelectedItemChanged { get; set; }
+
+    private ElementReference dropdownRef;
+
+    [Inject]
+    private IJSRuntime JSRuntime { get; set; }
+
+    
     private void ToggleDropdown()
     {
-        isDropdownOpen = !isDropdownOpen;
+        SearchPhrase = string.Empty;
+        _isDropdownOpen = !_isDropdownOpen;
+        
+        if (_isDropdownOpen)
+        {
+            // Reattach listener if dropdown is reopened
+            JSRuntime.InvokeVoidAsync("customDropdown.setupOutsideClickListener", dropdownRef, DotNetObjectReference.Create(this));
+        }
     }
 
     private void SelectItem(string item)
     {
-        selectedItem = item;
-        isDropdownOpen = false;
+        SelectedItem = item;
+        _isDropdownOpen = false;
+        SelectedItemChanged.InvokeAsync(item);
+    }
+
+    private string SearchPhrase = string.Empty;
+    private void SearchItems(ChangeEventArgs e)
+    {
+        SearchPhrase = e.Value.ToString();
+        StateHasChanged();
+    }
+    private bool Filter(string item)
+    {
+        if (string.IsNullOrEmpty(SearchPhrase))
+        {
+            return true;
+        }
+        return item.ToLower().Contains(SearchPhrase.ToLower());        
+    }
+    
+    
+    [JSInvokable]
+    public void CloseDropdown()
+    {
+        _isDropdownOpen = false;
+        StateHasChanged();
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("customDropdown.setupOutsideClickListener", dropdownRef, DotNetObjectReference.Create(this));
+        }
     }
 }

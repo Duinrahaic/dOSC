@@ -2,22 +2,124 @@
 @using dOSC.Component.Wiresheet.Nodes
 @using dOSC.Component.UI.Form
 @using Blazor.Diagrams.Components.Renderers
+@using dOSC.Client.Models.Commands
+@using dOSC.Component.Wiresheet.Nodes.Data
+@using dOSC.Drivers
+@using Avalonia.Markup.Xaml.MarkupExtensions
+@using dOSC.Drivers.Hub;
+
+@implements IDisposable
 
 <NodeWidgetFrame Node=@Nodes>
-    <DropDown/> 
+    <div style="display: flex; flex-direction: column; gap:4px; padding: 2px 4px; justify-content: space-between; align-items: center;">
+        <DropDown Items="@(GetOwners())" SelectedItem="@_selectedOwner" SelectedItemChanged="OnOwnerChanged" />
+        <DropDown Items="@(allEndpoints.Where(Filter).ToList().Select(x => x.GetName()).Order().ToList())" SelectedItem="@_selectedEndpoint" SelectedItemChanged="OnEndpointChanged" />
+    </div>
 </NodeWidgetFrame>
 
 @code 
 {
     [Parameter] public WiresheetNode Nodes { get; set; } = new();
-    
-    private List<string> dropdownItems = new List<string> { "Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3" };
-    private string selectedValue;
+    [Inject] private HubService Service { get; set; }
 
-    private void OnSelectedValueChange(ChangeEventArgs e)
+    private string _selectedOwner = string.Empty;
+    private string _selectedEndpoint = string.Empty;
+    private List<DataEndpoint> allEndpoints = new();
+
+    protected override void OnInitialized()
     {
-        selectedValue = e.Value.ToString();
+        // Load all endpoints once during initialization
+        if (Nodes is ReadDataNode)
+        {
+            allEndpoints = Service.GetEndpoints().Where(x=> x.Permissions == Permissions.ReadOnly || x.Permissions == Permissions.ReadWrite).ToList();
+        }
+        if(Nodes is WriteDataNode)
+        {
+            allEndpoints = Service.GetEndpoints().Where(x=> x.Permissions == Permissions.WriteOnly || x.Permissions == Permissions.ReadWrite).ToList();
+        }
+        if(Nodes is DataNode node)
+        {
+            node.OnEndpointChanged += OnEndpointChanged;
+        }
     }
-    
-    
+
+    private void OnEndpointChanged(DataEndpoint newEndpoint) => InvokeAsync(StateHasChanged);
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if(firstRender)
+        {
+            if (Nodes is DataNode node)
+            {
+                _selectedOwner = node.EndPoint.Owner;
+                _selectedEndpoint = node.EndPoint.GetName(); 
+            }
+        }
+    }
+
+    private void OnOwnerChanged(string e)
+    {
+        _selectedOwner = e;
+        ValidateAndClearEndpoint();
+    }
+
+    private void OnEndpointChanged(string e)
+    {
+        _selectedEndpoint = e;
+        UpdateEndpoint(_selectedOwner, _selectedEndpoint);
+    }
+
+    private void UpdateEndpoint(string owner, string endpoint)
+    {
+        if (Nodes is DataNode node)
+        {
+            node.EndPoint = allEndpoints.FirstOrDefault(x => x.Owner == owner && x.GetName() == endpoint);
+        }
+    }
+
+    private void ValidateAndClearEndpoint()
+    {
+        if(Nodes is DataNode node)
+        {
+            // If the selected endpoint doesn't exist for the selected owner, clear it
+            if (!GetFilteredEndpoints().Any(ep => ep.GetName() == _selectedEndpoint))
+            {
+                _selectedEndpoint = string.Empty;
+                node.EndPoint = new();
+                
+            }
+            else
+            {
+                node.EndPoint = allEndpoints.FirstOrDefault(x => x.Owner == _selectedOwner && x.GetName() == _selectedEndpoint);
+            }
+        }
+        
+    }
+
+    private List<string> GetOwners()
+    {
+        return allEndpoints
+            .Select(e => e.Owner)
+            .Distinct()
+            .Order()
+            .ToList();
+    }
+
+    private List<DataEndpoint> GetFilteredEndpoints()
+    {
+        return allEndpoints.Where(e => e.Owner == _selectedOwner).ToList();
+    }
+
+    private bool Filter(DataEndpoint endpoint)
+    {
+        return endpoint.Owner == _selectedOwner;
+    }
+
+    public void Dispose()
+    {
+        if(Nodes is DataNode node)
+        {
+            node.OnEndpointChanged -= OnEndpointChanged;
+        }
+    }
 }

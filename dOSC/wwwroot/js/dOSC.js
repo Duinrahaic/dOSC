@@ -92,3 +92,13 @@ function copyTextWithAnimation(text) {
     navigator.clipboard.writeText(text);
 }
 
+window.customDropdown = {
+    setupOutsideClickListener: function (dropdownElement, dotNetHelper) {
+        $(document).on('click', function (event) {
+            if (!$(dropdownElement).is(event.target) && $(dropdownElement).has(event.target).length === 0) {
+                dotNetHelper.invokeMethodAsync('CloseDropdown');
+                $(document).off('click'); // Remove the event listener
+            }
+        });
+    }
+};

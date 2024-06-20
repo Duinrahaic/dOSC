@@ -15,23 +15,61 @@ using Newtonsoft.Json.Linq;
 
 namespace dOSC.Drivers.Pulsoid;
 
-public class PulsoidService : ConnectorBase, IDisposable, IHostedService
+public class PulsoidService : ConnectorBase, IDisposable
 {
    
     private const string Url = @"wss://dev.pulsoid.net/api/v1/data/real_time";
     private const string Scope = "data:heart_rate:read";
 
-    public override string ServiceName => "Pulsoid";
-    public override string IconRef => @"_content/dOSCEngine/images/Pulsoid-Logo-500x281.png";
-    public override string Description => "A real time heart rate for streaming";
-    private Uri Uri => new($"{Url}?access_token={_setting.AccessToken}");
+    public override string Name => "Pulsoid";
+    public override string IconRef => @"/images/Pulsoid-Logo-500x281.png";
+    public override string Description => "A real-time heart rate service for streaming";
+    private Uri Uri => new($"{Url}?access_token={GetConfiguration().Key}");
 
     
     private ClientWebSocket? _client;
-    private readonly CancellationTokenSource _cts = new();
+    private CancellationTokenSource _cts = new();
     private readonly ILogger<PulsoidService> _logger;
-    private PulsoidSetting? _setting ;
+    private PulsoidSetting GetConfiguration() => (PulsoidSetting) Configuration;
 
+    private string _key = string.Empty;
+    public string Key
+    {
+        get => _key;
+        set
+        {
+            if (!_key.Equals(value))
+            {
+                _key = value;
+                var configuration = GetConfiguration();
+                configuration.Key = value;
+                SaveConfiguration(Configuration);
+            }
+        }
+    }
+    
+    public override bool Enabled
+    {
+        get => _enabled;
+        set
+        {
+            if (_enabled != value)
+            {
+                _enabled = value;
+                var config = GetConfiguration();
+                config.Enabled = value;
+                SaveConfiguration(config);
+                if (_enabled)
+                {
+                    StartService();
+                }
+                else
+                {
+                    StopService();
+                }
+            }
+        }
+    }
     
     
     private void UpdateSetting(PulsoidSetting setting)
@@ -45,55 +83,17 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
     {
         _logger = services.GetService<ILogger<PulsoidService>>()!;
         _logger.LogInformation("Initialized Pulsoid Service");
-        LoadSetting();
-        
-
-        
-        
-        if (_setting != null)
-            StartService();
-        
+        Configuration = AppFileSystem.LoadSettings().Pulsoid;
+        var configuration = GetConfiguration();
+        _key = configuration.Key;
     }
-
-  
+    
     public void Dispose()
     {
-        Disconnect();
+        StopService();
     }
-
-
-    public override void LoadSetting()
-    {
-        _setting = (AppFileSystem.LoadSettings() ?? new UserSettings()).Pulsoid;
-    }
-
-    public override SettingBase GetSetting()
-    {
-        return _setting ?? new PulsoidSetting();
-    }
-
-
-    public override void StartService()
-    {
-        if (_setting != null)
-        {
-            Task.Run(() => Connect());
-            _setting.Enabled = true;
-            Running = true;
-            UpdateSetting(_setting);
-        }
-    }
-
-    public override void StopService()
-    {
-        if (_setting != null)
-        {
-            Disconnect();
-            _setting.Enabled = false;
-            Running = false;
-            UpdateSetting(_setting);
-        }
-    }
+    
+ 
 
 
     private bool _status = false;
@@ -113,7 +113,7 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
 
 
     private decimal _heartRate = 0;
-    [ConfigNumericEndpoint(Owner = "Pulsoid", Name = "Heart Rate", Description = "Real time heart rate data", Unit = "bpm", Permissions = Permissions.ReadOnly)]
+    [ConfigNumericEndpoint(Owner = "Pulsoid", Name = "Heart Rate", Description = "Real time heart rate data", Unit = "bpm", Permissions = Permissions.ReadOnly, Precision = 0)]
     public decimal HeartRate
     {
         get => _heartRate;
@@ -127,50 +127,6 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
         }
     } 
     
-    
-    
-    
-    
-    
-    
-    private async Task Connect()
-    {
-        if (_client != null)
-            _client.Dispose();
-        _client = new ClientWebSocket();
-
-        await _client.ConnectAsync(Uri, _cts.Token);
-
-        var buffer = new byte[256];
-        Status = true;
-
-        if (_client.State == WebSocketState.Open) await SendMessage();
-        while (_client.State == WebSocketState.Open)
-        {
-
-            try
-            {
-                var result = await _client.ReceiveAsync(new ArraySegment<byte>(buffer), _cts.Token);
-                if (result.MessageType == WebSocketMessageType.Close)
-                {
-                    _logger.LogDebug("Pulsoid closed websocket ... disconnecting");
-                    await _client.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, _cts.Token);
-                    Disconnect();
-                }
-                else
-                {
-                    HandleMessage(buffer, result.Count);
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Pulsoid encountered an error while listening for data: {ex}");
-            }
-        }
-
-        Status = false;
-    }
-
     private async Task SendMessage()
     {
         if (_client == null) return;
@@ -201,15 +157,121 @@ public class PulsoidService : ConnectorBase, IDisposable, IHostedService
         
     }
 
-    private void Disconnect()
+    
+    public override void StartService()
+    {
+        if (!Running)
+        {
+            StartAsync(CancellationToken.None);
+        }
+    }
+
+    public override void StopService()
+    {
+        if (Running)
+        {
+            _client?.Abort();
+            _cts.Cancel();
+        }
+    }
+
+
+    private async Task Run(CancellationToken stoppingToken)
     {
         if (_client != null)
+            _client.Dispose();
+        _client = new ClientWebSocket();
+
+        if(string.IsNullOrEmpty(Key))
         {
-            _client.Abort();
-            _cts.Cancel();
-            _client = null;
-            _setting.Enabled = false;
-            UpdateSetting(_setting);
+            _logger.LogError("Pulsoid key is not set. Please set the key in the settings");
+            HubService.Log(new()
+            {
+                
+                Origin = "Pulsoid",
+                Message = "Pulsoid key is not set. Please set the key in the settings",
+                Level = DoscLogLevel.Error,
+            });
+            return;
+        }
+        
+        await _client.ConnectAsync(Uri, _cts.Token);
+
+        var buffer = new byte[256];
+        Status = true;
+        Running = true;
+        if (_client.State == WebSocketState.Open) await SendMessage();
+        while (_client.State == WebSocketState.Open)
+        {
+
+            try
+            {
+                var result = await _client.ReceiveAsync(new ArraySegment<byte>(buffer), _cts.Token);
+                if (result.MessageType == WebSocketMessageType.Close)
+                {
+                    _logger.LogDebug("Pulsoid closed websocket ... disconnecting");
+                    await _client.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, _cts.Token);
+                    StopService();
+                }
+                else
+                {
+                    HandleMessage(buffer, result.Count);
+                }
+            }
+            catch (TaskCanceledException ex)
+            {
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Pulsoid encountered an error while listening for data: {ex}");
+                HubService.Log(new()
+                {
+                
+                    Origin = "Pulsoid",
+                    Message = "Pulsoid encountered an error while listening for data",
+                    Level = DoscLogLevel.Error,
+                    Details = ex.ToString()
+                });
+            }
+        }
+
+        Status = false;
+        Running = false;
+    }
+
+
+    public override async Task StartAsync(CancellationToken cancellationToken)
+    {
+        // Ignore if not enabled
+        if (!Configuration.Enabled)
+        {
+            return;
+        }
+        _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        HubService.Log(new()
+        {
+                
+            Origin = "Pulsoid",
+            Message = "Pulsoid Service Started",
+            Level = DoscLogLevel.Info,
+        });
+        Task.Run(() => Run(_cts.Token), _cts.Token);
+  
+        await Task.CompletedTask;
+    }
+
+    public override async Task StopAsync(CancellationToken cancellationToken)
+    {
+        if (Running)
+        {
+            HubService.Log(new()
+            {
+                Origin = "Pulsoid",
+                Message = "Pulsoid Service Stopped",
+                Level = DoscLogLevel.Info,
+            });
+            Running = false;
         }
     }
 }

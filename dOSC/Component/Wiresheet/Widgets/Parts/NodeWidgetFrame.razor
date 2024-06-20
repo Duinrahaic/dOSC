@@ -13,7 +13,7 @@
             @foreach (var port in Node.GetInputPorts())
             {
                 <div class="node-port input">
-                    <PortRenderer Port="@port" class="@port.PortType.ToString()"/>
+                    <PortRenderer @key=@port Port="@port" class="@port.PortType.ToString()"/>
                     <div class="port-label">
                         @port.Name
                     </div>
@@ -37,7 +37,7 @@
                         @port.Name
                     </div>
                     <div class="">
-                        <PortRenderer Port="@port" class="@port.PortType.ToString()"/>
+                        <PortRenderer @key=@port Port="@port" class="@port.PortType.ToString()"/>
 
                         <div class="node-port-value"  @key=@Node.Value.ToString()>
                             @Node.GetDisplayValue()

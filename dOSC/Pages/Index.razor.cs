@@ -26,7 +26,7 @@ public partial class Index
 
     private void OpenGithub()
     {
-        WebUtilities.OpenUrl("https://github.com/Duinrahaic/Wiresheet");
+        WebUtilities.OpenUrl("https://github.com/Duinrahaic/");
     }
 
     private void OpenUpdates()

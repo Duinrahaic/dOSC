@@ -1,6 +1,6 @@
 ﻿namespace dOSC.Client.Models.Commands;
 
-public enum LogLevel
+public enum DoscLogLevel
 {
     Debug,
     Info,

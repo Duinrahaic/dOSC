@@ -11,14 +11,14 @@ public class Log : Data
     {
     }
 
-    public Log(string origin, LogLevel level, string message)
+    public Log(string origin, DoscLogLevel level, string message)
     {
         Origin = origin;
         Level = level;
         Message = message;
     }
 
-    public Log(string origin, LogLevel level, string message, string details)
+    public Log(string origin, DoscLogLevel level, string message, string details)
     {
         Origin = origin;
         Level = level;
@@ -26,7 +26,7 @@ public class Log : Data
         Details = details;
     }
 
-    public Log(string timeStamp, string origin, LogLevel level, string message)
+    public Log(string timeStamp, string origin, DoscLogLevel level, string message)
     {
         TimeStamp = timeStamp;
         Origin = origin;
@@ -34,7 +34,7 @@ public class Log : Data
         Message = message;
     }
 
-    public Log(string timeStamp, string origin, LogLevel level, string message, string details)
+    public Log(string timeStamp, string origin, DoscLogLevel level, string message, string details)
     {
         TimeStamp = timeStamp;
         Origin = origin;
@@ -45,9 +45,9 @@ public class Log : Data
     
     public override CommandType Type { get; set; } = CommandType.Log;
     public string TimeStamp { get; set; } = DateTime.Now.ToString(CultureInfo.CurrentCulture);
-    public string Origin { get; set; }
-    public LogLevel Level { get; set; }
-    public string Message { get; set; }
+    public string Origin { get; set; } = string.Empty;
+    public DoscLogLevel Level { get; set; } = DoscLogLevel.Info;
+    public string Message { get; set; } = string.Empty;
     public string Details { get; set; } = string.Empty;
 
     public override string ToString()

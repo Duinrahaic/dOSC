@@ -1,14 +1,11 @@
-﻿<h3>CreditsSetting</h3>
-
-@code {
-    
-}@using System.Reflection
+﻿@using System.Reflection
 @using System.Runtime.InteropServices
 @using dOSC.Drivers
 @using dOSC.Drivers.Websocket
 @using dOSC.Utilities
 @using dOSC.Component.UI.Form
 @using dOSC.Component.UI.Setting.Parts
+@using dOSC.Component.UI.App
 @implements IDisposable
 <SettingsPanel>
     <div class="credits-container">
@@ -16,8 +13,14 @@
             <image src="images/dev-icon.png" class="credits-logo" />
         </div>
         <div class="credits-header-text-container">
-            <div class="credits-header-text"> Wiresheet </div>
-            <div class="credits-header-text"> Version @Assembly.GetEntryAssembly().GetName().Version.ToString() </div>
+            <div class="credits-header-text"> @@Duinrahaic </div>
+            <div class="credits-header-contacts">
+                <SocialMediaBadge ImageUri="/images/logo-twitter-new-white.png" Uri="https://twitter.com/duinrahaic" Label="Twitter"/>
+                <SocialMediaBadge ImageUri="/images/discord-mark.png" Uri="https://discord.gg/aZQfy6H9fA" Label="Discord"/>
+                <SocialMediaBadge ImageUri="/images/kofi-logo-white.png" Uri="https://ko-fi.com/duinrahaic" Label="Ko-Fi"/>
+                <SocialMediaBadge ImageUri="/images/patreon-mark-white.png" Uri="https://www.patreon.com/Duinrahaic" Label="Patreon"/>
+                <SocialMediaBadge ImageUri="/images/github-mark-white.png" Uri="https://github.com/Duinrahaic" Label="Github"/>
+            </div>
         </div>
     </div>
     <SettingsPanelGroup Title=@($"Packages Used")  >

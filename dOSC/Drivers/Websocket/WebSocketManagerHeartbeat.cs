@@ -1,7 +1,6 @@
 ﻿using System.Net.WebSockets;
 using System.Text;
 using dOSC.Client.Models.Commands;
-using LogLevel = dOSC.Client.Models.Commands.LogLevel;
 
 namespace dOSC.Drivers.Websocket;
 
@@ -15,7 +14,7 @@ public partial class WebSocketManager
         string origin = "Websocket";
         string target = "All Clients";
         string message = "Websocket Heartbeat at " + DateTime.Now.ToString("HH:mm:ss");
-        var data = new Log(DateTime.Now.ToString(), origin, LogLevel.Info, message); 
+        var data = new Log(DateTime.Now.ToString(), origin, DoscLogLevel.Info, message); 
         Command heartbeat = new(origin, target, "Heartbeat", "Log", data:data);
         
         while (socket.State == WebSocketState.Open)

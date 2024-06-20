@@ -650,3 +650,47 @@
     z-index: $z-index-backdrop;
   }
 }
+
+.social-media-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: $color-theme-1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $color-full-white;
+    font-size: 24px;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+  
+    &.large {
+       transform: scale(2); 
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 8px;
+    }
+  
+  
+    &:hover {
+        .social-media-circle-text {
+          opacity: 1;
+          transform: translateY(50%) scale(1);
+        }
+        box-shadow: 0 0 4px 1px $color-blurple;
+    }
+  
+   .social-media-circle-text {
+     position: absolute;
+     top: 50%;
+     opacity: 0;
+     transition: 250ms ease-in-out;
+     transform: translateY(0) scale(0);
+     white-space: nowrap;
+   }
+}

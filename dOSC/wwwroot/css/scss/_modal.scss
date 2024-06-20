@@ -106,6 +106,7 @@
       flex-direction: column;
       background: $color-theme-1;
       border-radius: 8px;
+      border: 1px solid black;
 
       .dosc-modal-header {
         display: flex;
@@ -117,8 +118,8 @@
         border-bottom: 1px solid $color-theme-3;
         padding: 6px 12px;
         color: $color-full-white;
-
-
+        
+        
         .dosc-modal-header-title {
           display: flex;
           flex-direction: column;
@@ -470,10 +471,41 @@
   position: relative;
   gap: 8px;
 
+  input {
+    width: 120px;
+    border-radius: 8px;
+    border: none;
+    padding: 4px;
+    font-size: 14px;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    height: 30px;
+    border-radius: 4px;
+    border: none;
+    padding: 5px;
+    color: $color-full-white;
+    background: $color-theme-2;
+    outline: none;
+    font-size: 14px;
+    &::-webkit-input-placeholder {
+      color: $color-full-white;
+    }
+    &:-moz-placeholder { /* Firefox 18- */
+      color: $color-full-white;
+    }
+    &::-webkit-search-cancel-button {
+      display:none;
+    }
+    text-align: right;
+  }
+  
   .credits-container
   {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     gap: 8px;
@@ -484,20 +516,129 @@
     font-size: 14px;
     border: 1px solid $color-theme-1;
     position: relative;
+    margin-bottom: 12px;
+
+    .credits-header-text-container {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      
+      .credits-header-text {
+        font-size: 48px;
+        font-weight: bold;
+      }
+      
+      .credits-header-contacts {
+        display: flex;
+        flex-direction: row;
+        gap: 16px;
+        justify-content: center;
+        align-items: center;
+        
+      }
+
+    }
+    
     
     .credits-header-image-container {
         height: 300px;
         width: 300px;
         position: relative;
+      
         img{
           object-fit: contain;
           border-radius: 6px;
+          height: 100%;
+          padding: 12px;
         }
     }
+    
   }
 
-  
-  
+  .data-content-panel{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding: 4px;
+    border-radius: 6px;
+    background: $color-theme-3;
+    color: $color-full-white;
+    font-size: 14px;
+    border: 1px solid $color-theme-1;
+    position: relative;
+    input {
+      height: 44px;
+    }
+  }
+  .data-content-panel-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
+    padding: 4px;
+    border-radius: 6px;
+    overflow:hidden;
+    background: $color-theme-3;
+    color: $color-full-white;
+    font-size: 14px;
+    border: 1px solid $color-theme-1;
+    position: relative;
+    margin-bottom: 12px;
+    position: relative;
+    height: 100%;
+    overflow-y: auto;
+    width: 100%;
+    padding: 2px;
+    
+    .data-content-panel-body-item {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      justify-content: space-between;
+      padding: 2px 4px;
+      border-bottom: 1px solid $color-theme-1;
+      gap: 8px;
+      &:last-child {
+        border-bottom: none;
+      }
+      .data-content-panel-body-item-type{
+          width: 10px;
+          &.logic{
+            background: $node-port-logic;
+          }
+          &.numeric{
+            background: $node-port-numeric;
+          }
+          &.date{
+            background: $node-port-time;
+          }
+          &.text{
+              background: $node-port-string;
+          }
+      }   
+      .data-content-panel-body-item-permissions{
+          width: 3ch;
+          text-align: center;
+      }
+
+      .data-content-panel-body-item-label{
+        flex-grow: 1;
+        text-align: left;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+      }
+      .data-content-panel-body-item-value{
+      }
+   
+
+
+    }
+  }
   
   .settings-container-panel {
     background: $color-theme-2;
@@ -573,12 +714,21 @@
              border-bottom: 1px solid $color-theme-1;
              width: 100%;
              display: flex;
-             flex-direction: column;
+             flex-direction: row;
              justify-content: space-between;
              align-items: center;
              gap: 8px;
              padding: 4px;
              border-radius: 6px;
+            .settings-content-panel-options-group-header-text{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                font-weight: 600;
+                font-size: 16px;
+            }
 
             .settings-content-panel-options-group-header-title {
               display: flex;
@@ -599,6 +749,13 @@
               color: $color-grey;
               font-size: 14px;
 
+            }
+            .settings-content-panel-options-group-header-icon {
+             
+              img{
+                height: 44px;
+                aspect-ratio: auto;
+              }
             }
           }
           .settings-content-panel-options-group-body {
@@ -650,36 +807,7 @@
                     
                   }
                 
-                  input {
-                    width: 120px;
-                    border-radius: 8px;
-                    border: none;
-                    padding: 4px;
-                    font-size: 14px;
-                    &::-webkit-outer-spin-button,
-                    &::-webkit-inner-spin-button {
-                      -webkit-appearance: none;
-                      margin: 0;
-                    }
-                    height: 30px;
-                    border-radius: 4px;
-                    border: none;
-                    padding: 5px;
-                    color: $color-full-white;
-                    background: $color-theme-2;
-                    outline: none;
-                    font-size: 14px;
-                    &::-webkit-input-placeholder {
-                      color: $color-full-white;
-                    }
-                    &:-moz-placeholder { /* Firefox 18- */
-                      color: $color-full-white;
-                    }
-                    &::-webkit-search-cancel-button {
-                      display:none;
-                    }
-                    text-align: right;
-                  }
+                  
               }
             }
             

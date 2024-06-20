@@ -1,0 +1,114 @@
+﻿@using dOSC.Drivers
+@using dOSC.Component.UI.Setting
+@using dOSC.Component.UI.Form
+@using dOSC.Client.Models.Commands
+@using LiteDB
+@using dOSC.Drivers.Hub;
+@implements IDisposable
+
+<div class="data-content-panel">
+    <DropDown Items="@(GetOwners())" SelectedItem="@SelectedOwner" SelectedItemChanged="OnSelectionChanged" />
+    <input @bind="SearchPhrase" @oninput="Search" placeholder="" type="search" style="display: flex; flex-grow: 1;"/>    
+</div>
+<div class="data-content-panel-body">
+    <Virtualize Items="@(GetItems())" Context="context" >
+        <div class="data-content-panel-body-item">
+            <div class="data-content-panel-body-item-type @context.Type.ToString().ToLower()"></div>
+            <div class="data-content-panel-body-item-permissions">@PermissionToText(@context.Permissions)</div>
+            <div class="data-content-panel-body-item-label">@context.Owner - @context.GetName()</div>
+            <div class="data-content-panel-body-item-value">@context.GetDisplayValue()</div>
+        </div>
+    </Virtualize>
+</div>
+
+
+@code {
+    [Inject]
+    public HubService Service { get; set; }
+
+    private List<DataEndpoint> cachedItems;
+
+    private List<DataEndpoint> GetItems()
+    {
+        if (cachedItems == null)
+        {
+            cachedItems = Service.GetEndpoints()
+                                 .Where(x => Filter(x))
+                                 .OrderBy(x => x.Owner)
+                                 .ThenBy(x => x.GetName())
+                                 .ToList();
+        }
+        return cachedItems;
+    }
+
+    protected override void OnInitialized()
+    {
+        Service.OnEndpointValueUpdate += OnEndpointsChanged;
+    }
+
+    private async void OnEndpointsChanged(DataEndpoint endpoint, DataEndpointValue value) 
+    {
+        cachedItems = null;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        Service.OnEndpointValueUpdate -= OnEndpointsChanged;
+    }
+
+    private string SelectedOwner = "All";
+
+    private void OnSelectionChanged(string owner)
+    {
+        SelectedOwner = owner;
+        InvalidateCache();
+    }
+
+    private List<string> GetOwners()
+    {
+        return Service.GetEndpoints()
+                      .Select(e => e.Owner)
+                      .Distinct()
+                      .Order()
+                      .Prepend("All")
+                      .ToList();
+    }
+
+    private void Search(ChangeEventArgs e)
+    {
+        SearchPhrase = e.Value.ToString();
+        InvalidateCache();
+    }
+
+    private bool Filter(DataEndpoint endpoint)
+    {
+        if (string.IsNullOrWhiteSpace(SearchPhrase))
+            return SelectedOwner == "All" || endpoint.Owner == SelectedOwner;
+
+        var searchParts = SearchPhrase.ToLower().Split(" ");
+        return (SelectedOwner == "All" || endpoint.Owner == SelectedOwner) &&
+               searchParts.Any(p => endpoint.GetName().ToLower().Contains(p) ||
+                                    endpoint.Description.ToLower().Contains(p) ||
+                                    endpoint.Owner.ToLower().Contains(p));
+    }
+
+    private void InvalidateCache()
+    {
+        cachedItems = null;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private string PermissionToText(Permissions permissions)
+    {
+        return permissions switch
+        {
+            Permissions.ReadOnly => "R",
+            Permissions.ReadWrite => "RW",
+            Permissions.WriteOnly => "W",
+            _ => string.Empty
+        };
+    }
+
+    private string SearchPhrase { get; set; } = string.Empty;
+}

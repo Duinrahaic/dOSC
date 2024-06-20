@@ -19,6 +19,7 @@ using dOSC.Tray;
 using Application = Avalonia.Application;
 using MessageBox = System.Windows.Forms.MessageBox;
 using WebSocketManager = dOSC.Drivers.Websocket.WebSocketManager;
+using dOSC.Drivers.Hub;
 
 namespace dOSC;
 
@@ -124,8 +125,8 @@ public partial class App : Application
         appBuilder.Services.AddSingleton<PulsoidService>();
         appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<PulsoidService>());
 
-        appBuilder.Services.AddSingleton<OSCService>();
-        appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<OSCService>());
+        appBuilder.Services.AddSingleton<OscService>();
+        appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<OscService>());
 
         
         using var myApp = appBuilder.Build();

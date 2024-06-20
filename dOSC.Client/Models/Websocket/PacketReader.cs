@@ -16,7 +16,7 @@ public static class PacketReader
         Converters =
         {
             new DataConverter(),
-            new EnumConverter<LogLevel>(),
+            new EnumConverter<DoscLogLevel>(),
             new EnumConverter<CommandType>(),
             new EnumConverter<Permissions>(),
             new EnumConverter<DataType>()

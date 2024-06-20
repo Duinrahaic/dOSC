@@ -9,7 +9,6 @@ public class ConfigNumericEndpoint : ConfigEndpoint
     public double MinValue { get; set; } = SafeDecimalToDouble(decimal.MinValue);
     public double MaxValue { get; set; } = SafeDecimalToDouble(decimal.MaxValue);
     public int Precision { get; set; } = 5;
-    public Permissions Permissions { get; set; } 
     public string Unit { get; set; } = "";
     
     

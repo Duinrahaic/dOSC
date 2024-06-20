@@ -1,103 +1,178 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreOSC;
+using dOSC.Client.Models.Commands;
 using dOSC.Drivers.Settings;
 using dOSC.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Timer = System.Timers.Timer;
+using dOSC.Drivers.Hub;
 
 namespace dOSC.Drivers.OSC;
 
-public partial class OSCService : ConnectorBase
+public partial class OscService : ConnectorBase
 {
-    public delegate void OSCSubscriptionEventHandler(OSCSubscriptionEvent e);
+    public delegate void OscSubscriptionEventHandler(OSCSubscriptionEvent e);
+    public event OscSubscriptionEventHandler? OnOscMessageReceived;
 
-    private readonly ILogger<OSCService> _logger;
-    private UDPListener? _receiver;
-    private Timer? _refreshTimer;
-    private UDPSender? _sender;
-    private readonly int _tcpPort = 9000;
-    private readonly int _udpPort = 9001;
+    private readonly ILogger<OscService> _logger;
+    private UDPDuplex _duplex;
+    private OSCSetting GetConfiguration() => (OSCSetting) Configuration;
+    private CancellationTokenSource _cts;
+    public static int GetDefaultListeningPort() => new OSCSetting().ListeningPort;
+    private int _listingPort = 9000;
+    public int ListeningPort
+    {
+        get => _listingPort;
+        set
+        {
+            if (_listingPort != value)
+            {
+                _listingPort = value;
+                var configuration = GetConfiguration();
+                configuration.ListeningPort = value;
+                SaveConfiguration(Configuration);
+            }
+        }
+    }
+    
+    public override bool Enabled
+    {
+        get => _enabled;
+        set
+        {
+            if (_enabled != value)
+            {
+                _enabled = value;
+                var config = GetConfiguration();
+                config.Enabled = value;
+                SaveConfiguration(config);
+                if (_enabled)
+                {
+                    StartService();
+                }
+                else
+                {
+                    StopService();
+                }
+            }
+        }
+    }
+    
+    public static int GetDefaultSendingPort() => new OSCSetting().SendingPort;
+    private int _sendingPort = 9001;
+    public int SendingPort
+    {
+        get => _sendingPort;
+        set
+        {
+            if (_sendingPort != value)
+            {
+                _sendingPort = value;
+                var configuration = GetConfiguration();
+                configuration.SendingPort = value;
+                SaveConfiguration(Configuration);
+            }
+        }
+    }
 
     private readonly HashSet<string> DiscoveredParameters = new();
     
     
-    private OSCSetting Setting;
-
-    public OSCService(IServiceProvider services):base(services)
+    public OscService(IServiceProvider services):base(services)
     {
-        _logger = services.GetService<ILogger<OSCService>>()!;
+        _logger = services.GetService<ILogger<OscService>>()!;
         _logger.LogInformation("Initialized OSCService");
-        StartService();
+        
+        Configuration = AppFileSystem.LoadSettings().OSC;
+        var configuration = GetConfiguration();
+        ListeningPort = configuration.ListeningPort;
+        SendingPort = configuration.SendingPort;
     }
-
-    public override string ServiceName => "OSC";
+    
+    public override string Name => "OSC";
     public override string Description => "A protocol for networking computers and devices";
-    public event OSCSubscriptionEventHandler? OnOSCMessageRecieved;
 
-    public override void LoadSetting()
+    private async Task Run(CancellationToken stoppingToken)
     {
-        Setting = (AppFileSystem.LoadSettings() ?? new UserSettings()).OSC;
+        Running = true;
+        HandleOscPacket callback = delegate(OscPacket packet)
+        {
+            var messageReceived = (OscMessage)packet;
+
+            if (messageReceived != null)
+            {
+                var endpoints = HubService.GetEndpointsByAddress(messageReceived.Address);
+                
+                
+                if (endpoints.Any())
+                {
+                    var endpoint = endpoints.First();
+                    var value = endpoint.ToDataEndpointValue();
+                    value.Value = messageReceived.Arguments.First().ToString();
+                    HubService.UpdateEndpointValue(value);
+                } 
+                
+                DiscoveredParameters.Add(messageReceived.Address);
+                OnOscMessageReceived?.Invoke(new OSCSubscriptionEvent(messageReceived.Address,
+                    messageReceived.Arguments));
+            }
+        };
+
+        try
+        {
+            _logger.LogInformation($"OSCService started at Listing on {_listingPort} and Sending on {_sendingPort}");
+            HubService.Log(new()
+            {
+                Origin = "OSC",
+                Message = $"OSC started at Listing on {_listingPort} and Sending on {_sendingPort}",
+                Level = DoscLogLevel.Info,
+            });
+            _duplex = new UDPDuplex("localhost",_listingPort,_sendingPort, callback);
+            await Task.Delay(Timeout.Infinite);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError($"OSC Failed: {ex.Message}");
+            HubService.Log(new()
+            {
+                Origin = "OSC",
+                Message = $"OSC failed to start: {ex.Message}",
+                Level = DoscLogLevel.Info,
+                Details = ex.StackTrace
+            });
+        }
+
+        Running = false;
     }
 
-    public override SettingBase GetSetting()
+    
+    public override void StopService()
     {
-        return Setting ?? new OSCSetting();
+        if (Running)
+        {
+            Running = false;
+            _duplex.Close();
+            _logger.LogInformation("OSCService stopped");
+        }
     }
 
     public override void StartService()
     {
-        if (!IsRunning())
+        if (!Running)
         {
-            var tcpPort = _tcpPort;
-            var udpPort = _udpPort;
-            HandleOscPacket callback = delegate(OscPacket packet)
-            {
-                var messageRecieved = (OscMessage)packet;
-
-                //_logger.LogInformation($"Received OSC packet {messageRecieved.Parameter} [{messageRecieved.Arguments.FirstOrDefault() ?? "Empty"}]");
-                if (messageRecieved != null)
-                {
-                    DiscoveredParameters.Add(messageRecieved.Address);
-                    OnOSCMessageRecieved?.Invoke(new OSCSubscriptionEvent(messageRecieved.Address,
-                        messageRecieved.Arguments));
-                }
-            };
-            _sender = new UDPSender("127.0.0.1", tcpPort);
-            try
-            {
-                _receiver = new UDPListener(udpPort, callback);
-                _logger.LogInformation($"OSCService started at TCP {tcpPort} and UDP {udpPort}");
-            }
-            catch
-            {
-                _logger.LogError($"Unable to create OSC listener on port {udpPort}");
-            }
-
-            Running = true;
+            StartAsync(CancellationToken.None);
         }
     }
 
-    public override void StopService()
+    public void SendMessage(string address, params object[] args)
     {
-        if (_sender != null)
-            _sender.Close();
-        if (_receiver != null)
-            _receiver.Close();
-        if (IsRunning())
-            Running = false;
-        _logger.LogInformation("OSCService stopped");
-    }
-
-
-    public void SendMessage(string Address, params object[] args)
-    {
-        var message = new OscMessage(Address, args);
-        if (_sender != null)
+        var message = new OscMessage(address, args);
+        if (_duplex != null)
             try
             {
-                _sender.Send(message);
+                _duplex.Send(message);
             }
             catch (Exception ex)
             {
@@ -105,5 +180,38 @@ public partial class OSCService : ConnectorBase
             }
         else
             _logger.LogWarning("Cannot send OSC message. Sender is null.");
+    }
+    
+    
+    public override async Task StartAsync(CancellationToken cancellationToken)
+    {
+        // Ignore if not enabled
+        if (!Configuration.Enabled)
+        {
+            return;
+        }
+        _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        HubService.Log(new()
+        {
+            Origin = "OSC",
+            Message = "OSC Service Started",
+            Level = DoscLogLevel.Info,
+        });
+        Task.Run(() => Run(_cts.Token), _cts.Token);
+        await Task.CompletedTask;
+    }
+
+    public override async Task StopAsync(CancellationToken cancellationToken)
+    {
+        if (Running)
+        {
+            HubService.Log(new()
+            {
+                Origin = "OSC",
+                Message = "OSC Service Stopped",
+                Level = DoscLogLevel.Info,
+            });
+            Running = false;
+        }
     }
 }

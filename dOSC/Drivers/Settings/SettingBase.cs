@@ -2,6 +2,7 @@
 
 namespace dOSC.Drivers.Settings;
 
-public abstract class SettingBase
+public class SettingBase
 {
+    public bool Enabled { get; set; } = true;
 }

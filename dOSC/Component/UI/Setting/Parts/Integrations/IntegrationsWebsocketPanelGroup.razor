@@ -4,25 +4,24 @@
 
 @implements IDisposable
 
- <SettingsPanelGroup Title="External Access" Subtitle="Enables 3rd-party applications the ability to connect and communicate to the hub.">
+ <SettingsPanelGroup Title="@Service.Name" Subtitle="@Service.Description">
         <div class="settings-content-panel-options-group-body-item">
-            <div class="settings-content-panel-options-group-body-item-label"> Websocket Websocket Status </div>
+            <div class="settings-content-panel-options-group-body-item-label"> Status </div>
             <div class="settings-content-panel-options-group-body-item-value"> 
-                <div class="status-indicator @(Websocket.IsRunning ? "status-indicator-running" : "status-indicator-stopped")"> @(Websocket.IsRunning ? "Running" : "Stopped") </div>
+                <div class="status-indicator @(Service.Running ? "status-indicator-running" : "status-indicator-stopped")"> @(Service.Running ? "Running" : "Stopped") </div>
             </div>
         </div>
-
         <div class="settings-content-panel-options-group-body-item">
-            <div class="settings-content-panel-options-group-body-item-label"> Websocket Port </div>
-            <div class="settings-content-panel-options-group-body-item-value"> <input @bind="Websocket.Port" placeholder="@WebSocketService.GetDefaultPort()" type="number" min="49152" max="65535" step="1"/> </div>
+            <div class="settings-content-panel-options-group-body-item-label"> Port </div>
+            <div class="settings-content-panel-options-group-body-item-value"> <input @bind="Service.Port" placeholder="@WebSocketService.GetDefaultPort()" type="number" min="49152" max="65535" step="1"/> </div>
         </div>
         <div class="settings-content-panel-options-group-body-item">
-            <div class="settings-content-panel-options-group-body-item-label"> Enable External Access </div>
-            <div class="settings-content-panel-options-group-body-item-value"> <ToggleSwitch LabelLeft Small TrueLabel="Enable" FalseLabel="Disable"  @bind-Value="@Websocket.Enabled" /> </div>
+            <div class="settings-content-panel-options-group-body-item-label"> Enable </div>
+            <div class="settings-content-panel-options-group-body-item-value"> <ToggleSwitch LabelLeft Small TrueLabel="Enable" FalseLabel="Disable"  @bind-Value="@Service.Enabled" /> </div>
         </div>
         <div class="settings-content-panel-options-group-body-item">
             <div class="settings-content-panel-options-group-body-item-label"> Connected Clients </div>
-            <div class="settings-content-panel-options-group-body-item-value"> @Websocket.ActiveConnections Clients </div>
+            <div class="settings-content-panel-options-group-body-item-value"> @Service.ActiveConnections Clients </div>
         </div>
         <div class="settings-content-panel-options-group-body-item">
             <div class="settings-content-panel-options-group-body-item-label"> API Key </div>
@@ -36,7 +35,7 @@
     </SettingsPanelGroup>
 @code {
     [Inject]
-    private WebSocketService Websocket { get; set; }
+    private WebSocketService Service { get; set; }
     [Inject]
     private IJSRuntime Js { get; set; }
     
@@ -48,21 +47,21 @@
     
     protected override void OnInitialized()
     {
-        Websocket.OnStateChanged += OnStateChange;
-        Websocket.OnConnectionCountChanged += OnConnectionCountChanged;
+        Service.OnStateChanged += OnStateChange;
+        Service.OnConnectionCountChanged += OnConnectionCountChanged;
     }
     
     private async Task CopyKey()
     {
         _copyKeyClicked = true;
-        await Js.InvokeVoidAsync("copyTextWithAnimation", Websocket.Key);
+        await Js.InvokeVoidAsync("copyTextWithAnimation", Service.Key);
     }
     private void OnCopyKeyMouseLeave() => _copyKeyClicked = false;
     
     private async Task GenerateKey()
     {
         _regenKeyClicked = true;
-        Websocket.Key = EncryptionHelper.GenerateApiKey();
+        Service.Key = EncryptionHelper.GenerateApiKey();
     }
     private void OnGenerateKeyMouseLeave() => _regenKeyClicked = false;
 
@@ -78,8 +77,8 @@
     
     public void Dispose()
     {
-        Websocket.OnStateChanged -= OnStateChange;
-        Websocket.OnConnectionCountChanged -= OnConnectionCountChanged;
+        Service.OnStateChanged -= OnStateChange;
+        Service.OnConnectionCountChanged -= OnConnectionCountChanged;
 
     }
 }

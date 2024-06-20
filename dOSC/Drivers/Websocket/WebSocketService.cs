@@ -7,10 +7,8 @@ using Newtonsoft.Json;
 
 namespace dOSC.Drivers.Websocket;
 
-public class WebSocketService : IHostedService
+public class WebSocketService : ConnectorBase
 {
-    public delegate void StateChanged(bool running);
-    public event StateChanged? OnStateChanged;
     public delegate void ConnectionCountChanged(int count);
     public event ConnectionCountChanged? OnConnectionCountChanged;
     
@@ -18,9 +16,11 @@ public class WebSocketService : IHostedService
     private HttpListener _listener = new();
     private CancellationTokenSource _cts;
 
-    private WebsocketSetting _configuration = new();
-    private Dictionary<string, WebSocket> _activeIdentities = new(); 
+    private Dictionary<string, WebSocket> _activeIdentities = new();
 
+    public override string Name => "External Access";
+    public override string Description => "Enables 3rd-party applications the ability to connect and communicate to the hub by websocket";
+    private WebsocketSetting GetConfiguration() => (WebsocketSetting) Configuration;
 
     public int ActiveConnections
     {
@@ -38,23 +38,7 @@ public class WebSocketService : IHostedService
 
     private List<string> GetActiveConnections => _activeIdentities.Keys.ToList();
     
-
-    private bool _isRunning = false;
-    public bool IsRunning
-    {
-        get => _isRunning;
-        set
-        {
-            if (_isRunning != value)
-            {
-                _isRunning = value;
-                OnStateChanged?.Invoke(value);
-            }
-        }
-    }
-    
-    private bool _enabled = true;
-    public bool Enabled
+    public override bool Enabled
     {
         get => _enabled;
         set
@@ -62,16 +46,17 @@ public class WebSocketService : IHostedService
             if (_enabled != value)
             {
                 _enabled = value;
-                _configuration.Enabled = value;
-                SaveConfiguration(_configuration);
+                var config = GetConfiguration();
+                config.Enabled = value;
+                SaveConfiguration(config);
                 if (_enabled)
                 {
-                    StartWebSocketService();
+                    StartService();
                 }
                 else
                 {
                     ActiveConnections = 0;
-                    StopWebSocketService();
+                    StopService();
                 }
             }
         }
@@ -86,15 +71,14 @@ public class WebSocketService : IHostedService
             if (_port != value)
             {
                 _port = value;
-                _configuration.Port = value;
-                SaveConfiguration(_configuration);
+                var config = GetConfiguration();
+                config.Port = value;
+                SaveConfiguration(config);
             }
         }
     }
     
     private string _key = "default";
-    private IHostedService _hostedServiceImplementation;
-
     public string Key
     {
         get => _key;
@@ -103,46 +87,35 @@ public class WebSocketService : IHostedService
             if (_key != value)
             {
                 _key = value;
-                _configuration.Key = value;
-                SaveConfiguration(_configuration);
+                var config = GetConfiguration();
+                config.Key = value;
+                SaveConfiguration(config);
             }
         }
     }
 
 
 
-    public WebSocketService(IServiceProvider services)
+    public WebSocketService(IServiceProvider services) : base(services)
     {
         _webSocketManager = services.GetRequiredService<WebSocketManager>();
-        _configuration = AppFileSystem.LoadSettings().Websocket;
-        _enabled = _configuration.Enabled;
-        _port = _configuration.Port;
-        _key = _configuration.Key;
-        StartAsync(CancellationToken.None);
+        Configuration = AppFileSystem.LoadSettings().Websocket;
+        var config = GetConfiguration();
+        _port = config.Port;
+        _key = config.Key;
+        
     }
     
-    public int GetPort() => _configuration.Port;
     public static int GetDefaultPort() => new WebsocketSetting().Port;
     
-    public void SetPort(int port)
-    {
-        _configuration.Port = port;
-        SaveConfiguration(_configuration);
-    }
-
-    private void SaveConfiguration(WebsocketSetting configuration)
-    {
-        AppFileSystem.SaveSetting(configuration);
-        _configuration = configuration;
-    }
-
-    public string GetWebsocketURI() => $"ws://localhost:{_port}/";
+    public string GetWebsocketUri() => $"ws://localhost:{_port}/";
 
     private async Task Run(CancellationToken stoppingToken)
     {
+        _listener = new HttpListener();
         _listener.Prefixes.Add($"http://localhost:{_port}/");
         _listener.Start();
-        IsRunning = true;
+        Running = true;
 
         while (!stoppingToken.IsCancellationRequested)
         {
@@ -192,27 +165,27 @@ public class WebSocketService : IHostedService
         }
 
         _listener.Stop();
-        IsRunning = false;
+        Running = false;
     }
-    private void StopWebSocketService()
+    public override void StopService()
     {
-        if (IsRunning)
+        if (Running)
         {
             _listener.Stop();
-            IsRunning = false;
+            Running = false;
         }
     }
-    private void StartWebSocketService()
+    public override void StartService()
     {
-        if (!IsRunning)
+        if (!Running)
         {
             StartAsync(CancellationToken.None);
         }
     }
-    public async Task StartAsync(CancellationToken cancellationToken)
+    public override async Task StartAsync(CancellationToken cancellationToken)
     {
         // Ignore if not enabled
-        if (!_configuration.Enabled)
+        if (!Configuration.Enabled)
         {
             return;
         }
@@ -221,12 +194,12 @@ public class WebSocketService : IHostedService
         await Task.CompletedTask;
     }
 
-    public async Task StopAsync(CancellationToken cancellationToken)
+    public override async Task StopAsync(CancellationToken cancellationToken)
     {
-        if (IsRunning)
+        if (Running)
         {
             _listener.Stop();
-            IsRunning = false;
+            Running = false;
         }
     }
 }

@@ -4,17 +4,19 @@ using Microsoft.Extensions.Hosting;
 
 namespace dOSC.Drivers.OSC;
 
-public partial class OSCService : IHostedService
+public partial class OscService : IHostedService
 {
-    // Undocumented
-    public const string VRMode = "/avatar/parameters/VRMode"; //int out 
-    public const string TrackingType = "/avatar/parameters/TrackingType"; //int out
-    
+    [ConfigNumericEndpoint(Owner = "VRChat - Avatar",Name = "/avatar/parameters/VRMode", Alias = "VR Mode", Description = "VR Mode", Permissions = Permissions.ReadOnly,
+        DefaultValue = 0, Precision = 0)]
+    public int VRMode { get; set; } = 0;
+    [ConfigNumericEndpoint(Owner = "VRChat - Avatar",Name = "/avatar/parameters/TrackingType", Alias = "Tracking Type", Description = "Tracking Type", Permissions = Permissions.ReadOnly,
+        DefaultValue = 0, Precision = 0)]
+    public int TrackingType { get; set; } = 0;
     [ConfigNumericEndpoint(Owner = "VRChat - Avatar",Name = "/avatar/parameters/Upright", Alias = "Upright", Description = "Upright", Permissions = Permissions.ReadOnly,
         DefaultValue = 0, MaxValue = 1, MinValue = 0, Precision = 5)]
     public decimal Upright { get; set; } = 0m;
     [ConfigNumericEndpoint(Owner = "VRChat - Avatar", Name = "/avatar/parameters/AngularY", Alias = "AngularY", Description = "Upright", Permissions = Permissions.ReadOnly,
-        DefaultValue = 0, MaxValue = 1, MinValue = 0, Precision = 5)]
+        DefaultValue = 0, MaxValue = 1, MinValue = 0, Precision = 0)]
     public decimal AngularY { get; set; } = 0m;
     [ConfigNumericEndpoint(Owner = "VRChat - Avatar", Name = "/avatar/parameters/GestureLeftWeight", Alias = "Gesture Left Weight", Description = "Gesture Weight on Left Hand", Permissions = Permissions.ReadOnly,
         DefaultValue = 0, MaxValue = 1, MinValue = 0, Precision = 5)]
@@ -23,10 +25,10 @@ public partial class OSCService : IHostedService
         DefaultValue = 0, MaxValue = 1, MinValue = 0, Precision = 5)]
     public decimal GestureRightWeight { get; set; } = 0m;
     [ConfigNumericEndpoint(Owner = "VRChat - Avatar",Name = "/avatar/parameters/GestureRight", Alias = "Gesture Right", Description = "Gesture on Right Hand", Permissions = Permissions.ReadOnly,
-        DefaultValue = 0, MaxValue = 1, MinValue = 255, Precision = 1)]
+        DefaultValue = 0, MaxValue = 1, MinValue = 255, Precision = 0)]
     public int GestureRight { get; set; } = 0;
     [ConfigNumericEndpoint(Owner = "VRChat - Avatar",Name = "/avatar/parameters/GestureLeft", Alias = "Gesture Left", Description = "Gesture on Left Hand", Permissions = Permissions.ReadOnly,
-        DefaultValue = 0, MaxValue = 1, MinValue = 255, Precision = 1)]
+        DefaultValue = 0, MaxValue = 1, MinValue = 255, Precision = 0)]
     public int GestureLeft { get; set; } = 0;
     [ConfigNumericEndpoint(Owner = "VRChat - Avatar",Name = "/avatar/parameters/Face", Alias = "Face", Description = "Face", Permissions = Permissions.ReadWrite,
          DefaultValue = 0, MaxValue = 1, MinValue = 0, Precision = 1)]

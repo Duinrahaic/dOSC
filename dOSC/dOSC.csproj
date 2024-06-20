@@ -162,6 +162,7 @@
       <_ContentIncludedByDefault Remove="Component\Form\SettingsPages\PulsoidSettings.razor" />
       <_ContentIncludedByDefault Remove="Component\Form\DropDown.razor" />
       <_ContentIncludedByDefault Remove="Component\Form\ToggleSwitch.razor" />
+      <_ContentIncludedByDefault Remove="Component\UI\Table\SettingsTableRow.razor" />
     </ItemGroup>
     <ItemGroup>
       <AdditionalFiles Include="Component\UI\App\AppDetailItem.razor" />
@@ -169,8 +170,6 @@
       <AdditionalFiles Include="Component\UI\App\AppPageNavigationItem.razor" />
       <AdditionalFiles Include="Component\UI\App\AppProfileItem.razor" />
       <AdditionalFiles Include="Component\UI\Form\DropDown.razor" />
-      <AdditionalFiles Include="Component\UI\Table\ConnectorTable.razor" />
-      <AdditionalFiles Include="Component\UI\Table\SettingsTableRow.razor" />
       <AdditionalFiles Include="Component\UI\UploadWiresheetFile.razor" />
       <AdditionalFiles Include="Component\UI\Wiresheet\PlayPauseButton.razor" />
       <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbar.razor" />
@@ -180,6 +179,9 @@
       <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbarDropdownDivider.razor" />
       <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbarDropdownItem.razor" />
       <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbarDropdownSubmenuItem.razor" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Component\UI\Setting\Parts\Data\" />
     </ItemGroup>
 
 </Project>

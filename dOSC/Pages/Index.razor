@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using dOSC.Component.UI.App
 <div class="app-page">
     <div class="home-container">
         <div class="home-panel">
@@ -6,56 +7,11 @@
             <div class="subtitle"> A Dynamic OSC App Sharing Platform </div>
         </div>
         <div class="home-panel-options">
-            <ul>
-                <li>
-                    <div class="option" @onclick="@OpenTwitter" style="padding: 12px;">
-                        <img src="/images/logo-twitter-new-white.png"/>
-                    </div>
-                    <div class="option-text">
-                        Social Media
-                    </div>
-                </li>
-                <li>
-                    <div class="option" @onclick="@OpenDiscord">
-                        <img src="/images/discord-mark.png"/>
-                    </div>
-                    <div class="option-text">
-                        Discord
-                    </div>
-                </li>
-                <li>
-                    <div class="option" @onclick="@OpenKofi">
-                        <img src="/images/kofi-logo-white.png"/>
-                    </div>
-                    <div class="option-text">
-                        Ko-Fi
-                    </div>
-                </li>
-                <li>
-                    <div class="option" @onclick="@OpenPatreon">
-                        <img src="/images/patreon-mark-white.png"/>
-                    </div>
-                    <div class="option-text">
-                        Patreon
-                    </div>
-                </li>
-                <li>
-                    <div class="option" @onclick="@OpenGithub">
-                        <img src="/images/github-mark-white.png"/>
-                    </div>
-                    <div class="option-text">
-                        Github
-                    </div>
-                </li>
-                @*                 <li>
-                    <div class="option" >
-                        <span class="icon icon-book-open"/>
-                    </div>
-                    <div class="option-text">
-                        Soon
-                    </div>
-                </li> *@
-            </ul>
+            <SocialMediaBadge Large="true" ImageUri="/images/logo-twitter-new-white.png" Uri="https://twitter.com/duinrahaic" Label="Twitter"/>
+            <SocialMediaBadge Large="true" ImageUri="/images/discord-mark.png" Uri="https://discord.gg/aZQfy6H9fA" Label="Discord"/>
+            <SocialMediaBadge Large="true" ImageUri="/images/kofi-logo-white.png" Uri="https://ko-fi.com/duinrahaic" Label="Ko-Fi"/>
+            <SocialMediaBadge Large="true" ImageUri="/images/patreon-mark-white.png" Uri="https://www.patreon.com/Duinrahaic" Label="Patreon"/>
+            <SocialMediaBadge Large="true" ImageUri="/images/github-mark-white.png" Uri="https://github.com/Duinrahaic" Label="Github"/>
         </div>
     </div>
 </div>

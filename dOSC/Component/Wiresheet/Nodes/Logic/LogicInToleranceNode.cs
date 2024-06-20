@@ -30,7 +30,7 @@ public class LogicInToleranceNode: LogicNode
                 BsonValue targetVal = target.HasLinks() ? target.GetBsonValue() : new(0.0);
                 BsonValue toleranceVal = tolerance.HasLinks() ? tolerance.GetBsonValue() : new(1.0);
 
-                Value = InTolerance(inputVal, targetVal, toleranceVal);
+                Value = InTolerance(inputVal.AsDouble, targetVal.AsDouble, toleranceVal.AsDouble);
                 ClearErrorMessage();
             }
             catch

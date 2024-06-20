@@ -4,13 +4,13 @@ using dOSC.Client.Models.Commands;
 
 namespace dOSC.Drivers.OSC;
 
-public partial class OSCService
+public partial class OscService
 {
     public const string ChatboxInput = "/chatbox/input"; // test immedietly? sfx?
     
     
     
-    [ConfigLogicEndpoint(Owner = "OSC",Name = "/chatbox/typing", Alias = "Enable Typing", Description = "Sets if the chatbox should show typing indicators", Permissions = Permissions.ReadOnly,
+    [ConfigLogicEndpoint(Owner = "VRChat - Chat",Name = "/chatbox/typing", Alias = "Enable Typing", Description = "Sets if the chatbox should show typing indicators", Permissions = Permissions.ReadOnly,
         DefaultValue = false, TrueLabel = "Enabled", FalseLabel = "Disabled")]
     public bool ChatboxTyping { get; set; } = false; 
 

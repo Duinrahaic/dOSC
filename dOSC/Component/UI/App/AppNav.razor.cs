@@ -4,6 +4,7 @@ using dOSC.Component.Modals;
 using dOSC.Drivers;
 using dOSC.Drivers.Websocket;
 using Microsoft.AspNetCore.Components;
+using dOSC.Drivers.Hub;
 
 namespace dOSC.Component.UI.App;
 

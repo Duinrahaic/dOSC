@@ -1,6 +1,6 @@
 ﻿using dOSC.Client.Models.Commands;
 
-namespace dOSC.Drivers;
+namespace dOSC.Drivers.Hub;
 
 public partial class HubService
 {
@@ -11,14 +11,19 @@ public partial class HubService
     private Queue<Log> _logQueue = new();
     public void Log(Log log)
     {
-        if(_logQueue.Any(x=> x.Equals(log)))
-            return;
-        _logQueue.Enqueue(log);
-        while(_logQueue.Count > _config.MaxLogHistory)
+        try
         {
-            _logQueue.Dequeue();
+            _logQueue.Enqueue(log);
+            while(_logQueue.Count > _config.MaxLogHistory)
+            {
+                _logQueue.Dequeue();
+            }
+            LogReceived?.Invoke(log);
         }
-        LogReceived?.Invoke(log);
+        catch
+        {
+            // Ignored
+        }
     }
     
     public Queue<Log> GetLogs() => _logQueue;

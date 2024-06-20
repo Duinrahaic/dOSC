@@ -1,0 +1,36 @@
+﻿@using dOSC.Drivers.Pulsoid
+@implements IDisposable
+@using dOSC.Component.UI.Form
+
+ <SettingsPanelGroup Title=@Service.Name Subtitle=@Service.Description Icon="@Service.IconRef">
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Status </div>
+        <div class="settings-content-panel-options-group-body-item-value"> 
+            <div class="status-indicator @(Service.Running ? "status-indicator-running" : "status-indicator-stopped")"> @(Service.Running ? "Running" : "Stopped") </div>
+        </div>
+    </div>
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> API Key </div>
+        <div class="settings-content-panel-options-group-body-item-value"> <input @bind="Service.Key" placeholder="" type="password" style="width: 200px;"/> </div>
+    </div>
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Enable </div>
+        <div class="settings-content-panel-options-group-body-item-value"> <ToggleSwitch LabelLeft Small TrueLabel="Enable" FalseLabel="Disable"  @bind-Value="@Service.Enabled" /> </div>
+    </div>
+</SettingsPanelGroup>
+@code {
+    [Inject]
+    private PulsoidService Service { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        Service.OnStateChanged += OnStateChange;
+    }
+    
+    private void OnStateChange(bool running) => InvokeAsync(StateHasChanged);
+    
+    public void Dispose()
+    {
+        Service.OnStateChanged -= OnStateChange;
+    }
+}

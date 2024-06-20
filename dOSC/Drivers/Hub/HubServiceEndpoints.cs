@@ -1,8 +1,9 @@
 ﻿using System.Globalization;
 using dOSC.Client.Models.Commands;
-using LogLevel = dOSC.Client.Models.Commands.LogLevel;
+using LiteDB;
+using LiveSheet;
 
-namespace dOSC.Drivers;
+namespace dOSC.Drivers.Hub;
 
 public partial class HubService
 {
@@ -13,7 +14,7 @@ public partial class HubService
 
     public EndpointValueUpdated? OnEndpointValueUpdate;
     
-    private HashSet<DataEndpoint> _endpoints = new();
+    private static HashSet<DataEndpoint> _endpoints = new();
 
     public int GetEndpointCount() => _endpoints.Count;
     public int GetEndpointSourcesCount() => _endpoints.Select(e => e.Owner).Distinct().Count();
@@ -25,13 +26,13 @@ public partial class HubService
         if (success)
         {
             log.Message = $"Registered ConfigEndpoint: {e.Name} for {e.Owner} ";
-            log.Level = LogLevel.Info;
+            log.Level = DoscLogLevel.Info;
             OnEndpointUpdate?.Invoke(e);
         }
         else
         {
             log.Message = $"Unable to register ConfigEndpoint: {e.Name} for {e.Owner} ";
-            log.Level = LogLevel.Warning;
+            log.Level = DoscLogLevel.Warning;
         }
         Log(log);
         return success;
@@ -44,12 +45,12 @@ public partial class HubService
         {
             OnEndpointUpdate?.Invoke(e);
             log.Message = $"{e.Owner} unregistered ConfigEndpoint: {e.Name}";
-            log.Level = LogLevel.Info;
+            log.Level = DoscLogLevel.Info;
         }
         else
         {
             log.Message = $"Unable to unregister ConfigEndpoint: {e.Name} for {e.Owner}";
-            log.Level = LogLevel.Warning;
+            log.Level = DoscLogLevel.Warning;
         }
         Log(log);
         return success;
@@ -66,11 +67,25 @@ public partial class HubService
         else
         {
             log.Message = $"ConfigEndpoint {e.Name} for {e.Owner} does not exist to update";
-            log.Level = LogLevel.Warning;
+            log.Level = DoscLogLevel.Warning;
             success = false;
         }
         Log(log);
         return success;
+    }
+    public DataEndpointValue GetEndpointValue(DataEndpoint e)
+    {
+        var endpoint = _endpoints.FirstOrDefault(ep => ep.Equals(e));
+        if(endpoint != null)
+        {
+            return endpoint.ToDataEndpointValue();
+        }
+        return null;
+    }
+    
+    public DataEndpoint GetEndpoint(Subscription subscription)
+    {
+        return _endpoints.FirstOrDefault(e => e.Owner == subscription.Owner && e.Name == subscription.Address) ?? new DataEndpoint();
     }
     
     public bool UpdateEndpointValue(DataEndpointValue value)
@@ -83,28 +98,33 @@ public partial class HubService
             if(endpoint.Type != value.Type)
             {
                 log.Message = $"ConfigEndpoint {value.Name} for {value.Owner} has different type than the value provided";
-                log.Level = LogLevel.Warning;
-                Log(log);
+                log.Level = DoscLogLevel.Warning;
+                //Log(log);
                 return false;
             }
             
             
             success = true;
-            log.Message = $"Updated ConfigEndpoint {endpoint.Name} for {endpoint.Owner} with value {value.Value}";
-            log.Level = LogLevel.Info;
-            Log(log);
+
+            endpoint.DefaultValue = value.Value;
+            log.Message = $"Updated ConfigEndpoint {endpoint.Name} for {endpoint.Owner} with value {endpoint.GetDisplayValue()}";
+            log.Level = DoscLogLevel.Info;
+            //Log(log);
             OnEndpointValueUpdate?.Invoke(endpoint, value);
+            SubscriptionService.UpdateSubscription(endpoint);
             return success;
         }
         else
         {
             log.Message = $"ConfigEndpoint {value.Name} for {value.Owner} does not exist to update";
-            log.Level = LogLevel.Warning;
+            log.Level = DoscLogLevel.Warning;
             success = false;
-            Log(log);
+            //Log(log);
             return success;
         }
     }
+    
+    
     
 
     private static Log EndpointLog => new()
@@ -115,5 +135,8 @@ public partial class HubService
     
     
     public List<DataEndpoint> GetEndpoints() => _endpoints.ToList();
-    public List<DataEndpoint> GetEndpoints(string origin) => _endpoints.Where(e => e.Owner == origin).ToList();
+    public List<DataEndpoint> GetEndpointsByOrigin(string origin) => _endpoints.Where(e => e.Owner == origin).ToList();
+    public List<DataEndpoint> GetEndpointsByAddress(string address) => _endpoints.Where(e => e.Name == address).ToList();
+
+    
 }

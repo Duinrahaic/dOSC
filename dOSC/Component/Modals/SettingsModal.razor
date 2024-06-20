@@ -2,7 +2,7 @@
 @using dOSC.Drivers
 @using dOSC.Component.UI.Setting
 @implements IDisposable
-<ModalV2 @ref="Modal" Title="Wiresheet Settings"  Size="ModalV2.ModalSize.Large" Icon="icon-cog">
+<ModalV2 @ref="Modal" Title="Settings"  Size="ModalV2.ModalSize.Large" Icon="icon-cog">
     <Body>
         <div class="settings-container">
             <div class="settings-container-panel settings-nav">
@@ -20,7 +20,7 @@
                         <IntegrationsSettings />
                         break;
                     case SettingsCategory.Data:
-                        <ThemeSettings />
+                        <DataSettings />
                         break;
                     case SettingsCategory.CreditsAndMentions:
                         <CreditsSetting/>

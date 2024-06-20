@@ -6,25 +6,24 @@ using dOSC.Drivers.Settings;
 using dOSC.Utilities;
 using dOSC.Utilities;
 using Microsoft.Extensions.Hosting;
+using dOSC.Drivers.Hub;
 
 namespace dOSC.Drivers;
 
 public abstract class ConnectorBase : IHostedService
 {
-    public delegate void ServiceStateChangedHandler(bool state);
-
-    private bool _running;
-
-    public virtual string ServiceName => string.Empty;
+    public delegate void StateChanged(bool running);
+    public event StateChanged? OnStateChanged;
+    public virtual SettingBase Configuration { get; set; } = new();
+    public virtual string Name => string.Empty;
     public virtual string IconRef => string.Empty;
     public virtual string Description => string.Empty;
-
     internal readonly HubService HubService;
-    
+
     public ConnectorBase(IServiceProvider services)
     {
         HubService = services.GetService<HubService>();
-
+        _enabled = Configuration.Enabled;
         var endpoints = EndpointHelper.GetEndpoints(this);
         foreach (var endpoint in endpoints)
         {
@@ -32,60 +31,49 @@ public abstract class ConnectorBase : IHostedService
         }
     }
     
+    internal bool _enabled { get; set; }= true;
+    public virtual bool Enabled
+    {
+        get => _enabled;
+        set
+        {
+            if (_enabled != value)
+            {
+                _enabled = value;
+                Configuration.Enabled = value;
+                SaveConfiguration(Configuration);
+            }
+        }
+    }
     
+    internal void InvokeStateChanged(bool running) => OnStateChanged?.Invoke(running);
+    
+    public virtual Task StartAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+
+    public virtual Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+    private bool _running = false;
     public bool Running
     {
         get => _running;
         set
         {
-            _running = value;
-            OnServiceStateChanged?.Invoke(_running);
+            if (_running != value)
+            {
+                _running = value;
+                InvokeStateChanged(value);
+            }
         }
     }
-
-
-    public Task StartAsync(CancellationToken cancellationToken)
+    public virtual void SaveConfiguration(SettingBase configuration)
     {
-        return Task.CompletedTask;
+        AppFileSystem.SaveSetting(configuration);
+        Configuration = configuration;
     }
+    
 
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
-        return Task.CompletedTask;
-    }
+    public virtual void StartService() => throw new NotImplementedException();
 
-    public event ServiceStateChangedHandler? OnServiceStateChanged;
-
-    public bool IsRunning()
-    {
-        return _running;
-    }
-
-
-    public virtual void LoadSetting()
-    {
-        throw new NotImplementedException();
-    }
-
-    public virtual SettingBase GetSetting()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void UpdateSetting(SettingBase setting)
-    {
-        AppFileSystem.SaveSetting(setting);
-    }
-
-    public virtual void StartService()
-    {
-        throw new NotImplementedException();
-    }
-
-    public virtual void StopService()
-    {
-        throw new NotImplementedException();
-    }
+    public virtual void StopService() => throw new NotImplementedException();
 
     public virtual void RestartService()
     {

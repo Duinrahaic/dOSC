@@ -1,0 +1,40 @@
+﻿@using dOSC.Drivers.OSC
+@implements IDisposable
+@using dOSC.Component.UI.Form
+
+ <SettingsPanelGroup Title=@Service.Name Subtitle=@Service.Description>
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Status </div>
+        <div class="settings-content-panel-options-group-body-item-value"> 
+            <div class="status-indicator @(Service.Running ? "status-indicator-running" : "status-indicator-stopped")"> @(Service.Running ? "Running" : "Stopped") </div>
+        </div>
+    </div>
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Listening Port </div>
+        <div class="settings-content-panel-options-group-body-item-value"> <input @bind="Service.ListeningPort" placeholder="9000" type="number" min="49152" max="65535" step="1"/> </div>
+    </div>
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Sending Port </div>
+        <div class="settings-content-panel-options-group-body-item-value"> <input @bind="Service.SendingPort" placeholder="9001" type="number" min="49152" max="65535" step="1"/> </div>
+    </div>
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Enable </div>
+        <div class="settings-content-panel-options-group-body-item-value"> <ToggleSwitch LabelLeft Small TrueLabel="Enable" FalseLabel="Disable"  @bind-Value="@Service.Enabled" /> </div>
+    </div>
+</SettingsPanelGroup>
+@code {
+    [Inject]
+    private OscService Service { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        Service.OnStateChanged += OnStateChange;
+    }
+    
+    private void OnStateChange(bool running) => InvokeAsync(StateHasChanged);
+    
+    public void Dispose()
+    {
+        Service.OnStateChanged -= OnStateChange;
+    }
+}

@@ -1,6 +1,6 @@
 ﻿using LiteDB;
 
-namespace dOSC.Drivers;
+namespace dOSC.Drivers.Hub;
 
 public static class DataEventManager
 {

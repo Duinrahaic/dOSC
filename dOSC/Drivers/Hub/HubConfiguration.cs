@@ -1,4 +1,4 @@
-﻿namespace dOSC.Drivers;
+﻿namespace dOSC.Drivers.Hub;
 
 public class HubConfiguration
 {

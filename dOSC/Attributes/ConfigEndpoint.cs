@@ -11,4 +11,6 @@ public class ConfigEndpoint : Attribute
     public string Description { get; set; }
     public virtual DataType DataType { get; private set; }
     public Permissions Permissions { get; set; } 
+    
+    
 }

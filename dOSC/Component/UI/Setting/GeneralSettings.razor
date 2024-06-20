@@ -4,7 +4,7 @@
 @using dOSC.Drivers.Websocket
 @using dOSC.Utilities
 @using dOSC.Component.UI.Form
-@using dOSC.Component.UI.Setting.Parts
+@using dOSC.Component.UI.Setting.Parts.General
 @implements IDisposable
 <SettingsPanel>
     <SettingsPanelGroup Title=@($"dOSC ")>
@@ -29,13 +29,8 @@
             <div class="settings-content-panel-options-group-body-item-value"> <button class="danger"> Clear </button> </div>
         </div>
     </SettingsPanelGroup>
-    
-
-    
     <GeneralAppPanelGroup/>
     <GeneralHubPanelGroup/>
-    <GeneralWebsocketPanelGroup/>
-   
     <SettingsPanelGroup Title="Wiresheet Settings" Subtitle="Reloading the wiresheet may be necessary to apply some settings.">
         <div class="settings-content-panel-options-group-body-item">
             <div class="settings-content-panel-options-group-body-item-label"> Node Movement Type </div>

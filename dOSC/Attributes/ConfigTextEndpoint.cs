@@ -9,5 +9,4 @@ public class ConfigTextEndpoint: ConfigEndpoint
     public int MinValue { get; set; } = 0;
     public int MaxValue { get; set; } = 255;
     public List<string> IllegalCharacters { get; set; } = new List<string>();
-    public Permissions Permissions { get; set; } 
 }
