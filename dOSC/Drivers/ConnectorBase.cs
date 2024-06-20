@@ -83,7 +83,7 @@ public abstract class ConnectorBase : IHostedService
 
     protected void UpdateEndpointValue(string name, object value)
     {
-        var endpoint = EndpointHelper.GetEndpoint(this, name);
+        var endpoint = EndpointHelper.GetDefaultEndpoint(this, name);
         if (endpoint != null)
         {
             var ev = endpoint.ToDataEndpointValue();
@@ -104,5 +104,7 @@ public abstract class ConnectorBase : IHostedService
             }
         }
     }
+    
+    
     
 }

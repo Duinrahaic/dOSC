@@ -46,7 +46,9 @@
                     HostPage="index.html"
                     RootComponents="{DynamicResource rootComponents}"
                     Services="{DynamicResource services}"
-                />
+                    ZoomFactor="0"
+                >
+                </client:BlazorWebView>
             </Panel>
             
         </Grid>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreOSC;
+using dOSC.Attributes;
 using dOSC.Client.Models.Commands;
 using dOSC.Drivers.Settings;
 using dOSC.Utilities;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Timer = System.Timers.Timer;
 using dOSC.Drivers.Hub;
+using LiteDB;
 
 namespace dOSC.Drivers.OSC;
 
@@ -18,6 +20,8 @@ public partial class OscService : ConnectorBase
 
     private readonly ILogger<OscService> _logger;
     private UDPDuplex _duplex;
+    private UDPListener _listener;
+    private UDPSender _sender;
     private OSCSetting GetConfiguration() => (OSCSetting) Configuration;
     private CancellationTokenSource _cts;
     public static int GetDefaultListeningPort() => new OSCSetting().ListeningPort;
@@ -89,8 +93,44 @@ public partial class OscService : ConnectorBase
         var configuration = GetConfiguration();
         ListeningPort = configuration.ListeningPort;
         SendingPort = configuration.SendingPort;
+
+        foreach (var owner in EndpointHelper.GetEndpoints(this).Select(x=>x.Owner))
+        {
+            DataWriterService.RegisterOwner(owner,updateHandler: UpdateHandler);
+        }
     }
-    
+
+    private void UpdateHandler(DataEndpoint endpoint, BsonValue value)
+    {
+        if (EndpointHelper.TryUpdateEndpointProperty(this, endpoint, value))
+        {
+            var ep = EndpointHelper.GetCurrentEndpoint(this, endpoint.Name);
+            if (ep != null)
+            {
+                HubService.UpdateEndpointValue(ep.ToDataEndpointValue());
+                var epv = EndpointHelper.GetEndpointPropertyValue(this, endpoint.Name);
+                SendMessage(endpoint.Name, FormatValue(value.RawValue));
+            }
+        }
+        
+    }
+
+    private object? FormatValue(object value)
+    {
+        if (value is double dbl)
+        {
+            return Math.Clamp(dbl, -1, 1);
+        }
+        else if (value is int i)
+        {
+            return  Math.Clamp(i, -255, 255);
+        }
+        else if (value is bool bol)
+        {
+            return bol ? 1 : 0;
+        }
+        return null;
+    }
     public override string Name => "OSC";
     public override string Description => "A protocol for networking computers and devices";
 
@@ -129,7 +169,9 @@ public partial class OscService : ConnectorBase
                 Message = $"OSC started at Listing on {_listingPort} and Sending on {_sendingPort}",
                 Level = DoscLogLevel.Info,
             });
-            _duplex = new UDPDuplex("localhost",_listingPort,_sendingPort, callback);
+            _sender = new UDPSender("127.0.0.1", _sendingPort);
+            _listener = new UDPListener(_listingPort, callback);
+            //_duplex = new UDPDuplex("127.0.0.1",_listingPort,_sendingPort, callback);
             await Task.Delay(Timeout.Infinite);
         }
         catch(Exception ex)
@@ -153,7 +195,8 @@ public partial class OscService : ConnectorBase
         if (Running)
         {
             Running = false;
-            _duplex.Close();
+            _sender.Close();
+            _listener.Close();
             _logger.LogInformation("OSCService stopped");
         }
     }
@@ -166,22 +209,20 @@ public partial class OscService : ConnectorBase
         }
     }
 
-    public void SendMessage(string address, params object[] args)
+    private void SendMessage(string address, params object?[]? args)
     {
+        if (args == null)
+            return;
         var message = new OscMessage(address, args);
-        if (_duplex != null)
-            try
-            {
-                _duplex.Send(message);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error occurred while sending OSC message: {ex}");
-            }
-        else
-            _logger.LogWarning("Cannot send OSC message. Sender is null.");
+        try
+        {
+            _sender.Send(message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error occurred while sending OSC message: {ex}");
+        }
     }
-    
     
     public override async Task StartAsync(CancellationToken cancellationToken)
     {

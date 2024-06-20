@@ -10,7 +10,7 @@ public partial class OscService
     
     
     
-    [ConfigLogicEndpoint(Owner = "VRChat - Chat",Name = "/chatbox/typing", Alias = "Enable Typing", Description = "Sets if the chatbox should show typing indicators", Permissions = Permissions.ReadOnly,
+    [ConfigLogicEndpoint(Owner = "VRChat-Chat",Name = "/chatbox/typing", Alias = "Enable Typing", Description = "Sets if the chatbox should show typing indicators", Permissions = Permissions.ReadOnly,
         DefaultValue = false, TrueLabel = "Enabled", FalseLabel = "Disabled")]
     public bool ChatboxTyping { get; set; } = false; 
 

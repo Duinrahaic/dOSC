@@ -86,6 +86,7 @@ public class PulsoidService : ConnectorBase, IDisposable
         Configuration = AppFileSystem.LoadSettings().Pulsoid;
         var configuration = GetConfiguration();
         _key = configuration.Key;
+        
     }
     
     public void Dispose()
