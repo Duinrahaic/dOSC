@@ -19,13 +19,12 @@ public partial class OscService : ConnectorBase
     public event OscSubscriptionEventHandler? OnOscMessageReceived;
 
     private readonly ILogger<OscService> _logger;
-    private UDPDuplex _duplex;
     private UDPListener _listener;
     private UDPSender _sender;
     private OSCSetting GetConfiguration() => (OSCSetting) Configuration;
     private CancellationTokenSource _cts;
     public static int GetDefaultListeningPort() => new OSCSetting().ListeningPort;
-    private int _listingPort = 9000;
+    private int _listingPort = 9001;
     public int ListeningPort
     {
         get => _listingPort;
@@ -65,7 +64,7 @@ public partial class OscService : ConnectorBase
     }
     
     public static int GetDefaultSendingPort() => new OSCSetting().SendingPort;
-    private int _sendingPort = 9001;
+    private int _sendingPort = 9000;
     public int SendingPort
     {
         get => _sendingPort;
@@ -81,7 +80,6 @@ public partial class OscService : ConnectorBase
         }
     }
 
-    private readonly HashSet<string> DiscoveredParameters = new();
     
     
     public OscService(IServiceProvider services):base(services)
@@ -115,7 +113,7 @@ public partial class OscService : ConnectorBase
         
     }
 
-    private object? FormatValue(object value)
+    public object? FormatValue(object value)
     {
         if (value is double dbl)
         {
@@ -154,7 +152,6 @@ public partial class OscService : ConnectorBase
                     HubService.UpdateEndpointValue(value);
                 } 
                 
-                DiscoveredParameters.Add(messageReceived.Address);
                 OnOscMessageReceived?.Invoke(new OSCSubscriptionEvent(messageReceived.Address,
                     messageReceived.Arguments));
             }
@@ -171,7 +168,6 @@ public partial class OscService : ConnectorBase
             });
             _sender = new UDPSender("127.0.0.1", _sendingPort);
             _listener = new UDPListener(_listingPort, callback);
-            //_duplex = new UDPDuplex("127.0.0.1",_listingPort,_sendingPort, callback);
             await Task.Delay(Timeout.Infinite);
         }
         catch(Exception ex)
@@ -209,7 +205,7 @@ public partial class OscService : ConnectorBase
         }
     }
 
-    private void SendMessage(string address, params object?[]? args)
+    public void SendMessage(string address, params object?[]? args)
     {
         if (args == null)
             return;

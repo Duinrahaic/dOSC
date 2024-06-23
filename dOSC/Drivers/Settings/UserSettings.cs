@@ -11,6 +11,7 @@ public class UserSettings
     public OSCSetting OSC { get; set; } = new();
     public PulsoidSetting Pulsoid { get; set; } = new();
     public WebsocketSetting Websocket { get; set; } = new();
+    public VRChatSettings VRChat { get; set; } = new();
     public List<SettingBase> GetSettings()
     {
         return new List<SettingBase> { Wiresheet, OSC, Pulsoid , Websocket };
