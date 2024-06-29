@@ -12,7 +12,7 @@ public class WebSocketService : ConnectorBase
     public delegate void ConnectionCountChanged(int count);
     public event ConnectionCountChanged? OnConnectionCountChanged;
     
-    private readonly WebSocketManager _webSocketManager;
+    private readonly WebSocketHandler _webSocketHandler;
     private HttpListener _listener = new();
     private CancellationTokenSource _cts;
 
@@ -98,7 +98,7 @@ public class WebSocketService : ConnectorBase
 
     public WebSocketService(IServiceProvider services) : base(services)
     {
-        _webSocketManager = services.GetRequiredService<WebSocketManager>();
+        _webSocketHandler = services.GetRequiredService<WebSocketHandler>();
         Configuration = AppFileSystem.LoadSettings().Websocket;
         var config = GetConfiguration();
         _port = config.Port;
@@ -148,7 +148,7 @@ public class WebSocketService : ConnectorBase
                 {
                     try
                     {
-                        await _webSocketManager.AcceptWebSocketAsync(wsContext.WebSocket);
+                        await _webSocketHandler.AcceptWebSocketAsync(wsContext.WebSocket);
                     }
                     finally
                     {

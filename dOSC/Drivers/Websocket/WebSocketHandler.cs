@@ -6,7 +6,7 @@ using dOSC.Client.Models.Commands;
 
 namespace dOSC.Drivers.Websocket;
 
-public partial class WebSocketManager
+public partial class WebSocketHandler
 {
     public delegate void DataReceiveEventHandler(Command e);
 
@@ -56,7 +56,7 @@ public partial class WebSocketManager
             else if (result.MessageType == WebSocketMessageType.Close)
             {
                 _sessions.TryRemove(socketId, out _);
-                await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed by the WebSocketManager", CancellationToken.None);
+                await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed by the WebSocketHandler", CancellationToken.None);
             }
         }
     }
@@ -72,7 +72,7 @@ public partial class WebSocketManager
         {
             if (socket.State == WebSocketState.Open)
             {
-                await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed by the WebSocketManager", CancellationToken.None);
+                await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed by the WebSocketHandler", CancellationToken.None);
             }
         }
 

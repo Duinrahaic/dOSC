@@ -4,7 +4,7 @@ using dOSC.Client.Models.Commands;
 
 namespace dOSC.Drivers.Websocket;
 
-public partial class WebSocketManager
+public partial class WebSocketHandler
 {
     public static async Task Broadcast(Command apiDataObject)
     {

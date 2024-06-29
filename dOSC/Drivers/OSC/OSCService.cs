@@ -39,7 +39,6 @@ public partial class OscService : ConnectorBase
             }
         }
     }
-    
     public override bool Enabled
     {
         get => _enabled;
@@ -62,7 +61,6 @@ public partial class OscService : ConnectorBase
             }
         }
     }
-    
     public static int GetDefaultSendingPort() => new OSCSetting().SendingPort;
     private int _sendingPort = 9000;
     public int SendingPort
@@ -79,9 +77,6 @@ public partial class OscService : ConnectorBase
             }
         }
     }
-
-    
-    
     public OscService(IServiceProvider services):base(services)
     {
         _logger = services.GetService<ILogger<OscService>>()!;
@@ -138,22 +133,9 @@ public partial class OscService : ConnectorBase
         HandleOscPacket callback = delegate(OscPacket packet)
         {
             var messageReceived = (OscMessage)packet;
-
             if (messageReceived != null)
             {
-                var endpoints = HubService.GetEndpointsByAddress(messageReceived.Address);
-                
-                
-                if (endpoints.Any())
-                {
-                    var endpoint = endpoints.First();
-                    var value = endpoint.ToDataEndpointValue();
-                    value.Value = messageReceived.Arguments.First().ToString();
-                    HubService.UpdateEndpointValue(value);
-                } 
-                
-                OnOscMessageReceived?.Invoke(new OSCSubscriptionEvent(messageReceived.Address,
-                    messageReceived.Arguments));
+                OnOscMessageReceived?.Invoke(new OSCSubscriptionEvent(messageReceived.Address, messageReceived.Arguments));
             }
         };
 
@@ -235,6 +217,7 @@ public partial class OscService : ConnectorBase
             Level = DoscLogLevel.Info,
         });
         Task.Run(() => Run(_cts.Token), _cts.Token);
+
         await Task.CompletedTask;
     }
 

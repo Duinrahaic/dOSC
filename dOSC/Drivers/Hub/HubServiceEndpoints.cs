@@ -137,6 +137,7 @@ public partial class HubService
     public List<DataEndpoint> GetEndpoints() => _endpoints.ToList();
     public List<DataEndpoint> GetEndpointsByOrigin(string origin) => _endpoints.Where(e => e.Owner == origin).ToList();
     public List<DataEndpoint> GetEndpointsByAddress(string address) => _endpoints.Where(e => e.Name == address).ToList();
+    public DataEndpoint? GetEndpointByAddress(string owner, string address) => _endpoints.FirstOrDefault(e => e.Owner == owner && e.Name == address);
 
     
 }

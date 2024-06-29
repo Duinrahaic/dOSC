@@ -18,7 +18,6 @@ using dOSC.Client.Models.Commands;
 using dOSC.Tray;
 using Application = Avalonia.Application;
 using MessageBox = System.Windows.Forms.MessageBox;
-using WebSocketManager = dOSC.Drivers.Websocket.WebSocketManager;
 using dOSC.Drivers.Hub;
 
 namespace dOSC;
@@ -99,6 +98,8 @@ public partial class App : Application
 
     }
     
+    
+    
     internal static void RunAvaloniaAppWithHosting(string[] args, Func<AppBuilder> buildAvaloniaApp)
     {
         var appBuilder = Host.CreateApplicationBuilder(args);
@@ -109,26 +110,27 @@ public partial class App : Application
         #endif 
         // Services
         
-        appBuilder.Services.AddSingleton<HubService>(); // Data Service 
-        appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<HubService>());
+        //appBuilder.Services.AddSingleton<HubService>(); // Data Service 
+        //appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<HubService>());
+//
+        //appBuilder.Services.AddSingleton<WebSocketHandler>(); // Manages External Service 
+        //appBuilder.Services.AddSingleton<WebSocketService>();      
+        //appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<WebSocketService>());
+//
+        //
+        //appBuilder.Services.AddSingleton<WiresheetService>(); // Manages Applications
+        //appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<WiresheetService>());
+        //
+        //// Integrations
+        //
+        //appBuilder.Services.AddSingleton<PulsoidService>();
+        //appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<PulsoidService>());
+//
+        //appBuilder.Services.AddSingleton<OscService>();
+        //appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<OscService>());
 
-        appBuilder.Services.AddSingleton<WebSocketManager>(); // Manages External Service 
-        appBuilder.Services.AddSingleton<WebSocketService>();      
-        appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<WebSocketService>());
+        appBuilder.RegisterServices();
 
-        
-        appBuilder.Services.AddSingleton<WiresheetService>(); // Manages Applications
-        appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<WiresheetService>());
-        
-        // Integrations
-        
-        appBuilder.Services.AddSingleton<PulsoidService>();
-        appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<PulsoidService>());
-
-        appBuilder.Services.AddSingleton<OscService>();
-        appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<OscService>());
-
-        
         using var myApp = appBuilder.Build();
         AppHost = myApp;
 

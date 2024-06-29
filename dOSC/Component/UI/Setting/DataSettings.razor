@@ -30,7 +30,7 @@
 
     private List<DataEndpoint> GetItems()
     {
-        if (cachedItems == null)
+        if (cachedItems == null || !cachedItems.Any())
         {
             cachedItems = Service.GetEndpoints()
                                  .Where(x => Filter(x))
@@ -38,7 +38,7 @@
                                  .ThenBy(x => x.GetName())
                                  .ToList();
         }
-        return cachedItems;
+        return cachedItems ?? new();
     }
 
     protected override void OnInitialized()

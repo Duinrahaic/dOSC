@@ -1,6 +1,6 @@
 ﻿namespace dOSC.Drivers.Websocket;
 
-public class WebSocketManagerLog
+public class WebSocketHandlerLog
 {
     
 }

@@ -47,6 +47,10 @@ public static class EndpointHelper
                         FalseLabel = logicAttribute.FalseLabel
                     };
                 }
+                else if(attribute is ConfigTextEndpoint textAttribute)
+                {
+                    endpoint.DefaultValue = textAttribute.DefaultValue;
+                }
                 endpoints.Add(endpoint);
             }
         }

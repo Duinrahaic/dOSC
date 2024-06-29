@@ -1,0 +1,46 @@
+﻿@using dOSC.Drivers.OSC
+@implements IDisposable
+@using dOSC.Component.UI.Form
+@using dOSC.Drivers.VRChat
+
+ <SettingsPanelGroup Title=@Service.Name Subtitle=@Service.Description Icon="@Service.IconRef">
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Status </div>
+        <div class="settings-content-panel-options-group-body-item-value"> 
+            <div class="status-indicator @(Service.Running ? "status-indicator-running" : "status-indicator-stopped")"> @(Service.Running ? "Running" : "Stopped") </div>
+        </div>
+    </div>
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Allow Auttomatic Avatar Learning </div>
+        <div class="settings-content-panel-options-group-body-item-value"> <ToggleSwitch LabelLeft Small TrueLabel="Enable" FalseLabel="Disable"  @bind-Value="@Service.AllowAvatarConfigLearning" /> </div>
+    </div>
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Scan Avatar Configs </div>
+        <div class="settings-content-panel-options-group-body-item-value"> <button  @onclick="Service.ScanAvatarConfig"> Scan </button> </div>
+    </div>
+    <div class="settings-content-panel-options-group-body-item">
+        <div class="settings-content-panel-options-group-body-item-label"> Learned Avatars </div>
+        <div class="settings-content-panel-options-group-body-item-value"> @Service.AvatarConfigCount Avatars </div>
+    </div>
+ </SettingsPanelGroup>
+@code {
+    [Inject]
+    private VRChatService Service { get; set; }
+    
+    
+    
+    protected override void OnInitialized()
+    {
+        Service.OnStateChanged += OnStateChange;
+        Service.OnAvatarMemoryCountChanged += OnAvatarMemoryCountChanged;
+    }
+    
+    private void OnStateChange(bool running) => InvokeAsync(StateHasChanged);
+    private void OnAvatarMemoryCountChanged(int count) => InvokeAsync(StateHasChanged);
+    
+    public void Dispose()
+    {
+        Service.OnStateChanged -= OnStateChange;
+        Service.OnAvatarMemoryCountChanged -= OnAvatarMemoryCountChanged;
+    }
+}

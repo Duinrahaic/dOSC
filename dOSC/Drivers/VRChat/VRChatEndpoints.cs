@@ -3,8 +3,9 @@ using dOSC.Client.Models.Commands;
 
 namespace dOSC.Drivers.VRChat;
 
-public partial class VRChatOSCService
+public partial class VRChatService
 {
+    
     #region Buttons 
     [ConfigLogicEndpoint(Owner = "VRChat-Buttons", Name = "/input/MoveForward", Alias = "Move Forward", Description = "Move Forward", 
         Permissions = Permissions.WriteOnly,
@@ -129,7 +130,36 @@ public partial class VRChatOSCService
     #endregion Buttons Inputs
     
     #region Avatar 
-    
+    [ConfigTextEndpoint(Owner = "VRChat-Avatar",Name = "/avatar/change", Alias = "Current Avatar Id", Description = "Current Avatar Id", Permissions = Permissions.ReadOnly,
+        DefaultValue = "Unknown")]
+    public string CurrentAvatarId
+    {
+        get => _currentAvatarId;
+        set
+        {
+            _currentAvatarId = value;
+            CurrentAvatarName = _avatarConfigs.FirstOrDefault(x => x.Id == value)?.Name ?? "Unknown";
+        }
+    } 
+    private string _currentAvatarId = "Unknown";
+
+    [ConfigTextEndpoint(Owner = "VRChat-Avatar",Name = "/avatar/parameters/AvatarName", Alias = "Current Avatar Name", Description = "Current Avatar Name", Permissions = Permissions.ReadOnly,
+        DefaultValue = "Unknown")]
+    public string CurrentAvatarName { get => _currentAvatarName;
+        set
+        {
+            _currentAvatarName = value;
+            var endpoint = HubService.GetEndpointByAddress("VRChat-Avatar", "/avatar/parameters/AvatarName");
+            if (endpoint != null)
+            {
+                var val = endpoint.ToDataEndpointValue();
+                val.UpdateValue(value);
+                HubService.UpdateEndpointValue(val);
+            }
+        }
+    } 
+    private string _currentAvatarName = "Unknown";
+
     [ConfigNumericEndpoint(Owner = "VRChat-Avatar",Name = "/avatar/parameters/VRMode", Alias = "VR Mode", Description = "VR Mode", Permissions = Permissions.ReadOnly,
         DefaultValue = 0, Precision = 0)]
     public int VRMode { get; set; } = 0;
