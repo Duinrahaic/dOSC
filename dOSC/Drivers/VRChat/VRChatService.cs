@@ -1,4 +1,5 @@
-﻿using dOSC.Attributes;
+﻿using System.Windows.Forms;
+using dOSC.Attributes;
 using dOSC.Client.Models.Commands;
 using dOSC.Drivers.Hub;
 using dOSC.Drivers.OSC;
@@ -32,6 +33,8 @@ public partial class VRChatService : ConnectorBase
             _owners.Add(owner);
             DataWriterService.RegisterOwner(owner,updateHandler: UpdateHandler);
         }
+
+        _owners.Add("VRChat-Avatar Parameters");
     }
     
     
@@ -88,16 +91,21 @@ public partial class VRChatService : ConnectorBase
 
     private void OnOscMessageReceived(OSCSubscriptionEvent e)
     { 
-        var endpoint = HubService.GetEndpoints().FirstOrDefault(x=> _owners.Contains(x.Owner) && x.Name == e.Address);
+        var endpoint = HubService.GetEndpoints().FirstOrDefault(x=> _owners.Contains(x.Owner) && x.Name == e.Message.Address);
         if (endpoint != null)
         {
             var value = endpoint.ToDataEndpointValue();
-            value.Value = e.Arguments.First().ToString();
+            value.Value = e.Message.Arguments.First().ToString();
             HubService.UpdateEndpointValue(value);
             EndpointHelper.TryUpdateEndpointProperty(this, endpoint, e.EndpointToBsonValue(endpoint));
             
             
-        } 
+        }
+        else
+        {
+            endpoint = e.GetEndpoint("VRChat-Avatar Parameters");
+            HubService.RegisterEndpoint(endpoint);
+        }
     }
     
     

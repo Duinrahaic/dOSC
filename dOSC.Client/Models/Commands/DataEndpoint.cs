@@ -13,6 +13,7 @@ public class DataEndpoint : Data
     public string DefaultValue { get; set; } = string.Empty;
     public Permissions Permissions { get; set; } = Permissions.ReadWrite;
     public string Unit { get; set; } = string.Empty;
+    public bool System { get; set; } = false;
     
     public DataLabels Labels { get; set; } = new();
     public Constraints Constraints { get; set; } = new();

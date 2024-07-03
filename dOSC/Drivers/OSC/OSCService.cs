@@ -135,7 +135,7 @@ public partial class OscService : ConnectorBase
             var messageReceived = (OscMessage)packet;
             if (messageReceived != null)
             {
-                OnOscMessageReceived?.Invoke(new OSCSubscriptionEvent(messageReceived.Address, messageReceived.Arguments));
+                OnOscMessageReceived?.Invoke(new OSCSubscriptionEvent(messageReceived));
             }
         };
 
