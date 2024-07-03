@@ -57,6 +57,7 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="Blazor.ContextMenu" Version="2.1.0" />
         <PackageReference Include="Clowd.Squirrel" Version="2.11.1"/>
         <PackageReference Include="Markdig" Version="0.37.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.4" />

@@ -1,5 +1,6 @@
 ﻿@page "/editor/"
 @page "/editor/{AppId:guid}"
+@using BlazorContextMenu
 @using Blazor.Diagrams.Components
 @using Blazor.Diagrams.Components.Widgets
 @using dOSC.Component.UI.Wiresheet
@@ -32,7 +33,8 @@
 <WiresheetToolbarFrame Wiresheet="EditorAppLogic" >
 </WiresheetToolbarFrame>
 
-<div class="diagram-container" oncontextmenu="return false;">
+
+<div class="diagram-container" oncontextmenu="return false;" >
     <CascadingValue Value="EditorAppLogic">
         <DiagramCanvas>
             <Widgets>
@@ -42,6 +44,8 @@
         </DiagramCanvas>
     </CascadingValue>
 </div>
+
+<WiresheetContextMenu Diagram="EditorAppLogic" />
 
 <EditorModal/>
 

@@ -5,20 +5,10 @@
 @using LiveSheet
 <div class="dOSC-wiresheet-toolbar-container">
     <div class="dOSC-wiresheet-toolbar-item">
-        <i class="dOSC-wiresheet-toolbar-item-icon primary app-icon oi oi-code"></i>
+        <i class="dOSC-wiresheet-toolbar-item-icon primary app-icon icon-pencil-ruler"></i>
     </div>
     <div class="dOSC-wiresheet-name">
-        @if (_wiresheetNameEditMode)
-        {
-            
-            
-            <input @ref=@_wiresheetNameInputField autofocus="true" style="width: @(_wiresheetName.Count() + 3)ch;" class="dOSC-wiresheet-name-input" @oninput="ResizeInput"  type="text" autocorrect="off" autocomplete="false" maxlength="80" @bind="@_wiresheetName" @onblur="OnWiresheetNameEditEnd" @onkeydown="OnWiresheetNameKeyPress"/>
-            ResizeInput();
-        }
-        else
-        {
-            <span contenteditable="false" @ondblclick="OnWiresheetNameEdit">@Wiresheet.GetDisplayName()</span>
-        }
+        @Wiresheet.GetDisplayName()
     </div>
     <WiresheetToolbarItem Icon="icon-puzzle" Label="Components" Active="@(!_componentPanelClosed)"  OnClick="ToggleComponentPanel" />
 </div>

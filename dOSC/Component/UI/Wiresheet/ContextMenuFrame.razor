@@ -1,0 +1,11 @@
+﻿<div class="WireSheet-Context-Menu-Item-Container">
+    <i class="Wiresheet-Context-Menu-Item-Icon @(Icon)"/>
+    <div class="WireSheet-Context-Menu-Item-Text">@Text</div>
+</div>
+@code {
+    [Parameter]
+    public string Icon { get; set; } = "icon icon-alert-octagon";
+    [Parameter]
+    public string Text { get; set; } = "Action";
+    
+}

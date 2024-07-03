@@ -19,6 +19,19 @@ public static class ServiceManager
         application.Services.RegisterHostedService<PulsoidService>();
         application.Services.RegisterHostedService<OscService>();
         application.Services.RegisterHostedService<VRChatService>();
+        application.Services.AddBlazorContextMenu(options =>
+            options.ConfigureTemplate(defaultTemplate =>
+            {
+                defaultTemplate.MenuCssClass = "WireSheet-Context-Menu";
+                defaultTemplate.MenuItemCssClass = "WireSheet-Context-Menu-Item";
+                defaultTemplate.MenuItemDisabledCssClass = "WireSheet-Context-Menu-Item WireSheet-Context-Menu-Item-Disabled";
+                defaultTemplate.MenuListCssClass = "WireSheet-Context-Menu-List";
+                defaultTemplate.SeperatorCssClass = "WireSheet-Context-Menu-Separator";
+                defaultTemplate.SeperatorHrCssClass = "WireSheet-Context-Menu-Separator-Hr";
+                
+            })
+        );
+
         return application;
     }
     

@@ -102,3 +102,18 @@ window.customDropdown = {
         });
     }
 };
+
+
+window.mousePosition = {
+    x: 0,
+    y: 0
+};
+
+document.addEventListener('mousemove', function (event) {
+    window.mousePosition.x = event.clientX;
+    window.mousePosition.y = event.clientY;
+});
+
+window.getMousePosition = function () {
+    return window.mousePosition;
+};

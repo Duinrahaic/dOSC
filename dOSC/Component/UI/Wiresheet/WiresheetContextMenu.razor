@@ -1,0 +1,80 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using dOSC.Component.Wiresheet
+@using dOSC.Component.Modals
+@using Blazor.Diagrams.Core;
+@using Blazor.Diagrams.Core.Events;
+@using Blazor.Diagrams.Core.Models.Base;
+@using BlazorContextMenu
+@using LiveSheet.Parts.Nodes
+@using LiveSheet;
+@using PointerEventArgs = Blazor.Diagrams.Core.Events.PointerEventArgs
+@implements IDisposable
+@inject IBlazorContextMenuService Cm
+
+
+
+
+@*<ContextMenu Id="Wiresheet-CTXMenu" AutoHide="true" Animation="Animation.Grow">
+    <Item OnClick="">
+        <ContextMenuFrame Icon="icon icon-alert-octagon" Text="Item"/>
+    </Item>
+    <Item OnClick="" Enabled="false">
+        <ContextMenuFrame Icon="icon icon-alert-octagon" Text="Item"/>
+    </Item>
+</ContextMenu>*@
+
+<ContextMenu Id="Wiresheet-Node-CTXMenu" AutoHide="true"  Animation="Animation.Grow">
+    <Item OnClick="@OpenSettings">
+        <ContextMenuFrame Icon="icon icon-cog" Text="Settings"/>
+    </Item>
+    <Seperator />
+    <Item OnClick="@DeleteNode">
+        <ContextMenuFrame Icon="icon icon-trash-2" Text="Delete"/>
+    </Item>
+</ContextMenu>
+
+ 
+
+
+
+@code {
+    [Parameter]
+    [Required]
+    public WiresheetDiagram Diagram { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        Diagram.PointerClick += PointerClick;
+    }
+    
+    private void PointerClick(Model? model, PointerEventArgs evt)
+    {
+        if (evt.Button == 2 && model is null)
+        {
+            Cm.ShowMenu("Wiresheet-CTXMenu", (int)evt.ClientX, (int)evt.ClientY);
+        }else if (evt.Button == 2 && model is null)
+        {
+            Cm.ShowMenu("Wiresheet-Node-CTXMenu", (int)evt.ClientX, (int)evt.ClientY);
+        }
+        
+    }
+
+    void DeleteNode(ItemClickEventArgs e)
+    {
+        var node = GetNode(e.Data);
+        Diagram.Nodes.Remove(node);
+    }
+    
+    void OpenSettings(ItemClickEventArgs e)
+    {
+        Console.WriteLine($"Item Clicked => {GetNode(e.Data).GetDisplayName()}");
+    }
+    
+    private static LiveNode GetNode(object obj) => obj as LiveNode;
+    
+    public void Dispose()
+    {
+        Diagram.PointerClick -= PointerClick;
+    }
+
+}

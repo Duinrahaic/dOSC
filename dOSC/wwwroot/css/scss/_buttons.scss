@@ -1,17 +1,24 @@
 ﻿@import "_variables.scss";
 
 .dosc-button {
-  border: none;
-  padding: 4px 12px;
+  border: 1px solid black;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 14px;
   border-radius: 6px;
-  height: 36px;
-  background-color: $color-primary;
   color: $color-full-white;
+  padding: 0 4px;
+  min-width: 12ch;
+  border-radius: 8px;
+  padding: 2px 8px;
 
+
+  @include gradient-3d($color-primary);
+  &:hover {
+    @include gradient-3d(darken($color-primary, 5%));
+  }
+  
   &:disabled {
     background-color: $color-disabled;
     color: $color-grey-dark;
@@ -21,47 +28,45 @@
 
   &:not(:disabled) {
     &.dosc-button-primary {
-      background-color: $color-primary;
       color: $color-full-white;
-
+      @include gradient-3d($color-primary);
       &:hover {
-        background-color: $color-primary-darker;
+        @include gradient-3d(darken($color-primary, 5%));
       }
     }
 
     &.dosc-button-secondary {
-      background-color: $color-secondary;
       color: $color-full-white;
 
+      @include gradient-3d($color-secondary);
       &:hover {
-        background-color: $color-secondary-darker;
+        @include gradient-3d(darken($color-secondary, 5%));
       }
     }
 
     &.dosc-button-danger {
-      background-color: $color-danger;
       color: $color-full-white;
 
+      @include gradient-3d($color-danger);
       &:hover {
-        background-color: $color-danger-darker;
+        @include gradient-3d(darken($color-danger, 5%));
       }
     }
 
     &.dosc-button-warning {
-      background-color: $color-warning;
       color: $color-full-white;
 
+      @include gradient-3d($color-warning);
       &:hover {
-        background-color: $color-warning-darker;
+        @include gradient-3d(darken($color-warning, 5%));
       }
     }
 
     &.dosc-button-success {
-      background-color: $color-success;
       color: $color-full-white;
-
+      @include gradient-3d($color-success);
       &:hover {
-        background-color: $color-success-darker;
+        @include gradient-3d(darken($color-success, 5%));
       }
     }
   }

@@ -130,14 +130,9 @@ $color-backdrop: rgba(0, 0, 0, 0.5);
 /* Layers */
 $z-index-normal: 0;
 $z-index-ui: 100;
+$z-index-context-menu: 200;
 $z-index-backdrop: 900;
 $z-index-top: 1000;
-
-
-@font-face {
-  font-family: 'Varela Round';
-  src: URL("./fonts/VarelaRound-Regular.ttf") format('truetype');
-}
 
 @mixin gradient-3d($base-color) {
   $dark-color: darken($base-color, 20%);

@@ -7,22 +7,75 @@ public partial class VRChatService
 {
     public delegate void AvatarMemoryCountChanged(int count);
     public event AvatarMemoryCountChanged? OnAvatarMemoryCountChanged;
+    public delegate void AvatarScanComplete();
+    public event AvatarScanComplete? OnAvatarScanComplete;
+    
+    private List<VRChatAvatar> _learnedAvatarConfigs = new();
+    public List<VRChatAvatar> GetLearnedAvatarConfigs()
+    {
+        return _learnedAvatarConfigs;
+    }
+    
+    public void LearnAvatarConfig(VRChatAvatar avatar)
+    {
+        if (!_learnedAvatarConfigs.Contains(avatar))
+        {
+            _learnedAvatarConfigs.Add(avatar);
+            LearnedAvatarConfigCount = _learnedAvatarConfigs.Count;
+        }
+    }
+    
+    public void ForgetAvatarConfig(VRChatAvatar avatar)
+    {
+        if (_learnedAvatarConfigs.Contains(avatar))
+        {
+            _learnedAvatarConfigs.Remove(avatar);
+            LearnedAvatarConfigCount = _learnedAvatarConfigs.Count;
+        }
+
+    }
+    
+    public void ForgetAllAvatarConfigs()
+    {
+        _learnedAvatarConfigs = new List<VRChatAvatar>();
+        LearnedAvatarConfigCount = _learnedAvatarConfigs.Count;
+
+    }
+    
+    public bool IsAvatarConfigLearned(string id)
+    {
+        return _learnedAvatarConfigs.Any(avatar => avatar.Id == id);
+        LearnedAvatarConfigCount = _learnedAvatarConfigs.Count;
+
+    }
+
+    public void RelearnAvatarConfig(VRChatAvatar avatar)
+    {
+        if (_learnedAvatarConfigs.Any(x=> x.Id ==  avatar.Id))
+        {
+            _learnedAvatarConfigs.Remove(_learnedAvatarConfigs.First(x=> x.Id ==  avatar.Id));
+        }
+        LearnAvatarConfig(avatar);
+    }
     
     private List<VRChatAvatar> _avatarConfigs = new();
-    public int AvatarConfigCount
+    public int LearnedAvatarConfigCount
     {
-        get => _avatarConfigCount;
+        get => _learnedAvatarConfigCount;
         private set
         {
-            if (_avatarConfigCount != value)
+            if (_learnedAvatarConfigCount != value)
             {
-                _avatarConfigCount = value;
+                _learnedAvatarConfigCount = value;
                 OnAvatarMemoryCountChanged?.Invoke(value);
             }
         }
     } 
-    private int _avatarConfigCount = 0;
-    
+    private int _learnedAvatarConfigCount = 0;
+    public List<VRChatAvatar> GetAvatarConfigs()
+    {
+        return _avatarConfigs;
+    }
     
     private FileSystemWatcher _watcher;
     private bool _allowAvatarConfigLearning = true;
@@ -69,6 +122,7 @@ public partial class VRChatService
     
     private void Unwatch()
     {
+        if(_watcher == null) return;
         _watcher.Changed -= OnChanged;
         _watcher.Created -= OnChanged;
         _watcher.Deleted -= OnChanged;
@@ -102,6 +156,8 @@ public partial class VRChatService
             // Recursively scan subdirectories
             ScanAndProcessFiles(subDir);
         }
+        OnAvatarScanComplete?.Invoke();
+
         
     }
 
@@ -109,7 +165,6 @@ public partial class VRChatService
     {
         _avatarConfigs = new List<VRChatAvatar>();
         ScanAndProcessFiles(DefaultAvatarConfigPath);
-        AvatarConfigCount = _avatarConfigs.Count;
     }
 
     private bool IsAvatarConfig(string id)

@@ -3,44 +3,142 @@
 @using dOSC.Component.UI.Form
 @using dOSC.Drivers.VRChat
 
- <SettingsPanelGroup Title=@Service.Name Subtitle=@Service.Description Icon="@Service.IconRef">
+<SettingsPanelGroup Title=@Service.Name Subtitle=@Service.Description Icon="@Service.IconRef">
+    @*
     <div class="settings-content-panel-options-group-body-item">
         <div class="settings-content-panel-options-group-body-item-label"> Status </div>
-        <div class="settings-content-panel-options-group-body-item-value"> 
+        <div class="settings-content-panel-options-group-body-item-value">
             <div class="status-indicator @(Service.Running ? "status-indicator-running" : "status-indicator-stopped")"> @(Service.Running ? "Running" : "Stopped") </div>
         </div>
     </div>
     <div class="settings-content-panel-options-group-body-item">
-        <div class="settings-content-panel-options-group-body-item-label"> Allow Auttomatic Avatar Learning </div>
-        <div class="settings-content-panel-options-group-body-item-value"> <ToggleSwitch LabelLeft Small TrueLabel="Enable" FalseLabel="Disable"  @bind-Value="@Service.AllowAvatarConfigLearning" /> </div>
-    </div>
+        <div class="settings-content-panel-options-group-body-item-label"> Allow Automatic Avatar Learning </div>
+        <div class="settings-content-panel-options-group-body-item-value"> <ToggleSwitch LabelLeft Small TrueLabel="Enable" FalseLabel="Disable" @bind-Value="@Service.AllowAvatarConfigLearning"/> </div>
+    </div> & *@
     <div class="settings-content-panel-options-group-body-item">
         <div class="settings-content-panel-options-group-body-item-label"> Scan Avatar Configs </div>
-        <div class="settings-content-panel-options-group-body-item-value"> <button  @onclick="Service.ScanAvatarConfig"> Scan </button> </div>
+        <div class="settings-content-panel-options-group-body-item-value"> <button @onclick="Service.ScanAvatarConfig"> Scan </button> </div>
     </div>
     <div class="settings-content-panel-options-group-body-item">
         <div class="settings-content-panel-options-group-body-item-label"> Learned Avatars </div>
-        <div class="settings-content-panel-options-group-body-item-value"> @Service.AvatarConfigCount Avatars </div>
+        <div class="settings-content-panel-options-group-body-item-value"> @Service.LearnedAvatarConfigCount Avatars </div>
     </div>
- </SettingsPanelGroup>
+    <div class="settings-content-panel-options-group-body-item settings-content-panel-options-vertical">
+        <div class="settings-content-panel-options-group-table-container">
+            <Pagination Filter="Filter" RowHeight="48px" Items="@_avatarConfigs" ItemsPerPage="10" @bind-CurrentPage="currentPage">
+                <PaginationHeader>
+                    <div class="pagination-container-header-title">
+                        <div class="pagination-container-header-title-text"> Scanned Avatars</div>
+                        <div class="pagination-container-header-title-icon fa-solid fa-refresh"  @onclick="Service.ScanAvatarConfig" ></div>
+                    </div>
+                    <div class="pagination-container-header-search">
+                        <input @bind="_filterText" @bind:event="oninput" placeholder="Search..."/>
+                    </div>
+                </PaginationHeader>
+                <TableHeaders>
+                    <tr>
+                        <th>Avatar Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </TableHeaders>
+                <EmptyContent>
+                    
+                  
+                    <tr style="height: 480px;">
+                        <td colspan="3">
+                              <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; width: 100%;">
+                                <h1>No Avatars Found</h1>
+                                <button class="dosc-button dosc-button-primary" @onclick="Service.ScanAvatarConfig"> Scan </button>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    
+                </EmptyContent>
+                
+                
+                <ChildContent Context="avatar">
+                    <td style="width: 500px;">@avatar.Name</td>
+                    <td>
+                        @if (!Service.IsAvatarConfigLearned(avatar.Id))
+                        {
+                            <button class="dosc-button dosc-button-success" @onclick="() => Service.LearnAvatarConfig(avatar)"> Learn </button>
+                        }
+                        else
+                        {
+                            <button class="dosc-button dosc-button-danger" @onclick="() => Service.ForgetAvatarConfig(avatar)"> Forget </button>
+                        }
+                    </td>
+                </ChildContent>
+            </Pagination>
+
+        </div>
+    </div>
+
+
+</SettingsPanelGroup>
 @code {
     [Inject]
     private VRChatService Service { get; set; }
     
+    private List<VRChatAvatar> _avatarConfigs = new();
     
+    private string _filterText = "";
+
+    private bool Filter(VRChatAvatar avatar)
+    {
+        if (string.IsNullOrWhiteSpace(_filterText))
+        {
+            return true;
+        }
+
+        string[] nameParts = avatar.Name.ToLower().Split(' ');
+        string filterTextLower = _filterText.ToLower();
+
+        foreach (string part in nameParts)
+        {
+            if (part.Contains(filterTextLower))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private int currentPage = 1;
     
     protected override void OnInitialized()
     {
         Service.OnStateChanged += OnStateChange;
         Service.OnAvatarMemoryCountChanged += OnAvatarMemoryCountChanged;
+        Service.OnAvatarScanComplete += OnAvatarScanComplete;
+        _avatarConfigs = Service.GetAvatarConfigs();
     }
     
     private void OnStateChange(bool running) => InvokeAsync(StateHasChanged);
-    private void OnAvatarMemoryCountChanged(int count) => InvokeAsync(StateHasChanged);
+
+    private void OnAvatarScanComplete()
+    {
+        _avatarConfigs = Service.GetAvatarConfigs();
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void OnAvatarMemoryCountChanged(int count)
+    {
+        InvokeAsync(StateHasChanged);
+    }
     
     public void Dispose()
     {
         Service.OnStateChanged -= OnStateChange;
         Service.OnAvatarMemoryCountChanged -= OnAvatarMemoryCountChanged;
+        Service.OnAvatarScanComplete -= OnAvatarScanComplete;
+
+    }
+    
+    public void LearnAvatar(VRChatAvatar avatar)
+    {
+        Service.LearnAvatarConfig(avatar);
     }
 }

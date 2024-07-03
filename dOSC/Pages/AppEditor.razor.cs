@@ -1,5 +1,7 @@
 ﻿using Blazor.Diagrams.Core;
+using Blazor.Diagrams.Core.Events;
 using Blazor.Diagrams.Core.Models.Base;
+using BlazorContextMenu;
 using dOSC.Component.Modals;
 using dOSC.Component.Wiresheet;
 using dOSC.Drivers;
@@ -42,7 +44,8 @@ public partial class AppEditor : IDisposable
         }
         EditorAppLogic.Load();
         EditorAppLogic.SelectionChanged += SelectionChanged;
-    }
+     }
+
 
     private void SelectionChanged(SelectableModel obj)
     {
@@ -144,6 +147,8 @@ public partial class AppEditor : IDisposable
         }
     }
 
+    
+   
     public void Dispose()
     {
         EditorAppLogic.Changed -= AppChanged;

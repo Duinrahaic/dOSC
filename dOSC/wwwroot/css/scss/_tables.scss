@@ -1,56 +1,152 @@
 ﻿@import "_variables.scss";
 
-  .third-party-table {
-    tbody {
-      tr {
-        .third-party-connector {
-          padding: 0 0 0 8px;
+.pagination-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background: $color-theme-4;
+  border: 1px solid $color-theme-1;
+  border-radius: 8px;
+  overflow: hidden;
 
-          img {
-            object-fit: contain;
-            height: 40px;
-          }
+  .pagination-container-header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    padding: 4px;
+    border-bottom: 1px solid $color-theme-1;
 
-          .text {
-          }
-        }
-
-        height: 30px;
-        width: 1px;
-        white-space: nowrap;
-
-        td {
-          border: none;
-          padding: 0;
-          height: 60px;
-          padding: 8px 0;
-        }
-
-
-        .options {
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          align-items: center;
-          gap: 10px 10px;
-
-          .option {
-            border-radius: 16px;
-            padding: 8px;
-
-            &:hover {
-              background-color: $color-theme-3;
-            }
+    .pagination-container-header-title {
+      font-size: 16px;
+      font-weight: bold;
+      padding: 0 8px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      
+      .pagination-container-header-title-icon {
+        &.fa-refresh{
+          color: $info;
+          &:hover {
+            color: darken($info, 10%);
+            cursor: pointer;
           }
         }
+      }
+    }
 
-        &:hover {
-          background-color: $color-theme-2;
-          transition: ease-in-out 250ms;
+    .pagination-container-header-search {
+      width: 240px;
+
+      input {
+        width: 100%;
+        border: 1px solid $color-theme-1;
+        background: $color-theme-2;
+        &::placeholder {
+          color: gray; /* Change this color to your desired placeholder color */
         }
       }
     }
   }
 
+  .table-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-x: hidden; /* Hide horizontal overflow */
+  }
 
+  table {
+    border-collapse: collapse;
+    border-radius: 8px;
+    width: 100%; /* Ensure table takes full width */
+  }
 
+  thead {
+    background-color: $color-theme-4;
+
+    th {
+      border-bottom: 1px solid $color-theme-1;
+      padding: 10px;
+      text-align: left;
+    }
+  }
+
+  tbody {
+    display: table-row-group;
+    height: 300px; /* Set a fixed height for the tbody */
+    overflow-y: auto; /* Add vertical scroll if needed */
+
+    tr {
+      display: table-row;
+      width: 100%;
+      table-layout: fixed;
+
+      &.pagination-blank {
+        td {
+          border: none;
+          height: 40px; /* Ensure blank rows have height */
+        }
+      }
+
+      &:nth-child(odd):not(.pagination-blank) {
+        background-color: $color-theme-3;
+      }
+
+      &:last-child:not(.pagination-blank) {
+        border-bottom: none;
+      }
+
+      td {
+        padding: 10px;
+        text-align: left;
+        white-space: nowrap; /* Prevent text wrap */
+        overflow: hidden; /* Ensure content does not overflow */
+        text-overflow: ellipsis; /* Add ellipsis for overflow text */
+      }
+    }
+  }
+
+  .pagination-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-top: 1px solid $color-theme-1;
+
+    button {
+      background: $color-theme-4;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 5px 10px;
+
+      &:disabled {
+        color: grey;
+        cursor: default;
+      }
+
+      &:hover:not(:disabled) {
+        background: $color-theme-3;
+      }
+    }
+
+    div {
+      font-size: 14px;
+      border-right: 1px solid #1d1e23;
+      border-left: 1px solid #1d1e23;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      display: flex; /* Add this line */
+      align-items: center; /* Add this line for vertical alignment */
+      justify-content: center; /* Optional: Add this line for horizontal alignment */
+      margin: auto;
+    }
+  }
+}

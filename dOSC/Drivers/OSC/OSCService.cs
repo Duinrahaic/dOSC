@@ -135,7 +135,7 @@ public partial class OscService : ConnectorBase
             var messageReceived = (OscMessage)packet;
             if (messageReceived != null)
             {
-                OnOscMessageReceived?.Invoke(new OSCSubscriptionEvent(messageReceived.Address, messageReceived.Arguments));
+                OnOscMessageReceived?.Invoke(new OSCSubscriptionEvent(messageReceived));
             }
         };
 
@@ -189,6 +189,8 @@ public partial class OscService : ConnectorBase
 
     public void SendMessage(string address, params object?[]? args)
     {
+        if (string.IsNullOrEmpty(address))
+            throw new NullReferenceException("address cannot be null or empty");
         if (args == null)
             return;
         var message = new OscMessage(address, args);

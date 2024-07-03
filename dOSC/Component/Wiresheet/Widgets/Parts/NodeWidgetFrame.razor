@@ -1,11 +1,14 @@
 ﻿@using dOSC.Component.Wiresheet.Nodes.Logic
 @using dOSC.Component.Wiresheet.Nodes
 @using Blazor.Diagrams.Components.Renderers
+@using BlazorContextMenu
 @using dOSC.Component.Wiresheet.Nodes.Utility
 @using DynamicData
 @using LiveSheet.Parts.Nodes
+@inject IBlazorContextMenuService Cm
 @implements IDisposable
 
+<ContextMenuTrigger MenuId="Wiresheet-Node-CTXMenu" Data="Node">
 <div id="@Node.Guid" class="node node-category-@(Node.Category.ToString().ToLower()) @(Node.HasError ? "error" : string.Empty)  @(Node.Selected ? "selected" : string.Empty)">
     <NodeWidgetHeader Node="@Node"/>
     <div class="node-body">
@@ -50,7 +53,7 @@
         </div>
     </div>
 </div>
-
+</ContextMenuTrigger>
 @code {
     [Parameter] public WiresheetNode Node { get; set; } = new();
     [Parameter] public RenderFragment? ChildContent { get; set; }

@@ -1,0 +1,50 @@
+﻿@typeparam T
+
+<div class="pagination-container">
+    <div class="pagination-container-header">
+        @PaginationHeader
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+            @TableHeaders
+            </thead>
+            <tbody>
+            @if (!PaginatedItems.Any())
+            {
+                @if (EmptyContent == null)
+                {
+                    <tr style="height: calc(@(ItemsPerPage ) * @(RowHeight));">
+                        <td  colspan="3" style="text-align: center;"> No Items Found</td>
+                    </tr>
+                }
+                else
+                {
+                    @EmptyContent
+                }
+            }
+            else
+            {
+                @foreach (var item in PaginatedItems)
+                {
+                    <tr style="height: @(RowHeight);">
+                        @ChildContent(item)
+                    </tr>
+                }
+                int blankRows = ItemsPerPage - PaginatedItems.Count();
+                for (int i = 0; i < blankRows; i++)
+                {
+                    <tr class="pagination-blank" style="height: @(RowHeight);">
+                        <td colspan="3"> </td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+    <div class="pagination-footer">
+        <button class="icon-chevron-left" @onclick="() => SetPage(CurrentPage - 1)" disabled="@(CurrentPage == 1)"></button>
+        <div>Page @CurrentPage of @TotalPages</div>
+        <button class="icon-chevron-right" @onclick="() => SetPage(CurrentPage + 1)" disabled="@(CurrentPage == TotalPages)"></button>
+    </div>
+</div>

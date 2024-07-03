@@ -1,21 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using CoreOSC;
 using dOSC.Client.Models.Commands;
+using dOSC.Utilities;
 using LiteDB;
 
 namespace dOSC.Drivers.OSC;
 
 public class OSCSubscriptionEvent : EventArgs
 {
-    public OSCSubscriptionEvent(string address, List<object> args)
+    public OSCSubscriptionEvent(OscMessage message)
     {
-        Address = address;
-        Arguments = args;
+        Message = message;
     }
-
-    public string Address { get; set; }
-    public List<object> Arguments { get; set; }
-
+    public  OscMessage Message { get; private set; }
+    
+    public DataEndpoint? GetEndpoint(string owner)
+    {
+        return Message.GetValueFromOscMessage(owner);
+    }
+    
     public BsonValue EndpointToBsonValue(DataEndpoint endpoint)
     {
         try
@@ -24,13 +28,13 @@ public class OSCSubscriptionEvent : EventArgs
             switch (endpoint.Type)
             {
                 case DataType.Logic:
-                    value = new BsonValue(Convert.ToBoolean(Arguments[0]));
+                    value = new BsonValue(Convert.ToBoolean(Message.Arguments[0]));
                     break;
                 case DataType.Numeric:
-                    value = new BsonValue(Convert.ToDecimal(Arguments[0]));
+                    value = new BsonValue(Convert.ToDecimal(Message.Arguments[0]));
                     break;
                 case DataType.Text:
-                    value = new BsonValue(Arguments[0].ToString());
+                    value = new BsonValue(Message.Arguments[0].ToString());
                     break;
             }
 

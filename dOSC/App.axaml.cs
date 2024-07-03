@@ -105,30 +105,11 @@ public partial class App : Application
         var appBuilder = Host.CreateApplicationBuilder(args);
         appBuilder.Logging.AddDebug();
         appBuilder.Services.AddWindowsFormsBlazorWebView();
-        #if DEBUG
+        
+#if DEBUG
         appBuilder.Services.AddBlazorWebViewDeveloperTools();
         #endif 
-        // Services
         
-        //appBuilder.Services.AddSingleton<HubService>(); // Data Service 
-        //appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<HubService>());
-//
-        //appBuilder.Services.AddSingleton<WebSocketHandler>(); // Manages External Service 
-        //appBuilder.Services.AddSingleton<WebSocketService>();      
-        //appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<WebSocketService>());
-//
-        //
-        //appBuilder.Services.AddSingleton<WiresheetService>(); // Manages Applications
-        //appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<WiresheetService>());
-        //
-        //// Integrations
-        //
-        //appBuilder.Services.AddSingleton<PulsoidService>();
-        //appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<PulsoidService>());
-//
-        //appBuilder.Services.AddSingleton<OscService>();
-        //appBuilder.Services.AddHostedService(sp => sp.GetRequiredService<OscService>());
-
         appBuilder.RegisterServices();
 
         using var myApp = appBuilder.Build();

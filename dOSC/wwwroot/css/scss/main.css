@@ -3,10 +3,6 @@
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -179,10 +175,6 @@
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -213,10 +205,6 @@
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -452,39 +440,14 @@
 }
 .dOSC-wiresheet-toolbar-container .dOSC-wiresheet-name {
   display: flex;
-  align-content: center;
+  align-items: center;
   height: 100%;
   font-weight: bold;
   flex-grow: 1;
   position: relative;
   border-left: 1px solid #232428;
   border-right: 1px solid #232428;
-  padding: 0 8px;
-}
-.dOSC-wiresheet-toolbar-container .dOSC-wiresheet-name span {
-  padding: 0 12px;
-  align-self: center;
-}
-.dOSC-wiresheet-toolbar-container .dOSC-wiresheet-name span:hover {
-  cursor: pointer;
-  background-color: #2a2c30;
-  color: #B9BBBE;
-  border-raius: 12px;
-}
-.dOSC-wiresheet-toolbar-container .dOSC-wiresheet-name input {
-  outline: none;
-  background-color: #2a2c30;
-  width: min-content;
-  font-size: 16px;
-  border: none;
-  color: #ffffff;
-  padding: 0 12px;
-  margin: 2px;
-  text-overflow: ellipsis;
-  font-weight: bold;
-  border-raius: 12px;
-  min-width: 3ch;
-  text-align: left;
+  padding: 2px 8px;
 }
 
 .wiresheet-panel {
@@ -667,22 +630,23 @@
   padding: 2px 8px;
   border-radius: 8px;
   white-space: nowrap;
+  flex-grow: 1;
 }
-.node .node-header .node-header-title:hover {
-  background-color: rgba(0, 0, 0, 0.4);
-  cursor: pointer;
-}
-.node .node-header .node-header-title-input {
-  outline: none;
-  border: none;
-  padding: 2px 8px;
-  border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0.4);
+.node .node-header .node-header-setting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
   color: white;
   font-weight: bold;
   text-align: left;
-  min-width: 5ch;
   white-space: nowrap;
+  border-radius: 50%;
+  padding: 4px;
+}
+.node .node-header .node-header-setting:hover {
+  background-color: rgba(28, 25, 25, 0.4);
+  cursor: pointer;
 }
 .node .node-body {
   display: flex;
@@ -1234,10 +1198,6 @@
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -1599,10 +1559,6 @@
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -1706,10 +1662,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -1740,10 +1692,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -2488,6 +2436,7 @@ label {
   padding: 4px 8px;
   overflow-y: auto;
   user-select: none;
+  max-width: 700px;
 }
 .settings-container .settings-container-panel.settings-content::-webkit-scrollbar-track {
   background: #232428;
@@ -2568,6 +2517,23 @@ label {
   gap: 4px;
   height: 30px;
 }
+.settings-container .settings-container-panel.settings-content .settings-content-item.settings-content-panel-options-group .settings-content-panel-options-group-body .settings-content-panel-options-group-body-item.settings-content-panel-options-vertical {
+  flex-direction: column;
+  align-items: start;
+  gap: 4px;
+  height: min-content;
+}
+.settings-container .settings-container-panel.settings-content .settings-content-item.settings-content-panel-options-group .settings-content-panel-options-group-body .settings-content-panel-options-group-body-item.settings-content-panel-options-vertical .settings-content-panel-options-group-body-item-label {
+  width: 100%;
+}
+.settings-container .settings-container-panel.settings-content .settings-content-item.settings-content-panel-options-group .settings-content-panel-options-group-body .settings-content-panel-options-group-body-item.settings-content-panel-options-vertical .settings-content-panel-options-group-body-item-label {
+  width: 100%;
+}
+.settings-container .settings-container-panel.settings-content .settings-content-item.settings-content-panel-options-group .settings-content-panel-options-group-body .settings-content-panel-options-group-body-item .settings-content-panel-options-group-table-container {
+  width: 100%;
+  display: flex;
+  flex-grow: 1;
+}
 .settings-container .settings-container-panel.settings-content .settings-content-item.settings-content-panel-options-group .settings-content-panel-options-group-body .settings-content-panel-options-group-body-item .settings-content-panel-options-group-body-item-label {
   flex: 1;
 }
@@ -2576,13 +2542,13 @@ label {
   min-width: 12ch;
   border-radius: 8px;
   padding: 2px 8px;
-  background: linear-gradient(145deg, #7289da, #304eb6);
   color: white;
   border: none;
   font-size: 14px;
   cursor: pointer;
   border: 1px solid #1d1e23;
   transition: all 0.2s ease-in-out;
+  background: linear-gradient(145deg, #7289da, #304eb6);
 }
 .settings-container .settings-container-panel.settings-content .settings-content-item.settings-content-panel-options-group .settings-content-panel-options-group-body .settings-content-panel-options-group-body-item .settings-content-panel-options-group-body-item-value button:hover {
   background: linear-gradient(145deg, #5e78d5, #2b45a2);
@@ -2602,10 +2568,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -2636,10 +2598,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -2855,10 +2813,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -3006,10 +2960,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -3040,10 +2990,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -3303,10 +3249,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -3393,10 +3335,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -3427,10 +3365,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -4189,10 +4123,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -4536,10 +4466,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -4565,41 +4491,131 @@ label {
     box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
   }
 }
-.third-party-table tbody tr {
-  height: 30px;
-  width: 1px;
-  white-space: nowrap;
+.pagination-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background: #2b2d31;
+  border: 1px solid #1d1e23;
+  border-radius: 8px;
+  overflow: hidden;
 }
-.third-party-table tbody tr .third-party-connector {
-  padding: 0 0 0 8px;
+.pagination-container .pagination-container-header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  padding: 4px;
+  border-bottom: 1px solid #1d1e23;
 }
-.third-party-table tbody tr .third-party-connector img {
-  object-fit: contain;
-  height: 40px;
-}
-.third-party-table tbody tr td {
-  border: none;
-  padding: 0;
-  height: 60px;
-  padding: 8px 0;
-}
-.third-party-table tbody tr .options {
+.pagination-container .pagination-container-header .pagination-container-header-title {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 0 8px;
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
-  gap: 10px 10px;
+  justify-content: center;
+  gap: 4px;
 }
-.third-party-table tbody tr .options .option {
-  border-radius: 16px;
-  padding: 8px;
+.pagination-container .pagination-container-header .pagination-container-header-title .pagination-container-header-title-icon.fa-refresh {
+  color: #4c84ff;
 }
-.third-party-table tbody tr .options .option:hover {
+.pagination-container .pagination-container-header .pagination-container-header-title .pagination-container-header-title-icon.fa-refresh:hover {
+  color: #1961ff;
+  cursor: pointer;
+}
+.pagination-container .pagination-container-header .pagination-container-header-search {
+  width: 240px;
+}
+.pagination-container .pagination-container-header .pagination-container-header-search input {
+  width: 100%;
+  border: 1px solid #1d1e23;
+  background: #232428;
+}
+.pagination-container .pagination-container-header .pagination-container-header-search input::placeholder {
+  color: gray; /* Change this color to your desired placeholder color */
+}
+.pagination-container .table-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: hidden; /* Hide horizontal overflow */
+}
+.pagination-container table {
+  border-collapse: collapse;
+  border-radius: 8px;
+  width: 100%; /* Ensure table takes full width */
+}
+.pagination-container thead {
+  background-color: #2b2d31;
+}
+.pagination-container thead th {
+  border-bottom: 1px solid #1d1e23;
+  padding: 10px;
+  text-align: left;
+}
+.pagination-container tbody {
+  display: table-row-group;
+  height: 300px; /* Set a fixed height for the tbody */
+  overflow-y: auto; /* Add vertical scroll if needed */
+}
+.pagination-container tbody tr {
+  display: table-row;
+  width: 100%;
+  table-layout: fixed;
+}
+.pagination-container tbody tr.pagination-blank td {
+  border: none;
+  height: 40px; /* Ensure blank rows have height */
+}
+.pagination-container tbody tr:nth-child(odd):not(.pagination-blank) {
   background-color: #2e3035;
 }
-.third-party-table tbody tr:hover {
-  background-color: #232428;
-  transition: ease-in-out 250ms;
+.pagination-container tbody tr:last-child:not(.pagination-blank) {
+  border-bottom: none;
+}
+.pagination-container tbody tr td {
+  padding: 10px;
+  text-align: left;
+  white-space: nowrap; /* Prevent text wrap */
+  overflow: hidden; /* Ensure content does not overflow */
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+}
+.pagination-container .pagination-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border-top: 1px solid #1d1e23;
+}
+.pagination-container .pagination-footer button {
+  background: #2b2d31;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+.pagination-container .pagination-footer button:disabled {
+  color: grey;
+  cursor: default;
+}
+.pagination-container .pagination-footer button:hover:not(:disabled) {
+  background: #2e3035;
+}
+.pagination-container .pagination-footer div {
+  font-size: 14px;
+  border-right: 1px solid #1d1e23;
+  border-left: 1px solid #1d1e23;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  display: flex; /* Add this line */
+  align-items: center; /* Add this line for vertical alignment */
+  justify-content: center; /* Optional: Add this line for horizontal alignment */
+  margin: auto;
 }
 
 /*Node Colors*/
@@ -4607,10 +4623,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -4654,10 +4666,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -4688,10 +4696,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -4718,18 +4722,23 @@ label {
   }
 }
 .dosc-button {
-  border: none;
-  padding: 4px 12px;
+  border: 1px solid black;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 14px;
   border-radius: 6px;
-  height: 36px;
-  background-color: #345ce7;
   color: #ffffff;
+  padding: 0 4px;
+  min-width: 12ch;
+  border-radius: 8px;
+  padding: 2px 8px;
+  background: linear-gradient(145deg, #345ce7, #1333a2);
   /*
   */
+}
+.dosc-button:hover {
+  background: linear-gradient(145deg, #1d4ae4, #102c8b);
 }
 .dosc-button:disabled {
   background-color: #87888b;
@@ -4738,39 +4747,39 @@ label {
   pointer-events: none;
 }
 .dosc-button:not(:disabled).dosc-button-primary {
-  background-color: #345ce7;
   color: #ffffff;
+  background: linear-gradient(145deg, #345ce7, #1333a2);
 }
 .dosc-button:not(:disabled).dosc-button-primary:hover {
-  background-color: #213b99;
+  background: linear-gradient(145deg, #1d4ae4, #102c8b);
 }
 .dosc-button:not(:disabled).dosc-button-secondary {
-  background-color: #B9BBBE;
   color: #ffffff;
+  background: linear-gradient(145deg, #B9BBBE, #84888d);
 }
 .dosc-button:not(:disabled).dosc-button-secondary:hover {
-  background-color: #87888b;
+  background: linear-gradient(145deg, #acaeb2, #777b80);
 }
 .dosc-button:not(:disabled).dosc-button-danger {
-  background-color: rgb(237, 67, 55);
   color: #ffffff;
+  background: linear-gradient(145deg, rgb(237, 67, 55), #ae1a10);
 }
 .dosc-button:not(:disabled).dosc-button-danger:hover {
-  background-color: #a02d25;
+  background: linear-gradient(145deg, #eb2d20, #97170e);
 }
 .dosc-button:not(:disabled).dosc-button-warning {
-  background-color: #feb145;
   color: #ffffff;
+  background: linear-gradient(145deg, #feb145, #dc8101);
 }
 .dosc-button:not(:disabled).dosc-button-warning:hover {
-  background-color: #b17b30;
+  background: linear-gradient(145deg, #fea62c, #c27201);
 }
 .dosc-button:not(:disabled).dosc-button-success {
-  background-color: #00ae7a;
   color: #ffffff;
+  background: linear-gradient(145deg, #00ae7a, #004832);
 }
 .dosc-button:not(:disabled).dosc-button-success:hover {
-  background-color: #007b56;
+  background: linear-gradient(145deg, #009568, #002f21);
 }
 
 /*Node Colors*/
@@ -4778,10 +4787,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -4861,10 +4866,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -4901,10 +4902,6 @@ label {
 /*Font Family*/
 /*Modal*/
 /* Layers */
-@font-face {
-  font-family: "Varela Round";
-  src: URL("./fonts/VarelaRound-Regular.ttf") format("truetype");
-}
 @-webkit-keyframes node-error {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
@@ -5115,6 +5112,75 @@ label {
   margin-right: 0.25rem;
   margin-left: 0.25rem;
   border-right: 1px solid #ddd;
+}
+
+/*Node Colors*/
+/*Input Colors*/
+/*Font Family*/
+/*Modal*/
+/* Layers */
+@-webkit-keyframes node-error {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+@keyframes node-error {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0.6);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 10px rgba(237, 67, 55, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+    box-shadow: 0 0 0 0 rgba(237, 67, 55, 0);
+  }
+}
+.WireSheet-Context-Menu {
+  z-index: 200;
+  position: absolute;
+  background-color: #1d1e23 !important;
+  border: 1px solid black !important;
+  border-radius: 8px;
+  box-shadow: 0 0 5px 0 #232428 !important;
+  user-select: none;
+  color: white;
+}
+.WireSheet-Context-Menu-List {
+  padding: 0 !important;
+  margin: 0;
+  list-style: none;
+}
+.WireSheet-Context-Menu-List .WireSheet-Context-Menu-Item {
+  padding: 4px 8px;
+  white-space: nowrap;
+}
+.WireSheet-Context-Menu-List .WireSheet-Context-Menu-Item .WireSheet-Context-Menu-Item-Container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  gap: 8px;
+}
+.WireSheet-Context-Menu-List .WireSheet-Context-Menu-Item.blazor-context-menu__item--with-submenu::after {
+  right: -4px;
+}
+.WireSheet-Context-Menu-List .WireSheet-Context-Menu-Item.WireSheet-Context-Menu-Item-Disabled {
+  color: #999;
+}
+.WireSheet-Context-Menu-List .WireSheet-Context-Menu-Item:hover:not(.WireSheet-Context-Menu-Item-Disabled) {
+  background: #2b2d31;
+}
+.WireSheet-Context-Menu-List .WireSheet-Context-Menu-Separator .WireSheet-Context-Menu-Separator-Hr {
+  margin: 8px 2px;
 }
 
 /*# sourceMappingURL=main.css.map */

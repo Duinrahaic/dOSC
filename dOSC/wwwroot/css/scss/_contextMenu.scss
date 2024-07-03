@@ -1,0 +1,61 @@
+﻿
+@import "_variables.scss";
+
+.WireSheet-Context-Menu{
+  z-index: $z-index-context-menu;
+  position: absolute;
+  background-color: $color-theme-1 !important;
+  border: 1px solid black !important;
+  border-radius: 8px;
+  box-shadow: 0 0 5px 0 $color-theme-2!important;
+  user-select: none;
+  color: white;
+  
+  .WireSheet-Context-Menu-SubMenu {
+	.WireSheet-Context-Menu{
+
+	}
+  }
+  
+  .WireSheet-Context-Menu-Header{
+	
+	}
+  }
+  
+  .WireSheet-Context-Menu-List{
+	padding: 0 !important;
+	margin: 0;
+	list-style: none;
+	
+	
+	.WireSheet-Context-Menu-Item{
+	  padding: 4px 8px;
+	  white-space: nowrap;
+	  .WireSheet-Context-Menu-Item-Container{
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: start;
+		gap: 8px;
+		
+	  }
+	  
+	  &.blazor-context-menu__item--with-submenu::after{
+		right: -4px;
+	  }
+	  
+	  &.WireSheet-Context-Menu-Item-Disabled{
+		color: #999;
+	  }
+	  &:hover:not(.WireSheet-Context-Menu-Item-Disabled){
+		background: $color-theme-4;
+
+	  }
+	}
+	
+	.WireSheet-Context-Menu-Separator{
+	  .WireSheet-Context-Menu-Separator-Hr{
+		margin: 8px 2px;
+	  }
+	}
+  }

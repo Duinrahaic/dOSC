@@ -28,13 +28,8 @@ public partial class HubService
             log.Message = $"Registered ConfigEndpoint: {e.Name} for {e.Owner} ";
             log.Level = DoscLogLevel.Info;
             OnEndpointUpdate?.Invoke(e);
+            Log(log);
         }
-        else
-        {
-            log.Message = $"Unable to register ConfigEndpoint: {e.Name} for {e.Owner} ";
-            log.Level = DoscLogLevel.Warning;
-        }
-        Log(log);
         return success;
     } 
     public bool UnregisterEndpoint(DataEndpoint e)
