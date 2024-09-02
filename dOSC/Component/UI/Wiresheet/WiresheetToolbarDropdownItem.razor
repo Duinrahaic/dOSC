@@ -1,5 +1,32 @@
-﻿@inherits WiresheetToolbarDropdownBase
+﻿<div class="dOSC-wiresheet-toolbar-dropdown-item @(Disabled? "disabled" : string.Empty)" >
+    <div class="dOSC-wiresheet-toolbar-dropdown-item-icon">
+        @if (HasIcon)
+        {
+            <i class="@Icon"></i>
+        }
+    </div>
+    <div class="dOSC-wiresheet-toolbar-dropdown-item-label">
+        @Label        
+    </div>
+    <div class="dOSC-wiresheet-toolbar-dropdown-item-hotkey">
+        @Hotkey
+    </div>
+</div>
 
-<li>
-    <a class="dropdown-item" href="#" style="cursor:pointer;" @onclick:preventDefault @onclick="Clicked">@Title</a>
-</li>
+
+@code{
+
+    [Parameter] public string Icon { get; set; } = string.Empty;
+    private bool HasIcon => !String.IsNullOrEmpty(Icon);
+    [Parameter] public string Label { get; set; } = string.Empty;
+    [Parameter] public string Hotkey { get; set; } = string.Empty;
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public EventCallback OnClick { get; set; }
+
+
+    private void Clicked()
+    {
+        OnClick.InvokeAsync();
+    }
+
+}

@@ -1,0 +1,90 @@
+﻿@using Blazor.Diagrams.Core.Models
+@using dOSC.Component.Wiresheet
+@using dOSC.Component.Wiresheet.Nodes
+@using LiveSheet
+<div class="wiresheet-toolbar wiresheet-component @(_open ? "open" : "closed")">
+    <div class="wiresheet-toolbar-badges">
+        <WiresheetToolbarBadge Color="@(_open ? WiresheetToolbarBadge.BadgeColor.Primary : WiresheetToolbarBadge.BadgeColor.None )" ToolTipText="Components" Icon="fa-solid fa-puzzle-piece" OnClick="OnBadgeClick"/>
+    </div>
+    <div class="wiresheet-component-container">
+        <div class="wiresheet-component-toolbar">
+            <div class="wiresheet-component-toolbar-search-container">
+                <div class="wiresheet-component-toolbar-search-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <input type="search" class="wiresheet-component-toolbar-search" value="@_searchText" @oninput="OnSearchInputChange" placeholder="Search..."/>
+                <div class="wiresheet-component-toolbar-search-interactable-icon @(string.IsNullOrEmpty(_searchText) ? "hide" : "show" )" @onclick="Clear" >
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+                @*
+                <div class="wiresheet-component-toolbar-search-interactable-icon">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </div> *@
+            </div>
+        </div>
+
+        <div class="wiresheet-component-toolbar full">
+            <div class="wiresheet-component-toolbar-container">
+                @foreach (var category in Categories.OrderBy(x=>x.ToString()))
+                {
+                <div class="wiresheet-component-toolbar-group">
+                    <div class="wiresheet-component-toolbar-group-label">@category</div>
+                    @foreach (var node in FilteredNodes.Where(x=>x.Category == category).OrderBy(x=>x.NodeName))
+                    {
+                        <WiresheetToolbarComponentNode Node="@node" OnClick="AddNode"/>
+                    }
+
+                </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+@code
+{
+    [Parameter] public WiresheetDiagram Diagram { get; set; } = new();
+    
+    
+    protected override void OnInitialized()
+    {
+        _nodes = WiresheetHelper.GetAllNodes();
+        base.OnInitialized();
+    }
+    
+    
+    bool _open = false;
+
+    void OnBadgeClick()
+    {
+        _open = !_open;
+    }
+
+    private List<WiresheetNode> _nodes = new();
+    private List<WiresheetNode> FilteredNodes => _nodes.Where(x => NodeFilter(x) == true).ToList();
+    
+    private List<NodeCategory> Categories => FilteredNodes.Select(x => x.Category).Distinct().Order().ToList();
+    private bool NodeFilter(WiresheetNode node)
+    {
+        var searchText = _searchText.ToLower();
+        var searchStringParts = searchText.Split(' ');
+        bool conditionA = searchStringParts.Any(x=> node.NodeName.ToLower().Contains(x));
+        bool conditionB = searchStringParts.Any(x=> node.Category.ToString().ToLower().Contains(x));
+        return conditionA || conditionB;
+    }
+
+    private void AddNode(WiresheetNode e)
+    {
+        Diagram.AddNode(e);
+    }
+    
+    
+    string _searchText = string.Empty;
+    private void OnSearchInputChange(ChangeEventArgs e)
+    {
+        _searchText = e.Value?.ToString() ?? string.Empty;
+    }
+
+    private void Clear() => _searchText = string.Empty;
+
+}

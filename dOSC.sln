@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Diagrams.Algorithms"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Diagrams.Core", "..\Blazor.Diagrams\src\Blazor.Diagrams.Core\Blazor.Diagrams.Core.csproj", "{E7137B45-C406-4025-918C-C3B32B3F9830}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dOSC.Shared", "dOSC.Shared\dOSC.Shared.csproj", "{A4F5609E-64E1-4DE3-9CAA-48261BFE7482}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{E7137B45-C406-4025-918C-C3B32B3F9830}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7137B45-C406-4025-918C-C3B32B3F9830}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7137B45-C406-4025-918C-C3B32B3F9830}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4F5609E-64E1-4DE3-9CAA-48261BFE7482}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4F5609E-64E1-4DE3-9CAA-48261BFE7482}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4F5609E-64E1-4DE3-9CAA-48261BFE7482}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4F5609E-64E1-4DE3-9CAA-48261BFE7482}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

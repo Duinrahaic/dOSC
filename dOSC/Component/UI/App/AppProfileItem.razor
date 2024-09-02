@@ -1,8 +1,9 @@
 ﻿@using LiveSheet
 <div class="item-app">
-    <div class="item-app-image @(App.State == LiveSheetState.Loaded ? "app-running" : "app-disabled")" @onclick="TogglePlayPause" style="background-image: url(@(App.GetCurrentIcon()));">
-        <i class="icon oi @(App.State == LiveSheetState.Loaded ? "oi-media-play" : "oi-media-stop")"></i>
-
+    <div class="item-app-image-container">
+        <div class="item-app-image @(App.State == LiveSheetState.Loaded ? "app-running" : "app-disabled")" @onclick="TogglePlayPause" style="background-image: url(@(App.GetCurrentIcon()));">
+            <i class="icon @(GetAppStateIcon())"></i>
+        </div>
     </div>
     <div class="item-app-content-status-container">
         <div class="item-app-content-status @(App.State == LiveSheetState.Loaded ? "app-running" : "app-disabled")">
@@ -14,16 +15,10 @@
         <div class="item-app-content-title">
             @App.GetDisplayName()
         </div>
-        <div class="controls">
-            <button class="dosc-button dosc-button-primary" @onclick="EditApp">
-                Edit
-            </button>
-            <button class="dosc-button dosc-button-secondary" @onclick="DownloadApp">
-                Export
-            </button>
-            <button class="dosc-button dosc-button-secondary" @onclick="ShowSettings">
-                Details
-            </button>
+        <div class="item-app-content-controls">
+            <AppBadgeControl Icon="fa-solid fa-pen" ToolTipText="Edit App" OnClick="EditApp"/>
+            <AppBadgeControl Icon="fa-solid fa-download" ToolTipText="Download App" OnClick="DownloadApp"/>
+            <AppBadgeControl Icon="fa-solid fa-cog" ToolTipText="App Settings" OnClick="ShowSettings"/>
         </div>
     </div>
 </div>

@@ -202,6 +202,13 @@
         justify-content: space-between;
         align-content: center;
         text-align: center;
+        gap:8px;
+        
+        &.space-evenly{
+          justify-content: space-evenly;
+        }
+        
+        
       }
     }
   }
@@ -665,7 +672,7 @@
         border-radius: 6px;
         
         &.active{
-          @include gradient-3d($color-blurple);
+          background: $color-selected;
         }
         
         &:hover:not(&.active) {
@@ -804,26 +811,25 @@
               .settings-content-panel-options-group-body-item-value {
                 
                   button{
-                    padding: 0 4px;
                     min-width: 12ch;
                     border-radius: 8px;
                     padding: 2px 8px;
                     
                     color: white;
-                    border: none;
                     font-size: 14px;
                     cursor: pointer;
                     border: 1px solid $color-theme-1;
                     transition: all 0.2s ease-in-out;
-                    @include gradient-3d($color-blurple);
+                    background: $color-primary;
+                    
                     &:hover {
-                      @include gradient-3d(darken($color-blurple, 5%));
+                      background: darken($color-primary, 5%);
                     }
                     
                     &.danger {
-                      @include gradient-3d($color-danger);
+                        background: $color-danger;
                       &:hover {
-                        @include gradient-3d(darken($color-danger, 5%));
+                        background: darken($color-danger, 5%);
                       }
                     }
                   }

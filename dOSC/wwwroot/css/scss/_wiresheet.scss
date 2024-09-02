@@ -32,7 +32,8 @@
     font-size: 16px;
     flex-direction: row;
     align-content: center;
-    justify-content: flex-start;
+    justify-content: flex-start; 
+    
   
     .dOSC-wiresheet-toolbar-item{
       display: flex;
@@ -43,16 +44,22 @@
       align-items: center;
       padding: 2px 13px;
       gap: 4px;
+      font-size: 14px;
+      border-right: 1px solid darken($color-theme-2, 0.8);
+      position: relative;
+      
+      &:last-child{
+        border-left: 1px solid darken($color-theme-2, 0.8);
+      }
+      
       .dOSC-wiresheet-toolbar-item-icon{
         
           text-align:  center;
-          font-size: 20px;
           padding: 8px 4px;
           align-self: center;
           &.primary{
             @include text-gradient($color-blurple);
             font-weight: bold;
-            font-size: 24px;
           }
           
           &.secondary{
@@ -60,14 +67,82 @@
           }
       }
       
+      
+      
+      
+      .dOSC-wiresheet-toolbar-dropdown{
+        position: absolute;
+        display: none;
+        flex-direction: column;
+        top: 100%;
+        left: -1px;
+        transition: opacity 0.3s ease-in-out;
+        border: 1px solid $color-theme-2;
+        background-color: $color-theme-3;
+        min-width: 120px;
+        border-radius: 0 0 8px 8px;
+        padding: 4px 0;
+        gap: 4px;
+        color: $color-full-white;
+        cursor: default;
+
+        .dOSC-wiresheet-toolbar-dropdown-hr{
+          border-bottom: 1px solid $color-theme-2;
+          transform: translateY(50%);
+          margin: 0 2px;
+          cursor: default;
+        }
+        
+        .dOSC-wiresheet-toolbar-dropdown-item{
+          display: flex;
+          flex-direction: row;
+          gap: 12px;
+          margin: 0 4px;
+          border-radius: 4px;
+          padding: 2px 8px;
+          color: $color-full-white;
+          
+          .dOSC-wiresheet-toolbar-dropdown-item-icon{
+            min-width: 18px;
+          }
+          .dOSC-wiresheet-toolbar-dropdown-item-label{
+            white-space: nowrap;
+            flex-grow: 1;
+          }
+          .dOSC-wiresheet-toolbar-dropdown-item-hotkey{
+            white-space: nowrap;
+            color: $color-grey;
+            text-align: right;
+          }
+          
+          &.disabled{
+            color: $color-grey;
+            cursor: default;
+          }
+
+
+          &:hover:not(.disabled){
+            background-color: $color-selected;
+            cursor:pointer;
+          }
+          
+          
+          
+          
+        }
+      }
+      
+      
       &:hover:not(.active){
         background-color: darken($color-theme-4, .25);
-        color: $color-grey;
       }
       
       &.active{
         background-color: darken($color-theme-4, .25);
-        color: $color-grey;
+         
+        .dOSC-wiresheet-toolbar-dropdown{
+          display: flex;
+        }
       }
     }  
   
@@ -185,7 +260,7 @@
 
 
       &:hover{
-        @include gradient-3d($color-blurple);
+        background: $color-selected;
         cursor: pointer;
       }
       
@@ -207,7 +282,322 @@
 
   }
 }
- 
+
+.wiresheet-toolbar{
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: $z-index-ui;
+  margin: 16px;
+  gap: 4px;
+  user-select: none;
+  max-height: 100%;
+  
+  &.wiresheet-component{
+    right:0;
+    left: unset;
+    height: calc(100% - 30px);
+    
+    .wiresheet-toolbar-badges{
+      justify-content: flex-end;
+    }
+    
+  }
+  
+  
+  &.open{
+    .wiresheet-toolbar-dropdown{
+      display: flex;
+    }
+    .wiresheet-component-container{
+        transform: translateX(0);
+
+    }
+  }
+  &.closed{
+    .wiresheet-toolbar-dropdown{
+      display: none;
+      
+    }
+    .wiresheet-component-container{
+
+    }
+  }
+  .wiresheet-component-container{
+    display: flex;
+    flex-grow: 1;
+    gap: 4px;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: transform 250ms ease-in-out;
+    transform: translateX(calc(100% + 30px));
+
+  }
+  
+  .wiresheet-component-toolbar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: $color-theme-1;
+    padding: 2px 4px;
+    border-radius: 8px;
+    position: relative;
+    overflow:hidden ;
+    min-height: 40px;
+    &.full{
+      flex-grow:1;
+    }
+    
+    .wiresheet-component-toolbar-container{
+      overflow-y: auto;
+      height: 100%;
+      flex-grow: 1;
+      width: 100%;
+      padding: 2px 4px;
+      margin: 0 2px;
+
+
+      .wiresheet-component-toolbar-group{
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        color: $color-full-white;
+        
+        .wiresheet-component-toolbar-group-label{
+          border-bottom: 1px solid $color-full-white;
+        }
+        
+        &:not(:first-child){
+          margin-top: 4px;
+        }
+        
+        .wiresheet-component-toolbar-item{
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          flex-direction: row;
+          gap: 8px;
+          
+          &:hover{
+            background: $color-selected;
+            border-radius: 4px;
+            cursor: pointer;
+          }
+          
+          .wiresheet-component-toolbar-item-icon{
+              width: 40px;
+              text-align: center;
+          }
+          .wiresheet-component-toolbar-item-label{
+              flex-grow: 1;
+              text-align: right;
+          }
+        }
+      }
+    }
+    
+
+    .wiresheet-component-toolbar-search-container{
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 8px;
+      overflow:hidden;
+      padding: 0 4px;
+      color: white;
+      height: 34px;
+
+      .wiresheet-component-toolbar-search-icon{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      input.wiresheet-component-toolbar-search{
+        flex-grow: 1;
+        background:transparent;
+        outline:none;
+        border:none;
+        color: white;
+        margin-left: 8px;
+        min-width: 240px;
+        &::placeholder {
+          color: $color-full-white; // Replace with your desired color
+        }
+        &::-webkit-search-cancel-button{
+          
+          -webkit-appearance: none;
+        }
+        
+      }
+      .wiresheet-component-toolbar-search-interactable-icon{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 20px;
+        
+        &.hide{
+          i {
+            display: none;
+          }
+        }
+        
+        
+        &:hover:not(.hide) {
+          cursor: pointer;
+          color: $color-grey;
+
+        }
+      }
+    }
+    
+    
+  }
+  
+  .wiresheet-toolbar-dropdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: $color-theme-1;
+    padding: 2px 4px;
+    border-radius: 8px;
+
+  }
+  .wiresheet-toolbar-item {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    color: $color-full-white;
+    margin: 2px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    align-items: flex-start; // Center-align items vertically
+    width: 100%;
+    &:hover:not(.disabled) {
+      background: $color-selected;
+      cursor: pointer;
+    }
+
+    &.disabled {
+      color: darken($color-grey, 0.9);
+    }
+
+    .wiresheet-toolbar-item-label,
+    .wiresheet-toolbar-item-hotkey {
+      flex: 1; // Ensure each item takes equal space
+    }
+
+    .wiresheet-toolbar-item-icon {
+      width: 20px; // Minimum width for icon
+    }
+
+    .wiresheet-toolbar-item-label {
+      padding: 0 4px;
+      min-width: 200px;
+      text-align: left;
+    }
+
+    .wiresheet-toolbar-item-hotkey {
+      margin-left: auto; // Pushes the hotkey to the right
+      color: $color-grey;
+      text-align: right;
+    }
+  }
+
+  .wiresheet-toolbar-badges{
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .wiresheet-toolbar-badge{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: $color-theme-1;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px; 
+    font-size: 20px;
+    color: $color-full-white;
+    
+    &.badge-color-primary{
+      color: $color-selected;
+      &:hover:not(.disabled){
+        cursor: pointer;
+        color: darken($color-selected, 0.5);
+      }
+    }
+    &.badge-color-secondary{
+      color: $color-secondary;
+      &:hover:not(.disabled){
+        cursor: pointer;
+        color: darken($color-secondary, 0.5);
+      }
+    }
+    
+    
+    &:hover:not(.disabled){
+      cursor: pointer;
+      color: $color-grey;
+    }
+    
+    &.disabled{
+      color: darken($color-grey, 0.9);
+    }
+    
+    &.visible{
+      display: flex;
+    }
+    
+  }
+  
+  .wiresheet-toolbar-hr {
+    border-bottom: 1px solid $color-lighter-dark-hover;
+    transform: translateY(-50%);
+    width: 90%;
+    margin: 0 2px;
+    cursor: default;
+    padding: 2px 0;
+  }
+
+
+}
+
+
+.dosc-wiresheet-save-container{
+  display:flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  justify-content: center; 
+  user-select: none;
+  padding: 8px;
+  height: 100px;
+  color: $color-full-white;
+  
+  .dosc-wiresheet-save-image{
+    font-size: 80px;
+    color: $color-primary;
+  }
+  .dosc-wiresheet-save-title{
+    font-weight: bold;
+    font-size: 28px;
+  }
+  .dosc-wiresheet-save-subtitle{
+    font-size: 14px;
+  }
+  
+  
+}
 
 
 

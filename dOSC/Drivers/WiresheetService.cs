@@ -3,78 +3,92 @@ using LiveSheet;
 
 namespace dOSC.Drivers;
 
-public class WiresheetService : IHostedService
+public class WiresheetService :  IHostedService
 {
     private readonly ILogger<WiresheetService> _logger;
-    public Dictionary<string,WiresheetDiagram> Apps { get; private set; } = new();
-    
+    private Dictionary<string, WiresheetDiagram> Apps { get; set; } = new();
+
     public WiresheetService(ILogger<WiresheetService> logger)
     {
         _logger = logger;
-        _logger.LogInformation("Initialized WiresheetService Service");
+        _logger.LogInformation("Initialized WiresheetService");
     }
-    
-    public int GetAppCount() => Apps.Count;
-    public int GetLoadedAppCount() => Apps.Count(x=> x.Value.State == LiveSheetState.Loaded);
-    
-    public void ClearApps()
-    {
-        Apps.Clear();
-    }
-    
 
+    public int GetAppCount() => Apps.Count;
+
+    public int GetLoadedAppCount() => Apps.Count(x => x.Value.State == LiveSheetState.Loaded);
+
+   
+
+    public List<WiresheetDiagram> GetApps() => Apps.Values.ToList();
+
+    public WiresheetDiagram? GetAppById(string guid) =>
+        Apps.TryGetValue(guid, out var app) ? app : null;
+
+    
+    
     public void AddApp(WiresheetDiagram app)
     {
-        Apps.Add(app.Guid,app);
-    }
-    
-    public void RemoveApp(WiresheetDiagram app)
-    {
-        Apps.Remove(app.Guid);
-    }
-    
-    public List<WiresheetDiagram> GetApps()
-    {
-        return Apps.Select(x=> x.Value ).ToList();
-    }
-    public WiresheetDiagram? GetAppById(string guid)
-    {
-        return Apps.FirstOrDefault(x => x.Key == guid).Value;
+        var success = Apps.TryAdd(app.Guid, app);
+        
+        // TODO: Save to file system
+        
+        
     }
 
+    public void RemoveApp(WiresheetDiagram app)
+    {
+        var success = Apps.Remove(app.Guid);
+        
+        // TODO: Remove to file system
+    } 
+
+ 
     public void UpdateApp(WiresheetDiagram diagram)
     {
-        var app = Apps.FirstOrDefault(x => x.Key == diagram.Guid).Value;
-        if(app != null)
+        if (Apps.TryGetValue(diagram.Guid, out var existingApp))
         {
-            if (app.State == LiveSheetState.Loaded)
-            {
-                app.Unload();
-                app = diagram;
-                app.Load();
-            }
-            else if (app.State == LiveSheetState.Unloaded)
-            {
-                var newApp = new WiresheetDiagram();
-                newApp.LoadLiveSheetData(diagram.SerializeLiveSheet());
-                app = newApp;
-            }
+            var newApp = new WiresheetDiagram();
+            var data = diagram.SaveLiveSheetData();
+            newApp.LoadLiveSheetData(data);
+            Apps[diagram.Guid] = newApp;
         }
         else
         {
-            var newApp = new WiresheetDiagram();
-            newApp.LoadLiveSheetData(diagram.SerializeLiveSheet());
-            Apps.Add(diagram.Guid, newApp);
+            AddApp(diagram);
         }
     }
     
-    public Task StartAsync(CancellationToken cancellationToken)
+    public void ClearApps()
     {
-        return Task.CompletedTask;
+        List<string> keys = Apps.Keys.ToList();
+        foreach (var key in keys)
+        {
+            var app = GetAppById(key);
+            if (app == null) continue;
+            RemoveApp(app);
+        }
+    }
+    
+    public void StopApp(string guid)
+    {
+        var app = GetAppById(guid);
+        if (app?.State == LiveSheetState.Loaded)
+        {
+            app.Unload();
+        }
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
+    public void StartApp(string guid)
     {
-        return Task.CompletedTask;
+        var app = GetAppById(guid);
+        if (app?.State == LiveSheetState.Unloaded)
+        {
+            app.Load();
+        }
     }
+    
+    public Task StartAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+
+    public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 }

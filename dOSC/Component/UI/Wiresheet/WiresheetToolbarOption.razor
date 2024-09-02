@@ -1,0 +1,26 @@
+﻿<div class="wiresheet-toolbar-item @(Disabled? "disabled" : string.Empty)" @onclick=@OnClick>
+    <div class="wiresheet-toolbar-item-icon">
+        <i class="@Icon"></i>
+    </div>
+    <div class="wiresheet-toolbar-item-label">
+        @Label
+    </div>
+    <div class="wiresheet-toolbar-item-hotkey">
+        @Hotkey
+    </div>
+</div>
+@code {
+    [Parameter] public string Icon { get; set; } = string.Empty;
+    [Parameter] public string Label { get; set; } = string.Empty;
+    [Parameter] public string Hotkey { get; set; } = string.Empty;
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    private void Clicked()
+    {
+        if (Disabled)
+            return;
+        
+        OnClick.InvokeAsync(); 
+    }
+}

@@ -6,7 +6,7 @@
             @Node.Icon
         }
     </div>
-    <div class="wiresheet-component-toolbar-item-title">
+    <div class="wwiresheet-component-toolbar-item-label">
         @Node.GetDisplayName()
     </div>
 </div>
@@ -15,10 +15,10 @@
     public WiresheetNode Node { get; set; } = new WiresheetNode();
     
     [Parameter]
-    public EventCallback OnClick { get; set; }
+    public EventCallback<WiresheetNode> OnClick { get; set; }
 
     private void HandleOnClick()
     {
-        OnClick.InvokeAsync();  
+        OnClick.InvokeAsync(Node);  
     }
 }

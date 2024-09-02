@@ -1,50 +1,39 @@
 ﻿@page "/apps"
-@page "/apps/{AppId:guid}"
+@page "/apps/{AppId}"
 @using dOSC.Component.Modals
 @using dOSC.Component.UI
+@using dOSC.Component.UI.App
 
 
 <div class="app-container">
-    <div class="header">
-        <div class="text-group">
-            <div class="title">
-                Application List
+    <div class="app-header">
+        <div class="app-header-icon"><i class="fa-solid fa-code"></i></div>
+        <div class="app-header-title">Applications</div>
+        <div class="app-header-controls">
+            <div class="app-header-control">
+                <i class="fa-solid fa-cog"></i>
             </div>
-            <div class="subtitle">
-                List of all your current applications
+            <div class="app-header-control">
+                <i class="fa-solid fa-cog"></i>
             </div>
         </div>
-        @*         <div class="search-bar-container">
-            <div class="search-bar">
-                <i class="search-icon oi oi-magnifying-glass" />
-
-                <input dataType="search" class="search-box" placeholder="Search Loaded Applications" />
-            </div>
-        </div> *@
     </div>
-    @*     <AppPageNavigationComponent @bind-Tabnames="NavTabs" @bind-ActiveTab="ActiveTab" />
- *@
     <div class="app-list">
         <div class="app-list-container">
-            @{
-                foreach (var app in _apps)
-                {
-                    <AppProfileItem App="app" OnPlayPause="Save" OnShowSettings="ShowSettings"/>
-                }
-            }
+            <Virtualize Items="_apps">
+                <AppProfileItem App="@context" OnShowSettings="ShowSettings"/>
+            </Virtualize>  
+            
+            
             <div class="new-item-app">
                 <div class="content" @onclick="NewApp">
-                    <div class="title">
-                        New App
-                    </div>
-                    <i class="icon icon-plus-circle"/>
+                    <div class="title"> New App</div>
+                    <i class="icon icon-plus-circle"></i>
                 </div>
                 <hr/>
                 <div class="content" @onclick="() => _uploadAppModal.Open()">
-                    <div class="title">
-                        Upload App
-                    </div>
-                    <i class="icon icon-upload"/>
+                    <div class="title"> Upload App </div>
+                    <i class="icon icon-upload"></i>
                 </div>
             </div>
         </div>
@@ -56,7 +45,9 @@
  Modals
 *@
 
-<SidePanelBase @ref="@_appSettingsPanel" App="_selectedApp" OnUpdate="OnUpdated"/>
+@*
+<SidePanelBase @ref="@_appSettingsPanel" App="_selectedApp"/>
+*@
 
 <ModalV2 @ref="@_uploadAppModal" Title="Upload Application">
     <Body>

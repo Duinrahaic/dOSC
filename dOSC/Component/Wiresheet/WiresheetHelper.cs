@@ -2,7 +2,6 @@
 using dOSC.Component.Wiresheet.Nodes;
 using dOSC.Component.Wiresheet.Nodes.Utility;
 using dOSC.Component.Wiresheet.Widgets;
-using LiveSheet;
 
 namespace dOSC.Component.Wiresheet;
 
@@ -20,14 +19,15 @@ public static class WiresheetHelper
         diagram.RegisterComponent<WiresheetNode, DefaultNodeWidget>();
         
     }
-    private static string _rootNamespace = "dOSC.Component.Wiresheet.Nodes";
+
+    private const string RootNamespace = "dOSC.Component.Wiresheet.Nodes";
     private static List<Type> GetNodeNamespaces()
     {
         List<Type> nodeTypes = new();
         Assembly assembly = Assembly.GetExecutingAssembly();
         var types = assembly.GetTypes();
-        var filteredTypes = (types.Where(t => t.Namespace.StartsWith(_rootNamespace) && !t.Namespace.Equals(_rootNamespace)).ToList() ?? new List<Type>());
-        foreach (Type type in filteredTypes ?? new List<Type>())
+        var filteredTypes = (types.Where(t => t.Namespace != null && t.Namespace.StartsWith(RootNamespace) && !t.Namespace.Equals(RootNamespace)).ToList());
+        foreach (Type type in filteredTypes)
         {
             if (!type.IsAbstract)
             {
@@ -39,12 +39,11 @@ public static class WiresheetHelper
     public static List<WiresheetNode> GetAllNodes()
     {
         List<WiresheetNode> nodes = new();  
-        Assembly assembly = Assembly.GetExecutingAssembly();
         Type targetType = typeof(WiresheetNode);
         var acceptedNamespaces = GetNodeNamespaces();
         foreach (Type type in acceptedNamespaces)
         {
-            if (targetType.IsAssignableFrom(type) && !type.IsAbstract && !type.Namespace.Equals(_rootNamespace))
+            if (type.Namespace != null && targetType.IsAssignableFrom(type) && !type.IsAbstract && !type.Namespace.Equals(RootNamespace))
             {
                 if (Activator.CreateInstance(type) is WiresheetNode node)
                 {

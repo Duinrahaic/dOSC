@@ -37,6 +37,12 @@ public partial class AppPage
     protected override void OnInitialized()
     {
         _apps = Engine.GetApps();
+        
+        _apps.Add(new()
+        {
+            Name = "Test"
+        });
+        
         _selectedApp = _apps.FirstOrDefault();
     }
 
@@ -83,17 +89,12 @@ public partial class AppPage
         if (app != null)
         {
             _selectedApp = app;
-            _appSettingsPanel.Open();
+            _appSettingsPanel?.Open();
         }
     }
 
-    private void Save(WiresheetDiagram? app)
+    private void Save(WiresheetDiagram app)
     {
-        if (app != null ) Engine.UpdateApp(app);
-    }
-
-    private void OnUpdated(WiresheetDiagram? app)
-    {
-        StateHasChanged();
+        Engine.UpdateApp(app); 
     }
 }

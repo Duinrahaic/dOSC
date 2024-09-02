@@ -126,7 +126,7 @@
             background: $color-theme-3;
 
             .app-icon-container {
-              @include gradient-3d($color-blurple);
+                background: $color-selected;
             }
           }
 

@@ -20,6 +20,7 @@ public partial class AppEditor : IDisposable
     private bool _confirmExit = false;
     private bool _dataHasChanged = false;
     private string _selectedUri = string.Empty;
+    
 
     [Parameter] public string? AppId { get; set; }
 
@@ -31,6 +32,10 @@ public partial class AppEditor : IDisposable
     private ModalV2 ExitConfirmationModal { get; set; } = default!;
     private ModalV2 NodeSettingsModal { get; set; } = default!;
     private WiresheetDiagram EditorAppLogic { get; set; } = new();
+    private WiresheetDiagram? TempEditorAppLogic = null;
+
+    
+    
     private WiresheetDiagram? ReferencedAppLogic { get; set; }
     protected override void OnInitialized()
     {
@@ -39,7 +44,7 @@ public partial class AppEditor : IDisposable
         if (ReferencedAppLogic != null)
         {
             ReferencedAppLogic.Unload();
-            var appdata = ReferencedAppLogic.SerializeLiveSheet();
+            var appdata = ReferencedAppLogic.Data;
             EditorAppLogic.LoadLiveSheetData(appdata);
         }
         EditorAppLogic.Load();
@@ -78,35 +83,66 @@ public partial class AppEditor : IDisposable
     private void Save()
     {
         SaveModal.Open();
+        
         if (_confirmExit) Nm!.NavigateTo(_selectedUri ?? "");
     }
 
     private void SaveCancel()
     {
         _confirmExit = false;
-        SaveModal.Close();
+    }
+    
+    private void SaveApplication()
+    {
+        EditorAppLogic.UpdateSaveData();
+        EditorAppLogic.Unload();
+
+        if (ReferencedAppLogic != null)
+        {
+            var data = EditorAppLogic.SaveLiveSheetData();
+            ReferencedAppLogic.UpdateSaveData(data);
+            ReferencedAppLogic.Unload();
+            Engine.UpdateApp(ReferencedAppLogic);
+            
+        }
+        else
+        {
+            Engine.AddApp(EditorAppLogic);
+            ReferencedAppLogic = Engine.GetAppById(EditorAppLogic.Guid);
+            EditorAppLogic.Load();
+        }
+        
     }
 
     private void SaveApp(EditContext context)
     {
         SaveModal.Close();
-        EditorAppLogic.UpdateSaveData();
-        if (ReferencedAppLogic != null)
+        if (TempEditorAppLogic == null)
         {
-            ReferencedAppLogic.LoadLiveSheetData(EditorAppLogic.SerializeLiveSheet());
+            return;
         }
-        else
-        {
-            Engine.AddApp(EditorAppLogic);
-        }
+        EditorAppLogic.Name = TempEditorAppLogic.Name;
+        EditorAppLogic.Description = TempEditorAppLogic.Description;
+        SaveApplication();        
+
+        TempEditorAppLogic = null;
         _dataHasChanged = false;
     }
 
-    private void Revert()
+  
+    
+    
+
+    private void RevertApplication()
     {
         _confirmExit = true;
-        Nm!.NavigateTo("/apps/");
-        Nm!.NavigateTo($"/editor/{EditorAppLogic?.Guid}");
+        Nm.NavigateTo("/apps/");
+        Nm.NavigateTo($"/editor/{AppId ?? string.Empty}");
+    }
+
+    private void OpenAppSettings()
+    {
+        
     }
 
     private async Task DownloadApp()
@@ -124,6 +160,11 @@ public partial class AppEditor : IDisposable
     {
         ExitConfirmationModal.Close();
         SaveModal.Open();
+        TempEditorAppLogic = new()
+        {
+            Name = EditorAppLogic.Name,
+            Description = EditorAppLogic.Description
+        };
         _confirmExit = true;
     }
 
@@ -153,6 +194,5 @@ public partial class AppEditor : IDisposable
     {
         EditorAppLogic.Changed -= AppChanged;
         EditorAppLogic.SelectionChanged -= SelectionChanged;
-
     }
 }

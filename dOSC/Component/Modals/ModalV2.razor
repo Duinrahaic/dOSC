@@ -3,14 +3,18 @@
     <div class="dosc-modal @(GetSize()) @(Disappear ? "dosc-modal-show" : string.Empty)" style="@Style">
         <div class="dosc-modal-container">
             <div class="dosc-modal-content">
-                <div class="dosc-modal-header">
-                    @if (!string.IsNullOrWhiteSpace(Icon))
-                    {
-                        <div class="dosc-modal-header-icon @(Icon)"></div>
-                    }
-                    <div class="dosc-modal-header-title">@Title</div>
-                    <div class="dosc-modal-header-close icon-x" @onclick="Close"/>
-                </div>
+                @if (!HideHeader)
+                {
+                    <div class="dosc-modal-header">
+                        @if (!string.IsNullOrWhiteSpace(Icon))
+                        {
+                            <div class="dosc-modal-header-icon @(Icon)"></div>
+                        }
+                        <div class="dosc-modal-header-title">@Title</div>
+                        <div class="dosc-modal-header-close icon-x" @onclick="Close"/>
+                    </div>
+                }
+           
                 <div class="dosc-modal-body">
                     <div class="dosc-modal-body-content">
                         @Body
@@ -18,7 +22,7 @@
                 </div>
                 @if (Footer != null)
                 {
-                    <div class="dosc-modal-footer">
+                    <div class="dosc-modal-footer @(SpaceFooterEvenly? "space-evenly" : string.Empty)">
                         @Footer
                     </div>
                 }

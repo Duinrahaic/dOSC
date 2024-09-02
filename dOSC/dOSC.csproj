@@ -174,12 +174,7 @@
       <AdditionalFiles Include="Component\UI\UploadWiresheetFile.razor" />
       <AdditionalFiles Include="Component\UI\Wiresheet\PlayPauseButton.razor" />
       <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbar.razor" />
-      <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbarComponent.razor" />
-      <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbarDropdown.razor" />
-      <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbarDropdownBase.razor" />
-      <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbarDropdownDivider.razor" />
       <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbarDropdownItem.razor" />
-      <AdditionalFiles Include="Component\UI\Wiresheet\WiresheetToolbarDropdownSubmenuItem.razor" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Component\UI\Setting\Parts\Data\" />

@@ -1,10 +1,37 @@
-﻿<nav class=" wiresheet-toolbar navbar  navbar-expand-sm" style="user-select:none;">
-    <div class="container-fluid">
-        <div class="icon oi oi-code"></div>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ps-2">
-                @ChildContent
-            </ul>
-        </div>
+﻿@using dOSC.Component.Wiresheet
+<div class="wiresheet-toolbar @(_open ? "open" : "closed")">
+    <div class="wiresheet-toolbar-badges">
+        <WiresheetToolbarBadge ToolTipText="Save" Icon="fa-solid fa-save" OnClick="SaveWiresheet"/>
+        <WiresheetToolbarBadge ToolTipText="Revert" Icon="fa-solid fa-clock-rotate-left" OnClick="RevertWiresheet"/>
+        @*<WiresheetToolbarBadge ToolTipText="Undo" Disabled="true" Icon="fa-solid fa-undo" OnClick="OnBadgeClick"/>
+        <WiresheetToolbarBadge ToolTipText="Redo" Disabled="true"  Icon="fa-solid fa-redo" OnClick="OnBadgeClick"/>*@
+        <WiresheetToolbarBadge ToolTipText="App Settings" Icon="fa-solid fa-cog" OnClick="OpenAppSetting"/>
     </div>
-</nav>
+    
+    
+  
+
+    <div class="wiresheet-toolbar-dropdown">
+        <WiresheetToolbarOption Icon="fa-solid fa-save" Disabled="false" Label="Save" Hotkey="Ctrl+S"/>
+        <WiresheetToolbarSeperator/>
+        <WiresheetToolbarOption Icon="fa-solid fa-undo" Disabled="false" Label="Undo" Hotkey="Ctrl+Z"/>
+        <WiresheetToolbarOption Icon="fa-solid fa-redo" Disabled="false" Label="Redo" Hotkey="Ctrl+Y"/>
+        <WiresheetToolbarSeperator/>
+        <WiresheetToolbarOption Icon="fa-solid fa-cog" Disabled="false" Label="App Settings"/>
+    </div>
+</div>
+@code
+{
+
+    [Parameter] public required WiresheetDiagram Diagram { get; set; } 
+    [Parameter] public required EventCallback OnSaveClick { get; set; }
+    [Parameter] public required EventCallback OnRevertClick { get; set; }
+    [Parameter] public required EventCallback OnOpenAppSettingsClick { get; set; }
+    
+    private void SaveWiresheet() => OnSaveClick.InvokeAsync();
+    private void RevertWiresheet() => OnRevertClick.InvokeAsync();
+    private void OpenAppSetting() => OnOpenAppSettingsClick.InvokeAsync();
+    
+    private bool _open = false;
+    private void OnBadgeClick() => _open = !_open;
+}

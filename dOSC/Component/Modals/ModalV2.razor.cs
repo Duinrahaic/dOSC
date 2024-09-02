@@ -20,18 +20,20 @@ public partial class ModalV2
     [Parameter] public string Title { get; set; } = string.Empty;
     [Parameter] public string Icon { get; set; } = string.Empty;
 
-    [Parameter] public RenderFragment Body { get; set; }
+    [Parameter] public RenderFragment? Body { get; set; }
 
-    [Parameter] public RenderFragment Footer { get; set; }
+    [Parameter] public RenderFragment? Footer { get; set; }
 
     [Parameter] public bool BackdropClose { get; set; } = true;
+    [Parameter] public bool HideHeader { get; set; } = true;
+    [Parameter] public bool SpaceFooterEvenly { get; set; } = false;
 
     [Parameter] public ModalSize? Size { get; set; }
 
     [Parameter] public EventCallback OnClose { get; set; }
 
     [Parameter] public string Style { get; set; } = string.Empty;
-
+    
     private string GetSize()
     {
         switch (Size)
@@ -63,7 +65,7 @@ public partial class ModalV2
         OnClose.InvokeAsync();
     }
 
-    public void BackdropClick()
+    private void BackdropClick()
     {
         if (BackdropClose) Close();
     }
